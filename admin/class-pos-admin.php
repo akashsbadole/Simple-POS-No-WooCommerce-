@@ -15,6 +15,7 @@ class Simple_POS_Admin {
 	public static function init() {
 		add_action( 'admin_menu', array( __CLASS__, 'register_menus' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_frontend_assets' ) );
 		add_action( 'admin_post_simple_pos_save_settings', array( __CLASS__, 'handle_save_settings' ) );
 		add_action( 'admin_post_simple_pos_save_tax_class', array( __CLASS__, 'handle_save_tax_class' ) );
 		add_action( 'admin_post_simple_pos_delete_tax_class', array( __CLASS__, 'handle_delete_tax_class' ) );
@@ -38,8 +39,10 @@ class Simple_POS_Admin {
 		add_action( 'admin_post_simple_pos_import_products', array( __CLASS__, 'handle_import_products' ) );
 		add_action( 'admin_post_simple_pos_export_products', array( __CLASS__, 'handle_export_products' ) );
 		add_action( 'admin_post_simple_pos_export_sales', array( __CLASS__, 'handle_export_sales' ) );
+		add_action( 'admin_post_simple_pos_backup_export', array( __CLASS__, 'handle_backup_export' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'low_stock_notice' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'action_result_notice' ) );
+		add_shortcode( 'simple_pos_terminal', array( __CLASS__, 'render_shortcode_terminal' ) );
 	}
 
 	/**
@@ -69,6 +72,7 @@ class Simple_POS_Admin {
 		add_submenu_page( 'simple-pos-terminal', __( 'Purchase Orders', 'simple-pos' ), __( 'Purchase Orders', 'simple-pos' ), 'manage_pos_products', 'simple-pos-purchase-orders', array( __CLASS__, 'render_purchase_orders_page' ) );
 		add_submenu_page( 'simple-pos-terminal', __( 'Barcode Labels', 'simple-pos' ), __( 'Barcode Labels', 'simple-pos' ), 'manage_pos_products', 'simple-pos-barcode', array( __CLASS__, 'render_barcode_page' ) );
 		add_submenu_page( 'simple-pos-terminal', __( 'Settings', 'simple-pos' ), __( 'Settings', 'simple-pos' ), 'manage_pos_settings', 'simple-pos-settings', array( __CLASS__, 'render_settings_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Backup', 'simple-pos' ), __( 'Backup', 'simple-pos' ), 'manage_pos_settings', 'simple-pos-backup', array( __CLASS__, 'render_backup_page' ) );
 	}
 
 	/**
@@ -148,6 +152,74 @@ class Simple_POS_Admin {
 		}
 	}
 
+	/**
+	 * Front-end asset loader for the [simple_pos_terminal] shortcode.
+	 * Enqueues the same CSS/JS as the admin terminal screen and hides the admin bar.
+	 */
+	public static function enqueue_frontend_assets() {
+		if ( ! self::$frontend_terminal_active ) {
+			return;
+		}
+		wp_enqueue_style( 'simple-pos-admin', SIMPLE_POS_PLUGIN_URL . 'admin/css/pos-admin.css', array(), SIMPLE_POS_VERSION );
+
+		$shared_data = array(
+			'restUrl'        => esc_url_raw( rest_url( Simple_POS_REST_API::NS ) ),
+			'nonce'          => wp_create_nonce( 'wp_rest' ),
+			'currency'       => array(
+				'code'     => Simple_POS_Settings::get( 'currency_code', 'USD' ),
+				'symbol'   => Simple_POS_Settings::get( 'currency_symbol', '$' ),
+				'position' => Simple_POS_Settings::get( 'currency_position', 'before' ),
+				'decimals' => (int) Simple_POS_Settings::get( 'decimal_places', 2 ),
+			),
+			'tax'            => array(
+				'country' => Simple_POS_Settings::get( 'tax_country', 'US' ),
+				'state'   => Simple_POS_Settings::get( 'tax_state', '' ),
+			),
+			'paperWidth'     => Simple_POS_Settings::get( 'paper_width', '80mm' ),
+			'printerType'    => Simple_POS_Settings::get( 'printer_type', 'browser' ),
+			'autoKickDrawer' => (int) Simple_POS_Settings::get( 'auto_kick_drawer', 0 ),
+			'barcode'        => array(
+				'symbology'   => Simple_POS_Settings::get( 'barcode_symbology', 'CODE128' ),
+				'labelFormat' => Simple_POS_Settings::get( 'barcode_label_format', 'a4_30' ),
+			),
+			'storeName'      => Simple_POS_Settings::get( 'store_name', get_bloginfo( 'name' ) ),
+			'receiptHeader'  => Simple_POS_Settings::get( 'receipt_header', '' ),
+			'receiptFooter'  => Simple_POS_Settings::get( 'receipt_footer', '' ),
+			'caps'           => array(
+				'voidSales'       => current_user_can( 'void_pos_sales' ),
+				'manageProducts'  => current_user_can( 'manage_pos_products' ),
+				'manageCustomers' => current_user_can( 'manage_pos_customers' ),
+			),
+			'i18n'           => array(
+				'confirmVoid'   => __( 'Void this sale and restore stock? This cannot be undone.', 'simple-pos' ),
+				'confirmDelete' => __( 'Delete this item? This cannot be undone.', 'simple-pos' ),
+				'cartEmpty'     => __( 'Cart is empty.', 'simple-pos' ),
+				'checkoutError' => __( 'Checkout failed. Please try again.', 'simple-pos' ),
+				'outOfStock'    => __( 'Out of stock', 'simple-pos' ),
+			),
+		);
+
+		wp_enqueue_script( 'simple-pos-terminal', SIMPLE_POS_PLUGIN_URL . 'admin/js/pos-terminal.js', array(), SIMPLE_POS_VERSION, true );
+		wp_localize_script( 'simple-pos-terminal', 'SimplePOS', $shared_data );
+		wp_add_inline_script( 'simple-pos-terminal', 'window.SimplePOSVendorUrl=' . wp_json_encode( SIMPLE_POS_PLUGIN_URL . 'admin/js/vendor/jsbarcode.min.js' ) . ';', 'before' );
+	}
+
+	/**
+	 * [simple_pos_terminal] shortcode callback.
+	 * Renders the terminal on the front-end and hides the admin bar.
+	 */
+	public static function render_shortcode_terminal() {
+		if ( ! current_user_can( 'operate_pos' ) ) {
+			return '<p>' . esc_html__( 'You do not have permission to use the POS terminal.', 'simple-pos' ) . '</p>';
+		}
+		self::$frontend_terminal_active = true;
+		show_admin_bar( false );
+		include SIMPLE_POS_PLUGIN_DIR . 'admin/views/terminal.php';
+		return '';
+	}
+
+	public static $frontend_terminal_active = false;
+
 	/*
 	---------------------------------------------------------------
 	 * Page renderers — each delegates to a view file so this class
@@ -186,6 +258,9 @@ class Simple_POS_Admin {
 	}
 	public static function render_barcode_page() {
 		include SIMPLE_POS_PLUGIN_DIR . 'admin/views/barcode.php';
+	}
+	public static function render_backup_page() {
+		include SIMPLE_POS_PLUGIN_DIR . 'admin/views/backup.php';
 	}
 
 	/**
@@ -516,6 +591,40 @@ class Simple_POS_Admin {
 		header( 'Content-Type: text/csv' );
 		header( 'Content-Disposition: attachment; filename="pos-sales-' . date( 'Y-m-d' ) . '.csv"' );
 		echo $csv;
+		exit;
+	}
+
+	/**
+	 * Export all plugin data as a JSON backup.
+	 */
+	public static function handle_backup_export() {
+		if ( ! current_user_can( 'manage_pos_settings' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_backup_export' );
+
+		global $wpdb;
+		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		$tables = array(
+			'settings'        => Simple_POS_Settings::get_all(),
+			'products'        => $wpdb->get_results( "SELECT * FROM {$prefix}products" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'product_variants'=> $wpdb->get_results( "SELECT * FROM {$prefix}product_variants" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'customers'       => $wpdb->get_results( "SELECT * FROM {$prefix}customers" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'sales'           => $wpdb->get_results( "SELECT * FROM {$prefix}sales" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'sale_items'      => $wpdb->get_results( "SELECT * FROM {$prefix}sale_items" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'stock_log'       => $wpdb->get_results( "SELECT * FROM {$prefix}stock_log" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'suppliers'       => $wpdb->get_results( "SELECT * FROM {$prefix}suppliers" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'purchase_orders' => $wpdb->get_results( "SELECT * FROM {$prefix}purchase_orders" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'po_items'        => $wpdb->get_results( "SELECT * FROM {$prefix}po_items" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'tax_classes'     => $wpdb->get_results( "SELECT * FROM {$prefix}tax_classes" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'tax_rates'       => $wpdb->get_results( "SELECT * FROM {$prefix}tax_rates" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			'categories'      => $wpdb->get_results( "SELECT * FROM {$prefix}categories" ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		);
+
+		$json = wp_json_encode( $tables, JSON_PRETTY_PRINT );
+		header( 'Content-Type: application/json' );
+		header( 'Content-Disposition: attachment; filename="simple-pos-backup-' . date( 'Y-m-d' ) . '.json"' );
+		echo $json;
 		exit;
 	}
 

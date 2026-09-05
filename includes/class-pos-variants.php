@@ -183,6 +183,7 @@ class Simple_POS_Variants {
 			'stock_qty'           => isset( $data['stock_qty'] ) ? (int) $data['stock_qty'] : ( $existing->stock_qty ?? 0 ),
 			'low_stock_threshold' => isset( $data['low_stock_threshold'] ) ? (int) $data['low_stock_threshold'] : ( $existing->low_stock_threshold ?? 5 ),
 			'track_stock'         => isset( $data['track_stock'] ) ? ( $data['track_stock'] ? 1 : 0 ) : ( $existing->track_stock ?? 1 ),
+			'tax_class_id'        => isset( $data['tax_class_id'] ) ? (int) $data['tax_class_id'] : ( $existing->tax_class_id ?? 0 ),
 			'image_url'           => isset( $data['image_url'] ) ? esc_url_raw( $data['image_url'] ) : ( $existing->image_url ?? '' ),
 			'attributes'          => $attrs,
 			'status'              => isset( $data['status'] ) && in_array( $data['status'], array( 'active', 'inactive' ), true ) ? $data['status'] : ( $existing->status ?? 'active' ),

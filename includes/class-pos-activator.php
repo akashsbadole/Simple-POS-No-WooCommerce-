@@ -126,6 +126,7 @@ class Simple_POS_Activator {
 			stock_qty INT NOT NULL DEFAULT 0,
 			low_stock_threshold INT NOT NULL DEFAULT 5,
 			track_stock TINYINT(1) NOT NULL DEFAULT 1,
+			tax_class_id BIGINT UNSIGNED NULL,
 			image_url VARCHAR(500) NULL,
 			attributes TEXT NULL,
 			status VARCHAR(20) NOT NULL DEFAULT 'active',
@@ -135,6 +136,7 @@ class Simple_POS_Activator {
 			KEY parent_product_id (parent_product_id),
 			KEY sku (sku),
 			KEY barcode (barcode),
+			KEY tax_class_id (tax_class_id),
 			KEY status (status)
 		) $charset_collate;";
 
@@ -283,6 +285,7 @@ class Simple_POS_Activator {
 
 		self::seed_tax_data();
 		self::migrate_legacy_tax_rates();
+		self::migrate_add_variant_tax_class();
 	}
 
 	private static function seed_tax_data() {
@@ -376,6 +379,17 @@ class Simple_POS_Activator {
 		$wpdb->query( $wpdb->prepare( "UPDATE {$prefix}products SET tax_class_id = %d WHERE (tax_rate = 0 OR tax_rate IS NULL) AND tax_class_id IS NULL", $zero_id ?: $std_id ) );
 		// For any remaining NULL assign standard.
 		$wpdb->query( $wpdb->prepare( "UPDATE {$prefix}products SET tax_class_id = %d WHERE tax_class_id IS NULL", $std_id ) );
+	}
+
+	private static function migrate_add_variant_tax_class() {
+		global $wpdb;
+		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		$table  = $prefix . 'product_variants';
+		$col    = $wpdb->get_col( "SHOW COLUMNS FROM `{$table}` WHERE Field = 'tax_class_id'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( ! empty( $col ) ) {
+			return;
+		}
+		$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN tax_class_id BIGINT UNSIGNED NULL AFTER track_stock, ADD KEY tax_class_id (tax_class_id)" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**

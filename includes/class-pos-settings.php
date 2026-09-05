@@ -49,9 +49,8 @@ class Simple_POS_Settings {
 
 		$saved  = get_option( self::OPTION_KEY, array() );
 		$merged = wp_parse_args( $saved, $defaults );
-		// Auto-fill symbol if code changed and symbol still default.
 		if ( isset( $currency_map[ $merged['currency_code'] ] ) && empty( $saved['currency_symbol'] ) ) {
-			// keep existing if manually set; else use map
+			$merged['currency_symbol'] = $currency_map[ $merged['currency_code'] ]['symbol'];
 		}
 		return $merged;
 	}

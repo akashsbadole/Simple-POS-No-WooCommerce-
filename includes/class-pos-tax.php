@@ -264,9 +264,10 @@ class Simple_POS_Tax {
 	 * @param string $state
 	 * @param float  $discount_share share of order discount allocated to this line (absolute amount)
 	 * @param array  $settings allows overriding inclusive/rounding
+	 * @param bool   $round       round to 2dp when true; leave exact when false for per-order rounding
 	 * @return array { taxable, tax_amount, gross, breakdown: [{name,rate,amount,inclusive,compound}] }
 	 */
-	public static function calculate_line( $unit_price, $qty, $class_id, $country, $state, $discount_share = 0, $settings = null ) {
+	public static function calculate_line( $unit_price, $qty, $class_id, $country, $state, $discount_share = 0, $settings = null, $round = true ) {
 		if ( null === $settings ) {
 			$settings = Simple_POS_Settings::get_all();
 		}
@@ -282,9 +283,9 @@ class Simple_POS_Tax {
 		if ( empty( $rates ) ) {
 			// fallback to legacy 0% if no rate
 			return array(
-				'taxable'    => round( $taxable, 2 ),
+				'taxable'    => $round ? round( $taxable, 2 ) : $taxable,
 				'tax_amount' => 0,
-				'gross'      => round( $taxable, 2 ),
+				'gross'      => $round ? round( $taxable, 2 ) : $taxable,
 				'breakdown'  => array(),
 				'rate'       => 0,
 			);
@@ -295,6 +296,9 @@ class Simple_POS_Tax {
 			if ( $r->is_inclusive ) {
 				$has_inclusive = true;
 			}
+		}
+		if ( ! empty( $settings['tax_inclusive'] ) ) {
+			$has_inclusive = true;
 		}
 		$breakdown       = array();
 		$total_tax       = 0;
@@ -324,7 +328,7 @@ class Simple_POS_Tax {
 				// Extract: tax = gross - gross/(1+rate) if single; for multiple need iterative.
 				// We do: net = net / (1+rate/100)
 				$tax         = $net - ( $net / ( 1 + $rate / 100 ) );
-				$tax         = round( $tax, 2 );
+				$tax         = $round ? round( $tax, 2 ) : $tax;
 				$incl_tax   += $tax;
 				$net         = $net - $tax;
 				$breakdown[] = array(
@@ -341,7 +345,7 @@ class Simple_POS_Tax {
 			foreach ( $exclusive_rates as $r ) {
 				$rate          = (float) $r->rate;
 				$base_for_this = $r->is_compound ? ( $running_taxable + $total_tax ) : $running_taxable;
-				$tax           = round( $base_for_this * $rate / 100, 2 );
+				$tax           = $round ? round( $base_for_this * $rate / 100, 2 ) : ( $base_for_this * $rate / 100 );
 				$total_tax    += $tax;
 				$breakdown[]   = array(
 					'name'      => $r->name ?: $r->country_code,
@@ -366,9 +370,9 @@ class Simple_POS_Tax {
 				$gross = max( 0, $gross - $discount_share );
 			}
 			return array(
-				'taxable'    => round( $running_taxable, 2 ),
-				'tax_amount' => round( $total_tax, 2 ),
-				'gross'      => round( $gross, 2 ),
+				'taxable'    => $round ? round( $running_taxable, 2 ) : $running_taxable,
+				'tax_amount' => $round ? round( $total_tax, 2 ) : $total_tax,
+				'gross'      => $round ? round( $gross, 2 ) : $gross,
 				'breakdown'  => $breakdown,
 				'rate'       => null,
 			);
@@ -377,7 +381,7 @@ class Simple_POS_Tax {
 			foreach ( $rates as $r ) {
 				$rate          = (float) $r->rate;
 				$base_for_this = $r->is_compound ? ( $running_taxable + $total_tax ) : $running_taxable;
-				$tax           = round( $base_for_this * $rate / 100, 2 );
+				$tax           = $round ? round( $base_for_this * $rate / 100, 2 ) : ( $base_for_this * $rate / 100 );
 				$total_tax    += $tax;
 				$breakdown[]   = array(
 					'name'      => $r->name ?: $r->country_code,
@@ -392,9 +396,9 @@ class Simple_POS_Tax {
 				$gross = max( 0, $gross - $discount_share );
 			}
 			return array(
-				'taxable'    => round( $running_taxable, 2 ),
-				'tax_amount' => round( $total_tax, 2 ),
-				'gross'      => round( $gross, 2 ),
+				'taxable'    => $round ? round( $running_taxable, 2 ) : $running_taxable,
+				'tax_amount' => $round ? round( $total_tax, 2 ) : $total_tax,
+				'gross'      => $round ? round( $gross, 2 ) : $gross,
 				'breakdown'  => $breakdown,
 				'rate'       => $rates ? (float) $rates[0]->rate : 0,
 			);
@@ -427,19 +431,35 @@ class Simple_POS_Tax {
 		// Allocate discount proportionally if before tax
 		$total_tax  = 0;
 		$line_calcs = array();
+		$rounding   = isset( $settings['tax_rounding'] ) ? $settings['tax_rounding'] : 'line';
+		$round      = 'line' === $rounding;
 		foreach ( $lines as $idx => $l ) {
 			$line_base = (float) $l['price'] * (int) $l['qty'];
 			$share     = $subtotal > 0 ? round( $discount * ( $line_base / $subtotal ), 2 ) : 0;
-			// fix rounding drift on last line
+			// fix rounding drift on last line — use exact remainder, no round()
 			if ( $idx === count( $lines ) - 1 ) {
 				$allocated = array_sum( array_column( $line_calcs, 'discount_share' ) );
-				$share     = round( $discount - $allocated, 2 );
+				$share     = $discount - $allocated;
 			}
 			$class_id               = isset( $l['class_id'] ) ? (int) $l['class_id'] : 0;
-			$calc                   = self::calculate_line( (float) $l['price'], (int) $l['qty'], $class_id, $country, $state, $share, $settings );
+			$calc                   = self::calculate_line( (float) $l['price'], (int) $l['qty'], $class_id, $country, $state, $share, $settings, $round );
 			$calc['discount_share'] = $share;
 			$line_calcs[]           = $calc;
 			$total_tax             += $calc['tax_amount'];
+		}
+		if ( ! $round ) {
+			$total_tax_unrounded = $total_tax;
+			$total_tax           = round( $total_tax_unrounded, 2 );
+			$delta               = $total_tax - $total_tax_unrounded;
+			$last_idx            = count( $line_calcs ) - 1;
+			if ( $last_idx >= 0 && $delta !== 0.0 ) {
+				$line_calcs[ $last_idx ]['tax_amount'] = round( $line_calcs[ $last_idx ]['tax_amount'] + $delta, 2 );
+				$line_calcs[ $last_idx ]['gross']      = round( $line_calcs[ $last_idx ]['gross'] + $delta, 2 );
+				$last_bd                                = count( $line_calcs[ $last_idx ]['breakdown'] ) - 1;
+				if ( $last_bd >= 0 ) {
+					$line_calcs[ $last_idx ]['breakdown'][ $last_bd ]['amount'] = round( $line_calcs[ $last_idx ]['breakdown'][ $last_bd ]['amount'] + $delta, 2 );
+				}
+			}
 		}
 		$total_tax = round( $total_tax, 2 );
 		// ponytail: total = sum of line gross (covers exclusive and inclusive uniformly; avoids double-counting inclusive tax)

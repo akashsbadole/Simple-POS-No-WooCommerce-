@@ -391,10 +391,14 @@ class Simple_POS_Products {
 
 		$tax_class_id = isset( $data['tax_class_id'] ) ? (int) $data['tax_class_id'] : ( $existing->tax_class_id ?? 0 );
 		if ( ! $tax_class_id ) {
-			// fallback: pick standard class
-			global $wpdb;
-			$std          = $wpdb->get_var( $wpdb->prepare( 'SELECT id FROM ' . Simple_POS_DB::table( 'tax_classes' ) . ' WHERE slug=%s', 'standard' ) );
-			$tax_class_id = $std ? (int) $std : 0;
+			$default_class = (int) Simple_POS_Settings::get( 'default_tax_class_id', 0 );
+			if ( $default_class ) {
+				$tax_class_id = $default_class;
+			} else {
+				global $wpdb;
+				$std          = $wpdb->get_var( $wpdb->prepare( 'SELECT id FROM ' . Simple_POS_DB::table( 'tax_classes' ) . ' WHERE slug=%s', 'standard' ) );
+				$tax_class_id = $std ? (int) $std : 0;
+			}
 		}
 		if ( ! empty( $data['barcode'] ) && self::barcode_exists( sanitize_text_field( $data['barcode'] ), $existing->id ?? 0 ) ) {
 			return new WP_Error( 'pos_duplicate_barcode', __( 'Barcode already exists.', 'simple-pos' ) );

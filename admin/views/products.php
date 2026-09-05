@@ -203,6 +203,12 @@ $variants_for_edit = $editing_product ? Simple_POS_Variants::get_variants($editi
 						<input type="number" name="low_stock_threshold" value="5" class="widefat"/>
 					</div>
 					<div class="simple-pos-form-row simple-pos-form-row-full">
+						<label><?php esc_html_e('Tax class','simple-pos');?></label>
+						<select name="tax_class_id" class="widefat">
+							<?php foreach($tax_classes as $tc):?><option value="<?php echo esc_attr($tc->id);?>" <?php selected(($editing_product->tax_class_id ?? 0), $tc->id);?>><?php echo esc_html($tc->name);?></option><?php endforeach;?>
+						</select>
+					</div>
+					<div class="simple-pos-form-row simple-pos-form-row-full">
 						<label class="simple-pos-checkbox"><input type="checkbox" name="track_stock" value="1" checked /> <?php esc_html_e('Track stock','simple-pos');?></label>
 					</div>
 					<div class="simple-pos-form-row simple-pos-form-row-full">

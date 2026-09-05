@@ -67,7 +67,7 @@ class Simple_POS_Sales {
 			$product_name  = $variant ? ( $product->name . ' — ' . Simple_POS_Variants::variant_label( $variant ) ) : $product->name;
 			$track_stock   = $variant ? (int) $variant->track_stock : (int) $product->track_stock;
 			$stock_qty     = $variant ? (int) $variant->stock_qty : (int) $product->stock_qty;
-			$tax_class_id  = (int) ( $product->tax_class_id ?: 0 );
+			$tax_class_id  = (int) ( $variant ? ( $variant->tax_class_id ?: $product->tax_class_id ) : ( $product->tax_class_id ?: 0 ) );
 			$order_lines[] = array(
 				'price'    => $price,
 				'qty'      => $qty,

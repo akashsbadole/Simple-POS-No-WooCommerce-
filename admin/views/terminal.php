@@ -80,8 +80,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 
 			<div style="display:flex;gap:8px;margin-bottom:8px">
-				<label for="simple-pos-tax-country" style="flex:1"><?php esc_html_e( 'Tax country', 'simple-pos' ); ?> <input type="text" id="simple-pos-tax-country" class="widefat" placeholder="US" style="width:80px" aria-label="<?php esc_attr_e( 'Tax country', 'simple-pos' ); ?>" /></label>
-				<label for="simple-pos-tax-state" style="flex:1"><?php esc_html_e( 'State', 'simple-pos' ); ?> <input type="text" id="simple-pos-tax-state" class="widefat" placeholder="CA" style="width:80px" aria-label="<?php esc_attr_e( 'State', 'simple-pos' ); ?>" /></label>
+				<label for="simple-pos-tax-country" style="flex:1"><?php esc_html_e( 'Tax country', 'simple-pos' ); ?> <input type="text" id="simple-pos-tax-country" class="widefat" value="<?php echo esc_attr( Simple_POS_Settings::get( 'tax_country', 'US' ) ); ?>" style="width:80px" aria-label="<?php esc_attr_e( 'Tax country', 'simple-pos' ); ?>" /></label>
+				<label for="simple-pos-tax-state" style="flex:1"><?php esc_html_e( 'State', 'simple-pos' ); ?> <input type="text" id="simple-pos-tax-state" class="widefat" value="<?php echo esc_attr( Simple_POS_Settings::get( 'tax_state', '' ) ); ?>" style="width:80px" aria-label="<?php esc_attr_e( 'State', 'simple-pos' ); ?>" /></label>
 			</div>
 			<div class="simple-pos-totals" id="simple-pos-totals">
 				<div class="simple-pos-totals-row"><span><?php esc_html_e( 'Subtotal', 'simple-pos' ); ?></span><span id="simple-pos-subtotal">—</span></div>
