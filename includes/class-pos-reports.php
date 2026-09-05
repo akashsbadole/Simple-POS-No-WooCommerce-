@@ -69,10 +69,10 @@ class Simple_POS_Reports {
 		);
 
 		$result = array(
-			'sale_count'  => (int) $row->sale_count,
-			'revenue'     => round( (float) $row->revenue, 2 ),
-			'avg_sale'    => round( (float) $row->avg_sale, 2 ),
-			'items_sold'  => $items_sold,
+			'sale_count'   => (int) $row->sale_count,
+			'revenue'      => round( (float) $row->revenue, 2 ),
+			'avg_sale'     => round( (float) $row->avg_sale, 2 ),
+			'items_sold'   => $items_sold,
 			'gross_profit' => round( $profit, 2 ),
 		);
 
@@ -187,7 +187,7 @@ class Simple_POS_Reports {
 		);
 
 		foreach ( $rows as $row ) {
-			$user         = get_userdata( $row->cashier_id );
+			$user              = get_userdata( $row->cashier_id );
 			$row->cashier_name = $user ? $user->display_name : __( 'Unknown', 'simple-pos' );
 		}
 

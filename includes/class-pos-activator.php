@@ -293,8 +293,8 @@ class Simple_POS_Activator {
 		if ( $count > 0 ) {
 			return;
 		}
-		$now = current_time( 'mysql' );
-		$classes = array(
+		$now       = current_time( 'mysql' );
+		$classes   = array(
 			array( 'Standard Rate', 'standard', 'Default standard rate' ),
 			array( 'Reduced Rate', 'reduced', 'Reduced rate (food, books, etc.)' ),
 			array( 'Zero Rate', 'zero', 'Zero-rated goods' ),
@@ -302,11 +302,19 @@ class Simple_POS_Activator {
 		);
 		$class_ids = array();
 		foreach ( $classes as $c ) {
-			$wpdb->insert( $prefix . 'tax_classes', array( 'name' => $c[0], 'slug' => $c[1], 'description' => $c[2], 'created_at' => $now ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->insert(
+				$prefix . 'tax_classes',
+				array(
+					'name'        => $c[0],
+					'slug'        => $c[1],
+					'description' => $c[2],
+					'created_at'  => $now,
+				)
+			); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$class_ids[ $c[1] ] = (int) $wpdb->insert_id;
 		}
 		// Seed per-country rates for Standard class.
-		$std = $class_ids['standard'];
+		$std        = $class_ids['standard'];
 		$seed_rates = array(
 			// US: 0 default, states override via separate rates if needed; keep national 0.
 			array( $std, 'US', null, 0, 0, 0, 0, 'US Federal' ),
@@ -333,10 +341,20 @@ class Simple_POS_Activator {
 			array( $class_ids['exempt'], '*', null, 0, 0, 0, 0, 'Exempt' ),
 		);
 		foreach ( $seed_rates as $r ) {
-			$wpdb->insert( $prefix . 'tax_rates', array(
-				'class_id' => $r[0], 'country_code' => $r[1], 'state_code' => $r[2], 'rate' => $r[3],
-				'is_compound' => $r[4], 'is_inclusive' => $r[5], 'priority' => $r[6], 'name' => $r[7], 'created_at' => $now,
-			) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$wpdb->insert(
+				$prefix . 'tax_rates',
+				array(
+					'class_id'     => $r[0],
+					'country_code' => $r[1],
+					'state_code'   => $r[2],
+					'rate'         => $r[3],
+					'is_compound'  => $r[4],
+					'is_inclusive' => $r[5],
+					'priority'     => $r[6],
+					'name'         => $r[7],
+					'created_at'   => $now,
+				)
+			); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		}
 	}
 
@@ -348,7 +366,7 @@ class Simple_POS_Activator {
 		if ( $has_class > 0 ) {
 			return;
 		}
-		$std_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$prefix}tax_classes WHERE slug = %s", 'standard' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$std_id  = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$prefix}tax_classes WHERE slug = %s", 'standard' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$zero_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$prefix}tax_classes WHERE slug = %s", 'zero' ) );
 		if ( ! $std_id ) {
 			return;
@@ -365,30 +383,30 @@ class Simple_POS_Activator {
 	 */
 	private static function create_default_options() {
 		$defaults = array(
-			'currency_code'         => 'USD',
-			'currency_symbol'       => '$',
-			'currency_position'     => 'before', // before | after
-			'default_tax_rate'      => 0,
-			'default_tax_class_id'  => 0,
-			'tax_country'           => 'US',
-			'tax_state'             => '',
-			'tax_inclusive'         => 0,
-			'discount_before_tax'   => 1,
-			'tax_rounding'          => 'line', // line | total
-			'store_name'            => get_bloginfo( 'name' ),
-			'receipt_header'        => '',
-			'receipt_footer'        => 'Thank you for your purchase!',
-			'low_stock_threshold'   => 5,
-			'sale_number_prefix'    => 'POS-',
-			'po_number_prefix'      => 'PO-',
-			'allow_negative_stock'  => 0,
-			'decimal_places'        => 2,
-			'paper_width'           => '80mm',
-			'auto_kick_drawer'      => 0,
-			'printer_type'          => 'browser', // browser | usb | network
-			'network_printer_ip'    => '',
-			'barcode_symbology'     => 'CODE128',
-			'barcode_label_format'  => 'a4_30',
+			'currency_code'        => 'USD',
+			'currency_symbol'      => '$',
+			'currency_position'    => 'before', // before | after
+			'default_tax_rate'     => 0,
+			'default_tax_class_id' => 0,
+			'tax_country'          => 'US',
+			'tax_state'            => '',
+			'tax_inclusive'        => 0,
+			'discount_before_tax'  => 1,
+			'tax_rounding'         => 'line', // line | total
+			'store_name'           => get_bloginfo( 'name' ),
+			'receipt_header'       => '',
+			'receipt_footer'       => 'Thank you for your purchase!',
+			'low_stock_threshold'  => 5,
+			'sale_number_prefix'   => 'POS-',
+			'po_number_prefix'     => 'PO-',
+			'allow_negative_stock' => 0,
+			'decimal_places'       => 2,
+			'paper_width'          => '80mm',
+			'auto_kick_drawer'     => 0,
+			'printer_type'         => 'browser', // browser | usb | network
+			'network_printer_ip'   => '',
+			'barcode_symbology'    => 'CODE128',
+			'barcode_label_format' => 'a4_30',
 		);
 
 		if ( false === get_option( 'simple_pos_settings' ) ) {

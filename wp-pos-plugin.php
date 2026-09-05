@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Core plugin constants.
  */
-define( 'SIMPLE_POS_VERSION', '2.0.0' );
+define( 'SIMPLE_POS_VERSION', '2.0.9' );
 define( 'SIMPLE_POS_DB_VERSION', '2.0.0' );
 define( 'SIMPLE_POS_PLUGIN_FILE', __FILE__ );
 define( 'SIMPLE_POS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );

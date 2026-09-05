@@ -85,34 +85,34 @@ class Simple_POS_Admin {
 		wp_enqueue_style( 'simple-pos-admin', SIMPLE_POS_PLUGIN_URL . 'admin/css/pos-admin.css', array(), SIMPLE_POS_VERSION );
 
 		$shared_data = array(
-			'restUrl'   => esc_url_raw( rest_url( Simple_POS_REST_API::NS ) ),
-			'nonce'     => wp_create_nonce( 'wp_rest' ),
-			'currency'  => array(
+			'restUrl'        => esc_url_raw( rest_url( Simple_POS_REST_API::NS ) ),
+			'nonce'          => wp_create_nonce( 'wp_rest' ),
+			'currency'       => array(
 				'code'     => Simple_POS_Settings::get( 'currency_code', 'USD' ),
 				'symbol'   => Simple_POS_Settings::get( 'currency_symbol', '$' ),
 				'position' => Simple_POS_Settings::get( 'currency_position', 'before' ),
 				'decimals' => (int) Simple_POS_Settings::get( 'decimal_places', 2 ),
 			),
-			'tax' => array(
+			'tax'            => array(
 				'country' => Simple_POS_Settings::get( 'tax_country', 'US' ),
 				'state'   => Simple_POS_Settings::get( 'tax_state', '' ),
 			),
-			'paperWidth' => Simple_POS_Settings::get('paper_width','80mm'),
-			'printerType' => Simple_POS_Settings::get('printer_type','browser'),
-			'autoKickDrawer' => (int) Simple_POS_Settings::get('auto_kick_drawer',0),
-			'barcode' => array(
-				'symbology' => Simple_POS_Settings::get('barcode_symbology','CODE128'),
-				'labelFormat' => Simple_POS_Settings::get('barcode_label_format','a4_30'),
+			'paperWidth'     => Simple_POS_Settings::get( 'paper_width', '80mm' ),
+			'printerType'    => Simple_POS_Settings::get( 'printer_type', 'browser' ),
+			'autoKickDrawer' => (int) Simple_POS_Settings::get( 'auto_kick_drawer', 0 ),
+			'barcode'        => array(
+				'symbology'   => Simple_POS_Settings::get( 'barcode_symbology', 'CODE128' ),
+				'labelFormat' => Simple_POS_Settings::get( 'barcode_label_format', 'a4_30' ),
 			),
-			'storeName' => Simple_POS_Settings::get( 'store_name', get_bloginfo( 'name' ) ),
-			'receiptHeader' => Simple_POS_Settings::get( 'receipt_header', '' ),
-			'receiptFooter' => Simple_POS_Settings::get( 'receipt_footer', '' ),
-			'caps'      => array(
-				'voidSales'        => current_user_can( 'void_pos_sales' ),
-				'manageProducts'   => current_user_can( 'manage_pos_products' ),
-				'manageCustomers'  => current_user_can( 'manage_pos_customers' ),
+			'storeName'      => Simple_POS_Settings::get( 'store_name', get_bloginfo( 'name' ) ),
+			'receiptHeader'  => Simple_POS_Settings::get( 'receipt_header', '' ),
+			'receiptFooter'  => Simple_POS_Settings::get( 'receipt_footer', '' ),
+			'caps'           => array(
+				'voidSales'       => current_user_can( 'void_pos_sales' ),
+				'manageProducts'  => current_user_can( 'manage_pos_products' ),
+				'manageCustomers' => current_user_can( 'manage_pos_customers' ),
 			),
-			'i18n'      => array(
+			'i18n'           => array(
 				'confirmVoid'   => __( 'Void this sale and restore stock? This cannot be undone.', 'simple-pos' ),
 				'confirmDelete' => __( 'Delete this item? This cannot be undone.', 'simple-pos' ),
 				'cartEmpty'     => __( 'Cart is empty.', 'simple-pos' ),
@@ -148,7 +148,8 @@ class Simple_POS_Admin {
 		}
 	}
 
-	/* ---------------------------------------------------------------
+	/*
+	---------------------------------------------------------------
 	 * Page renderers — each delegates to a view file so this class
 	 * stays focused on wiring, not markup.
 	 * ------------------------------------------------------------- */
@@ -210,8 +211,8 @@ class Simple_POS_Admin {
 		}
 		check_admin_referer( 'simple_pos_save_product' );
 
-		$data = wp_unslash( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$id   = isset( $data['product_id'] ) ? (int) $data['product_id'] : 0;
+		$data                = wp_unslash( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$id                  = isset( $data['product_id'] ) ? (int) $data['product_id'] : 0;
 		$data['track_stock'] = isset( $data['track_stock'] ) ? 1 : 0;
 
 		$result = $id > 0
@@ -243,9 +244,9 @@ class Simple_POS_Admin {
 		}
 		check_admin_referer( 'simple_pos_adjust_stock' );
 
-		$id     = isset( $_POST['product_id'] ) ? (int) $_POST['product_id'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$delta  = isset( $_POST['delta'] ) ? (int) $_POST['delta'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$note   = isset( $_POST['note'] ) ? sanitize_text_field( wp_unslash( $_POST['note'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$id    = isset( $_POST['product_id'] ) ? (int) $_POST['product_id'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$delta = isset( $_POST['delta'] ) ? (int) $_POST['delta'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$note  = isset( $_POST['note'] ) ? sanitize_text_field( wp_unslash( $_POST['note'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$result = Simple_POS_Products::adjust_stock( $id, $delta, 'restock', null, $note );
 		self::redirect_with_result( 'simple-pos-products', $result, __( 'Stock updated.', 'simple-pos' ) );
@@ -312,161 +313,210 @@ class Simple_POS_Admin {
 		self::redirect_with_result( 'simple-pos-customers', true, __( 'Customer deleted.', 'simple-pos' ) );
 	}
 
-	public static function handle_save_tax_class(){
-		if (!current_user_can('manage_pos_settings')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_save_tax_class');
+	public static function handle_save_tax_class() {
+		if ( ! current_user_can( 'manage_pos_settings' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_save_tax_class' );
 		$name=isset($_POST['name'])? sanitize_text_field(wp_unslash($_POST['name'])):''; // phpcs:ignore
 		$desc=isset($_POST['description'])? sanitize_textarea_field(wp_unslash($_POST['description'])):''; // phpcs:ignore
-		$res=Simple_POS_Tax::create_class($name,$desc);
-		self::redirect_with_result('simple-pos-taxes',$res,__('Tax class added.','simple-pos'));
+		$res  = Simple_POS_Tax::create_class( $name, $desc );
+		self::redirect_with_result( 'simple-pos-taxes', $res, __( 'Tax class added.', 'simple-pos' ) );
 	}
-	public static function handle_delete_tax_class(){
-		if (!current_user_can('manage_pos_settings')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_delete_tax_class');
+	public static function handle_delete_tax_class() {
+		if ( ! current_user_can( 'manage_pos_settings' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_delete_tax_class' );
 		Simple_POS_Tax::delete_class((int)$_GET['id']); // phpcs:ignore
-		self::redirect_with_result('simple-pos-taxes',true,__('Tax class deleted.','simple-pos'));
+		self::redirect_with_result( 'simple-pos-taxes', true, __( 'Tax class deleted.', 'simple-pos' ) );
 	}
-	public static function handle_save_tax_rate(){
-		if (!current_user_can('manage_pos_settings')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_save_tax_rate');
+	public static function handle_save_tax_rate() {
+		if ( ! current_user_can( 'manage_pos_settings' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_save_tax_rate' );
 		$data=wp_unslash($_POST); // phpcs:ignore
-		$id= isset($data['rate_id'])? (int)$data['rate_id']:0;
-		$payload=array(
-			'class_id'=> isset($data['class_id'])? (int)$data['class_id']:0,
-			'country_code'=> $data['country_code']??'*',
-			'state_code'=> $data['state_code']??'',
-			'rate'=> $data['rate']??0,
-			'is_compound'=> !empty($data['is_compound']),
-			'is_inclusive'=> !empty($data['is_inclusive']),
-			'priority'=> $data['priority']??0,
-			'name'=> $data['name']??'',
+		$id      = isset( $data['rate_id'] ) ? (int) $data['rate_id'] : 0;
+		$payload = array(
+			'class_id'     => isset( $data['class_id'] ) ? (int) $data['class_id'] : 0,
+			'country_code' => $data['country_code'] ?? '*',
+			'state_code'   => $data['state_code'] ?? '',
+			'rate'         => $data['rate'] ?? 0,
+			'is_compound'  => ! empty( $data['is_compound'] ),
+			'is_inclusive' => ! empty( $data['is_inclusive'] ),
+			'priority'     => $data['priority'] ?? 0,
+			'name'         => $data['name'] ?? '',
 		);
-		$res = $id? Simple_POS_Tax::update_rate($id,$payload): Simple_POS_Tax::create_rate($payload);
-		self::redirect_with_result('simple-pos-taxes',$res,__('Tax rate saved.','simple-pos'));
+		$res     = $id ? Simple_POS_Tax::update_rate( $id, $payload ) : Simple_POS_Tax::create_rate( $payload );
+		self::redirect_with_result( 'simple-pos-taxes', $res, __( 'Tax rate saved.', 'simple-pos' ) );
 	}
-	public static function handle_delete_tax_rate(){
-		if (!current_user_can('manage_pos_settings')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_delete_tax_rate');
+	public static function handle_delete_tax_rate() {
+		if ( ! current_user_can( 'manage_pos_settings' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_delete_tax_rate' );
 		Simple_POS_Tax::delete_rate((int)$_GET['id']); // phpcs:ignore
-		self::redirect_with_result('simple-pos-taxes',true,__('Tax rate deleted.','simple-pos'));
+		self::redirect_with_result( 'simple-pos-taxes', true, __( 'Tax rate deleted.', 'simple-pos' ) );
 	}
-	public static function handle_save_variant(){
-		if (!current_user_can('manage_pos_products')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_save_variant');
+	public static function handle_save_variant() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_save_variant' );
 		$data=wp_unslash($_POST); // phpcs:ignore
-		$parent_id=(int)($data['parent_product_id']??0);
-		$variant_id=(int)($data['variant_id']??0);
+		$parent_id  = (int) ( $data['parent_product_id'] ?? 0 );
+		$variant_id = (int) ( $data['variant_id'] ?? 0 );
 		// attributes: attr_key[] / attr_value[]
-		$attrs=array();
-		if(isset($data['attr_key']) && is_array($data['attr_key'])){
-			foreach($data['attr_key'] as $i=>$k){
-				$v=$data['attr_value'][$i]??'';
-				$k=sanitize_text_field($k); $v=sanitize_text_field($v);
-				if($k!=='' && $v!=='') $attrs[$k]=$v;
+		$attrs = array();
+		if ( isset( $data['attr_key'] ) && is_array( $data['attr_key'] ) ) {
+			foreach ( $data['attr_key'] as $i => $k ) {
+				$v = $data['attr_value'][ $i ] ?? '';
+				$k = sanitize_text_field( $k );
+				$v = sanitize_text_field( $v );
+				if ( $k !== '' && $v !== '' ) {
+					$attrs[ $k ] = $v;
+				}
 			}
 		}
-		$payload=array(
-			'sku'=> $data['sku']??'',
-			'barcode'=> $data['barcode']??'',
-			'price'=> $data['price']!==''? $data['price']: null,
-			'cost_price'=> $data['cost_price']!==''? $data['cost_price']: null,
-			'stock_qty'=> $data['stock_qty']??0,
-			'low_stock_threshold'=> $data['low_stock_threshold']??5,
-			'track_stock'=> isset($data['track_stock'])?1:0,
-			'image_url'=> $data['image_url']??'',
-			'attributes'=> $attrs,
-			'status'=> $data['status']??'active',
+		$payload = array(
+			'sku'                 => $data['sku'] ?? '',
+			'barcode'             => $data['barcode'] ?? '',
+			'price'               => $data['price'] !== '' ? $data['price'] : null,
+			'cost_price'          => $data['cost_price'] !== '' ? $data['cost_price'] : null,
+			'stock_qty'           => $data['stock_qty'] ?? 0,
+			'low_stock_threshold' => $data['low_stock_threshold'] ?? 5,
+			'track_stock'         => isset( $data['track_stock'] ) ? 1 : 0,
+			'image_url'           => $data['image_url'] ?? '',
+			'attributes'          => $attrs,
+			'status'              => $data['status'] ?? 'active',
 		);
-		$res= $variant_id? Simple_POS_Variants::update_variant($variant_id,$payload): Simple_POS_Variants::create_variant($parent_id,$payload);
-		self::redirect_with_result('simple-pos-products', $res, __('Variant saved.','simple-pos'));
+		$res     = $variant_id ? Simple_POS_Variants::update_variant( $variant_id, $payload ) : Simple_POS_Variants::create_variant( $parent_id, $payload );
+		self::redirect_with_result( 'simple-pos-products', $res, __( 'Variant saved.', 'simple-pos' ) );
 	}
-	public static function handle_delete_variant(){
-		if (!current_user_can('manage_pos_products')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_delete_variant');
+	public static function handle_delete_variant() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_delete_variant' );
 		Simple_POS_Variants::delete_variant((int)$_GET['id']); // phpcs:ignore
-		self::redirect_with_result('simple-pos-products', true, __('Variant deleted.','simple-pos'));
+		self::redirect_with_result( 'simple-pos-products', true, __( 'Variant deleted.', 'simple-pos' ) );
 	}
-	public static function handle_save_supplier(){
-		if (!current_user_can('manage_pos_products')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_save_supplier');
+	public static function handle_save_supplier() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_save_supplier' );
 		$data=wp_unslash($_POST); // phpcs:ignore
-		$id=(int)($data['supplier_id']??0);
-		$res= $id? Simple_POS_Suppliers::update_supplier($id,$data): Simple_POS_Suppliers::create_supplier($data);
-		self::redirect_with_result('simple-pos-suppliers',$res,__('Supplier saved.','simple-pos'));
+		$id   = (int) ( $data['supplier_id'] ?? 0 );
+		$res  = $id ? Simple_POS_Suppliers::update_supplier( $id, $data ) : Simple_POS_Suppliers::create_supplier( $data );
+		self::redirect_with_result( 'simple-pos-suppliers', $res, __( 'Supplier saved.', 'simple-pos' ) );
 	}
-	public static function handle_delete_supplier(){
-		if (!current_user_can('manage_pos_products')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_delete_supplier');
+	public static function handle_delete_supplier() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_delete_supplier' );
 		Simple_POS_Suppliers::delete_supplier((int)$_GET['id']); // phpcs:ignore
-		self::redirect_with_result('simple-pos-suppliers',true,__('Supplier deleted.','simple-pos'));
+		self::redirect_with_result( 'simple-pos-suppliers', true, __( 'Supplier deleted.', 'simple-pos' ) );
 	}
-	public static function handle_save_po(){
-		if (!current_user_can('manage_pos_products')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_save_po');
+	public static function handle_save_po() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_save_po' );
 		$data=wp_unslash($_POST); // phpcs:ignore
 		// items: product_id[], variant_id[], qty[], cost_price[]
-		$items=array();
-		if(isset($data['po_product_id']) && is_array($data['po_product_id'])){
-			foreach($data['po_product_id'] as $i=>$pid){
-				$vid=$data['po_variant_id'][$i]??'';
-				$qty=$data['po_qty'][$i]??1;
-				$cost=$data['po_cost'][$i]??0;
-				if(empty($pid) && empty($vid)) continue;
-				$items[]=array('product_id'=> (int)$pid, 'variant_id'=> $vid? (int)$vid:null, 'qty'=> (int)$qty, 'cost_price'=> (float)$cost);
+		$items = array();
+		if ( isset( $data['po_product_id'] ) && is_array( $data['po_product_id'] ) ) {
+			foreach ( $data['po_product_id'] as $i => $pid ) {
+				$vid  = $data['po_variant_id'][ $i ] ?? '';
+				$qty  = $data['po_qty'][ $i ] ?? 1;
+				$cost = $data['po_cost'][ $i ] ?? 0;
+				if ( empty( $pid ) && empty( $vid ) ) {
+					continue;
+				}
+				$items[] = array(
+					'product_id' => (int) $pid,
+					'variant_id' => $vid ? (int) $vid : null,
+					'qty'        => (int) $qty,
+					'cost_price' => (float) $cost,
+				);
 			}
 		}
-		$payload=array('supplier_id'=> $data['supplier_id']??null, 'note'=> $data['note']??'', 'items'=>$items);
-		$res=Simple_POS_Purchase_Orders::create_order($payload);
-		self::redirect_with_result('simple-pos-purchase-orders',$res,__('Purchase order created.','simple-pos'));
+		$payload = array(
+			'supplier_id' => $data['supplier_id'] ?? null,
+			'note'        => $data['note'] ?? '',
+			'items'       => $items,
+		);
+		$res     = Simple_POS_Purchase_Orders::create_order( $payload );
+		self::redirect_with_result( 'simple-pos-purchase-orders', $res, __( 'Purchase order created.', 'simple-pos' ) );
 	}
-	public static function handle_receive_po(){
-		if (!current_user_can('manage_pos_products')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_receive_po');
+	public static function handle_receive_po() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_receive_po' );
 		$po_id=(int)($_POST['po_id']??0); // phpcs:ignore
-		$items=array();
+		$items = array();
 		if(isset($_POST['receive_qty']) && is_array($_POST['receive_qty'])){ // phpcs:ignore
 			foreach($_POST['receive_qty'] as $item_id=>$qty){ // phpcs:ignore
-				$items[]=array('item_id'=>(int)$item_id,'received_qty'=>(int)$qty);
+				$items[] = array(
+					'item_id'      => (int) $item_id,
+					'received_qty' => (int) $qty,
+				);
 			}
 		}
-		$res=Simple_POS_Purchase_Orders::receive($po_id,$items);
-		self::redirect_with_result('simple-pos-purchase-orders',$res,__('PO received, stock updated.','simple-pos'));
+		$res = Simple_POS_Purchase_Orders::receive( $po_id, $items );
+		self::redirect_with_result( 'simple-pos-purchase-orders', $res, __( 'PO received, stock updated.', 'simple-pos' ) );
 	}
-	public static function handle_delete_po(){
-		if (!current_user_can('manage_pos_products')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_delete_po');
+	public static function handle_delete_po() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_delete_po' );
 		Simple_POS_Purchase_Orders::delete_order((int)$_GET['id']); // phpcs:ignore
-		self::redirect_with_result('simple-pos-purchase-orders',true,__('PO deleted.','simple-pos'));
+		self::redirect_with_result( 'simple-pos-purchase-orders', true, __( 'PO deleted.', 'simple-pos' ) );
 	}
-	public static function handle_import_products(){
-		if (!current_user_can('manage_pos_products')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_import_products');
+	public static function handle_import_products() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_import_products' );
 		if(empty($_FILES['csv_file']['tmp_name'])){ // phpcs:ignore
-			self::redirect_with_result('simple-pos-products', new WP_Error('pos_file_missing',__('No file uploaded.','simple-pos')), '');
+			self::redirect_with_result( 'simple-pos-products', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'simple-pos' ) ), '' );
 			return;
 		}
 		$res=Simple_POS_CSV::import_products($_FILES['csv_file']['tmp_name']); // phpcs:ignore
-		$msg= is_wp_error($res)? '': sprintf(__('Imported %d products.','simple-pos'),$res['imported']);
-		if(!empty($res['errors'])) $msg.=' '.implode(' ',array_slice($res['errors'],0,3));
-		self::redirect_with_result('simple-pos-products', is_wp_error($res)?$res:true, $msg);
+		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d products.', 'simple-pos' ), $res['imported'] );
+		if ( ! empty( $res['errors'] ) ) {
+			$msg .= ' ' . implode( ' ', array_slice( $res['errors'], 0, 3 ) );
+		}
+		self::redirect_with_result( 'simple-pos-products', is_wp_error( $res ) ? $res : true, $msg );
 	}
-	public static function handle_export_products(){
-		if (!current_user_can('manage_pos_products')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_export_products');
-		$csv=Simple_POS_CSV::export_products();
-		header('Content-Type: text/csv');
-		header('Content-Disposition: attachment; filename="pos-products-'.date('Y-m-d').'.csv"');
-		echo $csv; exit;
+	public static function handle_export_products() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_export_products' );
+		$csv = Simple_POS_CSV::export_products();
+		header( 'Content-Type: text/csv' );
+		header( 'Content-Disposition: attachment; filename="pos-products-' . date( 'Y-m-d' ) . '.csv"' );
+		echo $csv;
+		exit;
 	}
-	public static function handle_export_sales(){
-		if (!current_user_can('view_pos_sales')) wp_die(esc_html__('No permission.','simple-pos'));
-		check_admin_referer('simple_pos_export_sales');
+	public static function handle_export_sales() {
+		if ( ! current_user_can( 'view_pos_sales' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_export_sales' );
 		$from=isset($_GET['date_from'])? sanitize_text_field($_GET['date_from']):''; // phpcs:ignore
 		$to=isset($_GET['date_to'])? sanitize_text_field($_GET['date_to']):''; // phpcs:ignore
-		$csv=Simple_POS_CSV::export_sales($from,$to);
-		header('Content-Type: text/csv');
-		header('Content-Disposition: attachment; filename="pos-sales-'.date('Y-m-d').'.csv"');
-		echo $csv; exit;
+		$csv  = Simple_POS_CSV::export_sales( $from, $to );
+		header( 'Content-Type: text/csv' );
+		header( 'Content-Disposition: attachment; filename="pos-sales-' . date( 'Y-m-d' ) . '.csv"' );
+		echo $csv;
+		exit;
 	}
 
 	/**
@@ -478,8 +528,8 @@ class Simple_POS_Admin {
 		}
 		check_admin_referer( 'simple_pos_void_sale' );
 
-		$id     = isset( $_POST['sale_id'] ) ? (int) $_POST['sale_id'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$note   = isset( $_POST['note'] ) ? sanitize_text_field( wp_unslash( $_POST['note'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$id   = isset( $_POST['sale_id'] ) ? (int) $_POST['sale_id'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$note = isset( $_POST['note'] ) ? sanitize_text_field( wp_unslash( $_POST['note'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$result = Simple_POS_Sales::void_sale( $id, $note );
 		self::redirect_with_result( 'simple-pos-sales', $result, __( 'Sale voided and stock restored.', 'simple-pos' ) );
@@ -490,15 +540,22 @@ class Simple_POS_Admin {
 	 * stored in a per-user transient (avoids echoing raw messages back
 	 * through the URL).
 	 *
-	 * @param string       $page          Plugin page slug.
+	 * @param string        $page          Plugin page slug.
 	 * @param true|WP_Error $result       Result of the action.
-	 * @param string       $success_text  Message to show on success.
+	 * @param string        $success_text  Message to show on success.
 	 */
 	private static function redirect_with_result( $page, $result, $success_text ) {
 		$message = is_wp_error( $result ) ? $result->get_error_message() : $success_text;
 		$type    = is_wp_error( $result ) ? 'error' : 'success';
 
-		set_transient( 'simple_pos_notice_' . get_current_user_id(), array( 'type' => $type, 'message' => $message ), 60 );
+		set_transient(
+			'simple_pos_notice_' . get_current_user_id(),
+			array(
+				'type'    => $type,
+				'message' => $message,
+			),
+			60
+		);
 
 		wp_safe_redirect( admin_url( 'admin.php?page=' . $page ) );
 		exit;

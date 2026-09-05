@@ -19,7 +19,7 @@ class Simple_POS_Settings {
 	 */
 	public static function get_all() {
 		$currency_map = self::currency_list();
-		$defaults = array(
+		$defaults     = array(
 			'currency_code'            => 'USD',
 			'currency_symbol'          => '$',
 			'currency_position'        => 'before',
@@ -47,10 +47,10 @@ class Simple_POS_Settings {
 			'delete_data_on_uninstall' => 0,
 		);
 
-		$saved = get_option( self::OPTION_KEY, array() );
+		$saved  = get_option( self::OPTION_KEY, array() );
 		$merged = wp_parse_args( $saved, $defaults );
 		// Auto-fill symbol if code changed and symbol still default.
-		if ( isset($currency_map[$merged['currency_code']]) && empty($saved['currency_symbol']) ) {
+		if ( isset( $currency_map[ $merged['currency_code'] ] ) && empty( $saved['currency_symbol'] ) ) {
 			// keep existing if manually set; else use map
 		}
 		return $merged;
@@ -58,26 +58,86 @@ class Simple_POS_Settings {
 
 	public static function currency_list() {
 		return array(
-			'USD'=>array('symbol'=>'$','name'=>'US Dollar'),
-			'EUR'=>array('symbol'=>'€','name'=>'Euro'),
-			'GBP'=>array('symbol'=>'£','name'=>'British Pound'),
-			'INR'=>array('symbol'=>'₹','name'=>'Indian Rupee'),
-			'JPY'=>array('symbol'=>'¥','name'=>'Japanese Yen'),
-			'CAD'=>array('symbol'=>'$','name'=>'Canadian Dollar'),
-			'AUD'=>array('symbol'=>'$','name'=>'Australian Dollar'),
-			'CHF'=>array('symbol'=>'CHF','name'=>'Swiss Franc'),
-			'CNY'=>array('symbol'=>'¥','name'=>'Chinese Yuan'),
-			'SEK'=>array('symbol'=>'kr','name'=>'Swedish Krona'),
-			'NOK'=>array('symbol'=>'kr','name'=>'Norwegian Krone'),
-			'DKK'=>array('symbol'=>'kr','name'=>'Danish Krone'),
-			'PLN'=>array('symbol'=>'zł','name'=>'Polish Zloty'),
-			'NZD'=>array('symbol'=>'$','name'=>'NZ Dollar'),
-			'SGD'=>array('symbol'=>'$','name'=>'Singapore Dollar'),
-			'HKD'=>array('symbol'=>'$','name'=>'Hong Kong Dollar'),
-			'AED'=>array('symbol'=>'AED','name'=>'UAE Dirham'),
-			'ZAR'=>array('symbol'=>'R','name'=>'South African Rand'),
-			'BRL'=>array('symbol'=>'R$','name'=>'Brazilian Real'),
-			'MXN'=>array('symbol'=>'$','name'=>'Mexican Peso'),
+			'USD' => array(
+				'symbol' => '$',
+				'name'   => 'US Dollar',
+			),
+			'EUR' => array(
+				'symbol' => '€',
+				'name'   => 'Euro',
+			),
+			'GBP' => array(
+				'symbol' => '£',
+				'name'   => 'British Pound',
+			),
+			'INR' => array(
+				'symbol' => '₹',
+				'name'   => 'Indian Rupee',
+			),
+			'JPY' => array(
+				'symbol' => '¥',
+				'name'   => 'Japanese Yen',
+			),
+			'CAD' => array(
+				'symbol' => '$',
+				'name'   => 'Canadian Dollar',
+			),
+			'AUD' => array(
+				'symbol' => '$',
+				'name'   => 'Australian Dollar',
+			),
+			'CHF' => array(
+				'symbol' => 'CHF',
+				'name'   => 'Swiss Franc',
+			),
+			'CNY' => array(
+				'symbol' => '¥',
+				'name'   => 'Chinese Yuan',
+			),
+			'SEK' => array(
+				'symbol' => 'kr',
+				'name'   => 'Swedish Krona',
+			),
+			'NOK' => array(
+				'symbol' => 'kr',
+				'name'   => 'Norwegian Krone',
+			),
+			'DKK' => array(
+				'symbol' => 'kr',
+				'name'   => 'Danish Krone',
+			),
+			'PLN' => array(
+				'symbol' => 'zł',
+				'name'   => 'Polish Zloty',
+			),
+			'NZD' => array(
+				'symbol' => '$',
+				'name'   => 'NZ Dollar',
+			),
+			'SGD' => array(
+				'symbol' => '$',
+				'name'   => 'Singapore Dollar',
+			),
+			'HKD' => array(
+				'symbol' => '$',
+				'name'   => 'Hong Kong Dollar',
+			),
+			'AED' => array(
+				'symbol' => 'AED',
+				'name'   => 'UAE Dirham',
+			),
+			'ZAR' => array(
+				'symbol' => 'R',
+				'name'   => 'South African Rand',
+			),
+			'BRL' => array(
+				'symbol' => 'R$',
+				'name'   => 'Brazilian Real',
+			),
+			'MXN' => array(
+				'symbol' => '$',
+				'name'   => 'Mexican Peso',
+			),
 		);
 	}
 
@@ -100,12 +160,14 @@ class Simple_POS_Settings {
 	 * @return array Sanitized settings that were saved.
 	 */
 	public static function update( $input ) {
-		$current = self::get_all();
+		$current       = self::get_all();
 		$currency_list = self::currency_list();
-		$code = isset($input['currency_code']) ? strtoupper(sanitize_text_field($input['currency_code'])) : $current['currency_code'];
-		if (!isset($currency_list[$code])) $code = $current['currency_code'];
+		$code          = isset( $input['currency_code'] ) ? strtoupper( sanitize_text_field( $input['currency_code'] ) ) : $current['currency_code'];
+		if ( ! isset( $currency_list[ $code ] ) ) {
+			$code = $current['currency_code'];
+		}
 		// Auto-fill symbol from map if user didn't override or switched code
-		$symbol = isset($input['currency_symbol']) && $input['currency_symbol']!=='' ? sanitize_text_field($input['currency_symbol']) : $currency_list[$code]['symbol'];
+		$symbol = isset( $input['currency_symbol'] ) && $input['currency_symbol'] !== '' ? sanitize_text_field( $input['currency_symbol'] ) : $currency_list[ $code ]['symbol'];
 
 		$sanitized = array(
 			'currency_code'            => $code,
@@ -113,11 +175,11 @@ class Simple_POS_Settings {
 			'currency_position'        => isset( $input['currency_position'] ) ? ( 'after' === $input['currency_position'] ? 'after' : 'before' ) : $current['currency_position'],
 			'default_tax_rate'         => isset( $input['default_tax_rate'] ) ? max( 0, (float) $input['default_tax_rate'] ) : $current['default_tax_rate'],
 			'default_tax_class_id'     => isset( $input['default_tax_class_id'] ) ? (int) $input['default_tax_class_id'] : $current['default_tax_class_id'],
-			'tax_country'              => isset( $input['tax_country'] ) ? strtoupper(sanitize_text_field($input['tax_country'])) : $current['tax_country'],
-			'tax_state'                => isset( $input['tax_state'] ) ? strtoupper(sanitize_text_field($input['tax_state'])) : $current['tax_state'],
+			'tax_country'              => isset( $input['tax_country'] ) ? strtoupper( sanitize_text_field( $input['tax_country'] ) ) : $current['tax_country'],
+			'tax_state'                => isset( $input['tax_state'] ) ? strtoupper( sanitize_text_field( $input['tax_state'] ) ) : $current['tax_state'],
 			'tax_inclusive'            => ! empty( $input['tax_inclusive'] ) ? 1 : 0,
-			'discount_before_tax'      => isset($input['discount_before_tax']) ? (!empty($input['discount_before_tax'])?1:0) : $current['discount_before_tax'],
-			'tax_rounding'             => (isset($input['tax_rounding']) && 'total'===$input['tax_rounding'])? 'total':'line',
+			'discount_before_tax'      => isset( $input['discount_before_tax'] ) ? ( ! empty( $input['discount_before_tax'] ) ? 1 : 0 ) : $current['discount_before_tax'],
+			'tax_rounding'             => ( isset( $input['tax_rounding'] ) && 'total' === $input['tax_rounding'] ) ? 'total' : 'line',
 			'store_name'               => isset( $input['store_name'] ) ? sanitize_text_field( $input['store_name'] ) : $current['store_name'],
 			'receipt_header'           => isset( $input['receipt_header'] ) ? sanitize_textarea_field( $input['receipt_header'] ) : $current['receipt_header'],
 			'receipt_footer'           => isset( $input['receipt_footer'] ) ? sanitize_textarea_field( $input['receipt_footer'] ) : $current['receipt_footer'],
@@ -126,12 +188,12 @@ class Simple_POS_Settings {
 			'po_number_prefix'         => isset( $input['po_number_prefix'] ) ? sanitize_text_field( $input['po_number_prefix'] ) : $current['po_number_prefix'],
 			'allow_negative_stock'     => ! empty( $input['allow_negative_stock'] ) ? 1 : 0,
 			'decimal_places'           => isset( $input['decimal_places'] ) ? min( 4, max( 0, (int) $input['decimal_places'] ) ) : $current['decimal_places'],
-			'paper_width'              => isset($input['paper_width']) && in_array($input['paper_width'],array('58mm','80mm'),true)? $input['paper_width']:$current['paper_width'],
+			'paper_width'              => isset( $input['paper_width'] ) && in_array( $input['paper_width'], array( '58mm', '80mm' ), true ) ? $input['paper_width'] : $current['paper_width'],
 			'auto_kick_drawer'         => ! empty( $input['auto_kick_drawer'] ) ? 1 : 0,
-			'printer_type'             => isset($input['printer_type']) && in_array($input['printer_type'],array('browser','usb','network'),true)? $input['printer_type']:$current['printer_type'],
-			'network_printer_ip'       => isset($input['network_printer_ip'])? sanitize_text_field($input['network_printer_ip']): $current['network_printer_ip'],
-			'barcode_symbology'        => isset($input['barcode_symbology']) && in_array($input['barcode_symbology'],array('CODE128','EAN13','QR'),true)? $input['barcode_symbology']:$current['barcode_symbology'],
-			'barcode_label_format'     => isset($input['barcode_label_format'])? sanitize_text_field($input['barcode_label_format']): $current['barcode_label_format'],
+			'printer_type'             => isset( $input['printer_type'] ) && in_array( $input['printer_type'], array( 'browser', 'usb', 'network' ), true ) ? $input['printer_type'] : $current['printer_type'],
+			'network_printer_ip'       => isset( $input['network_printer_ip'] ) ? sanitize_text_field( $input['network_printer_ip'] ) : $current['network_printer_ip'],
+			'barcode_symbology'        => isset( $input['barcode_symbology'] ) && in_array( $input['barcode_symbology'], array( 'CODE128', 'EAN13', 'QR' ), true ) ? $input['barcode_symbology'] : $current['barcode_symbology'],
+			'barcode_label_format'     => isset( $input['barcode_label_format'] ) ? sanitize_text_field( $input['barcode_label_format'] ) : $current['barcode_label_format'],
 			'delete_data_on_uninstall' => ! empty( $input['delete_data_on_uninstall'] ) ? 1 : 0,
 		);
 

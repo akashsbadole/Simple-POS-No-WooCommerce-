@@ -33,14 +33,16 @@ class Simple_POS_Sales {
 		if ( empty( $cart_data['items'] ) || ! is_array( $cart_data['items'] ) ) {
 			return new WP_Error( 'pos_empty_cart', __( 'Cart is empty.', 'simple-pos' ) );
 		}
-		$settings = Simple_POS_Settings::get_all();
-		$tax_country = isset($cart_data['tax_country']) ? strtoupper(sanitize_text_field($cart_data['tax_country'])) : (isset($settings['tax_country'])? strtoupper($settings['tax_country']):'US');
-		$tax_state = isset($cart_data['tax_state']) ? strtoupper(sanitize_text_field($cart_data['tax_state'])) : (isset($settings['tax_state'])? strtoupper($settings['tax_state']):'');
-		if (empty($tax_country)) $tax_country='US';
+		$settings    = Simple_POS_Settings::get_all();
+		$tax_country = isset( $cart_data['tax_country'] ) ? strtoupper( sanitize_text_field( $cart_data['tax_country'] ) ) : ( isset( $settings['tax_country'] ) ? strtoupper( $settings['tax_country'] ) : 'US' );
+		$tax_state   = isset( $cart_data['tax_state'] ) ? strtoupper( sanitize_text_field( $cart_data['tax_state'] ) ) : ( isset( $settings['tax_state'] ) ? strtoupper( $settings['tax_state'] ) : '' );
+		if ( empty( $tax_country ) ) {
+			$tax_country = 'US';
+		}
 
 		// Resolve line items - support variant_id
 		$order_lines = array();
-		$line_items = array();
+		$line_items  = array();
 		foreach ( $cart_data['items'] as $raw_item ) {
 			$product_id = isset( $raw_item['product_id'] ) ? (int) $raw_item['product_id'] : 0;
 			$variant_id = isset( $raw_item['variant_id'] ) ? (int) $raw_item['variant_id'] : 0;
@@ -54,20 +56,24 @@ class Simple_POS_Sales {
 			}
 			$variant = null;
 			if ( $variant_id ) {
-				$variant = Simple_POS_Variants::get_variant($variant_id);
-				if ( ! $variant || (int)$variant->parent_product_id !== $product_id || 'active' !== $variant->status ) {
+				$variant = Simple_POS_Variants::get_variant( $variant_id );
+				if ( ! $variant || (int) $variant->parent_product_id !== $product_id || 'active' !== $variant->status ) {
 					return new WP_Error( 'pos_invalid_item', __( 'Variant not available.', 'simple-pos' ) );
 				}
 			}
-			$price = null !== ($variant->price ?? null) ? (float)$variant->price : (float)$product->price;
-			$cost_price = null !== ($variant->cost_price ?? null) ? (float)$variant->cost_price : (float)$product->cost_price;
-			$sku = $variant ? ($variant->sku ?: $product->sku) : $product->sku;
-			$product_name = $variant ? ($product->name . ' — ' . Simple_POS_Variants::variant_label($variant)) : $product->name;
-			$track_stock = $variant ? (int)$variant->track_stock : (int)$product->track_stock;
-			$stock_qty = $variant ? (int)$variant->stock_qty : (int)$product->stock_qty;
-			$tax_class_id = (int)($product->tax_class_id ?: 0);
-			$order_lines[] = array('price'=>$price,'qty'=>$qty,'class_id'=>$tax_class_id);
-			$line_items[] = array(
+			$price         = null !== ( $variant->price ?? null ) ? (float) $variant->price : (float) $product->price;
+			$cost_price    = null !== ( $variant->cost_price ?? null ) ? (float) $variant->cost_price : (float) $product->cost_price;
+			$sku           = $variant ? ( $variant->sku ?: $product->sku ) : $product->sku;
+			$product_name  = $variant ? ( $product->name . ' — ' . Simple_POS_Variants::variant_label( $variant ) ) : $product->name;
+			$track_stock   = $variant ? (int) $variant->track_stock : (int) $product->track_stock;
+			$stock_qty     = $variant ? (int) $variant->stock_qty : (int) $product->stock_qty;
+			$tax_class_id  = (int) ( $product->tax_class_id ?: 0 );
+			$order_lines[] = array(
+				'price'    => $price,
+				'qty'      => $qty,
+				'class_id' => $tax_class_id,
+			);
+			$line_items[]  = array(
 				'product_id'   => $product_id,
 				'variant_id'   => $variant_id ?: null,
 				'product_name' => $product_name,
@@ -80,98 +86,118 @@ class Simple_POS_Sales {
 				'tax_class_id' => $tax_class_id,
 			);
 		}
-		$discount_type   = ( isset( $cart_data['discount_type'] ) && 'percent' === $cart_data['discount_type'] ) ? 'percent' : 'fixed';
-		$discount_input  = isset( $cart_data['discount_amount'] ) ? max( 0, (float) $cart_data['discount_amount'] ) : 0;
+		$discount_type  = ( isset( $cart_data['discount_type'] ) && 'percent' === $cart_data['discount_type'] ) ? 'percent' : 'fixed';
+		$discount_input = isset( $cart_data['discount_amount'] ) ? max( 0, (float) $cart_data['discount_amount'] ) : 0;
 		// Use tax engine to compute totals
-		if ( ! class_exists('Simple_POS_Tax') ) require_once SIMPLE_POS_PLUGIN_DIR.'includes/class-pos-tax.php';
-		$calc = Simple_POS_Tax::calculate_order($order_lines, $tax_country, $tax_state, $discount_type, $discount_input);
-		$subtotal = $calc['subtotal'];
+		if ( ! class_exists( 'Simple_POS_Tax' ) ) {
+			require_once SIMPLE_POS_PLUGIN_DIR . 'includes/class-pos-tax.php';
+		}
+		$calc            = Simple_POS_Tax::calculate_order( $order_lines, $tax_country, $tax_state, $discount_type, $discount_input );
+		$subtotal        = $calc['subtotal'];
 		$discount_amount = $calc['discount'];
-		$tax_total = $calc['tax'];
-		$total = $calc['total'];
-		$tax_breakdown = $calc['breakdown'];
+		$tax_total       = $calc['tax'];
+		$total           = $calc['total'];
+		$tax_breakdown   = $calc['breakdown'];
 
 		$payment_method = isset( $cart_data['payment_method'] ) ? sanitize_text_field( $cart_data['payment_method'] ) : 'cash';
 		$amount_paid    = isset( $cart_data['amount_paid'] ) ? max( 0, (float) $cart_data['amount_paid'] ) : $total;
 		$change_due     = max( 0, round( $amount_paid - $total, 2 ) );
 		$customer_id    = ! empty( $cart_data['customer_id'] ) ? (int) $cart_data['customer_id'] : null;
 		$note           = isset( $cart_data['note'] ) ? sanitize_textarea_field( $cart_data['note'] ) : '';
-		$currency_code = isset($settings['currency_code'])? $settings['currency_code']:'USD';
+		$currency_code  = isset( $settings['currency_code'] ) ? $settings['currency_code'] : 'USD';
 
-		return Simple_POS_DB::transaction( function () use (
-			$line_items, $subtotal, $discount_type, $discount_amount, $tax_total,
-			$total, $payment_method, $amount_paid, $change_due, $customer_id, $note, $tax_country, $tax_state, $tax_breakdown, $currency_code, $calc
-		) {
-			global $wpdb;
-			$settings = Simple_POS_Settings::get_all();
-			foreach ( $line_items as $item ) {
-				if ( ! $item['track_stock'] ) continue;
-				$available = (int)$item['stock_qty'];
-				if ( ( $available - $item['qty'] ) < 0 && empty( $settings['allow_negative_stock'] ) ) {
-					return new WP_Error( 'pos_insufficient_stock', sprintf( __( 'Not enough stock for "%s".', 'simple-pos' ), $item['product_name'] ) );
-				}
-			}
-			$sales_table = Simple_POS_DB::table( 'sales' );
-			$items_table = Simple_POS_DB::table( 'sale_items' );
-			$sale_number = Simple_POS_DB::next_sale_number();
-			$inserted = $wpdb->insert(
-				$sales_table,
-				array(
-					'sale_number'     => $sale_number,
-					'customer_id'     => $customer_id,
-					'cashier_id'      => get_current_user_id(),
-					'subtotal'        => round( $subtotal, 2 ),
-					'discount_type'   => $discount_type,
-					'discount_amount' => $discount_amount,
-					'tax_amount'      => round( $tax_total, 2 ),
-					'total'           => $total,
-					'amount_paid'     => $amount_paid,
-					'change_due'      => $change_due,
-					'payment_method'  => $payment_method,
-					'status'          => 'completed',
-					'note'            => $note,
-					'tax_country'     => $tax_country,
-					'tax_state'       => $tax_state,
-					'tax_breakdown'   => wp_json_encode($tax_breakdown),
-					'currency_code'   => $currency_code,
-					'exchange_rate'   => 1,
-					'created_at'      => current_time( 'mysql' ),
-				)
-			);
-			if ( false === $inserted ) {
-				return new WP_Error( 'pos_db_error', __( 'Could not record sale.', 'simple-pos' ) );
-			}
-			$sale_id = (int) $wpdb->insert_id;
-			foreach ( $line_items as $idx=>$item ) {
-				$line_calc = $calc['lines'][$idx];
-				$wpdb->insert(
-					$items_table,
-					array(
-						'sale_id'      => $sale_id,
-						'product_id'   => $item['product_id'],
-						'variant_id'   => $item['variant_id'],
-						'product_name' => $item['product_name'],
-						'sku'          => $item['sku'],
-						'qty'          => $item['qty'],
-						'price'        => $item['price'],
-						'cost_price'   => $item['cost_price'],
-						'tax_amount'   => $line_calc['tax_amount'],
-						'tax_class_id' => $item['tax_class_id'],
-						'tax_breakdown'=> wp_json_encode($line_calc['breakdown']),
-						'tax_rate_applied'=> isset($line_calc['breakdown'][0]['rate'])? $line_calc['breakdown'][0]['rate']:0,
-						'line_total'   => $line_calc['gross'],
-					)
-				);
-				if ( $item['track_stock'] ) {
-					if ( $item['variant_id'] ) {
-						Simple_POS_Variants::adjust_stock( $item['variant_id'], -1 * $item['qty'], 'sale', $sale_id );
-					} else {
-						Simple_POS_Products::adjust_stock( $item['product_id'], -1 * $item['qty'], 'sale', $sale_id );
+		return Simple_POS_DB::transaction(
+			function () use (
+				$line_items,
+				$subtotal,
+				$discount_type,
+				$discount_amount,
+				$tax_total,
+				$total,
+				$payment_method,
+				$amount_paid,
+				$change_due,
+				$customer_id,
+				$note,
+				$tax_country,
+				$tax_state,
+				$tax_breakdown,
+				$currency_code,
+				$calc
+			) {
+				global $wpdb;
+				$settings = Simple_POS_Settings::get_all();
+				foreach ( $line_items as $item ) {
+					if ( ! $item['track_stock'] ) {
+						continue;
+					}
+					$available = (int) $item['stock_qty'];
+					if ( ( $available - $item['qty'] ) < 0 && empty( $settings['allow_negative_stock'] ) ) {
+						return new WP_Error( 'pos_insufficient_stock', sprintf( __( 'Not enough stock for "%s".', 'simple-pos' ), $item['product_name'] ) );
 					}
 				}
+				$sales_table = Simple_POS_DB::table( 'sales' );
+				$items_table = Simple_POS_DB::table( 'sale_items' );
+				$sale_number = Simple_POS_DB::next_sale_number();
+				$inserted    = $wpdb->insert(
+					$sales_table,
+					array(
+						'sale_number'     => $sale_number,
+						'customer_id'     => $customer_id,
+						'cashier_id'      => get_current_user_id(),
+						'subtotal'        => round( $subtotal, 2 ),
+						'discount_type'   => $discount_type,
+						'discount_amount' => $discount_amount,
+						'tax_amount'      => round( $tax_total, 2 ),
+						'total'           => $total,
+						'amount_paid'     => $amount_paid,
+						'change_due'      => $change_due,
+						'payment_method'  => $payment_method,
+						'status'          => 'completed',
+						'note'            => $note,
+						'tax_country'     => $tax_country,
+						'tax_state'       => $tax_state,
+						'tax_breakdown'   => wp_json_encode( $tax_breakdown ),
+						'currency_code'   => $currency_code,
+						'exchange_rate'   => 1,
+						'created_at'      => current_time( 'mysql' ),
+					)
+				);
+				if ( false === $inserted ) {
+					return new WP_Error( 'pos_db_error', __( 'Could not record sale.', 'simple-pos' ) );
+				}
+				$sale_id = (int) $wpdb->insert_id;
+				foreach ( $line_items as $idx => $item ) {
+						$line_calc = $calc['lines'][ $idx ];
+						$wpdb->insert(
+							$items_table,
+							array(
+								'sale_id'          => $sale_id,
+								'product_id'       => $item['product_id'],
+								'variant_id'       => $item['variant_id'],
+								'product_name'     => $item['product_name'],
+								'sku'              => $item['sku'],
+								'qty'              => $item['qty'],
+								'price'            => $item['price'],
+								'cost_price'       => $item['cost_price'],
+								'tax_amount'       => $line_calc['tax_amount'],
+								'tax_class_id'     => $item['tax_class_id'],
+								'tax_breakdown'    => wp_json_encode( $line_calc['breakdown'] ),
+								'tax_rate_applied' => isset( $line_calc['breakdown'][0]['rate'] ) ? $line_calc['breakdown'][0]['rate'] : 0,
+								'line_total'       => $line_calc['gross'],
+							)
+						);
+					if ( $item['track_stock'] ) {
+						if ( $item['variant_id'] ) {
+							Simple_POS_Variants::adjust_stock( $item['variant_id'], -1 * $item['qty'], 'sale', $sale_id );
+						} else {
+								Simple_POS_Products::adjust_stock( $item['product_id'], -1 * $item['qty'], 'sale', $sale_id );
+						}
+					}
+				}
+				return $sale_id;
 			}
-			return $sale_id;
-		} );
+		);
 	}
 
 	/**
@@ -208,42 +234,44 @@ class Simple_POS_Sales {
 			return new WP_Error( 'pos_invalid_state', __( 'Only completed sales can be voided.', 'simple-pos' ) );
 		}
 
-		return Simple_POS_DB::transaction( function () use ( $sale_id, $sale, $note ) {
-			global $wpdb;
-			$sales_table = Simple_POS_DB::table( 'sales' );
-			$items       = self::get_sale_items( $sale_id );
+		return Simple_POS_DB::transaction(
+			function () use ( $sale_id, $sale, $note ) {
+				global $wpdb;
+				$sales_table = Simple_POS_DB::table( 'sales' );
+				$items       = self::get_sale_items( $sale_id );
 
-			foreach ( $items as $item ) {
-				if ( $item->variant_id ) {
-					$variant = Simple_POS_Variants::get_variant( $item->variant_id );
-					if ( $variant && $variant->track_stock ) {
-						Simple_POS_Variants::adjust_stock( $item->variant_id, (int) $item->qty, 'void', $sale_id, $note );
-					}
-				} elseif ( $item->product_id ) {
-					$product = Simple_POS_Products::get_product( $item->product_id );
-					if ( $product && $product->track_stock ) {
-						Simple_POS_Products::adjust_stock( $item->product_id, (int) $item->qty, 'void', $sale_id, $note );
+				foreach ( $items as $item ) {
+					if ( $item->variant_id ) {
+						$variant = Simple_POS_Variants::get_variant( $item->variant_id );
+						if ( $variant && $variant->track_stock ) {
+								Simple_POS_Variants::adjust_stock( $item->variant_id, (int) $item->qty, 'void', $sale_id, $note );
+						}
+					} elseif ( $item->product_id ) {
+						$product = Simple_POS_Products::get_product( $item->product_id );
+						if ( $product && $product->track_stock ) {
+							Simple_POS_Products::adjust_stock( $item->product_id, (int) $item->qty, 'void', $sale_id, $note );
+						}
 					}
 				}
+
+				$updated = $wpdb->update( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+					$sales_table,
+					array(
+						'status' => 'voided',
+						'note'   => trim( $sale->note . ' ' . $note ),
+					),
+					array( 'id' => $sale_id )
+				);
+
+				if ( false === $updated ) {
+					return new WP_Error( 'pos_db_error', __( 'Could not void sale.', 'simple-pos' ) );
+				}
+
+				Simple_POS_Reports::flush_cache();
+
+				return true;
 			}
-
-			$updated = $wpdb->update( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-				$sales_table,
-				array(
-					'status' => 'voided',
-					'note'   => trim( $sale->note . ' ' . $note ),
-				),
-				array( 'id' => $sale_id )
-			);
-
-			if ( false === $updated ) {
-				return new WP_Error( 'pos_db_error', __( 'Could not void sale.', 'simple-pos' ) );
-			}
-
-			Simple_POS_Reports::flush_cache();
-
-			return true;
-		} );
+		);
 	}
 
 	/**
@@ -294,8 +322,8 @@ class Simple_POS_Sales {
 			'per_page'   => 20,
 			'page'       => 1,
 		);
-		$args  = wp_parse_args( $args, $defaults );
-		$table = Simple_POS_DB::table( 'sales' );
+		$args     = wp_parse_args( $args, $defaults );
+		$table    = Simple_POS_DB::table( 'sales' );
 
 		$where  = array( '1=1' );
 		$params = array();

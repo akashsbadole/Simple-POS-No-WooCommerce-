@@ -35,8 +35,8 @@ class Simple_POS_Products {
 			'orderby'     => 'name',
 			'order'       => 'ASC',
 		);
-		$args  = wp_parse_args( $args, $defaults );
-		$table = Simple_POS_DB::table( 'products' );
+		$args     = wp_parse_args( $args, $defaults );
+		$table    = Simple_POS_DB::table( 'products' );
 
 		$where  = array( '1=1' );
 		$params = array();
@@ -105,8 +105,8 @@ class Simple_POS_Products {
 	 */
 	public static function find_by_code( $code ) {
 		global $wpdb;
-		$pt = Simple_POS_DB::table( 'products' );
-		$vt = Simple_POS_DB::table( 'product_variants' );
+		$pt      = Simple_POS_DB::table( 'products' );
+		$vt      = Simple_POS_DB::table( 'product_variants' );
 		$product = $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT * FROM {$pt} WHERE (sku = %s OR barcode = %s) AND status = 'active' LIMIT 1",
@@ -115,7 +115,7 @@ class Simple_POS_Products {
 			)
 		);
 		if ( $product ) {
-			$product->variant_id = null;
+			$product->variant_id         = null;
 			$product->variant_attributes = null;
 			return $product;
 		}
@@ -129,19 +129,25 @@ class Simple_POS_Products {
 		if ( $variant ) {
 			// Build a product-like object for terminal: price from variant override or parent.
 			$parent = self::get_product( $variant->parent_product_id );
-			if ( ! $parent ) return null;
-			$obj = clone $parent;
-			$obj->variant_id = (int) $variant->id;
+			if ( ! $parent ) {
+				return null;
+			}
+			$obj                     = clone $parent;
+			$obj->variant_id         = (int) $variant->id;
 			$obj->variant_attributes = $variant->attributes;
-			$obj->sku = $variant->sku ?: $parent->sku;
-			$obj->barcode = $variant->barcode ?: $parent->barcode;
-			if ( null !== $variant->price ) $obj->price = $variant->price;
-			if ( null !== $variant->cost_price ) $obj->cost_price = $variant->cost_price;
-			$obj->stock_qty = $variant->stock_qty;
+			$obj->sku                = $variant->sku ?: $parent->sku;
+			$obj->barcode            = $variant->barcode ?: $parent->barcode;
+			if ( null !== $variant->price ) {
+				$obj->price = $variant->price;
+			}
+			if ( null !== $variant->cost_price ) {
+				$obj->cost_price = $variant->cost_price;
+			}
+			$obj->stock_qty           = $variant->stock_qty;
 			$obj->low_stock_threshold = $variant->low_stock_threshold;
-			$obj->track_stock = $variant->track_stock;
-			$obj->image_url = $variant->image_url ?: $parent->image_url;
-			$obj->name = $parent->name . ' — ' . Simple_POS_Variants::variant_label($variant);
+			$obj->track_stock         = $variant->track_stock;
+			$obj->image_url           = $variant->image_url ?: $parent->image_url;
+			$obj->name                = $parent->name . ' — ' . Simple_POS_Variants::variant_label( $variant );
 			// Keep parent tax class
 			return $obj;
 		}
@@ -152,10 +158,12 @@ class Simple_POS_Products {
 	 * Fetch a product with its variants enriched (for API).
 	 */
 	public static function get_product_with_variants( $id ) {
-		$product = self::get_product($id);
-		if (!$product) return null;
-		if ( class_exists('Simple_POS_Variants') ) {
-			$product->variants = Simple_POS_Variants::get_variants($id);
+		$product = self::get_product( $id );
+		if ( ! $product ) {
+			return null;
+		}
+		if ( class_exists( 'Simple_POS_Variants' ) ) {
+			$product->variants = Simple_POS_Variants::get_variants( $id );
 		}
 		return $product;
 	}
@@ -252,7 +260,7 @@ class Simple_POS_Products {
 	 */
 	public static function delete_product( $id ) {
 		global $wpdb;
-		$items_table = Simple_POS_DB::table( 'sale_items' );
+		$items_table    = Simple_POS_DB::table( 'sale_items' );
 		$products_table = Simple_POS_DB::table( 'products' );
 
 		$used_in_sales = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$items_table} WHERE product_id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
@@ -277,18 +285,23 @@ class Simple_POS_Products {
 	 */
 	public static function get_low_stock_products( $limit = 50 ) {
 		global $wpdb;
-		$pt = Simple_POS_DB::table( 'products' );
-		$vt = Simple_POS_DB::table( 'product_variants' );
+		$pt       = Simple_POS_DB::table( 'products' );
+		$vt       = Simple_POS_DB::table( 'product_variants' );
 		$products = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$pt} WHERE track_stock=1 AND status='active' AND stock_qty <= low_stock_threshold ORDER BY stock_qty ASC LIMIT %d", $limit ) );
 		$variants = $wpdb->get_results( $wpdb->prepare( "SELECT v.*, p.name as parent_name FROM {$vt} v INNER JOIN {$pt} p ON p.id=v.parent_product_id WHERE v.track_stock=1 AND v.status='active' AND v.stock_qty <= v.low_stock_threshold ORDER BY v.stock_qty ASC LIMIT %d", $limit ) );
 		// Merge and label variants
-		foreach ($variants as $v) {
-			$v->name = $v->parent_name . ' — ' . Simple_POS_Variants::variant_label($v);
+		foreach ( $variants as $v ) {
+			$v->name       = $v->parent_name . ' — ' . Simple_POS_Variants::variant_label( $v );
 			$v->is_variant = 1;
 		}
-		$merged = array_merge($products,$variants);
-		usort($merged,function($a,$b){ return (int)$a->stock_qty - (int)$b->stock_qty; });
-		return array_slice($merged,0,$limit);
+		$merged = array_merge( $products, $variants );
+		usort(
+			$merged,
+			function ( $a, $b ) {
+				return (int) $a->stock_qty - (int) $b->stock_qty;
+			}
+		);
+		return array_slice( $merged, 0, $limit );
 	}
 
 	/**
@@ -297,10 +310,10 @@ class Simple_POS_Products {
 	 */
 	public static function adjust_stock( $product_id, $delta, $reason = 'adjustment', $reference_id = null, $note = '', $variant_id = null ) {
 		global $wpdb;
-		if ( $variant_id && class_exists('Simple_POS_Variants') ) {
-			return Simple_POS_Variants::adjust_stock($variant_id, $delta, $reason, $reference_id, $note);
+		if ( $variant_id && class_exists( 'Simple_POS_Variants' ) ) {
+			return Simple_POS_Variants::adjust_stock( $variant_id, $delta, $reason, $reference_id, $note );
 		}
-		$table = Simple_POS_DB::table( 'products' );
+		$table   = Simple_POS_DB::table( 'products' );
 		$product = self::get_product( $product_id );
 		if ( ! $product ) {
 			return new WP_Error( 'pos_not_found', __( 'Product not found.', 'simple-pos' ) );
@@ -313,7 +326,14 @@ class Simple_POS_Products {
 		if ( $new_qty < 0 && empty( $settings['allow_negative_stock'] ) ) {
 			return new WP_Error( 'pos_insufficient_stock', sprintf( __( 'Not enough stock for "%s".', 'simple-pos' ), $product->name ) );
 		}
-		$wpdb->update( $table, array( 'stock_qty' => $new_qty, 'updated_at' => current_time( 'mysql' ) ), array( 'id' => $product_id ) );
+		$wpdb->update(
+			$table,
+			array(
+				'stock_qty'  => $new_qty,
+				'updated_at' => current_time( 'mysql' ),
+			),
+			array( 'id' => $product_id )
+		);
 		self::log_stock_change( $product_id, (int) $delta, $new_qty, $reason, $reference_id, get_current_user_id(), $note, $variant_id );
 		return true;
 	}
@@ -354,7 +374,7 @@ class Simple_POS_Products {
 	/**
 	 * Validate and sanitize raw product input.
 	 *
-	 * @param array      $data     Raw input.
+	 * @param array       $data     Raw input.
 	 * @param object|null $existing Existing row, for partial updates.
 	 * @return array|WP_Error
 	 */
@@ -369,34 +389,35 @@ class Simple_POS_Products {
 			return new WP_Error( 'pos_invalid_input', __( 'Price cannot be negative.', 'simple-pos' ) );
 		}
 
-		$tax_class_id = isset($data['tax_class_id']) ? (int)$data['tax_class_id'] : ($existing->tax_class_id ?? 0);
-		if (!$tax_class_id) {
+		$tax_class_id = isset( $data['tax_class_id'] ) ? (int) $data['tax_class_id'] : ( $existing->tax_class_id ?? 0 );
+		if ( ! $tax_class_id ) {
 			// fallback: pick standard class
 			global $wpdb;
-			$std = $wpdb->get_var( $wpdb->prepare("SELECT id FROM ".Simple_POS_DB::table('tax_classes')." WHERE slug=%s",'standard'));
-			$tax_class_id = $std ? (int)$std : 0;
+			$std          = $wpdb->get_var( $wpdb->prepare( 'SELECT id FROM ' . Simple_POS_DB::table( 'tax_classes' ) . ' WHERE slug=%s', 'standard' ) );
+			$tax_class_id = $std ? (int) $std : 0;
 		}
-		if (!empty($data['barcode']) && self::barcode_exists(sanitize_text_field($data['barcode']), $existing->id ?? 0)) {
-			return new WP_Error('pos_duplicate_barcode',__('Barcode already exists.','simple-pos'));
+		if ( ! empty( $data['barcode'] ) && self::barcode_exists( sanitize_text_field( $data['barcode'] ), $existing->id ?? 0 ) ) {
+			return new WP_Error( 'pos_duplicate_barcode', __( 'Barcode already exists.', 'simple-pos' ) );
 		}
 		return array(
-			'name'                 => $name,
-			'category_id'          => isset( $data['category_id'] ) ? ( (int) $data['category_id'] ?: null ) : ( $existing->category_id ?? null ),
-			'sku'                  => isset( $data['sku'] ) ? sanitize_text_field( $data['sku'] ) : ( $existing->sku ?? '' ),
-			'barcode'              => isset( $data['barcode'] ) ? sanitize_text_field( $data['barcode'] ) : ( $existing->barcode ?? '' ),
-			'price'                => $price,
-			'cost_price'           => isset( $data['cost_price'] ) ? (float) $data['cost_price'] : ( $existing->cost_price ?? 0 ),
-			'tax_rate'             => isset( $data['tax_rate'] ) ? (float) $data['tax_rate'] : ( $existing->tax_rate ?? 0 ),
-			'tax_class_id'         => $tax_class_id,
-			'stock_qty'            => isset( $data['stock_qty'] ) ? (int) $data['stock_qty'] : ( $existing->stock_qty ?? 0 ),
-			'low_stock_threshold'  => isset( $data['low_stock_threshold'] ) ? (int) $data['low_stock_threshold'] : ( $existing->low_stock_threshold ?? 5 ),
-			'track_stock'          => isset( $data['track_stock'] ) ? ( $data['track_stock'] ? 1 : 0 ) : ( $existing->track_stock ?? 1 ),
-			'image_url'            => isset( $data['image_url'] ) ? esc_url_raw( $data['image_url'] ) : ( $existing->image_url ?? '' ),
-			'status'               => isset( $data['status'] ) && in_array( $data['status'], array( 'active', 'inactive' ), true ) ? $data['status'] : ( $existing->status ?? 'active' ),
+			'name'                => $name,
+			'category_id'         => isset( $data['category_id'] ) ? ( (int) $data['category_id'] ?: null ) : ( $existing->category_id ?? null ),
+			'sku'                 => isset( $data['sku'] ) ? sanitize_text_field( $data['sku'] ) : ( $existing->sku ?? '' ),
+			'barcode'             => isset( $data['barcode'] ) ? sanitize_text_field( $data['barcode'] ) : ( $existing->barcode ?? '' ),
+			'price'               => $price,
+			'cost_price'          => isset( $data['cost_price'] ) ? (float) $data['cost_price'] : ( $existing->cost_price ?? 0 ),
+			'tax_rate'            => isset( $data['tax_rate'] ) ? (float) $data['tax_rate'] : ( $existing->tax_rate ?? 0 ),
+			'tax_class_id'        => $tax_class_id,
+			'stock_qty'           => isset( $data['stock_qty'] ) ? (int) $data['stock_qty'] : ( $existing->stock_qty ?? 0 ),
+			'low_stock_threshold' => isset( $data['low_stock_threshold'] ) ? (int) $data['low_stock_threshold'] : ( $existing->low_stock_threshold ?? 5 ),
+			'track_stock'         => isset( $data['track_stock'] ) ? ( $data['track_stock'] ? 1 : 0 ) : ( $existing->track_stock ?? 1 ),
+			'image_url'           => isset( $data['image_url'] ) ? esc_url_raw( $data['image_url'] ) : ( $existing->image_url ?? '' ),
+			'status'              => isset( $data['status'] ) && in_array( $data['status'], array( 'active', 'inactive' ), true ) ? $data['status'] : ( $existing->status ?? 'active' ),
 		);
 	}
 
-	/* ---------------------------------------------------------------
+	/*
+	---------------------------------------------------------------
 	 * Categories
 	 * ------------------------------------------------------------- */
 

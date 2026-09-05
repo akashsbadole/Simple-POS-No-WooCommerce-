@@ -41,10 +41,10 @@ class Simple_POS_Roles {
 			'pos_cashier',
 			__( 'POS Cashier', 'simple-pos' ),
 			array(
-				'read'             => true,
-				'operate_pos'      => true,
+				'read'              => true,
+				'operate_pos'       => true,
 				'view_pos_products' => true,
-				'view_pos_sales'   => true,
+				'view_pos_sales'    => true,
 			)
 		);
 

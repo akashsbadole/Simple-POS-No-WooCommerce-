@@ -51,7 +51,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<div class="simple-pos-cart-header">
 				<h2><?php esc_html_e( 'Current Sale', 'simple-pos' ); ?></h2>
-				<button type="button" id="simple-pos-clear-cart" class="button-link simple-pos-clear-link"><?php esc_html_e( 'Clear', 'simple-pos' ); ?></button>
+				<div class="simple-pos-cart-actions">
+					<button type="button" id="simple-pos-hold-btn" class="button-link" disabled><?php esc_html_e( 'Hold', 'simple-pos' ); ?></button>
+					<button type="button" id="simple-pos-recall-btn" class="button-link" disabled><?php esc_html_e( 'Recall', 'simple-pos' ); ?></button>
+					<button type="button" id="simple-pos-clear-cart" class="button-link simple-pos-clear-link"><?php esc_html_e( 'Clear', 'simple-pos' ); ?></button>
+				</div>
 			</div>
 
 			<div id="simple-pos-cart-items" class="simple-pos-cart-items" aria-live="polite" aria-relevant="additions removals">
@@ -108,6 +112,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<button type="button" id="simple-pos-checkout-btn" class="button button-primary button-hero simple-pos-checkout-btn" disabled>
 				<?php esc_html_e( 'Complete Sale', 'simple-pos' ); ?>
 			</button>
+			<button type="button" id="simple-pos-void-last-btn" class="button" style="display:none;width:100%;margin-top:6px"><?php esc_html_e( 'Void Last Sale', 'simple-pos' ); ?></button>
 
 			<div id="simple-pos-cart-error" class="simple-pos-cart-error" role="alert" aria-live="assertive"></div>
 
@@ -120,23 +125,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 	<!-- New customer modal -->
 	<div id="simple-pos-new-customer-modal" class="simple-pos-modal-overlay" hidden>
-		<div class="simple-pos-modal" role="dialog" aria-modal="true" aria-labelledby="simple-pos-new-customer-title">
+		<form id="simple-pos-new-customer-form" class="simple-pos-modal simple-pos-new-customer-modal" role="dialog" aria-modal="true" aria-labelledby="simple-pos-new-customer-title" novalidate>
 			<h3 id="simple-pos-new-customer-title"><?php esc_html_e( 'Add new customer', 'simple-pos' ); ?></h3>
 			<p class="description"><?php esc_html_e( 'Quick add. You can edit full details later from the Customers screen.', 'simple-pos' ); ?></p>
-			<div class="simple-pos-new-customer-fields">
+			<div class="simple-pos-form-row">
 				<label for="simple-pos-new-customer-name"><?php esc_html_e( 'Name', 'simple-pos' ); ?> <span class="required" aria-hidden="true">*</span></label>
 				<input type="text" id="simple-pos-new-customer-name" autocomplete="off" required />
+			</div>
+			<div class="simple-pos-form-row" style="margin-top:8px">
 				<label for="simple-pos-new-customer-phone"><?php esc_html_e( 'Phone', 'simple-pos' ); ?></label>
-				<input type="text" id="simple-pos-new-customer-phone" autocomplete="off" />
+				<input type="text" id="simple-pos-new-customer-phone" autocomplete="off" inputmode="tel" />
+			</div>
+			<div class="simple-pos-form-row" style="margin-top:8px">
 				<label for="simple-pos-new-customer-email"><?php esc_html_e( 'Email', 'simple-pos' ); ?></label>
 				<input type="email" id="simple-pos-new-customer-email" autocomplete="off" />
-				<div id="simple-pos-new-customer-error" class="simple-pos-cart-error" role="alert" aria-live="assertive"></div>
 			</div>
+			<div id="simple-pos-new-customer-error" class="simple-pos-cart-error" role="alert" aria-live="assertive" style="min-height:1.4em"></div>
 			<div class="simple-pos-modal-actions">
-				<button type="button" id="simple-pos-new-customer-save" class="button button-primary"><?php esc_html_e( 'Add &amp; select', 'simple-pos' ); ?></button>
+				<button type="submit" id="simple-pos-new-customer-save" class="button button-primary"><?php esc_html_e( 'Add &amp; select', 'simple-pos' ); ?></button>
 				<button type="button" id="simple-pos-new-customer-cancel" class="button"><?php esc_html_e( 'Cancel', 'simple-pos' ); ?></button>
 			</div>
-		</div>
+		</form>
 	</div>
 	<!-- Receipt modal, hidden until a sale completes -->
 	<div id="simple-pos-receipt-modal" class="simple-pos-modal-overlay" hidden>
@@ -147,7 +156,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<button type="button" id="simple-pos-usb-print-receipt" class="button">USB Print</button>
 				<button type="button" id="simple-pos-print-receipt" class="button button-primary"><?php esc_html_e( 'Print', 'simple-pos' ); ?></button>
 				<button type="button" id="simple-pos-kick-drawer" class="button"><?php esc_html_e('Kick Drawer','simple-pos');?></button>
-				<button type="button" id="simple-pos-close-receipt" class="button"><?php esc_html_e( 'New Sale', 'simple-pos' ); ?></button>
+				<button type="button" id="simple-pos-void-receipt-btn" class="button" style="display:none"><?php esc_html_e('Void This Sale','simple-pos');?></button>
+				<button type="button" id="simple-pos-close-receipt" class="button button-primary"><?php esc_html_e( 'New Sale', 'simple-pos' ); ?></button>
 			</div>
 		</div>
 	</div>

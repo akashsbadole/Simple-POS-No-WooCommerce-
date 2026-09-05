@@ -33,11 +33,11 @@ class Simple_POS_DB {
 		$settings = Simple_POS_Settings::get_all();
 		$prefix   = isset( $settings['sale_number_prefix'] ) ? $settings['sale_number_prefix'] : 'POS-';
 
-		$table   = self::table( 'sales' );
+		$table = self::table( 'sales' );
 		// Try information_schema first (may be restricted on some hosts), fallback to MAX(id)+1.
 		$next_id = (int) $wpdb->get_var( "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$table}'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared
 		if ( ! $next_id ) {
-			$max_id = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$max_id  = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$next_id = $max_id + 1;
 			if ( $next_id < 1 ) {
 				$next_id = 1;
