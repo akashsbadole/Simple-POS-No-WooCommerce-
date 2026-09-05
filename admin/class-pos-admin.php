@@ -109,6 +109,10 @@ class Simple_POS_Admin {
 				'labelFormat' => Simple_POS_Settings::get( 'barcode_label_format', 'a4_30' ),
 			),
 			'storeName'      => Simple_POS_Settings::get( 'store_name', get_bloginfo( 'name' ) ),
+			'storeAddress'   => Simple_POS_Settings::get( 'store_address', '' ),
+			'storePhone'     => Simple_POS_Settings::get( 'store_phone', '' ),
+			'storeEmail'     => Simple_POS_Settings::get( 'store_email', '' ),
+			'storeGstin'     => Simple_POS_Settings::get( 'store_gstin', '' ),
 			'receiptHeader'  => Simple_POS_Settings::get( 'receipt_header', '' ),
 			'receiptFooter'  => Simple_POS_Settings::get( 'receipt_footer', '' ),
 			'caps'           => array(
@@ -183,6 +187,10 @@ class Simple_POS_Admin {
 				'labelFormat' => Simple_POS_Settings::get( 'barcode_label_format', 'a4_30' ),
 			),
 			'storeName'      => Simple_POS_Settings::get( 'store_name', get_bloginfo( 'name' ) ),
+			'storeAddress'   => Simple_POS_Settings::get( 'store_address', '' ),
+			'storePhone'     => Simple_POS_Settings::get( 'store_phone', '' ),
+			'storeEmail'     => Simple_POS_Settings::get( 'store_email', '' ),
+			'storeGstin'     => Simple_POS_Settings::get( 'store_gstin', '' ),
 			'receiptHeader'  => Simple_POS_Settings::get( 'receipt_header', '' ),
 			'receiptFooter'  => Simple_POS_Settings::get( 'receipt_footer', '' ),
 			'caps'           => array(

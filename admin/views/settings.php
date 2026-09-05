@@ -20,6 +20,10 @@ $tax_classes = class_exists('Simple_POS_Tax') ? Simple_POS_Tax::get_classes() : 
 					<h2 class="simple-pos-section-title" style="margin-top:0"><?php esc_html_e('Store','simple-pos');?></h2>
 					<table class="form-table" style="margin:0">
 						<tr><th><label for="store_name"><?php esc_html_e( 'Store name', 'simple-pos' ); ?></label></th><td><input type="text" id="store_name" name="store_name" value="<?php echo esc_attr( $settings['store_name'] ); ?>" class="regular-text" /></td></tr>
+						<tr><th><label for="store_address"><?php esc_html_e( 'Address', 'simple-pos' ); ?></label></th><td><textarea id="store_address" name="store_address" rows="2" class="large-text"><?php echo esc_textarea( $settings['store_address'] ); ?></textarea></td></tr>
+						<tr><th><label for="store_phone"><?php esc_html_e( 'Phone', 'simple-pos' ); ?></label></th><td><input type="text" id="store_phone" name="store_phone" value="<?php echo esc_attr( $settings['store_phone'] ); ?>" class="regular-text" /></td></tr>
+						<tr><th><label for="store_email"><?php esc_html_e( 'Email', 'simple-pos' ); ?></label></th><td><input type="email" id="store_email" name="store_email" value="<?php echo esc_attr( $settings['store_email'] ); ?>" class="regular-text" /></td></tr>
+						<tr><th><label for="store_gstin"><?php esc_html_e( 'GSTIN', 'simple-pos' ); ?></label></th><td><input type="text" id="store_gstin" name="store_gstin" value="<?php echo esc_attr( $settings['store_gstin'] ); ?>" class="small-text" /> <span class="description"><?php esc_html_e('e.g. 27AABCT1234R1ZX','simple-pos');?></span></td></tr>
 					</table>
 				</div>
 				<div class="simple-pos-card simple-pos-form-card">
