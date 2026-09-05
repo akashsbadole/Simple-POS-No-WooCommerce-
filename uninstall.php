@@ -19,32 +19,53 @@ if ( empty( $settings['delete_data_on_uninstall'] ) ) {
 }
 
 global $wpdb;
-$prefix = $wpdb->prefix . 'pos_';
 
-$tables = array(
-	'po_items',
-	'purchase_orders',
-	'suppliers',
-	'product_variants',
-	'tax_rates',
-	'tax_classes',
-	'stock_log',
-	'sale_items',
-	'sales',
-	'customers',
-	'products',
-	'categories',
-);
-
-foreach ( $tables as $table ) {
-	$wpdb->query( "DROP TABLE IF EXISTS {$prefix}{$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+// Multisite: loop over all sites when network-deleting.
+if ( is_multisite() && function_exists( 'get_sites' ) && isset( $_GET['networkwide'] ) ) {
+	$sites = get_sites( array( 'number' => 0 ) );
+	foreach ( $sites as $site ) {
+		switch_to_blog( (int) $site->blog_id );
+		simple_pos_uninstall_drop_tables();
+		restore_current_blog();
+	}
+} else {
+	simple_pos_uninstall_drop_tables();
 }
 
-delete_option( 'simple_pos_settings' );
-delete_option( 'simple_pos_db_version' );
+function simple_pos_uninstall_drop_tables() {
+	global $wpdb;
+	$prefix = $wpdb->prefix . 'pos_';
+	$tables = array(
+		'po_items',
+		'purchase_orders',
+		'suppliers',
+		'product_variants',
+		'tax_rates',
+		'tax_classes',
+		'stock_log',
+		'sale_items',
+		'sales',
+		'customers',
+		'products',
+		'categories',
+	);
+	foreach ( $tables as $table ) {
+		$wpdb->query( "DROP TABLE IF EXISTS {$prefix}{$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared
+	}
+	delete_option( 'simple_pos_settings' );
+	delete_option( 'simple_pos_db_version' );
+	// Clean transients left by reports.
+	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_simple_pos_%' OR option_name LIKE '_transient_timeout_simple_pos_%'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+}
 
-// Remove custom roles/capabilities.
+// Remove custom roles/capabilities (single-site path already called inside function; for multisite loop, roles are per-site so this is extra safe).
 if ( function_exists( 'remove_role' ) ) {
 	remove_role( 'pos_cashier' );
 	remove_role( 'pos_manager' );
+	$admin = get_role( 'administrator' );
+	if ( $admin ) {
+		foreach ( array( 'operate_pos','view_pos_products','manage_pos_products','manage_pos_customers','view_pos_sales','void_pos_sales','view_pos_reports','manage_pos_settings' ) as $cap ) {
+			$admin->remove_cap( $cap );
+		}
+	}
 }

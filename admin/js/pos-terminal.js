@@ -4,7 +4,13 @@
  */
 (function(){
 'use strict';
-if(typeof window.SimplePOS==='undefined') return;
+if(typeof window.SimplePOS==='undefined'){
+	var root=document.getElementById('simple-pos-terminal');
+	if(root){
+		root.innerHTML='<div class="notice notice-error" style="margin:1em"><p>POS Terminal failed to initialize. Please reload the page.</p></div>';
+	}
+	return;
+}
 var state = {
 	products: [], productsTotal:0, page:1, perPage:24, categories:[], activeCategory:0, search:'', cart:[], customers:[],
 	taxRatesCache: {} // class_id -> rates
@@ -19,13 +25,92 @@ function formatCurrency(amount){
 	return 'after'===window.SimplePOS.currency.position? num+window.SimplePOS.currency.symbol : window.SimplePOS.currency.symbol+num;
 }
 function debounce(fn,wait){ var t; return function(){ var a=arguments; clearTimeout(t); t=setTimeout(function(){ fn.apply(null,a); },wait); }; }
+function safeLoad(label, fn, fallback){
+	return fn().catch(function(err){
+		try{ console.warn('[SimplePOS] '+label+' failed:', err); }catch(e){}
+		if(els.cartError){
+			els.cartError.textContent = (err && err.message) ? err.message : ('Failed to load '+label+'.');
+		}
+		if(typeof fallback === 'function'){ fallback(); }
+		return null;
+	});
+}
+function bindNewCustomer(){
+	if(!els.newCustomerBtn || !els.newCustomerModal) return;
+	var caps = (window.SimplePOS && window.SimplePOS.caps) || {};
+	if(caps.manageCustomers){
+		els.newCustomerBtn.hidden = false;
+	}
+	function open(){
+		els.newCustomerName.value = '';
+		els.newCustomerPhone.value = '';
+		els.newCustomerEmail.value = '';
+		els.newCustomerError.textContent = '';
+		els.newCustomerModal.hidden = false;
+		setTimeout(function(){ els.newCustomerName.focus(); }, 0);
+	}
+	function close(){ els.newCustomerModal.hidden = true; }
+	els.newCustomerBtn.addEventListener('click', open);
+	if(els.newCustomerCancel) els.newCustomerCancel.addEventListener('click', close);
+	if(els.newCustomerModal){
+		els.newCustomerModal.addEventListener('click', function(e){
+			if(e.target === els.newCustomerModal) close();
+		});
+	}
+	if(els.newCustomerSave){
+		els.newCustomerSave.addEventListener('click', function(){
+			var name = (els.newCustomerName.value || '').trim();
+			if(!name){
+				els.newCustomerError.textContent = 'Name is required.';
+				els.newCustomerName.focus();
+				return;
+			}
+			var phone = (els.newCustomerPhone.value || '').trim();
+			var email = (els.newCustomerEmail.value || '').trim();
+			els.newCustomerError.textContent = '';
+			els.newCustomerSave.disabled = true;
+			apiFetch('/customers', {
+				method: 'POST',
+				body: JSON.stringify({ name: name, phone: phone, email: email })
+			}).then(function(res){
+				var id = res && (res.id || (res.customer && res.customer.id));
+				if(!id) throw new Error('Customer was created but no ID was returned.');
+				state.customers.push({ id: id, name: name, phone: phone, email: email });
+				renderCustomerSelect();
+				els.customerSelect.value = String(id);
+				close();
+			}).catch(function(err){
+				els.newCustomerError.textContent = (err && err.message) ? err.message : 'Could not create customer.';
+			}).then(function(){
+				els.newCustomerSave.disabled = false;
+			});
+		});
+	}
+}
+function bindAddToCart(){
+	// Add-to-cart reliability: surface any REST error from /products/{id} or /products/lookup/{code}
+	// via els.cartError instead of silently no-op'ing.
+	els.productGrid.addEventListener('click', function(e){
+		var card = e.target.closest('.simple-pos-product-card');
+		if(!card || card.disabled) return;
+		var id = parseInt(card.dataset.id, 10);
+		var product = state.products.find(function(p){ return p.id === id; });
+		if(!product){ return; }
+		apiFetch('/products/'+id).then(function(full){
+			addProductToCart(coerceProduct(full));
+		}).catch(function(){
+			els.cartError.textContent = 'Could not load product details. Added with cached info only.';
+			addProductToCart(coerceProduct(product));
+		});
+	});
+}
 function loadCategories(){ return apiFetch('/categories').then(function(d){ state.categories=d||[]; renderCategoryTabs(); }); }
 function loadProducts(){
 	var params=new URLSearchParams({per_page:state.perPage, page:state.page, status:'active'});
 	if(state.search) params.set('search',state.search);
 	if(state.activeCategory) params.set('category_id',state.activeCategory);
 	return apiFetch('/products?'+params.toString()).then(function(data){
-		state.products=data.items||[]; state.productsTotal=data.total||0; renderProductGrid(); renderPagination();
+		state.products=coerceProducts(data.items||[]); state.productsTotal=data.total||0; renderProductGrid(); renderPagination();
 	});
 }
 function loadCustomers(){ return apiFetch('/customers?per_page=100').then(function(d){ state.customers=(d&&d.items)||[]; renderCustomerSelect(); }); }
@@ -118,9 +203,10 @@ function renderTotals(){
 			totalsCache={subtotal:res.subtotal, tax:res.tax, total:res.total, breakdown:res.breakdown};
 			renderTotals();
 		}).catch(function(){
-			// fallback simple: 0 tax
-			var total=Math.max(0,subtotal - discount + estTax);
-			els.taxEl.textContent=formatCurrency(estTax);
+			totalsCache=null;
+			var total=Math.max(0,subtotal - discount);
+			els.taxEl.textContent=formatCurrency(0);
+			els.taxBreakdownEl.textContent='';
 			els.totalEl.textContent=formatCurrency(total);
 			if(!els.amountPaid.dataset.touched){ els.amountPaid.value=total.toFixed(window.SimplePOS.currency.decimals); }
 			var paid2=parseFloat(els.amountPaid.value)||0;
@@ -137,7 +223,15 @@ function renderTotals(){
 	}
 }
 function escapeHtml(str){ var div=document.createElement('div'); div.textContent=String(str==null?'':str); return div.innerHTML; }
+function coerceTrackStock(val){ return Number(val) === 1; }
+function coerceProduct(p){
+	if(!p) return p;
+	p.track_stock = coerceTrackStock(p.track_stock);
+	return p;
+}
+function coerceProducts(arr){ return (arr||[]).map(coerceProduct); }
 function addProductToCart(product){
+	product = coerceProduct(product);
 	if(product.track_stock && Number(product.stock_qty)<=0) return;
 	// If product has variants, show picker instead of adding directly
 	if(product.variants && product.variants.length){
@@ -151,10 +245,12 @@ function addProductToCart(product){
 	els.amountPaid.dataset.touched=''; totalsCache=null; renderCart();
 }
 function showVariantPicker(product){
+	product = coerceProduct(product);
 	var modal=document.getElementById('simple-pos-variant-modal');
 	var container=document.getElementById('simple-pos-variant-options');
 	container.innerHTML='';
 	product.variants.forEach(function(v){
+		v = coerceProduct(v);
 		if(v.status!=='active') return;
 		var label='';
 		try{ var attrs=JSON.parse(v.attributes||'{}'); label=Object.keys(attrs).map(function(k){return k+': '+attrs[k];}).join(' / ')||'Variant #'+v.id; } catch(e){ label='Variant #'+v.id; }
@@ -195,6 +291,7 @@ function doCheckout(){
 	};
 	apiFetch('/sales',{method:'POST', body: JSON.stringify(payload)}).then(function(sale){
 		showReceipt(sale); clearCart(); loadProducts();
+		els.checkoutBtn.disabled=true; els.checkoutBtn.textContent='Complete Sale';
 	}).catch(function(err){ els.cartError.textContent=err.message||window.SimplePOS.i18n.checkoutError; }).finally(function(){ els.checkoutBtn.disabled=state.cart.length===0; els.checkoutBtn.textContent='Complete Sale'; });
 }
 function showReceipt(sale){
@@ -209,7 +306,7 @@ function showReceipt(sale){
 		'<table class="simple-pos-receipt-table simple-pos-receipt-totals">'+
 			'<tr><td>Subtotal</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.subtotal)+'</td></tr>'+
 			'<tr><td>Discount</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.discount_amount)+'</td></tr>'+
-			(breakdownHtml||'<tr><td>Tax</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.tax_amount)+'</td></tr>')+breakdownHtml+
+			(breakdownHtml || '<tr><td>Tax</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.tax_amount)+'</td></tr>')+
 			'<tr class="simple-pos-receipt-grand"><td>Total</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.total)+'</td></tr>'+
 			'<tr><td>Paid ('+escapeHtml(sale.payment_method)+')</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.amount_paid)+'</td></tr>'+
 			'<tr><td>Change</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.change_due)+'</td></tr>'+
@@ -219,44 +316,42 @@ function showReceipt(sale){
 	els.receiptModal.hidden=false;
 	if(window.SimplePOS.autoKickDrawer) kickDrawer();
 }
+async function sendEscPos(bytes){
+	if(!navigator.usb || !bytes) return false;
+	try{
+		var devices = (navigator.usb.getDevices) ? await navigator.usb.getDevices() : [];
+		var dev = devices && devices.length ? devices[0] : null;
+		if(!dev) return false;
+		await dev.open();
+		if(dev.configuration===null) await dev.selectConfiguration(1);
+		await dev.claimInterface(0);
+		var ep = dev.configuration.interfaces[0].alternate.interfaces[0].endpoints.find(function(e){return e.direction==='out';});
+		if(ep) await dev.transferOut(ep.endpointNumber, bytes);
+		return true;
+	}catch(e){ try{ console.warn('[SimplePOS] WebUSB send failed:', e); }catch(_){} return false; }
+}
 async function usbPrint(){
 	if(!els.receiptContent.innerHTML.trim()) return;
 	var text=els.receiptContent.innerText;
-	// Try WebUSB
 	if(navigator.usb){
-		try{
-			var device=await navigator.usb.requestDevice({filters:[]});
-			await device.open();
-			if(device.configuration===null) await device.selectConfiguration(1);
-			await device.claimInterface(0);
-			// ESC/POS init + text + cut + kick
-			var encoder=new TextEncoder();
-			var init=new Uint8Array([0x1B,0x40]); // init
-			var data=encoder.encode(text+"\n\n\n");
-			var cut=new Uint8Array([0x1D,0x56,0x00]);
-			var kick=new Uint8Array([0x1B,0x70,0x00,0x19,0xFA]);
-			var combined=new Uint8Array(init.length+data.length+cut.length+kick.length);
-			combined.set(init,0); combined.set(data,init.length); combined.set(cut,init.length+data.length); combined.set(kick,init.length+data.length+cut.length);
-			// Find out endpoint
-			var ep=device.configuration.interfaces[0].alternate.interfaces[0].endpoints.find(function(e){return e.direction==='out';});
-			if(ep) await device.transferOut(ep.endpointNumber, combined);
-			alert('Sent to USB printer');
-			return;
-		}catch(e){ console.log(e); alert('USB print failed: '+e.message+' — falling back to browser print'); }
+		var encoder=new TextEncoder();
+		var init=new Uint8Array([0x1B,0x40]);
+		var data=encoder.encode(text+"\n\n\n");
+		var cut=new Uint8Array([0x1D,0x56,0x00]);
+		var combined=new Uint8Array(init.length+data.length+cut.length);
+		combined.set(init,0); combined.set(data,init.length); combined.set(cut,init.length+data.length);
+		var ok=await sendEscPos(combined);
+		if(ok){ return; }
 	}
 	window.print();
 }
 function kickDrawer(){
-	// ESC p 0x00
-	if(navigator.usb){
-		// attempt kick via usb if available else no-op
-		usbPrint();
-	}
+	sendEscPos(new Uint8Array([0x1B,0x70,0x00,0x19,0xFA]));
 }
 function handleScan(code){
 	if(!code) return;
 	apiFetch('/products/lookup/'+encodeURIComponent(code)).then(function(product){
-		// If lookup returns a parent with variant_id property, handle variant directly
+		product = coerceProduct(product);
 		if(product.variant_id){
 			var existing=state.cart.find(function(i){ return i.variant_id===product.variant_id; });
 			if(existing){ existing.qty+=1; } else {
@@ -264,29 +359,24 @@ function handleScan(code){
 			}
 			els.amountPaid.dataset.touched=''; totalsCache=null; renderCart();
 		} else {
-			// fetch full product with variants to allow picker
 			apiFetch('/products/'+product.id).then(function(full){
+				full = coerceProduct(full);
 				if(full.variants && full.variants.length) { addProductToCart(full); } else { addProductToCart(product); }
-			}).catch(function(){ addProductToCart(product); });
+			}).catch(function(){
+				els.cartError.textContent = 'Could not load product details. Added with cached info only.';
+				addProductToCart(coerceProduct(product));
+			});
 		}
 		els.scanInput.value='';
-	}).catch(function(){
-		els.cartError.textContent='No product matches "'+code+'".';
-		els.scanInput.value=''; els.scanInput.select();
+	}).catch(function(err){
+		els.cartError.textContent = (err && err.message) ? err.message : ('No product matches "'+code+'".');
+		els.scanInput.value=''; els.scanInput.focus();
 	});
 }
 function bindEvents(){
 	els.scanInput.addEventListener('keydown',function(e){ if('Enter'===e.key){ e.preventDefault(); handleScan(els.scanInput.value.trim()); } });
 	els.searchInput.addEventListener('input', debounce(function(){ state.search=els.searchInput.value.trim(); state.page=1; loadProducts(); },350));
 	els.categoryTabs.addEventListener('click',function(e){ var btn=e.target.closest('.simple-pos-cat-tab'); if(!btn) return; state.activeCategory=parseInt(btn.dataset.cat,10)||0; state.page=1; renderCategoryTabs(); loadProducts(); });
-	els.productGrid.addEventListener('click',function(e){
-		var card=e.target.closest('.simple-pos-product-card'); if(!card||card.disabled) return;
-		var id=parseInt(card.dataset.id,10);
-		var product=state.products.find(function(p){ return p.id===id; });
-		if(!product) return;
-		// Need variants detail
-		apiFetch('/products/'+id).then(function(full){ addProductToCart(full); }).catch(function(){ addProductToCart(product); });
-	});
 	els.pagination.addEventListener('click',function(e){ var btn=e.target.closest('.simple-pos-page-btn'); if(!btn) return; state.page=parseInt(btn.dataset.page,10)||1; loadProducts(); });
 	els.cartItems.addEventListener('click',function(e){
 		var qtyBtn=e.target.closest('.simple-pos-qty-btn'); if(qtyBtn){ changeQty(parseInt(qtyBtn.dataset.index,10), 'inc'===qtyBtn.dataset.action?1:-1); return; }
@@ -303,6 +393,24 @@ function bindEvents(){
 	if(els.usbPrintBtn) els.usbPrintBtn.addEventListener('click', usbPrint);
 	if(els.kickDrawerBtn) els.kickDrawerBtn.addEventListener('click', kickDrawer);
 	els.closeReceiptBtn.addEventListener('click',function(){ els.receiptModal.hidden=true; els.scanInput.focus(); });
+	bindNewCustomer();
+	bindAddToCart();
+	// ESC to close modals, focus trap.
+	document.addEventListener('keydown', function(e){
+		if('Escape'===e.key){
+			var vm=document.getElementById('simple-pos-variant-modal');
+			if(vm && !vm.hidden){ vm.hidden=true; e.preventDefault(); }
+			if(els.receiptModal && !els.receiptModal.hidden){ els.receiptModal.hidden=true; e.preventDefault(); }
+			if(els.newCustomerModal && !els.newCustomerModal.hidden){ els.newCustomerModal.hidden=true; e.preventDefault(); }
+		}
+	});
+	// Product grid keyboard: Enter/Space on focused card.
+	els.productGrid.addEventListener('keydown', function(e){
+		if('Enter'===e.key || ' '===e.key){
+			var card=e.target.closest('.simple-pos-product-card');
+			if(card){ e.preventDefault(); card.click(); }
+		}
+	});
 }
 function init(){
 	els.root=document.getElementById('simple-pos-terminal'); if(!els.root) return;
@@ -314,6 +422,14 @@ function init(){
 	els.cartItems=document.getElementById('simple-pos-cart-items');
 	els.clearCartBtn=document.getElementById('simple-pos-clear-cart');
 	els.customerSelect=document.getElementById('simple-pos-customer-select');
+	els.newCustomerBtn=document.getElementById('simple-pos-new-customer');
+	els.newCustomerModal=document.getElementById('simple-pos-new-customer-modal');
+	els.newCustomerName=document.getElementById('simple-pos-new-customer-name');
+	els.newCustomerPhone=document.getElementById('simple-pos-new-customer-phone');
+	els.newCustomerEmail=document.getElementById('simple-pos-new-customer-email');
+	els.newCustomerError=document.getElementById('simple-pos-new-customer-error');
+	els.newCustomerSave=document.getElementById('simple-pos-new-customer-save');
+	els.newCustomerCancel=document.getElementById('simple-pos-new-customer-cancel');
 	els.discountValue=document.getElementById('simple-pos-discount-value');
 	els.discountType=document.getElementById('simple-pos-discount-type');
 	els.paymentMethod=document.getElementById('simple-pos-payment-method');
@@ -338,7 +454,11 @@ function init(){
 	if(els.taxCountry) els.taxCountry.value=window.SimplePOS.tax.country||'US';
 	if(els.taxState) els.taxState.value=window.SimplePOS.tax.state||'';
 	bindEvents(); renderCart();
-	Promise.all([loadCategories(),loadProducts(),loadCustomers()]).then(function(){ els.root.dataset.loading='0'; els.scanInput.focus(); });
+	Promise.all([
+		safeLoad('categories', loadCategories),
+		safeLoad('products',  loadProducts),
+		safeLoad('customers', loadCustomers)
+	]).then(function(){ els.root.dataset.loading='0'; els.scanInput.focus(); });
 }
 if('loading'===document.readyState) document.addEventListener('DOMContentLoaded',init); else init();
 })();

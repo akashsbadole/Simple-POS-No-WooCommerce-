@@ -1,4 +1,4 @@
-=== Simple POS (No WooCommerce) ===
+=== Simple POS – No WooCommerce ===
 Contributors: yourname
 Tags: pos, point of sale, retail, inventory, cash register
 Requires at least: 5.8
@@ -7,8 +7,11 @@ Requires PHP: 7.4
 Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Donate link: https://example.com/donate
 
-A lightweight, standalone Point of Sale system for WordPress. No WooCommerce required.
+A lightweight, standalone Point of Sale system for WordPress. No WooCommerce required. Custom tables, REST API, per-country VAT/GST, variants, suppliers & purchase orders, barcode labels and ESC/POS printing.
+
+> **Packaging note:** when building the zip for WordPress.org, zip the folder as `simple-pos` so the Text Domain `simple-pos` matches the slug.
 
 == Description ==
 
@@ -52,16 +55,23 @@ Multi-location/multi-till sync, offline queue, split/partial payments and gift c
 
 == Installation ==
 
-1. Upload the `wp-pos-plugin` folder to `/wp-content/plugins/`, or upload
-   the zip via Plugins → Add New → Upload Plugin.
-2. Activate the plugin. This creates the required database tables and two
-   custom roles.
-3. Go to **POS → Settings** and set your currency, tax, and receipt
-   details.
-4. Go to **POS → Products** and add your first products (or categories).
-5. Go to **POS → Terminal** to start selling.
-6. Optionally, assign the **POS Cashier** or **POS Manager** role to staff
-   accounts under Users, so they don't need full admin access.
+1. Upload the `simple-pos` folder to `/wp-content/plugins/`, or upload
+   the zip via Plugins → Add New → Upload Plugin (ensure the zip contains a single top-level folder `simple-pos` so the Text Domain `simple-pos` matches the slug).
+2. Activate the plugin through the **Plugins** screen. This creates the required custom tables (`wp_pos_*`) and the `POS Cashier` / `POS Manager` roles and seeds default tax classes/rates.
+3. Go to **POS → Settings** and set your store name, base currency, default tax country/state and receipt details.
+4. Go to **POS → Taxes** to review or edit per-country rates (US CA 7.25%, NY 8%, IN GST 18%/5%, DE 19%, FR 20%, GB 20% etc.).
+5. Go to **POS → Products** and add your first products (or categories). Add variants (size/color etc.) per product if needed.
+6. Go to **POS → Terminal** to start selling (barcode scan or click, variant picker appears automatically). Use **POS → Barcode Labels** to print A4/roll sheets (vendored JsBarcode, no CDN).
+7. Optionally, assign the **POS Cashier** or **POS Manager** role to staff accounts under **Users**, so they don't need full admin access.
+
+== Screenshots ==
+
+1. POS Terminal — product grid, barcode scan, variant picker and live tax breakdown.
+2. Products — tax class per product, free-form variant attributes, stock per variant, CSV import/export.
+3. Taxes — per-country/state classes and rates (US CA/NY, IN GST, EU VAT) with inclusive/compound support.
+4. Purchase Orders — suppliers, draft/ordered/partial/received workflow with stock-in on receive.
+5. Barcode Labels — A4 30/65-up and roll 58/80mm sheets via vendored JsBarcode.
+6. Reports & Dashboard — revenue, gross profit, low-stock (including variants).
 
 == Frequently Asked Questions ==
 
@@ -84,8 +94,26 @@ delete the plugin from the Plugins screen AND have explicitly checked
 = Can I refund a sale? =
 
 Yes — open the sale from Sales History and click "Void Sale". This marks
-the sale voided and restores stock for every tracked line item. Partial
+the sale voided and restores stock for every tracked line item (including variant stock). Partial
 refunds are not yet supported.
+
+= Does the barcode/label printing use an external CDN? =
+
+No. JsBarcode 3.11.6 (MIT) is vendored at `admin/js/vendor/jsbarcode.min.js` and enqueued locally per WordPress.org guidelines. The label print window loads the same local copy — no external requests.
+
+= What currency is used? =
+
+One store-wide base currency (USD/EUR/INR/GBP and 16 more presets) set in POS → Settings. All amounts are stored in that currency.
+
+= Why does the terminal show a tax breakdown? =
+
+Sales are calculated server-side via `Simple_POS_Tax::calculate_order()` using the active tax classes/rates for the selected country/state, so the receipt breakdown matches the stored sale exactly. A `POST pos/v1/tax/calculate` preview is used for the live total.
+
+== Upgrade Notice ==
+
+= 2.0.0 =
+
+Major update: adds tax classes/rates (US/IN/EU presets), product variants, suppliers/purchase orders, barcode label sheets, store-wide currency and USB ESC/POS (WebUSB + browser fallback). On upgrade the activator seeds `pos_tax_classes`/`pos_tax_rates` and migrates legacy `tax_rate` → `tax_class_id`. No data loss. Flush rewrite rules and visit POS → Settings to review tax country/state.
 
 == Changelog ==
 

@@ -131,7 +131,7 @@ class Simple_POS_REST_API {
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( __CLASS__, 'create_customer' ),
-				'permission_callback' => array( __CLASS__, 'can_operate_pos' ),
+				'permission_callback' => array( __CLASS__, 'can_manage_customers' ),
 			),
 		) );
 

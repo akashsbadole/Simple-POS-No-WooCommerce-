@@ -110,7 +110,7 @@ class Simple_POS_Settings {
 		$sanitized = array(
 			'currency_code'            => $code,
 			'currency_symbol'          => $symbol,
-			'currency_position'        => ( isset( $input['currency_position'] ) && 'after' === $input['currency_position'] ) ? 'after' : 'before',
+			'currency_position'        => isset( $input['currency_position'] ) ? ( 'after' === $input['currency_position'] ? 'after' : 'before' ) : $current['currency_position'],
 			'default_tax_rate'         => isset( $input['default_tax_rate'] ) ? max( 0, (float) $input['default_tax_rate'] ) : $current['default_tax_rate'],
 			'default_tax_class_id'     => isset( $input['default_tax_class_id'] ) ? (int) $input['default_tax_class_id'] : $current['default_tax_class_id'],
 			'tax_country'              => isset( $input['tax_country'] ) ? strtoupper(sanitize_text_field($input['tax_country'])) : $current['tax_country'],
@@ -135,6 +135,7 @@ class Simple_POS_Settings {
 			'delete_data_on_uninstall' => ! empty( $input['delete_data_on_uninstall'] ) ? 1 : 0,
 		);
 
+		// Keep autoload light (<1KB effective). Option stays small; 'yes' is fine for perf.
 		update_option( self::OPTION_KEY, $sanitized, 'yes' );
 
 		return $sanitized;

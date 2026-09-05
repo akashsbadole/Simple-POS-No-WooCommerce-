@@ -312,22 +312,10 @@ class Simple_POS_Tax {
 			$total_tax += $calc['tax_amount'];
 		}
 		$total_tax = round($total_tax,2);
-		$total = 0;
-		if (!empty($settings['tax_inclusive'])) {
-			// inclusive: subtotal already includes tax, total = subtotal - discount (tax embedded)
-			// But for simplicity, if inclusive we already extracted tax; gross = subtotal + exclusive taxes
-			// So recompute: gross sum
-			$gross_sum = 0;
-			foreach($line_calcs as $c) $gross_sum += $c['gross'];
-			$total = round($gross_sum,2);
-			if (!empty($settings['discount_before_tax'])) {
-				// discount already accounted in line calc
-			} else {
-				// for inclusive exclusive mix handled
-			}
-		} else {
-			$total = round($subtotal - $discount + $total_tax,2);
-		}
+		// ponytail: total = sum of line gross (covers exclusive and inclusive uniformly; avoids double-counting inclusive tax)
+		$gross_sum = 0;
+		foreach($line_calcs as $c) $gross_sum += $c['gross'];
+		$total = round($gross_sum,2);
 		if ($total<0) $total=0;
 		// aggregate breakdown by rate name
 		$agg = array();

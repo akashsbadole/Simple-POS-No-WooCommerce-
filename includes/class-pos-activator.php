@@ -289,7 +289,7 @@ class Simple_POS_Activator {
 		global $wpdb;
 		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		// Only seed once.
-		$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$prefix}tax_classes" );
+		$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$prefix}tax_classes" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( $count > 0 ) {
 			return;
 		}
@@ -302,7 +302,7 @@ class Simple_POS_Activator {
 		);
 		$class_ids = array();
 		foreach ( $classes as $c ) {
-			$wpdb->insert( $prefix . 'tax_classes', array( 'name' => $c[0], 'slug' => $c[1], 'description' => $c[2], 'created_at' => $now ) );
+			$wpdb->insert( $prefix . 'tax_classes', array( 'name' => $c[0], 'slug' => $c[1], 'description' => $c[2], 'created_at' => $now ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$class_ids[ $c[1] ] = (int) $wpdb->insert_id;
 		}
 		// Seed per-country rates for Standard class.
@@ -314,11 +314,8 @@ class Simple_POS_Activator {
 			array( $std, 'US', 'NY', 8.0, 0, 0, 1, 'New York' ),
 			array( $std, 'US', 'TX', 6.25, 0, 0, 1, 'Texas' ),
 			array( $std, 'US', 'FL', 6.0, 0, 0, 1, 'Florida' ),
-			// India GST slabs
+			// India GST slabs — single national rate (states use same, avoid double-count; add state overrides only if different)
 			array( $std, 'IN', null, 18.0, 0, 0, 0, 'India GST 18%' ),
-			array( $std, 'IN', 'MH', 18.0, 0, 0, 1, 'Maharashtra GST' ),
-			array( $std, 'IN', 'DL', 18.0, 0, 0, 1, 'Delhi GST' ),
-			array( $std, 'IN', 'KA', 18.0, 0, 0, 1, 'Karnataka GST' ),
 			// Europe VAT examples
 			array( $std, 'DE', null, 19.0, 0, 0, 0, 'Germany VAT' ),
 			array( $std, 'FR', null, 20.0, 0, 0, 0, 'France VAT' ),
@@ -339,7 +336,7 @@ class Simple_POS_Activator {
 			$wpdb->insert( $prefix . 'tax_rates', array(
 				'class_id' => $r[0], 'country_code' => $r[1], 'state_code' => $r[2], 'rate' => $r[3],
 				'is_compound' => $r[4], 'is_inclusive' => $r[5], 'priority' => $r[6], 'name' => $r[7], 'created_at' => $now,
-			) );
+			) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		}
 	}
 
@@ -347,11 +344,11 @@ class Simple_POS_Activator {
 		global $wpdb;
 		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		// If products still use legacy tax_rate and tax_class_id is all NULL, create mapping.
-		$has_class = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$prefix}products WHERE tax_class_id IS NOT NULL" );
+		$has_class = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$prefix}products WHERE tax_class_id IS NOT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( $has_class > 0 ) {
 			return;
 		}
-		$std_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$prefix}tax_classes WHERE slug = %s", 'standard' ) );
+		$std_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$prefix}tax_classes WHERE slug = %s", 'standard' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$zero_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$prefix}tax_classes WHERE slug = %s", 'zero' ) );
 		if ( ! $std_id ) {
 			return;

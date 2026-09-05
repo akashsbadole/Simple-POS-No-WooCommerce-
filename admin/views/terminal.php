@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="simple-pos-terminal-left">
 
 			<div class="simple-pos-scan-row">
+				<label for="simple-pos-scan-input" class="screen-reader-text"><?php esc_html_e( 'Scan barcode or SKU', 'simple-pos' ); ?></label>
 				<input
 					type="text"
 					id="simple-pos-scan-input"
@@ -23,13 +24,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 					placeholder="<?php esc_attr_e( 'Scan barcode or type SKU, then press Enter…', 'simple-pos' ); ?>"
 					autocomplete="off"
 					autofocus
+					aria-label="<?php esc_attr_e( 'Scan barcode or type SKU', 'simple-pos' ); ?>"
 				/>
+				<label for="simple-pos-search-input" class="screen-reader-text"><?php esc_html_e( 'Search products', 'simple-pos' ); ?></label>
 				<input
 					type="search"
 					id="simple-pos-search-input"
 					class="simple-pos-search-input"
 					placeholder="<?php esc_attr_e( 'Search products…', 'simple-pos' ); ?>"
 					autocomplete="off"
+					aria-label="<?php esc_attr_e( 'Search products', 'simple-pos' ); ?>"
 				/>
 			</div>
 
@@ -50,7 +54,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<button type="button" id="simple-pos-clear-cart" class="button-link simple-pos-clear-link"><?php esc_html_e( 'Clear', 'simple-pos' ); ?></button>
 			</div>
 
-			<div id="simple-pos-cart-items" class="simple-pos-cart-items">
+			<div id="simple-pos-cart-items" class="simple-pos-cart-items" aria-live="polite" aria-relevant="additions removals">
 				<p class="simple-pos-cart-empty"><?php esc_html_e( 'Cart is empty. Scan or click a product to add it.', 'simple-pos' ); ?></p>
 			</div>
 
@@ -59,6 +63,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<select id="simple-pos-customer-select">
 					<option value=""><?php esc_html_e( 'Walk-in customer', 'simple-pos' ); ?></option>
 				</select>
+				<button type="button" id="simple-pos-new-customer" class="button-link simple-pos-new-customer-btn" hidden aria-label="<?php esc_attr_e( 'Add new customer', 'simple-pos' ); ?>"><?php esc_html_e( '+ New', 'simple-pos' ); ?></button>
 			</div>
 
 			<div class="simple-pos-discount-row">
@@ -71,8 +76,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 
 			<div style="display:flex;gap:8px;margin-bottom:8px">
-				<label style="flex:1">Tax country <input type="text" id="simple-pos-tax-country" class="widefat" placeholder="US" style="width:80px" /></label>
-				<label style="flex:1">State <input type="text" id="simple-pos-tax-state" class="widefat" placeholder="CA" style="width:80px" /></label>
+				<label for="simple-pos-tax-country" style="flex:1"><?php esc_html_e( 'Tax country', 'simple-pos' ); ?> <input type="text" id="simple-pos-tax-country" class="widefat" placeholder="US" style="width:80px" aria-label="<?php esc_attr_e( 'Tax country', 'simple-pos' ); ?>" /></label>
+				<label for="simple-pos-tax-state" style="flex:1"><?php esc_html_e( 'State', 'simple-pos' ); ?> <input type="text" id="simple-pos-tax-state" class="widefat" placeholder="CA" style="width:80px" aria-label="<?php esc_attr_e( 'State', 'simple-pos' ); ?>" /></label>
 			</div>
 			<div class="simple-pos-totals" id="simple-pos-totals">
 				<div class="simple-pos-totals-row"><span><?php esc_html_e( 'Subtotal', 'simple-pos' ); ?></span><span id="simple-pos-subtotal">—</span></div>
@@ -104,18 +109,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<?php esc_html_e( 'Complete Sale', 'simple-pos' ); ?>
 			</button>
 
-			<div id="simple-pos-cart-error" class="simple-pos-cart-error" role="alert"></div>
+			<div id="simple-pos-cart-error" class="simple-pos-cart-error" role="alert" aria-live="assertive"></div>
 
 		</div>
 	</div>
 
 	<!-- Variant picker modal -->
 	<div id="simple-pos-variant-modal" class="simple-pos-modal-overlay" hidden>
-		<div class="simple-pos-modal" role="dialog" aria-modal="true"><h3>Select variant</h3><div id="simple-pos-variant-options"></div><button type="button" id="simple-pos-variant-cancel" class="button">Cancel</button></div>
+		<div class="simple-pos-modal" role="dialog" aria-modal="true" aria-labelledby="simple-pos-variant-title"><h3 id="simple-pos-variant-title"><?php esc_html_e( 'Select variant', 'simple-pos' ); ?></h3><div id="simple-pos-variant-options"></div><button type="button" id="simple-pos-variant-cancel" class="button"><?php esc_html_e( 'Cancel', 'simple-pos' ); ?></button></div>
+	</div>
+	<!-- New customer modal -->
+	<div id="simple-pos-new-customer-modal" class="simple-pos-modal-overlay" hidden>
+		<div class="simple-pos-modal" role="dialog" aria-modal="true" aria-labelledby="simple-pos-new-customer-title">
+			<h3 id="simple-pos-new-customer-title"><?php esc_html_e( 'Add new customer', 'simple-pos' ); ?></h3>
+			<p class="description"><?php esc_html_e( 'Quick add. You can edit full details later from the Customers screen.', 'simple-pos' ); ?></p>
+			<div class="simple-pos-new-customer-fields">
+				<label for="simple-pos-new-customer-name"><?php esc_html_e( 'Name', 'simple-pos' ); ?> <span class="required" aria-hidden="true">*</span></label>
+				<input type="text" id="simple-pos-new-customer-name" autocomplete="off" required />
+				<label for="simple-pos-new-customer-phone"><?php esc_html_e( 'Phone', 'simple-pos' ); ?></label>
+				<input type="text" id="simple-pos-new-customer-phone" autocomplete="off" />
+				<label for="simple-pos-new-customer-email"><?php esc_html_e( 'Email', 'simple-pos' ); ?></label>
+				<input type="email" id="simple-pos-new-customer-email" autocomplete="off" />
+				<div id="simple-pos-new-customer-error" class="simple-pos-cart-error" role="alert" aria-live="assertive"></div>
+			</div>
+			<div class="simple-pos-modal-actions">
+				<button type="button" id="simple-pos-new-customer-save" class="button button-primary"><?php esc_html_e( 'Add &amp; select', 'simple-pos' ); ?></button>
+				<button type="button" id="simple-pos-new-customer-cancel" class="button"><?php esc_html_e( 'Cancel', 'simple-pos' ); ?></button>
+			</div>
+		</div>
 	</div>
 	<!-- Receipt modal, hidden until a sale completes -->
 	<div id="simple-pos-receipt-modal" class="simple-pos-modal-overlay" hidden>
 		<div class="simple-pos-modal" role="dialog" aria-modal="true" aria-labelledby="simple-pos-receipt-title">
+			<h2 id="simple-pos-receipt-title" class="screen-reader-text"><?php esc_html_e( 'Receipt', 'simple-pos' ); ?></h2>
 			<div id="simple-pos-receipt-content" class="simple-pos-receipt-print"></div>
 			<div class="simple-pos-modal-actions">
 				<button type="button" id="simple-pos-usb-print-receipt" class="button">USB Print</button>

@@ -108,8 +108,9 @@ class Simple_POS_Admin {
 			'receiptHeader' => Simple_POS_Settings::get( 'receipt_header', '' ),
 			'receiptFooter' => Simple_POS_Settings::get( 'receipt_footer', '' ),
 			'caps'      => array(
-				'voidSales'      => current_user_can( 'void_pos_sales' ),
-				'manageProducts' => current_user_can( 'manage_pos_products' ),
+				'voidSales'        => current_user_can( 'void_pos_sales' ),
+				'manageProducts'   => current_user_can( 'manage_pos_products' ),
+				'manageCustomers'  => current_user_can( 'manage_pos_customers' ),
 			),
 			'i18n'      => array(
 				'confirmVoid'   => __( 'Void this sale and restore stock? This cannot be undone.', 'simple-pos' ),
@@ -120,15 +121,31 @@ class Simple_POS_Admin {
 			),
 		);
 
+		// Vendor: JsBarcode (MIT) for barcode labels — enqueued locally, never CDN per WordPress.org guidelines.
+		wp_register_script( 'simple-pos-jsbarcode', SIMPLE_POS_PLUGIN_URL . 'admin/js/vendor/jsbarcode.min.js', array(), '3.11.6', true );
+
 		// Terminal screen: cart/checkout logic + barcode input.
 		if ( false !== strpos( $hook, 'simple-pos-terminal' ) ) {
 			wp_enqueue_script( 'simple-pos-terminal', SIMPLE_POS_PLUGIN_URL . 'admin/js/pos-terminal.js', array(), SIMPLE_POS_VERSION, true );
 			wp_localize_script( 'simple-pos-terminal', 'SimplePOS', $shared_data );
 		}
 
-		// All other plugin screens (products, customers, sales, reports, settings).
-		wp_enqueue_script( 'simple-pos-admin', SIMPLE_POS_PLUGIN_URL . 'admin/js/pos-admin.js', array(), SIMPLE_POS_VERSION, true );
-		wp_localize_script( 'simple-pos-admin', 'SimplePOS', $shared_data );
+		// Barcode labels screen needs JsBarcode.
+		if ( false !== strpos( $hook, 'simple-pos-barcode' ) ) {
+			wp_enqueue_script( 'simple-pos-jsbarcode' );
+		}
+
+		// Shared admin script (products, customers, sales, reports, settings, taxes, barcode).
+		// On the Terminal screen the terminal script owns the SimplePOS global; do not re-emit it here.
+		if ( false === strpos( $hook, 'simple-pos-terminal' ) ) {
+			wp_enqueue_script( 'simple-pos-admin', SIMPLE_POS_PLUGIN_URL . 'admin/js/pos-admin.js', array(), SIMPLE_POS_VERSION, true );
+			wp_localize_script( 'simple-pos-admin', 'SimplePOS', $shared_data );
+			// Expose vendor URL for print window (same origin, no CDN).
+			wp_add_inline_script( 'simple-pos-admin', 'window.SimplePOSVendorUrl=' . wp_json_encode( SIMPLE_POS_PLUGIN_URL . 'admin/js/vendor/jsbarcode.min.js' ) . ';', 'before' );
+		} else {
+			// Terminal page still wants the vendor URL helper, but emit it on the terminal script.
+			wp_add_inline_script( 'simple-pos-terminal', 'window.SimplePOSVendorUrl=' . wp_json_encode( SIMPLE_POS_PLUGIN_URL . 'admin/js/vendor/jsbarcode.min.js' ) . ';', 'before' );
+		}
 	}
 
 	/* ---------------------------------------------------------------

@@ -34,10 +34,14 @@ class Simple_POS_DB {
 		$prefix   = isset( $settings['sale_number_prefix'] ) ? $settings['sale_number_prefix'] : 'POS-';
 
 		$table   = self::table( 'sales' );
-		$next_id = (int) $wpdb->get_var( "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$table}'" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-
+		// Try information_schema first (may be restricted on some hosts), fallback to MAX(id)+1.
+		$next_id = (int) $wpdb->get_var( "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$table}'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared
 		if ( ! $next_id ) {
-			$next_id = 1;
+			$max_id = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$next_id = $max_id + 1;
+			if ( $next_id < 1 ) {
+				$next_id = 1;
+			}
 		}
 
 		return $prefix . str_pad( $next_id, 6, '0', STR_PAD_LEFT );
@@ -57,6 +61,54 @@ class Simple_POS_DB {
 		$number   = number_format( (float) $amount, $decimals );
 
 		return 'after' === $position ? $number . $symbol : $symbol . $number;
+	}
+
+	/**
+	 * Check if a SKU already exists in products or variants (for validation).
+	 *
+	 * @param string $sku SKU.
+	 * @param int    $exclude_product_id Product ID to exclude (0 = none).
+	 * @param int    $exclude_variant_id Variant ID to exclude (0 = none).
+	 * @return bool
+	 */
+	public static function sku_exists( $sku, $exclude_product_id = 0, $exclude_variant_id = 0 ) {
+		global $wpdb;
+		$sku = sanitize_text_field( $sku );
+		if ( '' === $sku ) {
+			return false;
+		}
+		$pt = self::table( 'products' );
+		$vt = self::table( 'product_variants' );
+		$c1 = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$pt} WHERE sku = %s AND id != %d", $sku, $exclude_product_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( $c1 > 0 ) {
+			return true;
+		}
+		$c2 = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$vt} WHERE sku = %s AND id != %d", $sku, $exclude_variant_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $c2 > 0;
+	}
+
+	/**
+	 * Check if a barcode already exists.
+	 *
+	 * @param string $code Barcode.
+	 * @param int    $exclude_product_id Product ID to exclude.
+	 * @param int    $exclude_variant_id Variant ID to exclude.
+	 * @return bool
+	 */
+	public static function barcode_exists( $code, $exclude_product_id = 0, $exclude_variant_id = 0 ) {
+		global $wpdb;
+		$code = sanitize_text_field( $code );
+		if ( '' === $code ) {
+			return false;
+		}
+		$pt = self::table( 'products' );
+		$vt = self::table( 'product_variants' );
+		$c1 = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$pt} WHERE barcode = %s AND id != %d", $code, $exclude_product_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( $c1 > 0 ) {
+			return true;
+		}
+		$c2 = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$vt} WHERE barcode = %s AND id != %d", $code, $exclude_variant_id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $c2 > 0;
 	}
 
 	/**

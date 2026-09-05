@@ -342,24 +342,13 @@ class Simple_POS_Products {
 
 	/**
 	 * Check if a SKU is already used by another product or variant.
+	 * Delegates to Simple_POS_DB::sku_exists() for single source of truth.
 	 */
 	private static function sku_exists( $sku, $exclude_id = 0 ) {
-		global $wpdb;
-		$pt = Simple_POS_DB::table( 'products' );
-		$vt = Simple_POS_DB::table( 'product_variants' );
-		$c1 = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$pt} WHERE sku = %s AND id != %d", $sku, $exclude_id ) );
-		if ($c1>0) return true;
-		$c2 = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$vt} WHERE sku = %s", $sku ) );
-		return $c2>0;
+		return Simple_POS_DB::sku_exists( $sku, $exclude_id, 0 );
 	}
 	private static function barcode_exists( $barcode, $exclude_id = 0 ) {
-		global $wpdb;
-		$pt = Simple_POS_DB::table( 'products' );
-		$vt = Simple_POS_DB::table( 'product_variants' );
-		$c1 = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$pt} WHERE barcode = %s AND id != %d", $barcode, $exclude_id ) );
-		if ($c1>0) return true;
-		$c2 = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$vt} WHERE barcode = %s", $barcode ) );
-		return $c2>0;
+		return Simple_POS_DB::barcode_exists( $barcode, $exclude_id, 0 );
 	}
 
 	/**

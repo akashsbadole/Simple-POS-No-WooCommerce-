@@ -25,7 +25,6 @@ $settings = Simple_POS_Settings::get_all();
 <!-- print container -->
 <div id="pos-label-print" style="display:none"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded',function(){
 	var checks=document.querySelectorAll('.pos-label-check');
@@ -52,10 +51,13 @@ document.addEventListener('DOMContentLoaded',function(){
 	btn.addEventListener('click',function(){
 		var sel=[]; checks.forEach(function(c){ if(c.checked) sel.push({name:c.dataset.name, code:c.dataset.barcode||c.dataset.sku, price:c.dataset.price}); });
 		if(!sel.length) return alert('Select at least one');
+		var vendorUrl = (window.SimplePOSVendorUrl || (window.SimplePOS && window.SimplePOS.vendorJsBarcodeUrl) || '');
+		// Fallback to local vendor if not localized (plugins_url).
+		if(!vendorUrl) vendorUrl = '<?php echo esc_js( SIMPLE_POS_PLUGIN_URL . 'admin/js/vendor/jsbarcode.min.js' ); ?>';
 		var win=window.open('','_blank');
 		var html='<!doctype html><html><head><title>Labels</title><style>'+
 			'@media print{ @page{ size:A4; margin:10mm } } body{font-family:sans-serif} .sheet{display:flex;flex-wrap:wrap;gap:6px} .label{border:1px solid #000; width:62mm; height:32mm; padding:4mm; text-align:center; box-sizing:border-box; display:flex; flex-direction:column; justify-content:center} .label svg{width:100%;height:18mm} .label .name{font-size:9px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .label .price{font-size:10px}</style>'+
-			'<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"><\/script></head><body><div class="sheet">';
+			'<script src="'+vendorUrl.replace(/"/g,'&quot;')+'"><\/script></head><body><div class="sheet">';
 		sel.forEach(function(s,i){
 			// repeat each 2 copies for sheet demo? single
 			html+='<div class="label"><div class="name">'+s.name.replace(/</g,'&lt;')+'</div><svg id="bc'+i+'"></svg><div class="price">'+s.price+'</div></div>';

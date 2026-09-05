@@ -5,7 +5,7 @@ class Simple_POS_Suppliers {
 	public static function get_suppliers() {
 		global $wpdb;
 		$table=Simple_POS_DB::table('suppliers');
-		return $wpdb->get_results("SELECT * FROM {$table} ORDER BY name ASC");
+		return $wpdb->get_results("SELECT * FROM {$table} ORDER BY name ASC"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 	public static function get_supplier($id){
 		global $wpdb;
@@ -56,7 +56,7 @@ class Simple_POS_Purchase_Orders {
 		$settings=Simple_POS_Settings::get_all();
 		$prefix= isset($settings['po_number_prefix'])? $settings['po_number_prefix']:'PO-';
 		$table=Simple_POS_DB::table('purchase_orders');
-		$max = $wpdb->get_var("SELECT MAX(id) FROM {$table}");
+		$max = $wpdb->get_var("SELECT MAX(id) FROM {$table}"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$next = $max ? ((int)$max+1) : 1;
 		// try AUTO_INCREMENT as fallback but MAX is safer
 		return $prefix . str_pad($next,6,'0',STR_PAD_LEFT);
@@ -70,11 +70,11 @@ class Simple_POS_Purchase_Orders {
 		$where='1=1'; $params=array();
 		if('any'!==$args['status']){ $where.=' AND status=%s'; $params[]=$args['status']; }
 		$total_sql="SELECT COUNT(*) FROM {$table} WHERE {$where}";
-		$total=(int)$wpdb->get_var($params? $wpdb->prepare($total_sql,$params): $total_sql);
+		$total=(int)$wpdb->get_var($params? $wpdb->prepare($total_sql,$params): $total_sql); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$per_page=max(1,min(100,(int)$args['per_page'])); $page=max(1,(int)$args['page']); $offset=($page-1)*$per_page;
-		$sql="SELECT * FROM {$table} WHERE {$where} ORDER BY created_at DESC LIMIT %d OFFSET %d";
+		$sql="SELECT * FROM {$table} WHERE {$where} ORDER BY created_at DESC LIMIT %d OFFSET %d"; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$qparams=array_merge($params,array($per_page,$offset));
-		$items=$wpdb->get_results($wpdb->prepare($sql,$qparams));
+		$items=$wpdb->get_results($wpdb->prepare($sql,$qparams)); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		return array('items'=>$items,'total'=>$total);
 	}
 	public static function get_order($id){

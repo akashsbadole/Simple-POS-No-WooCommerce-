@@ -94,21 +94,10 @@ class Simple_POS_Variants {
 	}
 
 	private static function sku_exists($sku,$exclude=0){
-		global $wpdb;
-		$pt=Simple_POS_DB::table('products');
-		$vt=Simple_POS_DB::table('product_variants');
-		$c1=(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$pt} WHERE sku=%s",$sku));
-		if($c1>0) return true;
-		$sql="SELECT COUNT(*) FROM {$vt} WHERE sku=%s AND id!=%d";
-		return (int)$wpdb->get_var($wpdb->prepare($sql,$sku,$exclude))>0;
+		return Simple_POS_DB::sku_exists( $sku, 0, $exclude );
 	}
 	private static function barcode_exists($code,$exclude=0){
-		global $wpdb;
-		$pt=Simple_POS_DB::table('products');
-		$vt=Simple_POS_DB::table('product_variants');
-		$c1=(int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$pt} WHERE barcode=%s",$code));
-		if($c1>0) return true;
-		return (int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$vt} WHERE barcode=%s AND id!=%d",$code,$exclude))>0;
+		return Simple_POS_DB::barcode_exists( $code, 0, $exclude );
 	}
 
 	private static function sanitize($data,$existing=null){
