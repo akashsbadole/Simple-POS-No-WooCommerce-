@@ -135,7 +135,134 @@ class Simple_POS_CSV {
 		}
 		rewind( $out );
 		$csv = stream_get_contents( $out );
-		fclose( $out );
+		fclose( $out ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		return $csv;
+	}
+
+	public static function export_categories() {
+		$cats = Simple_POS_Products::get_categories();
+		$out  = fopen( 'php://temp', 'r+' );
+		fputcsv( $out, array( 'id', 'name', 'description' ) );
+		foreach ( $cats as $c ) {
+			fputcsv( $out, array( $c->id, $c->name, $c->description ?? '' ) );
+		}
+		rewind( $out );
+		$csv = stream_get_contents( $out );
+		fclose( $out ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		return $csv;
+	}
+
+	public static function import_categories( $file_path ) {
+		if ( ! file_exists( $file_path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_exists
+			return new WP_Error( 'pos_file_missing', __( 'CSV file missing.', 'simple-pos' ) );
+		}
+		$handle = fopen( $file_path, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+		if ( ! $handle ) {
+			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'simple-pos' ) );
+		}
+		$header = fgetcsv( $handle );
+		if ( ! $header ) {
+			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'simple-pos' ) );
+		}
+		$header   = array_map( 'strtolower', array_map( 'trim', $header ) );
+		$required = array( 'name' );
+		foreach ( $required as $r ) {
+			if ( ! in_array( $r, $header, true ) ) {
+				fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+				/* translators: %s: missing column name */
+				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'simple-pos' ), $r ) );
+			}
+		}
+		$imported = 0;
+		$errors   = array();
+		$rownum   = 1;
+		while ( ( $row = fgetcsv( $handle ) ) !== false ) {
+			++$rownum;
+			$data = array_combine( $header, $row );
+			if ( ! $data ) {
+				continue;
+			}
+			$data = array_map( 'trim', $data );
+			if ( empty( $data['name'] ) ) {
+				continue;
+			}
+			$name = sanitize_text_field( $data['name'] );
+			$desc = isset( $data['description'] ) ? sanitize_textarea_field( $data['description'] ) : '';
+			$res = Simple_POS_Products::create_category( $name, $desc );
+			if ( is_wp_error( $res ) ) {
+				$errors[] = "Row $rownum: " . $res->get_error_message();
+			} else {
+				++$imported;
+			}
+		}
+		fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		return array(
+			'imported' => $imported,
+			'errors'   => $errors,
+		);
+	}
+
+	public static function import_sales( $file_path ) {
+		if ( ! file_exists( $file_path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_exists
+			return new WP_Error( 'pos_file_missing', __( 'CSV file missing.', 'simple-pos' ) );
+		}
+		$handle = fopen( $file_path, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+		if ( ! $handle ) {
+			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'simple-pos' ) );
+		}
+		$header = fgetcsv( $handle );
+		if ( ! $header ) {
+			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'simple-pos' ) );
+		}
+		$header = array_map( 'strtolower', array_map( 'trim', $header ) );
+		$required = array( 'sale_number', 'total', 'payment_method' );
+		foreach ( $required as $r ) {
+			if ( ! in_array( $r, $header, true ) ) {
+				fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+				/* translators: %s: missing column name */
+				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'simple-pos' ), $r ) );
+			}
+		}
+		$imported = 0;
+		$errors   = array();
+		$rownum   = 1;
+		while ( ( $row = fgetcsv( $handle ) ) !== false ) {
+			++$rownum;
+			$data = array_combine( $header, $row );
+			if ( ! $data ) {
+				continue;
+			}
+			$data = array_map( 'trim', $data );
+			if ( empty( $data['sale_number'] ) || empty( $data['total'] ) ) {
+				continue;
+			}
+			$res = Simple_POS_Sales::create_sale(
+				array(
+					'sale_number'      => $data['sale_number'],
+					'customer_id'      => isset( $data['customer_id'] ) ? (int) $data['customer_id'] : 0,
+					'cashier_id'       => isset( $data['cashier_id'] ) ? (int) $data['cashier_id'] : 0,
+					'subtotal'         => isset( $data['subtotal'] ) ? (float) $data['subtotal'] : 0,
+					'discount_amount'  => isset( $data['discount_amount'] ) ? (float) $data['discount_amount'] : 0,
+					'tax_amount'       => isset( $data['tax_amount'] ) ? (float) $data['tax_amount'] : 0,
+					'total'            => isset( $data['total'] ) ? (float) $data['total'] : 0,
+					'payment_method'   => sanitize_text_field( $data['payment_method'] ),
+					'status'           => isset( $data['status'] ) ? sanitize_text_field( $data['status'] ) : 'completed',
+					'tax_country'      => isset( $data['tax_country'] ) ? sanitize_text_field( $data['tax_country'] ) : '',
+					'tax_state'        => isset( $data['tax_state'] ) ? sanitize_text_field( $data['tax_state'] ) : '',
+				)
+			);
+			if ( is_wp_error( $res ) ) {
+				$errors[] = "Row $rownum: " . $res->get_error_message();
+			} else {
+				++$imported;
+			}
+		}
+		fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+		return array(
+			'imported' => $imported,
+			'errors'   => $errors,
+		);
 	}
 }

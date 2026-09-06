@@ -25,18 +25,24 @@ $total_pages = $low_stock_filter ? 1 : (int) ceil( $products_result['total'] / 2
 $variants_for_edit = $editing_product ? Simple_POS_Variants::get_variants($editing_product->id,'any') : array();
 ?>
 <div class="wrap simple-pos-wrap simple-pos-products-page">
-	<div class="simple-pos-page-header">
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'Products', 'simple-pos' ); ?></h1>
-		<div class="simple-pos-page-actions">
-			<a class="page-title-action" href="<?php echo esc_url(admin_url('admin.php?page=simple-pos-barcode'));?>"><?php esc_html_e( 'Barcode Labels', 'simple-pos' ); ?></a>
-			<a class="page-title-action" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=simple_pos_export_products'), 'simple_pos_export_products'));?>"><?php esc_html_e( 'Export CSV', 'simple-pos' ); ?></a>
-			<form method="post" enctype="multipart/form-data" action="<?php echo esc_url(admin_url('admin-post.php'));?>" class="simple-pos-inline-form">
-				<?php wp_nonce_field('simple_pos_import_products');?><input type="hidden" name="action" value="simple_pos_import_products" />
-				<input type="file" name="csv_file" accept=".csv" required />
-				<button class="button" type="submit"><?php esc_html_e( 'Import CSV', 'simple-pos' ); ?></button>
-			</form>
+		<div class="simple-pos-page-header">
+			<h1 class="wp-heading-inline"><?php esc_html_e( 'Products', 'simple-pos' ); ?></h1>
+			<div class="simple-pos-page-actions">
+				<a class="page-title-action" href="<?php echo esc_url(admin_url('admin.php?page=simple-pos-barcode'));?>"><?php esc_html_e( 'Barcode Labels', 'simple-pos' ); ?></a>
+				<a class="page-title-action" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=simple_pos_export_categories'), 'simple_pos_export_categories'));?>"><?php esc_html_e( 'Export Categories CSV', 'simple-pos' ); ?></a>
+				<form method="post" enctype="multipart/form-data" action="<?php echo esc_url(admin_url('admin-post.php'));?>" class="simple-pos-inline-form">
+					<?php wp_nonce_field('simple_pos_import_categories');?><input type="hidden" name="action" value="simple_pos_import_categories" />
+					<input type="file" name="csv_file" accept=".csv" required />
+					<button class="button" type="submit"><?php esc_html_e( 'Import Categories CSV', 'simple-pos' ); ?></button>
+				</form>
+				<a class="page-title-action" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=simple_pos_export_products'), 'simple_pos_export_products'));?>"><?php esc_html_e( 'Export Products CSV', 'simple-pos' ); ?></a>
+				<form method="post" enctype="multipart/form-data" action="<?php echo esc_url(admin_url('admin-post.php'));?>" class="simple-pos-inline-form">
+					<?php wp_nonce_field('simple_pos_import_products');?><input type="hidden" name="action" value="simple_pos_import_products" />
+					<input type="file" name="csv_file" accept=".csv" required />
+					<button class="button" type="submit"><?php esc_html_e( 'Import Products CSV', 'simple-pos' ); ?></button>
+				</form>
+			</div>
 		</div>
-	</div>
 	<div class="simple-pos-columns">
 		<div class="simple-pos-col-main">
 			<div class="simple-pos-card simple-pos-filter-bar">

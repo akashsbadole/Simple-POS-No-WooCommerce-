@@ -141,3 +141,4 @@ function simple_pos() {
 	return Simple_POS_Plugin::instance();
 }
 simple_pos();
+require_once dirname( __FILE__ ) . '/includes/class-pos-verticals.php'; require_once dirname( __FILE__ ) . '/includes/class-pos-setup.php'; if ( is_admin() ) { Simple_POS_Setup::init(); } 

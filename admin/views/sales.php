@@ -107,16 +107,21 @@ $result      = Simple_POS_Sales::get_sales( array(
 $total_pages = (int) ceil( $result['total'] / 20 );
 ?>
 <div class="wrap simple-pos-wrap">
-	<div class="simple-pos-page-header">
-		<h1><?php esc_html_e( 'Sales History', 'simple-pos' ); ?></h1>
-		<div class="simple-pos-page-actions">
-			<form method="get" action="<?php echo esc_url(admin_url('admin-post.php'));?>" class="simple-pos-inline-form">
-				<?php wp_nonce_field('simple_pos_export_sales');?><input type="hidden" name="action" value="simple_pos_export_sales"/>
-				<input type="hidden" name="date_from" value="<?php echo esc_attr($date_from);?>"/><input type="hidden" name="date_to" value="<?php echo esc_attr($date_to);?>"/>
-				<button class="button" type="submit"><?php esc_html_e('Export CSV','simple-pos');?></button>
-			</form>
+		<div class="simple-pos-page-header">
+			<h1><?php esc_html_e( 'Sales History', 'simple-pos' ); ?></h1>
+			<div class="simple-pos-page-actions">
+				<form method="get" action="<?php echo esc_url(admin_url('admin-post.php'));?>" class="simple-pos-inline-form">
+					<?php wp_nonce_field('simple_pos_export_sales');?><input type="hidden" name="action" value="simple_pos_export_sales"/>
+					<input type="hidden" name="date_from" value="<?php echo esc_attr($date_from);?>"/><input type="hidden" name="date_to" value="<?php echo esc_attr($date_to);?>"/>
+					<button class="button" type="submit"><?php esc_html_e('Export CSV','simple-pos');?></button>
+				</form>
+				<form method="post" enctype="multipart/form-data" action="<?php echo esc_url(admin_url('admin-post.php'));?>" class="simple-pos-inline-form">
+					<?php wp_nonce_field('simple_pos_import_sales');?><input type="hidden" name="action" value="simple_pos_import_sales" />
+					<input type="file" name="csv_file" accept=".csv" required />
+					<button class="button" type="submit"><?php esc_html_e( 'Import CSV', 'simple-pos' ); ?></button>
+				</form>
+			</div>
 		</div>
-	</div>
 
 	<div class="simple-pos-card simple-pos-filter-bar">
 		<form method="get" class="simple-pos-filters">

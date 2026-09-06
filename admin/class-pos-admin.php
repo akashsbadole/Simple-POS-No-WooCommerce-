@@ -39,7 +39,11 @@ class Simple_POS_Admin {
 		add_action( 'admin_post_simple_pos_import_products', array( __CLASS__, 'handle_import_products' ) );
 		add_action( 'admin_post_simple_pos_export_products', array( __CLASS__, 'handle_export_products' ) );
 		add_action( 'admin_post_simple_pos_export_sales', array( __CLASS__, 'handle_export_sales' ) );
+		add_action( 'admin_post_simple_pos_import_sales', array( __CLASS__, 'handle_import_sales' ) );
+		add_action( 'admin_post_simple_pos_export_categories', array( __CLASS__, 'handle_export_categories' ) );
+		add_action( 'admin_post_simple_pos_import_categories', array( __CLASS__, 'handle_import_categories' ) );
 		add_action( 'admin_post_simple_pos_backup_export', array( __CLASS__, 'handle_backup_export' ) );
+		add_action( 'admin_post_simple_pos_backup_import', array( __CLASS__, 'handle_backup_import' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'low_stock_notice' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'action_result_notice' ) );
 		add_shortcode( 'simple_pos_terminal', array( __CLASS__, 'render_shortcode_terminal' ) );
@@ -584,8 +588,8 @@ class Simple_POS_Admin {
 		check_admin_referer( 'simple_pos_export_products' );
 		$csv = Simple_POS_CSV::export_products();
 		header( 'Content-Type: text/csv' );
-		header( 'Content-Disposition: attachment; filename="pos-products-' . date( 'Y-m-d' ) . '.csv"' );
-		echo $csv;
+		header( 'Content-Disposition: attachment; filename="pos-products-' . gmdate( 'Y-m-d' ) . '.csv"' );
+		echo $csv; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit;
 	}
 	public static function handle_export_sales() {
@@ -597,9 +601,56 @@ class Simple_POS_Admin {
 		$to=isset($_GET['date_to'])? sanitize_text_field($_GET['date_to']):''; // phpcs:ignore
 		$csv  = Simple_POS_CSV::export_sales( $from, $to );
 		header( 'Content-Type: text/csv' );
-		header( 'Content-Disposition: attachment; filename="pos-sales-' . date( 'Y-m-d' ) . '.csv"' );
-		echo $csv;
+		header( 'Content-Disposition: attachment; filename="pos-sales-' . gmdate( 'Y-m-d' ) . '.csv"' );
+		echo $csv; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit;
+	}
+
+	/**
+	 * Export all categories as CSV.
+	 */
+	public static function handle_export_categories() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_export_categories' );
+		$csv = Simple_POS_CSV::export_categories();
+		header( 'Content-Type: text/csv' );
+		header( 'Content-Disposition: attachment; filename="pos-categories-' . gmdate( 'Y-m-d' ) . '.csv"' );
+		echo $csv; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		exit;
+	}
+	public static function handle_import_categories() {
+		if ( ! current_user_can( 'manage_pos_products' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_import_categories' );
+		if ( empty( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			self::redirect_with_result( 'simple-pos-products', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'simple-pos' ) ), '' );
+			return;
+		}
+		$res = Simple_POS_CSV::import_categories( $_FILES['csv_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d categories.', 'simple-pos' ), $res['imported'] );
+		if ( ! empty( $res['errors'] ) ) {
+			$msg .= ' ' . implode( ' ', array_slice( $res['errors'], 0, 3 ) );
+		}
+		self::redirect_with_result( 'simple-pos-products', is_wp_error( $res ) ? $res : true, $msg );
+	}
+	public static function handle_import_sales() {
+		if ( ! current_user_can( 'view_pos_sales' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_import_sales' );
+		if ( empty( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			self::redirect_with_result( 'simple-pos-sales', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'simple-pos' ) ), '' );
+			return;
+		}
+		$res = Simple_POS_CSV::import_sales( $_FILES['csv_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d sales.', 'simple-pos' ), $res['imported'] );
+		if ( ! empty( $res['errors'] ) ) {
+			$msg .= ' ' . implode( ' ', array_slice( $res['errors'], 0, 3 ) );
+		}
+		self::redirect_with_result( 'simple-pos-sales', is_wp_error( $res ) ? $res : true, $msg );
 	}
 
 	/**
@@ -631,9 +682,70 @@ class Simple_POS_Admin {
 
 		$json = wp_json_encode( $tables, JSON_PRETTY_PRINT );
 		header( 'Content-Type: application/json' );
-		header( 'Content-Disposition: attachment; filename="simple-pos-backup-' . date( 'Y-m-d' ) . '.json"' );
-		echo $json;
+		header( 'Content-Disposition: attachment; filename="simple-pos-backup-' . gmdate( 'Y-m-d' ) . '.json"' );
+		echo $json; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		exit;
+	}
+
+	public static function handle_backup_import() {
+		if ( ! current_user_can( 'manage_pos_settings' ) ) {
+			wp_die( esc_html__( 'No permission.', 'simple-pos' ) );
+		}
+		check_admin_referer( 'simple_pos_backup_import' );
+
+		if ( empty( $_FILES['backup_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'simple-pos' ) ), '' );
+			return;
+		}
+
+		$file_path = $_FILES['backup_file']['tmp_name']; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$content   = file_get_contents( $file_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_get_contents
+		$data      = json_decode( $content, true );
+
+		if ( ! is_array( $data ) ) {
+			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_invalid_backup', __( 'Invalid backup file.', 'simple-pos' ) ), '' );
+			return;
+		}
+
+		global $wpdb;
+		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		$allowed_tables = array(
+			'settings',
+			'products',
+			'product_variants',
+			'customers',
+			'sales',
+			'sale_items',
+			'stock_log',
+			'suppliers',
+			'purchase_orders',
+			'po_items',
+			'tax_classes',
+			'tax_rates',
+			'categories',
+		);
+
+		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 0' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		foreach ( $allowed_tables as $table_name ) {
+			if ( ! isset( $data[ $table_name ] ) || ! is_array( $data[ $table_name ] ) ) {
+				continue;
+			}
+			$table = $prefix . $table_name;
+			foreach ( $data[ $table_name ] as $row ) {
+				if ( ! is_array( $row ) ) {
+					continue;
+				}
+				if ( 'settings' === $table_name ) {
+					Simple_POS_Settings::update( $row );
+					continue;
+				}
+				$format = array_fill( 0, count( $row ), '%s' );
+				$wpdb->replace( $table, $row, $format ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			}
+		}
+		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 1' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+
+		self::redirect_with_result( 'simple-pos-backup', true, __( 'Backup restored successfully.', 'simple-pos' ) );
 	}
 
 	/**
