@@ -678,7 +678,7 @@ class Simple_POS_REST_API {
 	public static function tax_calculate( WP_REST_Request $r ) {
 		$p               = $r->get_json_params();
 		$lines           = $p['lines'] ?? array();
-		$country         = $p['country'] ?? Simple_POS_Settings::get( 'tax_country', 'US' );
+		$country         = isset( $p['country'] ) && '' !== trim( (string) $p['country'] ) ? strtoupper( sanitize_text_field( (string) $p['country'] ) ) : strtoupper( (string) Simple_POS_Settings::get( 'tax_country', 'US' ) );
 		$state           = $p['state'] ?? Simple_POS_Settings::get( 'tax_state', '' );
 		$discount_type   = $p['discount_type'] ?? 'fixed';
 		$discount_amount = $p['discount_amount'] ?? 0;

@@ -44,6 +44,7 @@ class Simple_POS_Admin {
 		add_action( 'admin_post_simple_pos_import_categories', array( __CLASS__, 'handle_import_categories' ) );
 		add_action( 'admin_post_simple_pos_backup_export', array( __CLASS__, 'handle_backup_export' ) );
 		add_action( 'admin_post_simple_pos_backup_import', array( __CLASS__, 'handle_backup_import' ) );
+		add_action( 'admin_post_simple_pos_addon_toggle', array( __CLASS__, 'handle_addon_toggle' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'low_stock_notice' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'action_result_notice' ) );
 		add_shortcode( 'simple_pos_terminal', array( __CLASS__, 'render_shortcode_terminal' ) );
@@ -77,6 +78,7 @@ class Simple_POS_Admin {
 		add_submenu_page( 'simple-pos-terminal', __( 'Barcode Labels', 'simple-pos' ), __( 'Barcode Labels', 'simple-pos' ), 'manage_pos_products', 'simple-pos-barcode', array( __CLASS__, 'render_barcode_page' ) );
 		add_submenu_page( 'simple-pos-terminal', __( 'Settings', 'simple-pos' ), __( 'Settings', 'simple-pos' ), 'manage_pos_settings', 'simple-pos-settings', array( __CLASS__, 'render_settings_page' ) );
 		add_submenu_page( 'simple-pos-terminal', __( 'Backup', 'simple-pos' ), __( 'Backup', 'simple-pos' ), 'manage_pos_settings', 'simple-pos-backup', array( __CLASS__, 'render_backup_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Add-ons', 'simple-pos' ), __( 'Add-ons', 'simple-pos' ), 'manage_pos_settings', 'simple-pos-addons', array( __CLASS__, 'render_addons_page' ) );
 	}
 
 	/**
@@ -119,6 +121,7 @@ class Simple_POS_Admin {
 			'storeGstin'     => Simple_POS_Settings::get( 'store_gstin', '' ),
 			'receiptHeader'  => Simple_POS_Settings::get( 'receipt_header', '' ),
 			'receiptFooter'  => Simple_POS_Settings::get( 'receipt_footer', '' ),
+			'cashierName'    => wp_get_current_user()->display_name,
 			'caps'           => array(
 				'voidSales'       => current_user_can( 'void_pos_sales' ),
 				'manageProducts'  => current_user_can( 'manage_pos_products' ),
@@ -197,6 +200,7 @@ class Simple_POS_Admin {
 			'storeGstin'     => Simple_POS_Settings::get( 'store_gstin', '' ),
 			'receiptHeader'  => Simple_POS_Settings::get( 'receipt_header', '' ),
 			'receiptFooter'  => Simple_POS_Settings::get( 'receipt_footer', '' ),
+			'cashierName'    => wp_get_current_user()->display_name,
 			'caps'           => array(
 				'voidSales'       => current_user_can( 'void_pos_sales' ),
 				'manageProducts'  => current_user_can( 'manage_pos_products' ),
@@ -267,6 +271,29 @@ class Simple_POS_Admin {
 	}
 	public static function render_purchase_orders_page() {
 		include SIMPLE_POS_PLUGIN_DIR . 'admin/views/purchase-orders.php';
+	}
+	public static function render_addons_page() {
+		include SIMPLE_POS_PLUGIN_DIR . 'admin/views/addons.php';
+	}
+
+	/**
+	 * Enable/disable an installed add-on (from the Add-ons screen toggle).
+	 */
+	public static function handle_addon_toggle() {
+		if ( ! current_user_can( 'manage_pos_settings' ) ) {
+			wp_die( esc_html__( 'You are not allowed to manage add-ons.', 'simple-pos' ) );
+		}
+		$addon = isset( $_GET['addon'] ) ? sanitize_key( wp_unslash( $_GET['addon'] ) ) : '';
+		if ( '' === $addon ) {
+			wp_safe_redirect( admin_url( 'admin.php?page=simple-pos-addons' ) );
+			exit;
+		}
+		check_admin_referer( 'simple_pos_addon_toggle_' . $addon );
+
+		Simple_POS_Addons::set_enabled( $addon, ! empty( $_GET['on'] ) );
+
+		wp_safe_redirect( add_query_arg( 'simple_pos_addons_msg', 'updated', admin_url( 'admin.php?page=simple-pos-addons' ) ) );
+		exit;
 	}
 	public static function render_barcode_page() {
 		include SIMPLE_POS_PLUGIN_DIR . 'admin/views/barcode.php';

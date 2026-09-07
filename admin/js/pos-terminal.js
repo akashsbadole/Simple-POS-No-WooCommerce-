@@ -13,7 +13,7 @@ if(typeof window.SimplePOS==='undefined'){
 }
 var state = {
 	products: [], productsTotal:0, page:1, perPage:24, categories:[], activeCategory:0, search:'', cart:[], customers:[],
-	taxRatesCache: {}, heldCart: null, lastSaleId: null
+	taxRatesCache: {}, heldCarts: [], lastSaleId: null
 };
 var els = {};
 function apiFetch(path,options){
@@ -174,7 +174,7 @@ function renderCustomerSelect(){
 function renderCart(){
 	if(!state.cart.length){
 		els.cartItems.innerHTML='<p class="simple-pos-cart-empty">'+window.SimplePOS.i18n.cartEmpty+'</p>';
-		els.checkoutBtn.disabled=true; renderTotals(); return;
+		els.checkoutBtn.disabled=true; renderTotals(); updateHoldRecallButtons(); return;
 	}
 	var html='';
 	state.cart.forEach(function(item,index){
@@ -189,6 +189,7 @@ function renderCart(){
 	els.cartItems.innerHTML=html;
 	els.checkoutBtn.disabled=false;
 	renderTotals();
+	updateHoldRecallButtons();
 }
 // Try server-side tax calc for accuracy, fallback to simple.
 var totalsCache=null;
@@ -306,35 +307,36 @@ function removeItem(index){ state.cart.splice(index,1); els.amountPaid.dataset.t
 function clearCart(){ state.cart=[]; totalsCache=null; els.discountValue.value=0; els.amountPaid.value=''; els.amountPaid.dataset.touched=''; els.cartError.textContent=''; els.taxBreakdownEl.innerHTML=''; renderCart(); }
 function holdCart(){
 	if(!state.cart.length) return;
-	state.heldCart = {
+	state.heldCarts.push({
 		cart: JSON.parse(JSON.stringify(state.cart)),
 		customer_id: els.customerSelect.value||0,
 		customer_type: els.customerType?els.customerType.value:'b2c',
 		discount_type: els.discountType.value,
 		discount_amount: els.discountValue.value
-	};
-	try{ localStorage.setItem('simple_pos_held_cart', JSON.stringify(state.heldCart)); }catch(e){}
+	});
+	try{ localStorage.setItem('simple_pos_held_carts', JSON.stringify(state.heldCarts)); }catch(e){}
 	clearCart();
 	updateHoldRecallButtons();
 }
 function recallCart(){
-	if(!state.heldCart) return;
-	state.cart = state.heldCart.cart;
-	els.customerSelect.value = String(state.heldCart.customer_id||'');
-	if(els.customerType) els.customerType.value = state.heldCart.customer_type||'b2c';
-	els.discountType.value = state.heldCart.discount_type||'fixed';
-	els.discountValue.value = state.heldCart.discount_amount||0;
-	state.heldCart = null;
-	try{ localStorage.removeItem('simple_pos_held_cart'); }catch(e){}
+	if(!state.heldCarts.length) return;
+	var held=state.heldCarts.pop();
+	state.cart = held.cart;
+	els.customerSelect.value = String(held.customer_id||'');
+	if(els.customerType) els.customerType.value = held.customer_type||'b2c';
+	els.discountType.value = held.discount_type||'fixed';
+	els.discountValue.value = held.discount_amount||0;
+	try{ localStorage.setItem('simple_pos_held_carts', JSON.stringify(state.heldCarts)); }catch(e){}
 	els.amountPaid.dataset.touched=''; totalsCache=null; renderCart();
 	updateHoldRecallButtons();
 }
 function updateHoldRecallButtons(){
 	if(els.holdBtn) els.holdBtn.disabled = !state.cart.length;
-	if(els.recallBtn) els.recallBtn.disabled = !state.heldCart;
+	if(els.recallBtn) els.recallBtn.disabled = !state.heldCarts.length;
 }
 function voidLastSale(saleId){
-	if(!saleId) return;
+	if(!saleId){ els.cartError.textContent='No recent sale to void.'; return; }
+	if(!confirm(window.SimplePOS.i18n.confirmVoid||'Void this sale?')) return;
 	els.cartError.textContent = 'Voiding sale #'+saleId+'…';
 	apiFetch('/sales/'+saleId+'/void',{method:'POST', body: '{}'}).then(function(){
 		els.cartError.textContent = 'Sale #'+saleId+' voided. Stock restored.';
@@ -378,6 +380,7 @@ function showReceipt(sale){
 	var storeGstin=window.SimplePOS.storeGstin||'';
 	var header=window.SimplePOS.receiptHeader||'';
 	var footer=window.SimplePOS.receiptFooter||'';
+	var cashierName=window.SimplePOS.cashierName||'';
 	var isB2B = sale.customer_type === 'b2b';
 	var itemsHtml=(sale.items||[]).map(function(item){
 		var rate=parseFloat(item.price||0);
@@ -590,8 +593,8 @@ function init(){
 	if(els.taxState) els.taxState.value=window.SimplePOS.tax.state||'';
 	bindEvents(); renderCart();
 	try {
-		var saved = localStorage.getItem('simple_pos_held_cart');
-		if(saved){ state.heldCart = JSON.parse(saved); }
+		var saved = localStorage.getItem('simple_pos_held_carts');
+		if(saved){ state.heldCarts = JSON.parse(saved); }
 	} catch(e){}
 	var canVoid = window.SimplePOS && window.SimplePOS.caps && window.SimplePOS.caps.voidSales;
 	if(els.voidLastBtn) els.voidLastBtn.style.display = canVoid ? '' : 'none';

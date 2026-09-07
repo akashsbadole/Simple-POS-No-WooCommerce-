@@ -92,6 +92,8 @@ final class Simple_POS_Plugin {
 		require_once SIMPLE_POS_PLUGIN_DIR . 'includes/class-pos-reports.php';
 		require_once SIMPLE_POS_PLUGIN_DIR . 'includes/class-pos-rest-api.php';
 		require_once SIMPLE_POS_PLUGIN_DIR . 'includes/class-pos-csv.php';
+		require_once SIMPLE_POS_PLUGIN_DIR . 'includes/class-pos-addons.php';
+		Simple_POS_Addons::load_enabled();
 
 		if ( is_admin() ) {
 			require_once SIMPLE_POS_PLUGIN_DIR . 'admin/class-pos-admin.php';
@@ -104,6 +106,10 @@ final class Simple_POS_Plugin {
 	private function init_hooks() {
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'plugins_loaded', array( $this, 'maybe_upgrade_db' ) );
+
+		// Add-on boot: fires once every plugin file is loaded, so add-ons of
+		// any load order can hook it (register filters, require files, etc).
+		add_action( 'plugins_loaded', array( $this, 'fire_addon_init' ), 20 );
 
 		// REST API.
 		add_action( 'rest_api_init', array( 'Simple_POS_REST_API', 'register_routes' ) );
@@ -119,6 +125,13 @@ final class Simple_POS_Plugin {
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'simple-pos', false, dirname( SIMPLE_POS_PLUGIN_BASENAME ) . '/languages' );
+	}
+
+	/**
+	 * Fire the add-on bootstrap action (see Simple_POS_Addons docblock).
+	 */
+	public function fire_addon_init() {
+		do_action( 'simple_pos_init' );
 	}
 
 	/**

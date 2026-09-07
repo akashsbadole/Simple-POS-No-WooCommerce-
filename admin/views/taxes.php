@@ -8,7 +8,7 @@ $edit_rate = $edit_rate_id ? Simple_POS_Tax::get_rate($edit_rate_id) : null;
 	<div class="simple-pos-page-header">
 		<h1><?php esc_html_e('Taxes — per-country classes & rates','simple-pos');?></h1>
 	</div>
-	<p class="description"><?php esc_html_e('Set IS country codes (US, IN, DE, FR, GB...) + optional state (CA, MH). Priority low runs first; compound applies on top of prior taxes. Inclusive = price already contains tax.','simple-pos');?></p>
+	<p class="description"><?php esc_html_e('Set ISO country codes (US, IN, DE, FR, GB...) + optional state (CA, MH). Priority low runs first; compound applies on top of prior taxes. Inclusive = price already contains tax.','simple-pos');?></p>
 	<div class="simple-pos-columns">
 		<div class="simple-pos-col-main">
 			<div class="simple-pos-card simple-pos-table-card">
@@ -80,7 +80,20 @@ $edit_rate = $edit_rate_id ? Simple_POS_Tax::get_rate($edit_rate_id) : null;
 					</div>
 					<div class="simple-pos-form-row" style="margin-top:8px">
 						<label><?php esc_html_e('Country','simple-pos');?> <span class="required" aria-hidden="true">*</span> <span class="description"><?php esc_html_e('(ISO2 or * for all)','simple-pos');?></span></label>
-						<input type="text" name="country_code" required value="<?php echo esc_attr($edit_rate->country_code ?? '');?>" class="widefat" placeholder="US, IN, DE, *" />
+						<?php
+						$stored_country = strtoupper( trim( (string) ( $edit_rate->country_code ?? '' ) ) );
+						$country_opts   = Simple_POS_Tax::country_list();
+						$rate_country   = $edit_rate ? $stored_country : strtoupper( (string) Simple_POS_Settings::get( 'tax_country', 'US' ) );
+						?>
+						<select name="country_code" required class="widefat">
+							<option value="*"><?php esc_html_e('* — all countries','simple-pos');?></option>
+							<?php if ( $stored_country && '*' !== $stored_country && ! isset( $country_opts[ $stored_country ] ) ) : ?>
+								<option value="<?php echo esc_attr( $stored_country ); ?>" selected><?php echo esc_html( $stored_country ); ?></option>
+							<?php endif; ?>
+							<?php foreach ( $country_opts as $cc => $cname ) : ?>
+								<option value="<?php echo esc_attr( $cc ); ?>" <?php selected( $rate_country, $cc ); ?>><?php echo esc_html( $cc . ' — ' . $cname ); ?></option>
+							<?php endforeach; ?>
+						</select>
 					</div>
 					<div class="simple-pos-form-row" style="margin-top:8px">
 						<label><?php esc_html_e('State','simple-pos');?> <span class="description"><?php esc_html_e('(optional)','simple-pos');?></span></label>

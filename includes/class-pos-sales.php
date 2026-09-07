@@ -34,7 +34,7 @@ class Simple_POS_Sales {
 			return new WP_Error( 'pos_empty_cart', __( 'Cart is empty.', 'simple-pos' ) );
 		}
 		$settings    = Simple_POS_Settings::get_all();
-		$tax_country = isset( $cart_data['tax_country'] ) ? strtoupper( sanitize_text_field( $cart_data['tax_country'] ) ) : ( isset( $settings['tax_country'] ) ? strtoupper( $settings['tax_country'] ) : 'US' );
+		$tax_country = isset( $cart_data['tax_country'] ) && '' !== trim( (string) $cart_data['tax_country'] ) ? strtoupper( sanitize_text_field( (string) $cart_data['tax_country'] ) ) : ( isset( $settings['tax_country'] ) ? strtoupper( (string) $settings['tax_country'] ) : 'US' );
 		$tax_state   = isset( $cart_data['tax_state'] ) ? strtoupper( sanitize_text_field( $cart_data['tax_state'] ) ) : ( isset( $settings['tax_state'] ) ? strtoupper( $settings['tax_state'] ) : '' );
 		$customer_type = isset( $cart_data['customer_type'] ) && in_array( $cart_data['customer_type'], array( 'b2b', 'b2c' ), true ) ? $cart_data['customer_type'] : 'b2c';
 		if ( empty( $tax_country ) ) {
@@ -87,6 +87,11 @@ class Simple_POS_Sales {
 				'tax_class_id' => $tax_class_id,
 			);
 		}
+		/**
+		 * Let add-ons modify the cart (e.g. apply loyalty points, inject
+		 * fees) before totals are computed.
+		 */
+		$cart_data      = apply_filters( 'simple_pos_cart_data', $cart_data );
 		$discount_type  = ( isset( $cart_data['discount_type'] ) && 'percent' === $cart_data['discount_type'] ) ? 'percent' : 'fixed';
 		$discount_input = isset( $cart_data['discount_amount'] ) ? max( 0, (float) $cart_data['discount_amount'] ) : 0;
 		// Use tax engine to compute totals
@@ -94,6 +99,11 @@ class Simple_POS_Sales {
 			require_once SIMPLE_POS_PLUGIN_DIR . 'includes/class-pos-tax.php';
 		}
 		$calc            = Simple_POS_Tax::calculate_order( $order_lines, $tax_country, $tax_state, $discount_type, $discount_input );
+		/**
+		 * Let add-ons adjust computed totals (e.g. add a service charge or
+		 * round to cash steps). Must return the same array shape.
+		 */
+		$calc            = apply_filters( 'simple_pos_order_calc', $calc, $order_lines, $cart_data );
 		$subtotal        = $calc['subtotal'];
 		$discount_amount = $calc['discount'];
 		$tax_total       = $calc['tax'];
@@ -119,6 +129,7 @@ class Simple_POS_Sales {
 				$amount_paid,
 				$change_due,
 				$customer_id,
+				$customer_type,
 				$note,
 				$tax_country,
 				$tax_state,
@@ -153,10 +164,10 @@ class Simple_POS_Sales {
 						'total'           => $total,
 						'amount_paid'     => $amount_paid,
 						'change_due'      => $change_due,
-					'payment_method'  => $payment_method,
-					'status'          => 'completed',
-					'customer_type'   => $customer_type,
-					'note'            => $note,
+						'payment_method'  => $payment_method,
+						'status'          => 'completed',
+						'customer_type'   => $customer_type,
+						'note'            => $note,
 						'tax_country'     => $tax_country,
 						'tax_state'       => $tax_state,
 						'tax_breakdown'   => wp_json_encode( $tax_breakdown ),
@@ -198,6 +209,12 @@ class Simple_POS_Sales {
 						}
 					}
 				}
+				/**
+				 * Fires after a sale, its line items and stock movements are
+				 * stored. $calc holds the full totals/tax breakdown.
+				 */
+				do_action( 'simple_pos_sale_created', $sale_id, $calc, $line_items );
+
 				return $sale_id;
 			}
 		);

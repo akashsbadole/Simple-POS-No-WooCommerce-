@@ -87,7 +87,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 
 			<div style="display:flex;gap:8px;margin-bottom:8px">
-				<label for="simple-pos-tax-country" style="flex:1"><?php esc_html_e( 'Tax country', 'simple-pos' ); ?> <input type="text" id="simple-pos-tax-country" class="widefat" value="<?php echo esc_attr( Simple_POS_Settings::get( 'tax_country', 'US' ) ); ?>" style="width:80px" aria-label="<?php esc_attr_e( 'Tax country', 'simple-pos' ); ?>" /></label>
+				<label for="simple-pos-tax-country" style="flex:1"><?php esc_html_e( 'Tax country', 'simple-pos' ); ?> <?php
+				$pos_countries  = Simple_POS_Tax::get_configured_countries();
+				$pos_current    = strtoupper( (string) Simple_POS_Settings::get( 'tax_country', 'US' ) );
+				$pos_country_ns = Simple_POS_Tax::country_list();
+				if ( $pos_countries && ! in_array( $pos_current, $pos_countries, true ) ) {
+					$pos_countries[] = $pos_current;
+					sort( $pos_countries );
+				}
+				if ( $pos_countries ) : ?>
+					<select id="simple-pos-tax-country" style="width:80px" aria-label="<?php esc_attr_e( 'Tax country', 'simple-pos' ); ?>">
+						<?php foreach ( $pos_countries as $pos_cc ) : ?>
+							<option value="<?php echo esc_attr( $pos_cc ); ?>" <?php selected( $pos_current, $pos_cc ); ?>><?php echo esc_html( isset( $pos_country_ns[ $pos_cc ] ) ? $pos_cc . ' — ' . $pos_country_ns[ $pos_cc ] : $pos_cc ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else : ?>
+					<input type="text" id="simple-pos-tax-country" class="widefat" value="<?php echo esc_attr( $pos_current ); ?>" style="width:80px" aria-label="<?php esc_attr_e( 'Tax country', 'simple-pos' ); ?>" />
+				<?php endif; ?></label>
 				<label for="simple-pos-tax-state" style="flex:1"><?php esc_html_e( 'State', 'simple-pos' ); ?> <input type="text" id="simple-pos-tax-state" class="widefat" value="<?php echo esc_attr( Simple_POS_Settings::get( 'tax_state', '' ) ); ?>" style="width:80px" aria-label="<?php esc_attr_e( 'State', 'simple-pos' ); ?>" /></label>
 			</div>
 			<div class="simple-pos-totals" id="simple-pos-totals">

@@ -172,6 +172,54 @@ class Simple_POS_Tax {
 		return true;
 	}
 
+	/**
+	 * Distinct country codes that have at least one rate configured — the
+	 * valid choices for the terminal's country selector. Excludes the '*'
+	 * wildcard (a wildcard rate applies everywhere, it is not a country).
+	 *
+	 * @return string[] Uppercase ISO2 codes, sorted.
+	 */
+	public static function get_configured_countries() {
+		global $wpdb;
+		$table = Simple_POS_DB::table( 'tax_rates' );
+		$rows  = $wpdb->get_col( "SELECT DISTINCT country_code FROM {$table} ORDER BY country_code ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$out   = array();
+		foreach ( (array) $rows as $code ) {
+			$code = strtoupper( trim( (string) $code ) );
+			if ( '' !== $code && '*' !== $code && ! in_array( $code, $out, true ) ) {
+				$out[] = $code;
+			}
+		}
+		sort( $out );
+		return $out;
+	}
+
+	const COUNTRY_CODES_A = 'AD:Andorra,AE:United Arab Emirates,AF:Afghanistan,AG:Antigua and Barbuda,AI:Anguilla,AL:Albania,AM:Armenia,AO:Angola,AQ:Antarctica,AR:Argentina,AS:American Samoa,AT:Austria,AU:Australia,AW:Aruba,AX:Aland Islands,AZ:Azerbaijan,BA:Bosnia and Herzegovina,BB:Barbados,BD:Bangladesh,BE:Belgium,BF:Burkina Faso,BG:Bulgaria,BH:Bahrain,BI:Burundi,BJ:Benin,BL:Saint Barthelemy,BM:Bermuda,BN:Brunei,BO:Bolivia,BQ:Bonaire Sint Eustatius and Saba,BR:Brazil,BS:Bahamas,BT:Bhutan,BV:Bouvet Island,BW:Botswana,BY:Belarus,BZ:Belize,CA:Canada,CC:Cocos (Keeling) Islands,CD:Congo (Democratic Republic),CF:Central African Republic,CG:Congo,CH:Switzerland,CI:Cote d Ivoire,CK:Cook Islands,CL:Chile,CM:Cameroon,CN:China,CO:Colombia,CR:Costa Rica,CU:Cuba,CV:Cabo Verde,CW:Curacao,CX:Christmas Island,CY:Cyprus,CZ:Czechia,DE:Germany,DJ:Djibouti,DK:Denmark,DM:Dominica,DO:Dominican Republic,DZ:Algeria,EC:Ecuador,EE:Estonia,EG:Egypt,EH:Western Sahara,ER:Eritrea,ES:Spain,ET:Ethiopia,FI:Finland,FJ:Fiji,FK:Falkland Islands,FM:Micronesia,FO:Faroe Islands,FR:France,GA:Gabon,GB:United Kingdom,GD:Grenada,GE:Georgia,GF:French Guiana,GG:Guernsey,GH:Ghana,GI:Gibraltar,GL:Greenland,GM:Gambia,GN:Guinea,GP:Guadeloupe,GQ:Equatorial Guinea,GR:Greece,GS:South Georgia and the South Sandwich Islands,GT:Guatemala,GU:Guam,GW:Guinea-Bissau,GY:Guyana';
+
+	const COUNTRY_CODES_B = 'HK:Hong Kong,HM:Heard Island and McDonald Islands,HN:Honduras,HR:Croatia,HT:Haiti,HU:Hungary,ID:Indonesia,IE:Ireland,IL:Israel,IM:Isle of Man,IN:India,IO:British Indian Ocean Territory,IQ:Iraq,IR:Iran,IS:Iceland,IT:Italy,JE:Jersey,JM:Jamaica,JO:Jordan,JP:Japan,KE:Kenya,KG:Kyrgyzstan,KH:Cambodia,KI:Kiribati,KM:Comoros,KN:Saint Kitts and Nevis,KP:North Korea,KR:South Korea,KW:Kuwait,KY:Cayman Islands,KZ:Kazakhstan,LA:Laos,LB:Lebanon,LC:Saint Lucia,LI:Liechtenstein,LK:Sri Lanka,LR:Liberia,LS:Lesotho,LT:Lithuania,LU:Luxembourg,LV:Latvia,LY:Libya,MA:Morocco,MC:Monaco,MD:Moldova,ME:Montenegro,MF:Saint Martin (French part),MG:Madagascar,MH:Marshall Islands,MK:North Macedonia,ML:Mali,MM:Myanmar,MN:Mongolia,MO:Macao,MP:Northern Mariana Islands,MQ:Martinique,MR:Mauritania,MS:Montserrat,MT:Malta,MU:Mauritius,MV:Maldives,MW:Malawi,MX:Mexico,MY:Malaysia,MZ:Mozambique,NA:Namibia,NC:New Caledonia,NE:Niger,NF:Norfolk Island,NG:Nigeria,NI:Nicaragua,NL:Netherlands,NO:Norway,NP:Nepal,NR:Nauru,NU:Niue,NZ:New Zealand,OM:Oman,PA:Panama,PE:Peru,PF:French Polynesia,PG:Papua New Guinea,PH:Philippines,PK:Pakistan,PL:Poland,PM:Saint Pierre and Miquelon,PN:Pitcairn,PR:Puerto Rico,PS:Palestine,PT:Portugal,PW:Palau,PY:Paraguay,QA:Qatar,RE:Reunion,RO:Romania,RS:Serbia,RU:Russia,RW:Rwanda,SA:Saudi Arabia,SB:Solomon Islands,SC:Seychelles,SD:Sudan,SE:Sweden,SG:Singapore,SH:Saint Helena,SI:Slovenia,SJ:Svalbard and Jan Mayen,SK:Slovakia,SL:Sierra Leone,SM:San Marino,SN:Senegal,SO:Somalia,SR:Suriname,SS:South Sudan,ST:Sao Tome and Principe,SV:El Salvador,SX:Sint Maarten,SY:Syria,SZ:Eswatini,TC:Turks and Caicos Islands,TD:Chad,TF:French Southern Territories,TG:Togo,TH:Thailand,TJ:Tajikistan,TK:Tokelau,TL:Timor-Leste,TM:Turkmenistan,TN:Tunisia,TO:Tonga,TR:Turkey,TT:Trinidad and Tobago,TV:Tuvalu,TW:Taiwan,TZ:Tanzania,UA:Ukraine,UG:Uganda,UM:United States Minor Outlying Islands,US:United States,UY:Uruguay,UZ:Uzbekistan,VA:Holy See (Vatican),VC:Saint Vincent and the Grenadines,VE:Venezuela,VG:Virgin Islands (British),VI:Virgin Islands (U.S.),VN:Viet Nam,VU:Vanuatu,WF:Wallis and Futuna,WS:Samoa,YE:Yemen,YT:Mayotte,ZA:South Africa,ZM:Zambia,ZW:Zimbabwe';
+
+	/**
+	 * Canonical ISO 3166-1 alpha-2 country codes for selects (rate editor,
+	 * terminal labels). Keeps stored country codes consistent so per-country
+	 * rate matching always hits.
+	 *
+	 * @return array code => label
+	 */
+	public static function country_list() {
+		static $list = null;
+		if ( null !== $list ) {
+			return $list;
+		}
+		$list = array();
+		foreach ( explode( ',', self::COUNTRY_CODES_A . ',' . self::COUNTRY_CODES_B ) as $pair ) {
+			$parts = explode( ':', $pair, 2 );
+			if ( 2 === count( $parts ) ) {
+				$list[ $parts[0] ] = $parts[1];
+			}
+		}
+		return $list;
+	}
+
 	public static function pos_round( $value, $decimals = 2 ) {
 		return round( (float) $value, $decimals, PHP_ROUND_HALF_UP );
 	}
@@ -314,22 +362,24 @@ class Simple_POS_Tax {
 		$taxable             = $discount_before_tax ? $taxable_before : $base;
 		$rates               = $class_id ? self::resolve_rates( $class_id, $country, $state ) : array();
 		if ( empty( $rates ) ) {
+			$gross = $taxable;
+			if ( ! $discount_before_tax && $discount_share > 0 ) {
+				$gross = max( 0, $gross - $discount_share );
+			}
 			return array(
 				'taxable'    => $round ? self::pos_round( $taxable, 2 ) : $taxable,
 				'tax_amount' => 0,
-				'gross'      => $round ? self::pos_round( $taxable, 2 ) : $taxable,
+				'gross'      => $round ? self::pos_round( $gross, 2 ) : $gross,
 				'breakdown'  => array(),
 				'rate'       => 0,
 			);
 		}
-		$has_inclusive = false;
+		$force_inclusive = ! empty( $settings['tax_inclusive'] );
+		$has_inclusive   = false;
 		foreach ( $rates as $r ) {
-			if ( $r->is_inclusive ) {
+			if ( $force_inclusive || $r->is_inclusive ) {
 				$has_inclusive = true;
 			}
-		}
-		if ( ! empty( $settings['tax_inclusive'] ) ) {
-			$has_inclusive = true;
 		}
 		$breakdown       = array();
 		$total_tax       = 0;
@@ -337,14 +387,14 @@ class Simple_POS_Tax {
 		if ( $has_inclusive ) {
 			$exclusive_rates = array_filter(
 				$rates,
-				function ( $r ) {
-					return ! $r->is_inclusive;
+				function ( $r ) use ( $force_inclusive ) {
+					return ! $force_inclusive && ! $r->is_inclusive;
 				}
 			);
 			$inclusive_rates = array_filter(
 				$rates,
-				function ( $r ) {
-					return $r->is_inclusive;
+				function ( $r ) use ( $force_inclusive ) {
+					return $force_inclusive || $r->is_inclusive;
 				}
 			);
 			$incl_tax        = 0;
@@ -454,7 +504,7 @@ class Simple_POS_Tax {
 		$subtotal = self::pos_round( $subtotal, 2 );
 		$discount = 0;
 		if ( 'percent' === $discount_type ) {
-			$discount = self::pos_round( $subtotal * ( (float) $discount_input / 100 ), 2 );
+			$discount = self::pos_round( $subtotal * min( 100, (float) $discount_input ) / 100, 2 );
 		} else {
 			$discount = self::pos_round( min( (float) $discount_input, $subtotal ), 2 );
 		}
