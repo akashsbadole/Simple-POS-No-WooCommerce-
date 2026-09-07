@@ -101,9 +101,12 @@ $edit_rate = $edit_rate_id ? Simple_POS_Tax::get_rate($edit_rate_id) : null;
 					<div class="simple-pos-form-row" style="margin-top:8px">
 						<label class="simple-pos-checkbox"><input type="checkbox" name="is_inclusive" value="1" <?php checked($edit_rate->is_inclusive ?? 0,1);?> /> <?php esc_html_e('Inclusive (price contains tax)','simple-pos');?></label>
 					</div>
-					<div class="simple-pos-form-row" style="margin-top:8px">
-						<label class="simple-pos-checkbox"><input type="checkbox" name="is_compound" value="1" <?php checked($edit_rate->is_compound ?? 0,1);?> /> <?php esc_html_e('Compound (on top of prior taxes)','simple-pos');?></label>
-					</div>
+				<div class="simple-pos-form-row" style="margin-top:8px">
+					<label class="simple-pos-checkbox"><input type="checkbox" name="is_compound" value="1" <?php checked($edit_rate->is_compound ?? 0,1);?> /> <?php esc_html_e('Compound (on top of prior taxes)','simple-pos');?></label>
+				</div>
+				<div class="simple-pos-form-row" style="margin-top:8px">
+					<label class="simple-pos-checkbox"><input type="checkbox" name="gst_split" value="1" <?php checked($edit_rate->gst_split ?? 0,1);?> /> <?php esc_html_e('GST split (50/50 CGST+SGST for intrastate, IGST for interstate)','simple-pos');?></label>
+				</div>
 					<div class="simple-pos-form-actions" style="margin-top:10px">
 						<button class="button button-primary" type="submit"><?php echo $edit_rate? esc_html__('Update','simple-pos'):esc_html__('Add','simple-pos');?> <?php esc_html_e('Rate','simple-pos');?></button>
 						<?php if($edit_rate):?><a class="button" href="<?php echo esc_url(admin_url('admin.php?page=simple-pos-taxes'));?>"><?php esc_html_e('Cancel','simple-pos');?></a><?php endif;?>

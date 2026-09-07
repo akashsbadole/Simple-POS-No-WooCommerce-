@@ -35,8 +35,9 @@ if ( $view_id ) {
 				<tbody>
 					<tr><th><?php esc_html_e( 'Date', 'simple-pos' ); ?></th><td><?php echo esc_html( mysql2date( 'M j, Y g:i a', $sale->created_at ) ); ?></td></tr>
 					<tr><th><?php esc_html_e( 'Cashier', 'simple-pos' ); ?></th><td><?php echo esc_html( $cashier ? $cashier->display_name : '—' ); ?></td></tr>
-					<tr><th><?php esc_html_e( 'Customer', 'simple-pos' ); ?></th><td><?php echo esc_html( $customer ? $customer->name : __( 'Walk-in', 'simple-pos' ) ); ?></td></tr>
-					<tr><th><?php esc_html_e( 'Payment method', 'simple-pos' ); ?></th><td><?php echo esc_html( ucfirst( $sale->payment_method ) ); ?></td></tr>
+				<tr><th><?php esc_html_e( 'Customer', 'simple-pos' ); ?></th><td><?php echo esc_html( $customer ? $customer->name : __( 'Walk-in', 'simple-pos' ) ); ?></td></tr>
+				<tr><th><?php esc_html_e( 'Customer type', 'simple-pos' ); ?></th><td><?php echo esc_html( strtoupper( $sale->customer_type ?? 'b2c' ) ); ?></td></tr>
+				<tr><th><?php esc_html_e( 'Payment method', 'simple-pos' ); ?></th><td><?php echo esc_html( ucfirst( $sale->payment_method ) ); ?></td></tr>
 					<tr><th><?php esc_html_e( 'Tax country/state', 'simple-pos' ); ?></th><td><?php echo esc_html( ($sale->tax_country?:'—').' / '.($sale->tax_state?:'—') ); ?></td></tr>
 					<?php if($tax_breakdown): ?><tr><th><?php esc_html_e('Tax breakdown','simple-pos');?></th><td><?php foreach($tax_breakdown as $b) echo esc_html($b['name'].' '.$b['rate'].'% '.Simple_POS_DB::format_currency($b['amount'])).'<br>';?></td></tr><?php endif;?>
 				</tbody>
@@ -58,7 +59,10 @@ if ( $view_id ) {
 				<tbody>
 					<?php foreach ( $items as $item ) : ?>
 						<tr>
-							<td><?php echo esc_html( $item->product_name ); ?></td>
+							<td>
+								<?php echo esc_html( $item->product_name ); ?>
+								<?php if ( ! empty( $item->hsn_sac_code ) ) : ?><br><code><?php echo esc_html( $item->hsn_sac_code ); ?></code><?php endif; ?>
+							</td>
 							<td><code><?php echo esc_html( $item->sku ); ?></code></td>
 							<td class="num"><?php echo esc_html( $item->qty ); ?></td>
 							<td class="num"><?php echo esc_html( Simple_POS_DB::format_currency( $item->price ) ); ?></td>

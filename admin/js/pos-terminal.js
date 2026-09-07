@@ -309,6 +309,7 @@ function holdCart(){
 	state.heldCart = {
 		cart: JSON.parse(JSON.stringify(state.cart)),
 		customer_id: els.customerSelect.value||0,
+		customer_type: els.customerType?els.customerType.value:'b2c',
 		discount_type: els.discountType.value,
 		discount_amount: els.discountValue.value
 	};
@@ -320,6 +321,7 @@ function recallCart(){
 	if(!state.heldCart) return;
 	state.cart = state.heldCart.cart;
 	els.customerSelect.value = String(state.heldCart.customer_id||'');
+	if(els.customerType) els.customerType.value = state.heldCart.customer_type||'b2c';
 	els.discountType.value = state.heldCart.discount_type||'fixed';
 	els.discountValue.value = state.heldCart.discount_amount||0;
 	state.heldCart = null;
@@ -350,6 +352,7 @@ function doCheckout(){
 	var payload={
 		items: state.cart.map(function(item){ return {product_id:item.product_id, variant_id:item.variant_id, qty:item.qty}; }),
 		customer_id: els.customerSelect.value||0,
+		customer_type: (els.customerType&&els.customerType.value)||'b2c',
 		discount_type: els.discountType.value,
 		discount_amount: parseFloat(els.discountValue.value)||0,
 		payment_method: els.paymentMethod.value,
@@ -375,10 +378,23 @@ function showReceipt(sale){
 	var storeGstin=window.SimplePOS.storeGstin||'';
 	var header=window.SimplePOS.receiptHeader||'';
 	var footer=window.SimplePOS.receiptFooter||'';
+	var isB2B = sale.customer_type === 'b2b';
 	var itemsHtml=(sale.items||[]).map(function(item){
 		var rate=parseFloat(item.price||0);
 		var qty=parseInt(item.qty||0,10);
 		var total=parseFloat(item.line_total||0);
+		var tax=parseFloat(item.tax_amount||0);
+		if(isB2B){
+			var netLine=total-tax;
+			var netRate=qty?netLine/qty:0;
+			return '<tr>'
+				+'<td class="simple-pos-receipt-item">'+escapeHtml(item.product_name)+(item.sku?'<br/><small>'+escapeHtml(item.sku)+'</small>':'')+'</td>'
+				+'<td class="simple-pos-receipt-qty">'+qty+'</td>'
+				+'<td class="simple-pos-receipt-amt">'+formatCurrency(netRate)+'</td>'
+				+'<td class="simple-pos-receipt-amt">'+formatCurrency(tax)+'</td>'
+				+'<td class="simple-pos-receipt-amt">'+formatCurrency(total)+'</td>'
+				+'</tr>';
+		}
 		return '<tr>'
 			+'<td class="simple-pos-receipt-item">'+escapeHtml(item.product_name)+(item.sku?'<br/><small>'+escapeHtml(item.sku)+'</small>':'')+'</td>'
 			+'<td class="simple-pos-receipt-qty">'+qty+'</td>'
@@ -387,7 +403,7 @@ function showReceipt(sale){
 			+'</tr>';
 	}).join('');
 	var breakdownHtml='';
-	try{ var bd=JSON.parse(sale.tax_breakdown||'[]'); if(bd.length){ breakdownHtml=bd.map(function(b){ return '<tr><td colspan="3">'+escapeHtml(b.name)+' @ '+b.rate+'%</td><td class="simple-pos-receipt-amt">'+formatCurrency(b.amount)+'</td></tr>'; }).join(''); } }catch(e){}
+	try{ var bd=JSON.parse(sale.tax_breakdown||'[]'); if(bd.length){ breakdownHtml=bd.map(function(b){ return '<tr><td colspan="'+(isB2B?4:3)+'">'+escapeHtml(b.name)+' @ '+b.rate+'%</td><td class="simple-pos-receipt-amt">'+formatCurrency(b.amount)+'</td></tr>'; }).join(''); } }catch(e){}
 	var metaLines=[];
 	if(storeGstin) metaLines.push(escapeHtml('GSTIN: '+storeGstin));
 	metaLines.push(escapeHtml(sale.sale_number)+' | '+new Date(sale.created_at).toLocaleString());
@@ -402,16 +418,16 @@ function showReceipt(sale){
 		+(header?'<p class="simple-pos-receipt-header">'+escapeHtml(header)+'</p>':'')
 		+'<div class="simple-pos-receipt-meta">'+metaLines.join('<br/>')+'</div>'
 		+'<table class="simple-pos-receipt-table simple-pos-receipt-items">'
-			+'<thead><tr><th>Item</th><th class="simple-pos-receipt-qty">Qty</th><th>Rate</th><th class="simple-pos-receipt-amt">Total</th></tr></thead>'
+			+'<thead><tr><th>Item</th><th class="simple-pos-receipt-qty">Qty</th>'+(isB2B?'<th>Net</th><th>VAT</th>':'<th>Rate</th>')+'<th class="simple-pos-receipt-amt">'+(isB2B?'Gross':'Total')+'</th></tr></thead>'
 			+'<tbody>'+itemsHtml+'</tbody>'
 		+'</table>'
 		+'<table class="simple-pos-receipt-table simple-pos-receipt-totals">'
-			+'<tr><td colspan="3">Subtotal</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.subtotal)+'</td></tr>'
-			+'<tr><td colspan="3">Discount</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.discount_amount)+'</td></tr>'
-			+(breakdownHtml || '<tr><td colspan="3">Tax</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.tax_amount)+'</td></tr>')
-			+'<tr class="simple-pos-receipt-grand"><td colspan="3">Grand Total</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.total)+'</td></tr>'
-			+'<tr><td colspan="3">Paid ('+escapeHtml(sale.payment_method)+')</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.amount_paid)+'</td></tr>'
-			+'<tr><td colspan="3">Change</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.change_due)+'</td></tr>'
+			+'<tr><td colspan="'+(isB2B?4:3)+'">Subtotal</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.subtotal)+'</td></tr>'
+			+'<tr><td colspan="'+(isB2B?4:3)+'">Discount</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.discount_amount)+'</td></tr>'
+			+(breakdownHtml || '<tr><td colspan="'+(isB2B?4:3)+'">Tax</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.tax_amount)+'</td></tr>')
+			+'<tr class="simple-pos-receipt-grand"><td colspan="'+(isB2B?4:3)+'">Grand Total</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.total)+'</td></tr>'
+			+'<tr><td colspan="'+(isB2B?4:3)+'">Paid ('+escapeHtml(sale.payment_method)+')</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.amount_paid)+'</td></tr>'
+			+'<tr><td colspan="'+(isB2B?4:3)+'">Change</td><td class="simple-pos-receipt-amt">'+formatCurrency(sale.change_due)+'</td></tr>'
 		+'</table>'
 		+(cashierName?'<p class="simple-pos-receipt-footer">Operator: '+escapeHtml(cashierName)+'</p>':'')
 		+(footer?'<p class="simple-pos-receipt-footer">'+escapeHtml(footer)+'</p>':'')
@@ -540,6 +556,7 @@ function init(){
 	els.voidLastBtn=document.getElementById('simple-pos-void-last-btn');
 	els.voidReceiptBtn=document.getElementById('simple-pos-void-receipt-btn');
 	els.customerSelect=document.getElementById('simple-pos-customer-select');
+	els.customerType=document.getElementById('simple-pos-customer-type');
 	els.newCustomerBtn=document.getElementById('simple-pos-new-customer');
 	els.newCustomerModal=document.getElementById('simple-pos-new-customer-modal');
 	els.newCustomerName=document.getElementById('simple-pos-new-customer-name');

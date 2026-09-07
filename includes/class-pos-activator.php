@@ -79,9 +79,10 @@ class Simple_POS_Activator {
 			rate DECIMAL(7,4) NOT NULL DEFAULT 0,
 			is_compound TINYINT(1) NOT NULL DEFAULT 0,
 			is_inclusive TINYINT(1) NOT NULL DEFAULT 0,
-			priority INT NOT NULL DEFAULT 0,
-			name VARCHAR(100) NULL,
-			created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		priority INT NOT NULL DEFAULT 0,
+		name VARCHAR(100) NULL,
+		gst_split TINYINT(1) NOT NULL DEFAULT 0,
+		created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (id),
 			KEY class_id (class_id),
 			KEY country_code (country_code),
@@ -101,9 +102,10 @@ class Simple_POS_Activator {
 			tax_class_id BIGINT UNSIGNED NULL,
 			stock_qty INT NOT NULL DEFAULT 0,
 			low_stock_threshold INT NOT NULL DEFAULT 5,
-			track_stock TINYINT(1) NOT NULL DEFAULT 1,
-			image_url VARCHAR(500) NULL,
-			status VARCHAR(20) NOT NULL DEFAULT 'active',
+		track_stock TINYINT(1) NOT NULL DEFAULT 1,
+		image_url VARCHAR(500) NULL,
+		hsn_sac_code VARCHAR(50) NULL,
+		status VARCHAR(20) NOT NULL DEFAULT 'active',
 			created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY  (id),
@@ -126,9 +128,10 @@ class Simple_POS_Activator {
 			stock_qty INT NOT NULL DEFAULT 0,
 			low_stock_threshold INT NOT NULL DEFAULT 5,
 			track_stock TINYINT(1) NOT NULL DEFAULT 1,
-			tax_class_id BIGINT UNSIGNED NULL,
-			image_url VARCHAR(500) NULL,
-			attributes TEXT NULL,
+		tax_class_id BIGINT UNSIGNED NULL,
+		image_url VARCHAR(500) NULL,
+		hsn_sac_code VARCHAR(50) NULL,
+		attributes TEXT NULL,
 			status VARCHAR(20) NOT NULL DEFAULT 'active',
 			created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -167,9 +170,10 @@ class Simple_POS_Activator {
 			total DECIMAL(12,2) NOT NULL DEFAULT 0,
 			amount_paid DECIMAL(12,2) NOT NULL DEFAULT 0,
 			change_due DECIMAL(12,2) NOT NULL DEFAULT 0,
-			payment_method VARCHAR(30) NOT NULL DEFAULT 'cash',
-			status VARCHAR(20) NOT NULL DEFAULT 'completed',
-			note TEXT NULL,
+		payment_method VARCHAR(30) NOT NULL DEFAULT 'cash',
+		status VARCHAR(20) NOT NULL DEFAULT 'completed',
+		customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c',
+		note TEXT NULL,
 			tax_country VARCHAR(10) NULL,
 			tax_state VARCHAR(50) NULL,
 			tax_breakdown TEXT NULL,
@@ -196,10 +200,11 @@ class Simple_POS_Activator {
 			price DECIMAL(12,2) NOT NULL DEFAULT 0,
 			cost_price DECIMAL(12,2) NOT NULL DEFAULT 0,
 			tax_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
-			tax_class_id BIGINT UNSIGNED NULL,
-			tax_breakdown TEXT NULL,
-			tax_rate_applied DECIMAL(7,4) NULL,
-			line_total DECIMAL(12,2) NOT NULL DEFAULT 0,
+		tax_class_id BIGINT UNSIGNED NULL,
+		tax_breakdown TEXT NULL,
+		tax_rate_applied DECIMAL(7,4) NULL,
+		customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c',
+		line_total DECIMAL(12,2) NOT NULL DEFAULT 0,
 			PRIMARY KEY  (id),
 			KEY sale_id (sale_id),
 			KEY product_id (product_id),
@@ -286,6 +291,9 @@ class Simple_POS_Activator {
 		self::seed_tax_data();
 		self::migrate_legacy_tax_rates();
 		self::migrate_add_variant_tax_class();
+		self::migrate_add_hsn_sac_columns();
+		self::migrate_add_gst_split_column();
+		self::migrate_add_customer_type_columns();
 	}
 
 	private static function seed_tax_data() {
@@ -319,44 +327,40 @@ class Simple_POS_Activator {
 		// Seed per-country rates for Standard class.
 		$std        = $class_ids['standard'];
 		$seed_rates = array(
-			// US: 0 default, states override via separate rates if needed; keep national 0.
-			array( $std, 'US', null, 0, 0, 0, 0, 'US Federal' ),
-			array( $std, 'US', 'CA', 7.25, 0, 0, 1, 'California' ),
-			array( $std, 'US', 'NY', 8.0, 0, 0, 1, 'New York' ),
-			array( $std, 'US', 'TX', 6.25, 0, 0, 1, 'Texas' ),
-			array( $std, 'US', 'FL', 6.0, 0, 0, 1, 'Florida' ),
-			// India GST slabs — single national rate (states use same, avoid double-count; add state overrides only if different)
-			array( $std, 'IN', null, 18.0, 0, 0, 0, 'India GST 18%' ),
-			// Europe VAT examples
-			array( $std, 'DE', null, 19.0, 0, 0, 0, 'Germany VAT' ),
-			array( $std, 'FR', null, 20.0, 0, 0, 0, 'France VAT' ),
-			array( $std, 'GB', null, 20.0, 0, 0, 0, 'UK VAT' ),
-			array( $std, 'IT', null, 22.0, 0, 0, 0, 'Italy VAT' ),
-			array( $std, 'ES', null, 21.0, 0, 0, 0, 'Spain VAT' ),
-			array( $std, 'NL', null, 21.0, 0, 0, 0, 'Netherlands VAT' ),
-			// Reduced
-			array( $class_ids['reduced'], 'IN', null, 5.0, 0, 0, 0, 'India GST 5%' ),
-			array( $class_ids['reduced'], 'DE', null, 7.0, 0, 0, 0, 'Germany reduced' ),
-			array( $class_ids['reduced'], 'FR', null, 5.5, 0, 0, 0, 'France reduced' ),
-			array( $class_ids['reduced'], 'GB', null, 5.0, 0, 0, 0, 'UK reduced' ),
-			// Zero / Exempt
-			array( $class_ids['zero'], '*', null, 0, 0, 0, 0, 'Zero' ),
-			array( $class_ids['exempt'], '*', null, 0, 0, 0, 0, 'Exempt' ),
+			array( $std, 'US', null, 0, 0, 0, 0, 'US Federal', 0 ),
+			array( $std, 'US', 'CA', 7.25, 0, 0, 1, 'California', 0 ),
+			array( $std, 'US', 'NY', 8.0, 0, 0, 1, 'New York', 0 ),
+			array( $std, 'US', 'TX', 6.25, 0, 0, 1, 'Texas', 0 ),
+			array( $std, 'US', 'FL', 6.0, 0, 0, 1, 'Florida', 0 ),
+			array( $std, 'IN', null, 18.0, 0, 0, 0, 'India GST 18%', 0 ),
+			array( $std, 'DE', null, 19.0, 0, 0, 0, 'Germany VAT', 0 ),
+			array( $std, 'FR', null, 20.0, 0, 0, 0, 'France VAT', 0 ),
+			array( $std, 'GB', null, 20.0, 0, 0, 0, 'UK VAT', 0 ),
+			array( $std, 'IT', null, 22.0, 0, 0, 0, 'Italy VAT', 0 ),
+			array( $std, 'ES', null, 21.0, 0, 0, 0, 'Spain VAT', 0 ),
+			array( $std, 'NL', null, 21.0, 0, 0, 0, 'Netherlands VAT', 0 ),
+			array( $class_ids['reduced'], 'IN', null, 5.0, 0, 0, 0, 'India GST 5%', 0 ),
+			array( $class_ids['reduced'], 'DE', null, 7.0, 0, 0, 0, 'Germany reduced', 0 ),
+			array( $class_ids['reduced'], 'FR', null, 5.5, 0, 0, 0, 'France reduced', 0 ),
+			array( $class_ids['reduced'], 'GB', null, 5.0, 0, 0, 0, 'UK reduced', 0 ),
+			array( $class_ids['zero'], '*', null, 0, 0, 0, 0, 'Zero', 0 ),
+			array( $class_ids['exempt'], '*', null, 0, 0, 0, 0, 'Exempt', 0 ),
 		);
 		foreach ( $seed_rates as $r ) {
 			$wpdb->insert(
 				$prefix . 'tax_rates',
 				array(
-					'class_id'     => $r[0],
-					'country_code' => $r[1],
-					'state_code'   => $r[2],
-					'rate'         => $r[3],
-					'is_compound'  => $r[4],
-					'is_inclusive' => $r[5],
-					'priority'     => $r[6],
-					'name'         => $r[7],
-					'created_at'   => $now,
-				)
+				'class_id'     => $r[0],
+				'country_code' => $r[1],
+				'state_code'   => $r[2],
+				'rate'         => $r[3],
+				'is_compound'  => $r[4],
+				'is_inclusive' => $r[5],
+				'priority'     => $r[6],
+				'name'         => $r[7],
+				'gst_split'    => isset( $r[8] ) ? (int) $r[8] : 0,
+				'created_at'   => $now,
+			)
 			); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		}
 	}
@@ -390,6 +394,47 @@ class Simple_POS_Activator {
 			return;
 		}
 		$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN tax_class_id BIGINT UNSIGNED NULL AFTER track_stock, ADD KEY tax_class_id (tax_class_id)" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+
+	private static function migrate_add_hsn_sac_columns() {
+		global $wpdb;
+		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		$products = $prefix . 'products';
+		$variants = $prefix . 'product_variants';
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$products}` WHERE Field = 'hsn_sac_code'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( empty( $col ) ) {
+			$wpdb->query( "ALTER TABLE `{$products}` ADD COLUMN hsn_sac_code VARCHAR(50) NULL AFTER image_url" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$variants}` WHERE Field = 'hsn_sac_code'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( empty( $col ) ) {
+			$wpdb->query( "ALTER TABLE `{$variants}` ADD COLUMN hsn_sac_code VARCHAR(50) NULL AFTER image_url" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
+	}
+
+	private static function migrate_add_gst_split_column() {
+		global $wpdb;
+		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		$table  = $prefix . 'tax_rates';
+		$col    = $wpdb->get_col( "SHOW COLUMNS FROM `{$table}` WHERE Field = 'gst_split'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( ! empty( $col ) ) {
+			return;
+		}
+		$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN gst_split TINYINT(1) NOT NULL DEFAULT 0 AFTER name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+
+	private static function migrate_add_customer_type_columns() {
+		global $wpdb;
+		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		$sales = $prefix . 'sales';
+		$items = $prefix . 'sale_items';
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$sales}` WHERE Field = 'customer_type'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( empty( $col ) ) {
+			$wpdb->query( "ALTER TABLE `{$sales}` ADD COLUMN customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c' AFTER status" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$items}` WHERE Field = 'customer_type'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( empty( $col ) ) {
+			$wpdb->query( "ALTER TABLE `{$items}` ADD COLUMN customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c' AFTER tax_rate_applied" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
 	}
 
 	/**

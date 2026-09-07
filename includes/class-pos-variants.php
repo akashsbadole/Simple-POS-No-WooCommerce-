@@ -185,6 +185,7 @@ class Simple_POS_Variants {
 			'track_stock'         => isset( $data['track_stock'] ) ? ( $data['track_stock'] ? 1 : 0 ) : ( $existing->track_stock ?? 1 ),
 			'tax_class_id'        => isset( $data['tax_class_id'] ) ? (int) $data['tax_class_id'] : ( $existing->tax_class_id ?? 0 ),
 			'image_url'           => isset( $data['image_url'] ) ? esc_url_raw( $data['image_url'] ) : ( $existing->image_url ?? '' ),
+			'hsn_sac_code'        => isset( $data['hsn_sac_code'] ) ? sanitize_text_field( $data['hsn_sac_code'] ) : ( $existing->hsn_sac_code ?? '' ),
 			'attributes'          => $attrs,
 			'status'              => isset( $data['status'] ) && in_array( $data['status'], array( 'active', 'inactive' ), true ) ? $data['status'] : ( $existing->status ?? 'active' ),
 		);

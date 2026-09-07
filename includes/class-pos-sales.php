@@ -36,6 +36,7 @@ class Simple_POS_Sales {
 		$settings    = Simple_POS_Settings::get_all();
 		$tax_country = isset( $cart_data['tax_country'] ) ? strtoupper( sanitize_text_field( $cart_data['tax_country'] ) ) : ( isset( $settings['tax_country'] ) ? strtoupper( $settings['tax_country'] ) : 'US' );
 		$tax_state   = isset( $cart_data['tax_state'] ) ? strtoupper( sanitize_text_field( $cart_data['tax_state'] ) ) : ( isset( $settings['tax_state'] ) ? strtoupper( $settings['tax_state'] ) : '' );
+		$customer_type = isset( $cart_data['customer_type'] ) && in_array( $cart_data['customer_type'], array( 'b2b', 'b2c' ), true ) ? $cart_data['customer_type'] : 'b2c';
 		if ( empty( $tax_country ) ) {
 			$tax_country = 'US';
 		}
@@ -101,7 +102,7 @@ class Simple_POS_Sales {
 
 		$payment_method = isset( $cart_data['payment_method'] ) ? sanitize_text_field( $cart_data['payment_method'] ) : 'cash';
 		$amount_paid    = isset( $cart_data['amount_paid'] ) ? max( 0, (float) $cart_data['amount_paid'] ) : $total;
-		$change_due     = max( 0, round( $amount_paid - $total, 2 ) );
+		$change_due     = max( 0, Simple_POS_Tax::pos_round( $amount_paid - $total, 2 ) );
 		$customer_id    = ! empty( $cart_data['customer_id'] ) ? (int) $cart_data['customer_id'] : null;
 		$note           = isset( $cart_data['note'] ) ? sanitize_textarea_field( $cart_data['note'] ) : '';
 		$currency_code  = isset( $settings['currency_code'] ) ? $settings['currency_code'] : 'USD';
@@ -145,16 +146,17 @@ class Simple_POS_Sales {
 						'sale_number'     => $sale_number,
 						'customer_id'     => $customer_id,
 						'cashier_id'      => get_current_user_id(),
-						'subtotal'        => round( $subtotal, 2 ),
+						'subtotal'        => Simple_POS_Tax::pos_round( $subtotal, 2 ),
 						'discount_type'   => $discount_type,
 						'discount_amount' => $discount_amount,
-						'tax_amount'      => round( $tax_total, 2 ),
+						'tax_amount'      => Simple_POS_Tax::pos_round( $tax_total, 2 ),
 						'total'           => $total,
 						'amount_paid'     => $amount_paid,
 						'change_due'      => $change_due,
-						'payment_method'  => $payment_method,
-						'status'          => 'completed',
-						'note'            => $note,
+					'payment_method'  => $payment_method,
+					'status'          => 'completed',
+					'customer_type'   => $customer_type,
+					'note'            => $note,
 						'tax_country'     => $tax_country,
 						'tax_state'       => $tax_state,
 						'tax_breakdown'   => wp_json_encode( $tax_breakdown ),
@@ -184,6 +186,7 @@ class Simple_POS_Sales {
 								'tax_class_id'     => $item['tax_class_id'],
 								'tax_breakdown'    => wp_json_encode( $line_calc['breakdown'] ),
 								'tax_rate_applied' => isset( $line_calc['breakdown'][0]['rate'] ) ? $line_calc['breakdown'][0]['rate'] : 0,
+								'customer_type'   => $customer_type,
 								'line_total'       => $line_calc['gross'],
 							)
 						);

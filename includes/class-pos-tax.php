@@ -10,11 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Simple_POS_Tax {
 
-	/**
-	 * Get all tax classes.
-	 *
-	 * @return array objects id, name, slug, description
-	 */
 	public static function get_classes() {
 		global $wpdb;
 		$table = Simple_POS_DB::table( 'tax_classes' );
@@ -59,7 +54,6 @@ class Simple_POS_Tax {
 		$ct = Simple_POS_DB::table( 'tax_classes' );
 		$rt = Simple_POS_DB::table( 'tax_rates' );
 		$pt = Simple_POS_DB::table( 'products' );
-		// Don't delete if products still reference it - reassign to standard.
 		$std = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$ct} WHERE slug = %s", 'standard' ) );
 		if ( $std && (int) $id !== (int) $std ) {
 			$wpdb->update( $pt, array( 'tax_class_id' => $std ), array( 'tax_class_id' => $id ) );
@@ -111,6 +105,7 @@ class Simple_POS_Tax {
 				'is_inclusive' => ! empty( $data['is_inclusive'] ) ? 1 : 0,
 				'priority'     => isset( $data['priority'] ) ? (int) $data['priority'] : 0,
 				'name'         => isset( $data['name'] ) ? sanitize_text_field( $data['name'] ) : '',
+				'gst_split'    => ! empty( $data['gst_split'] ) ? 1 : 0,
 				'created_at'   => current_time( 'mysql' ),
 			)
 		);
@@ -153,6 +148,9 @@ class Simple_POS_Tax {
 		if ( isset( $data['name'] ) ) {
 			$upd['name'] = sanitize_text_field( $data['name'] );
 		}
+		if ( isset( $data['gst_split'] ) ) {
+			$upd['gst_split'] = $data['gst_split'] ? 1 : 0;
+		}
 		if ( isset( $data['class_id'] ) ) {
 			$cid = (int) $data['class_id'];
 			if ( ! self::get_class( $cid ) ) {
@@ -174,6 +172,52 @@ class Simple_POS_Tax {
 		return true;
 	}
 
+	public static function pos_round( $value, $decimals = 2 ) {
+		return round( (float) $value, $decimals, PHP_ROUND_HALF_UP );
+	}
+
+	private static function apply_india_gst_split( $breakdown, $country, $state ) {
+		if ( 'IN' !== strtoupper( $country ) ) {
+			return $breakdown;
+		}
+		$sale_state = strtoupper( $state );
+		$out = array();
+		foreach ( $breakdown as $b ) {
+			if ( ! empty( $b['gst_split'] ) ) {
+				$rate_state = strtoupper( $b['state_code'] );
+				if ( $rate_state !== '' && $rate_state === $sale_state ) {
+					$half = self::pos_round( $b['amount'] / 2, 2 );
+					$remainder = self::pos_round( $b['amount'] - 2 * $half, 2 );
+					$out[] = array(
+						'name'      => 'CGST',
+						'rate'      => self::pos_round( $b['rate'] / 2, 2 ),
+						'amount'    => $half + $remainder,
+						'inclusive' => $b['inclusive'],
+						'compound'  => $b['compound'],
+					);
+					$out[] = array(
+						'name'      => 'SGST',
+						'rate'      => self::pos_round( $b['rate'] / 2, 2 ),
+						'amount'    => $half,
+						'inclusive' => $b['inclusive'],
+						'compound'  => $b['compound'],
+					);
+				} else {
+					$out[] = array(
+						'name'      => 'IGST',
+						'rate'      => $b['rate'],
+						'amount'    => $b['amount'],
+						'inclusive' => $b['inclusive'],
+						'compound'  => $b['compound'],
+					);
+				}
+			} else {
+				$out[] = $b;
+			}
+		}
+		return $out;
+	}
+
 	/**
 	 * Resolve applicable rates for a class + destination country/state.
 	 * Returns array of rate objects ordered by priority.
@@ -184,19 +228,15 @@ class Simple_POS_Tax {
 		$table   = Simple_POS_DB::table( 'tax_rates' );
 		$country = $country ? strtoupper( $country ) : '*';
 		$state   = $state ? strtoupper( $state ) : '';
-		// Get all rates for class, then filter in PHP for fallback semantics.
 		$rates = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} WHERE class_id=%d ORDER BY priority ASC, id ASC", $class_id ) );
 		if ( empty( $rates ) ) {
 			return array();
 		}
-		// Bucket by priority — we need to allow compounding across priorities.
-		// Simplified: return rates matching (country= exact and state exact) OR (country exact and state NULL) OR (country='*' )
 		$matched = array();
 		foreach ( $rates as $r ) {
 			$r_country = strtoupper( $r->country_code );
 			$r_state   = $r->state_code ? strtoupper( $r->state_code ) : '';
 			if ( $r_country === '*' ) {
-				// wildcard always matches as fallback if no better match at same priority
 				$matched[] = $r;
 				continue;
 			}
@@ -206,17 +246,13 @@ class Simple_POS_Tax {
 			if ( $r_state !== '' && $r_state !== $state ) {
 				continue;
 			}
-			// country matches, state either wildcard or exact
 			$matched[] = $r;
 		}
-		// If we have both wildcard and specific at same priority, prefer specific (remove wildcard dup)
-		// Group by priority, keep most specific
 		$by_priority = array();
 		foreach ( $matched as $r ) {
 			$by_priority[ $r->priority ][] = $r; }
 		$result = array();
 		foreach ( $by_priority as $prio => $list ) {
-			// If list contains a state-specific and a wildcard for same country, drop wildcard
 			$has_state_specific = false;
 			foreach ( $list as $r ) {
 				if ( ! empty( $r->state_code ) ) {
@@ -225,10 +261,8 @@ class Simple_POS_Tax {
 			}
 			foreach ( $list as $r ) {
 				if ( $has_state_specific && empty( $r->state_code ) && strtoupper( $r->country_code ) !== '*' ) {
-					// skip country-wildcard when state-specific exists
 					continue;
 				}
-				// If we have country-specific at this priority, wildcard '*' should be skipped
 				if ( $has_state_specific || count(
 					array_filter(
 						$list,
@@ -243,7 +277,6 @@ class Simple_POS_Tax {
 				$result[] = $r;
 			}
 		}
-		// If no country-specific found, keep wildcards
 		if ( empty( $result ) && ! empty( $matched ) ) {
 			foreach ( $matched as $r ) {
 				if ( strtoupper( $r->country_code ) === '*' ) {
@@ -265,7 +298,7 @@ class Simple_POS_Tax {
 	 * @param float  $discount_share share of order discount allocated to this line (absolute amount)
 	 * @param array  $settings allows overriding inclusive/rounding
 	 * @param bool   $round       round to 2dp when true; leave exact when false for per-order rounding
-	 * @return array { taxable, tax_amount, gross, breakdown: [{name,rate,amount,inclusive,compound}] }
+	 * @return array { taxable, tax_amount, gross, breakdown: [{name,rate,amount,inclusive,compound,gst_split,state_code}] }
 	 */
 	public static function calculate_line( $unit_price, $qty, $class_id, $country, $state, $discount_share = 0, $settings = null, $round = true ) {
 		if ( null === $settings ) {
@@ -276,21 +309,19 @@ class Simple_POS_Tax {
 		$base                = (float) $unit_price * $qty;
 		$discount_share      = max( 0, (float) $discount_share );
 		$discount_share      = min( $discount_share, $base );
-		$taxable_before      = $base - $discount_share; // after discount if discount_before_tax
+		$taxable_before      = $base - $discount_share;
 		$discount_before_tax = ! empty( $settings['discount_before_tax'] );
 		$taxable             = $discount_before_tax ? $taxable_before : $base;
 		$rates               = $class_id ? self::resolve_rates( $class_id, $country, $state ) : array();
 		if ( empty( $rates ) ) {
-			// fallback to legacy 0% if no rate
 			return array(
-				'taxable'    => $round ? round( $taxable, 2 ) : $taxable,
+				'taxable'    => $round ? self::pos_round( $taxable, 2 ) : $taxable,
 				'tax_amount' => 0,
-				'gross'      => $round ? round( $taxable, 2 ) : $taxable,
+				'gross'      => $round ? self::pos_round( $taxable, 2 ) : $taxable,
 				'breakdown'  => array(),
 				'rate'       => 0,
 			);
 		}
-		// Determine if inclusive: if any rate is inclusive, treat whole line as inclusive (rare mix). For mixed, inclusive rates are extracted first.
 		$has_inclusive = false;
 		foreach ( $rates as $r ) {
 			if ( $r->is_inclusive ) {
@@ -303,10 +334,7 @@ class Simple_POS_Tax {
 		$breakdown       = array();
 		$total_tax       = 0;
 		$running_taxable = $taxable;
-		// If inclusive, we need to extract tax from taxable which is gross.
 		if ( $has_inclusive ) {
-			// For inclusive, taxable is gross inclusive of inclusive taxes. Extract them.
-			// For compound inclusive, order matters. We process in priority order, exclusive compounds on top.
 			$exclusive_rates = array_filter(
 				$rates,
 				function ( $r ) {
@@ -320,15 +348,11 @@ class Simple_POS_Tax {
 				}
 			);
 			$incl_tax        = 0;
-			// Extract inclusive: gross = net * (1+sum inclusive) approx; for single inclusive: net = gross/(1+rate)
-			// With multiple inclusive plus compound, simplified: sum inclusive sequentially.
 			$net = $taxable;
 			foreach ( $inclusive_rates as $r ) {
 				$rate = (float) $r->rate;
-				// Extract: tax = gross - gross/(1+rate) if single; for multiple need iterative.
-				// We do: net = net / (1+rate/100)
 				$tax         = $net - ( $net / ( 1 + $rate / 100 ) );
-				$tax         = $round ? round( $tax, 2 ) : $tax;
+				$tax         = $round ? self::pos_round( $tax, 2 ) : $tax;
 				$incl_tax   += $tax;
 				$net         = $net - $tax;
 				$breakdown[] = array(
@@ -337,15 +361,16 @@ class Simple_POS_Tax {
 					'amount'    => $tax,
 					'inclusive' => 1,
 					'compound'  => (int) $r->is_compound,
+					'gst_split' => ! empty( $r->gst_split ) ? 1 : 0,
+					'state_code' => $r->state_code ?: '',
 				);
 			}
 			$running_taxable = $net;
 			$total_tax      += $incl_tax;
-			// Now add exclusive on net
 			foreach ( $exclusive_rates as $r ) {
 				$rate          = (float) $r->rate;
 				$base_for_this = $r->is_compound ? ( $running_taxable + $total_tax ) : $running_taxable;
-				$tax           = $round ? round( $base_for_this * $rate / 100, 2 ) : ( $base_for_this * $rate / 100 );
+				$tax           = $round ? self::pos_round( $base_for_this * $rate / 100, 2 ) : ( $base_for_this * $rate / 100 );
 				$total_tax    += $tax;
 				$breakdown[]   = array(
 					'name'      => $r->name ?: $r->country_code,
@@ -353,6 +378,8 @@ class Simple_POS_Tax {
 					'amount'    => $tax,
 					'inclusive' => 0,
 					'compound'  => (int) $r->is_compound,
+					'gst_split' => ! empty( $r->gst_split ) ? 1 : 0,
+					'state_code' => $r->state_code ?: '',
 				);
 			}
 			$gross = $taxable + array_sum(
@@ -369,19 +396,19 @@ class Simple_POS_Tax {
 			if ( ! $discount_before_tax && $discount_share > 0 ) {
 				$gross = max( 0, $gross - $discount_share );
 			}
+			$breakdown = self::apply_india_gst_split( $breakdown, $country, $state );
 			return array(
-				'taxable'    => $round ? round( $running_taxable, 2 ) : $running_taxable,
-				'tax_amount' => $round ? round( $total_tax, 2 ) : $total_tax,
-				'gross'      => $round ? round( $gross, 2 ) : $gross,
+				'taxable'    => $round ? self::pos_round( $running_taxable, 2 ) : $running_taxable,
+				'tax_amount' => $round ? self::pos_round( $total_tax, 2 ) : $total_tax,
+				'gross'      => $round ? self::pos_round( $gross, 2 ) : $gross,
 				'breakdown'  => $breakdown,
 				'rate'       => null,
 			);
 		} else {
-			// All exclusive
 			foreach ( $rates as $r ) {
 				$rate          = (float) $r->rate;
 				$base_for_this = $r->is_compound ? ( $running_taxable + $total_tax ) : $running_taxable;
-				$tax           = $round ? round( $base_for_this * $rate / 100, 2 ) : ( $base_for_this * $rate / 100 );
+				$tax           = $round ? self::pos_round( $base_for_this * $rate / 100, 2 ) : ( $base_for_this * $rate / 100 );
 				$total_tax    += $tax;
 				$breakdown[]   = array(
 					'name'      => $r->name ?: $r->country_code,
@@ -389,16 +416,19 @@ class Simple_POS_Tax {
 					'amount'    => $tax,
 					'inclusive' => 0,
 					'compound'  => (int) $r->is_compound,
+					'gst_split' => ! empty( $r->gst_split ) ? 1 : 0,
+					'state_code' => $r->state_code ?: '',
 				);
 			}
 			$gross = $running_taxable + $total_tax;
 			if ( ! $discount_before_tax && $discount_share > 0 ) {
 				$gross = max( 0, $gross - $discount_share );
 			}
+			$breakdown = self::apply_india_gst_split( $breakdown, $country, $state );
 			return array(
-				'taxable'    => $round ? round( $running_taxable, 2 ) : $running_taxable,
-				'tax_amount' => $round ? round( $total_tax, 2 ) : $total_tax,
-				'gross'      => $round ? round( $gross, 2 ) : $gross,
+				'taxable'    => $round ? self::pos_round( $running_taxable, 2 ) : $running_taxable,
+				'tax_amount' => $round ? self::pos_round( $total_tax, 2 ) : $total_tax,
+				'gross'      => $round ? self::pos_round( $gross, 2 ) : $gross,
 				'breakdown'  => $breakdown,
 				'rate'       => $rates ? (float) $rates[0]->rate : 0,
 			);
@@ -421,22 +451,20 @@ class Simple_POS_Tax {
 		foreach ( $lines as $l ) {
 			$subtotal += (float) $l['price'] * (int) $l['qty'];
 		}
-		$subtotal = round( $subtotal, 2 );
+		$subtotal = self::pos_round( $subtotal, 2 );
 		$discount = 0;
 		if ( 'percent' === $discount_type ) {
-			$discount = round( $subtotal * ( (float) $discount_input / 100 ), 2 );
+			$discount = self::pos_round( $subtotal * ( (float) $discount_input / 100 ), 2 );
 		} else {
-			$discount = round( min( (float) $discount_input, $subtotal ), 2 );
+			$discount = self::pos_round( min( (float) $discount_input, $subtotal ), 2 );
 		}
-		// Allocate discount proportionally if before tax
 		$total_tax  = 0;
 		$line_calcs = array();
 		$rounding   = isset( $settings['tax_rounding'] ) ? $settings['tax_rounding'] : 'line';
 		$round      = 'line' === $rounding;
 		foreach ( $lines as $idx => $l ) {
 			$line_base = (float) $l['price'] * (int) $l['qty'];
-			$share     = $subtotal > 0 ? round( $discount * ( $line_base / $subtotal ), 2 ) : 0;
-			// fix rounding drift on last line — use exact remainder, no round()
+			$share     = $subtotal > 0 ? self::pos_round( $discount * ( $line_base / $subtotal ), 2 ) : 0;
 			if ( $idx === count( $lines ) - 1 ) {
 				$allocated = array_sum( array_column( $line_calcs, 'discount_share' ) );
 				$share     = $discount - $allocated;
@@ -449,29 +477,27 @@ class Simple_POS_Tax {
 		}
 		if ( ! $round ) {
 			$total_tax_unrounded = $total_tax;
-			$total_tax           = round( $total_tax_unrounded, 2 );
+			$total_tax           = self::pos_round( $total_tax_unrounded, 2 );
 			$delta               = $total_tax - $total_tax_unrounded;
 			$last_idx            = count( $line_calcs ) - 1;
 			if ( $last_idx >= 0 && $delta !== 0.0 ) {
-				$line_calcs[ $last_idx ]['tax_amount'] = round( $line_calcs[ $last_idx ]['tax_amount'] + $delta, 2 );
-				$line_calcs[ $last_idx ]['gross']      = round( $line_calcs[ $last_idx ]['gross'] + $delta, 2 );
+				$line_calcs[ $last_idx ]['tax_amount'] = self::pos_round( $line_calcs[ $last_idx ]['tax_amount'] + $delta, 2 );
+				$line_calcs[ $last_idx ]['gross']      = self::pos_round( $line_calcs[ $last_idx ]['gross'] + $delta, 2 );
 				$last_bd                                = count( $line_calcs[ $last_idx ]['breakdown'] ) - 1;
 				if ( $last_bd >= 0 ) {
-					$line_calcs[ $last_idx ]['breakdown'][ $last_bd ]['amount'] = round( $line_calcs[ $last_idx ]['breakdown'][ $last_bd ]['amount'] + $delta, 2 );
+					$line_calcs[ $last_idx ]['breakdown'][ $last_bd ]['amount'] = self::pos_round( $line_calcs[ $last_idx ]['breakdown'][ $last_bd ]['amount'] + $delta, 2 );
 				}
 			}
 		}
-		$total_tax = round( $total_tax, 2 );
-		// ponytail: total = sum of line gross (covers exclusive and inclusive uniformly; avoids double-counting inclusive tax)
+		$total_tax = self::pos_round( $total_tax, 2 );
 		$gross_sum = 0;
 		foreach ( $line_calcs as $c ) {
 			$gross_sum += $c['gross'];
 		}
-		$total = round( $gross_sum, 2 );
+		$total = self::pos_round( $gross_sum, 2 );
 		if ( $total < 0 ) {
 			$total = 0;
 		}
-		// aggregate breakdown by rate name
 		$agg = array();
 		foreach ( $line_calcs as $c ) {
 			foreach ( $c['breakdown'] as $b ) {
@@ -485,13 +511,13 @@ class Simple_POS_Tax {
 				} $agg[ $key ]['amount'] += $b['amount']; }
 		}
 		foreach ( $agg as &$a ) {
-			$a['amount'] = round( $a['amount'], 2 );
+			$a['amount'] = self::pos_round( $a['amount'], 2 );
 		}
 		return array(
 			'subtotal'      => $subtotal,
 			'discount'      => $discount,
 			'discount_type' => $discount_type,
-			'tax'           => round( $total_tax, 2 ),
+			'tax'           => self::pos_round( $total_tax, 2 ),
 			'total'         => $total,
 			'breakdown'     => array_values( $agg ),
 			'lines'         => $line_calcs,

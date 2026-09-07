@@ -434,6 +434,7 @@ class Simple_POS_Admin {
 			'is_inclusive' => ! empty( $data['is_inclusive'] ),
 			'priority'     => $data['priority'] ?? 0,
 			'name'         => $data['name'] ?? '',
+			'gst_split'    => ! empty( $data['gst_split'] ),
 		);
 		$res     = $id ? Simple_POS_Tax::update_rate( $id, $payload ) : Simple_POS_Tax::create_rate( $payload );
 		self::redirect_with_result( 'simple-pos-taxes', $res, __( 'Tax rate saved.', 'simple-pos' ) );
@@ -475,6 +476,7 @@ class Simple_POS_Admin {
 			'low_stock_threshold' => $data['low_stock_threshold'] ?? 5,
 			'track_stock'         => isset( $data['track_stock'] ) ? 1 : 0,
 			'image_url'           => $data['image_url'] ?? '',
+			'hsn_sac_code'        => $data['hsn_sac_code'] ?? '',
 			'attributes'          => $attrs,
 			'status'              => $data['status'] ?? 'active',
 		);

@@ -62,13 +62,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<p class="simple-pos-cart-empty"><?php esc_html_e( 'Cart is empty. Scan or click a product to add it.', 'simple-pos' ); ?></p>
 			</div>
 
-			<div class="simple-pos-customer-row">
-				<label for="simple-pos-customer-select"><?php esc_html_e( 'Customer', 'simple-pos' ); ?></label>
-				<select id="simple-pos-customer-select">
-					<option value=""><?php esc_html_e( 'Walk-in customer', 'simple-pos' ); ?></option>
-				</select>
-				<button type="button" id="simple-pos-new-customer" class="button-link simple-pos-new-customer-btn" hidden aria-label="<?php esc_attr_e( 'Add new customer', 'simple-pos' ); ?>"><?php esc_html_e( '+ New', 'simple-pos' ); ?></button>
-			</div>
+		<div class="simple-pos-customer-row">
+			<label for="simple-pos-customer-select"><?php esc_html_e( 'Customer', 'simple-pos' ); ?></label>
+			<select id="simple-pos-customer-select">
+				<option value=""><?php esc_html_e( 'Walk-in customer', 'simple-pos' ); ?></option>
+			</select>
+			<button type="button" id="simple-pos-new-customer" class="button-link simple-pos-new-customer-btn" hidden aria-label="<?php esc_attr_e( 'Add new customer', 'simple-pos' ); ?>"><?php esc_html_e( '+ New', 'simple-pos' ); ?></button>
+		</div>
+		<div class="simple-pos-customer-row">
+			<label for="simple-pos-customer-type"><?php esc_html_e( 'Type', 'simple-pos' ); ?></label>
+			<select id="simple-pos-customer-type">
+				<option value="b2c"><?php esc_html_e( 'B2C', 'simple-pos' ); ?></option>
+				<option value="b2b"><?php esc_html_e( 'B2B', 'simple-pos' ); ?></option>
+			</select>
+		</div>
 
 			<div class="simple-pos-discount-row">
 				<label for="simple-pos-discount-value"><?php esc_html_e( 'Discount', 'simple-pos' ); ?></label>

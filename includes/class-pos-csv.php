@@ -14,9 +14,9 @@ class Simple_POS_CSV {
 			)
 		);
 		$out = fopen( 'php://temp', 'r+' );
-		fputcsv( $out, array( 'id', 'name', 'sku', 'barcode', 'category_id', 'price', 'cost_price', 'tax_class_id', 'tax_rate', 'stock_qty', 'low_stock_threshold', 'track_stock', 'image_url', 'status' ) );
+		fputcsv( $out, array( 'id', 'name', 'sku', 'barcode', 'category_id', 'price', 'cost_price', 'tax_class_id', 'tax_rate', 'stock_qty', 'low_stock_threshold', 'track_stock', 'image_url', 'hsn_sac_code', 'status' ) );
 		foreach ( $all['items'] as $p ) {
-			fputcsv( $out, array( $p->id, $p->name, $p->sku, $p->barcode, $p->category_id, $p->price, $p->cost_price, $p->tax_class_id ?? '', $p->tax_rate, $p->stock_qty, $p->low_stock_threshold, $p->track_stock, $p->image_url, $p->status ) );
+			fputcsv( $out, array( $p->id, $p->name, $p->sku, $p->barcode, $p->category_id, $p->price, $p->cost_price, $p->tax_class_id ?? '', $p->tax_rate, $p->stock_qty, $p->low_stock_threshold, $p->track_stock, $p->image_url, $p->hsn_sac_code ?? '', $p->status ) );
 		}
 		rewind( $out );
 		$csv = stream_get_contents( $out );
@@ -69,8 +69,9 @@ class Simple_POS_CSV {
 				'stock_qty'           => $data['stock_qty'] ?? 0,
 				'low_stock_threshold' => $data['low_stock_threshold'] ?? 5,
 				'track_stock'         => isset( $data['track_stock'] ) ? (int) $data['track_stock'] : 1,
-				'image_url'           => $data['image_url'] ?? '',
-				'status'              => $data['status'] ?? 'active',
+			'image_url'           => $data['image_url'] ?? '',
+			'hsn_sac_code'        => $data['hsn_sac_code'] ?? '',
+			'status'              => $data['status'] ?? 'active',
 			);
 			// Upsert by SKU if id not provided
 			$res = null;

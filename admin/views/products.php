@@ -139,6 +139,10 @@ $variants_for_edit = $editing_product ? Simple_POS_Variants::get_variants($editi
 							<p class="description"><?php esc_html_e( 'Fallback if no class rate matches', 'simple-pos' ); ?></p>
 						</div>
 						<div class="simple-pos-form-row simple-pos-form-row-full">
+							<label><?php esc_html_e( 'HSN/SAC Code', 'simple-pos' ); ?></label>
+							<input type="text" name="hsn_sac_code" value="<?php echo esc_attr( $editing_product->hsn_sac_code ?? '' ); ?>" class="widefat" placeholder="e.g. 8517 or 9983" />
+						</div>
+						<div class="simple-pos-form-row simple-pos-form-row-full">
 							<label class="simple-pos-checkbox"><input type="checkbox" name="track_stock" value="1" <?php checked( $editing_product->track_stock ?? 1, 1 ); ?> /> <?php esc_html_e( 'Track stock for this product', 'simple-pos' ); ?></label>
 						</div>
 						<div class="simple-pos-form-row">
@@ -220,6 +224,10 @@ $variants_for_edit = $editing_product ? Simple_POS_Variants::get_variants($editi
 					<div class="simple-pos-form-row simple-pos-form-row-full">
 						<label><?php esc_html_e('Image URL','simple-pos');?></label>
 						<input type="url" name="image_url" class="widefat" />
+					</div>
+					<div class="simple-pos-form-row simple-pos-form-row-full">
+						<label><?php esc_html_e('HSN/SAC Code','simple-pos');?></label>
+						<input type="text" name="hsn_sac_code" class="widefat" placeholder="e.g. 8517 or 9983" />
 					</div>
 					<div class="simple-pos-form-row simple-pos-form-row-full simple-pos-form-actions">
 						<button class="button button-primary" type="submit"><?php esc_html_e('Add Variant','simple-pos');?></button>
