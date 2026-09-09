@@ -188,7 +188,7 @@ class Simple_POS_Reports {
 
 		foreach ( $rows as $row ) {
 			$user              = get_userdata( $row->cashier_id );
-			$row->cashier_name = $user ? $user->display_name : __( 'Unknown', 'simple-pos' );
+			$row->cashier_name = $user ? $user->display_name : __( 'Unknown', 'wp-pos-plugin' );
 		}
 
 		return $rows;

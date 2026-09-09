@@ -18,7 +18,7 @@ class Simple_POS_Suppliers {
 		global $wpdb;
 		$name = isset( $data['name'] ) ? sanitize_text_field( $data['name'] ) : '';
 		if ( empty( $name ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Supplier name required.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Supplier name required.', 'wp-pos-plugin' ) );
 		}
 		$table = Simple_POS_DB::table( 'suppliers' );
 		$wpdb->insert(
@@ -39,7 +39,7 @@ class Simple_POS_Suppliers {
 		$table    = Simple_POS_DB::table( 'suppliers' );
 		$existing = self::get_supplier( $id );
 		if ( ! $existing ) {
-			return new WP_Error( 'pos_not_found', __( 'Supplier not found.', 'simple-pos' ) );
+			return new WP_Error( 'pos_not_found', __( 'Supplier not found.', 'wp-pos-plugin' ) );
 		}
 		$upd = array(
 			'name'         => isset( $data['name'] ) ? sanitize_text_field( $data['name'] ) : $existing->name,
@@ -49,7 +49,7 @@ class Simple_POS_Suppliers {
 			'address'      => isset( $data['address'] ) ? sanitize_textarea_field( $data['address'] ) : $existing->address,
 		);
 		if ( empty( $upd['name'] ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Supplier name required.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Supplier name required.', 'wp-pos-plugin' ) );
 		}
 		$wpdb->update( $table, $upd, array( 'id' => $id ) );
 		return true;
@@ -116,7 +116,7 @@ class Simple_POS_Purchase_Orders {
 		$note        = isset( $data['note'] ) ? sanitize_textarea_field( $data['note'] ) : '';
 		$items       = isset( $data['items'] ) && is_array( $data['items'] ) ? $data['items'] : array();
 		if ( empty( $items ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Add at least one item.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Add at least one item.', 'wp-pos-plugin' ) );
 		}
 		$po_table   = Simple_POS_DB::table( 'purchase_orders' );
 		$item_table = Simple_POS_DB::table( 'po_items' );
@@ -141,7 +141,7 @@ class Simple_POS_Purchase_Orders {
 				);
 				$po_id = (int) $wpdb->insert_id;
 				if ( ! $po_id ) {
-					return new WP_Error( 'pos_db_error', __( 'Could not create PO.', 'simple-pos' ) );
+					return new WP_Error( 'pos_db_error', __( 'Could not create PO.', 'wp-pos-plugin' ) );
 				}
 				foreach ( $items as $it ) {
 					$product_id = ! empty( $it['product_id'] ) ? (int) $it['product_id'] : null;
@@ -176,12 +176,12 @@ class Simple_POS_Purchase_Orders {
 		global $wpdb;
 		$order = self::get_order( $id );
 		if ( ! $order ) {
-			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'simple-pos' ) );
+			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'wp-pos-plugin' ) );
 		}
 		
 		// Only allow editing draft POs.
 		if ( $order->status !== 'draft' ) {
-			return new WP_Error( 'pos_invalid_state', __( 'Can only edit draft POs.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_state', __( 'Can only edit draft POs.', 'wp-pos-plugin' ) );
 		}
 		
 		$supplier_id = isset( $data['supplier_id'] ) ? (int) $data['supplier_id'] : $order->supplier_id;
@@ -252,7 +252,7 @@ class Simple_POS_Purchase_Orders {
 		global $wpdb;
 		$allowed = array( 'draft', 'ordered', 'partial', 'received', 'cancelled' );
 		if ( ! in_array( $status, $allowed, true ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Invalid status.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Invalid status.', 'wp-pos-plugin' ) );
 		}
 		$table = Simple_POS_DB::table( 'purchase_orders' );
 		$upd   = array( 'status' => $status );
@@ -269,10 +269,10 @@ class Simple_POS_Purchase_Orders {
 		global $wpdb;
 		$order = self::get_order( $id );
 		if ( ! $order ) {
-			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'simple-pos' ) );
+			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'wp-pos-plugin' ) );
 		}
 		if ( in_array( $order->status, array( 'cancelled', 'received' ), true ) ) {
-			return new WP_Error( 'pos_invalid_state', __( 'PO already closed.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_state', __( 'PO already closed.', 'wp-pos-plugin' ) );
 		}
 		$items = self::get_items( $id );
 		$map   = array();

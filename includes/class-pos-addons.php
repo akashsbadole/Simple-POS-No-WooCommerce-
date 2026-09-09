@@ -71,62 +71,62 @@ class Simple_POS_Addons {
 	public static function get_catalog() {
 		$catalog = array(
 			array(
-				'name'        => __( 'Multi-Outlet', 'simple-pos' ),
-				'description' => __( 'Run several shops from one install: per-outlet stock, registers and sales reports.', 'simple-pos' ),
+				'name'        => __( 'Multi-Outlet', 'wp-pos-plugin' ),
+				'description' => __( 'Run several shops from one install: per-outlet stock, registers and sales reports.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'Popular', 'simple-pos' ),
+				'badge'       => __( 'Popular', 'wp-pos-plugin' ),
 			),
 			array(
-				'name'        => __( 'Loyalty & Store Credit', 'simple-pos' ),
-				'description' => __( 'Points per purchase, redeem at checkout, gift-card style store credit balances.', 'simple-pos' ),
-				'url'         => '#',
-			),
-			array(
-				'name'        => __( 'Table Service', 'simple-pos' ),
-				'description' => __( 'Restaurant mode: floor plan, open tabs, split bills and kitchen tickets.', 'simple-pos' ),
+				'name'        => __( 'Loyalty & Store Credit', 'wp-pos-plugin' ),
+				'description' => __( 'Points per purchase, redeem at checkout, gift-card style store credit balances.', 'wp-pos-plugin' ),
 				'url'         => '#',
 			),
 			array(
-				'name'        => __( 'Online Ordering & QR Menu', 'simple-pos' ),
-				'description' => __( 'Customers order from a QR link; orders drop straight into the POS queue.', 'simple-pos' ),
+				'name'        => __( 'Table Service', 'wp-pos-plugin' ),
+				'description' => __( 'Restaurant mode: floor plan, open tabs, split bills and kitchen tickets.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'New', 'simple-pos' ),
 			),
 			array(
-				'name'        => __( 'Kitchen Display System', 'simple-pos' ),
-				'description' => __( 'Second-screen prep queue with item states and timers for kitchens.', 'simple-pos' ),
+				'name'        => __( 'Online Ordering & QR Menu', 'wp-pos-plugin' ),
+				'description' => __( 'Customers order from a QR link; orders drop straight into the POS queue.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'New', 'simple-pos' ),
+				'badge'       => __( 'New', 'wp-pos-plugin' ),
 			),
 			array(
-				'name'        => __( 'Gift Cards', 'simple-pos' ),
-				'description' => __( 'Sell and redeem plastic or digital gift cards as a payment method.', 'simple-pos' ),
+				'name'        => __( 'Kitchen Display System', 'wp-pos-plugin' ),
+				'description' => __( 'Second-screen prep queue with item states and timers for kitchens.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'New', 'simple-pos' ),
+				'badge'       => __( 'New', 'wp-pos-plugin' ),
 			),
 			array(
-				'name'        => __( 'Multi-Currency & FX', 'simple-pos' ),
-				'description' => __( 'Sell in foreign currencies; pairs with the per-country tax engine.', 'simple-pos' ),
+				'name'        => __( 'Gift Cards', 'wp-pos-plugin' ),
+				'description' => __( 'Sell and redeem plastic or digital gift cards as a payment method.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'New', 'simple-pos' ),
+				'badge'       => __( 'New', 'wp-pos-plugin' ),
 			),
 			array(
-				'name'        => __( 'Customer Displays', 'simple-pos' ),
-				'description' => __( 'Counter-facing second screen mirroring the running cart and totals.', 'simple-pos' ),
+				'name'        => __( 'Multi-Currency & FX', 'wp-pos-plugin' ),
+				'description' => __( 'Sell in foreign currencies; pairs with the per-country tax engine.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'Coming soon', 'simple-pos' ),
+				'badge'       => __( 'New', 'wp-pos-plugin' ),
 			),
 			array(
-				'name'        => __( 'Offline Mode', 'simple-pos' ),
-				'description' => __( 'Terminal keeps selling without internet and syncs sales when back online.', 'simple-pos' ),
+				'name'        => __( 'Customer Displays', 'wp-pos-plugin' ),
+				'description' => __( 'Counter-facing second screen mirroring the running cart and totals.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'Coming soon', 'simple-pos' ),
+				'badge'       => __( 'Coming soon', 'wp-pos-plugin' ),
 			),
 			array(
-				'name'        => __( 'Time Clock & Shifts', 'simple-pos' ),
-				'description' => __( 'Cashier shifts, hours and per-shift cash reconciliation.', 'simple-pos' ),
+				'name'        => __( 'Offline Mode', 'wp-pos-plugin' ),
+				'description' => __( 'Terminal keeps selling without internet and syncs sales when back online.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'Coming soon', 'simple-pos' ),
+				'badge'       => __( 'Coming soon', 'wp-pos-plugin' ),
+			),
+			array(
+				'name'        => __( 'Time Clock & Shifts', 'wp-pos-plugin' ),
+				'description' => __( 'Cashier shifts, hours and per-shift cash reconciliation.', 'wp-pos-plugin' ),
+				'url'         => '#',
+				'badge'       => __( 'Coming soon', 'wp-pos-plugin' ),
 			),
 		);
 		$catalog = apply_filters( 'simple_pos_addons_catalog', $catalog );
@@ -248,7 +248,8 @@ class Simple_POS_Addons {
 			if ( $error ) {
 				echo '<div class="notice notice-error"><p>';
 				printf(
-					esc_html__( 'Add-on "%s" requires POS Core version %s or higher. You have version %s. The add-on has been disabled.', 'simple-pos' ),
+					/* translators: 1: add-on name, 2: required core version, 3: current core version. */
+					esc_html__( 'Add-on "%1$s" requires POS Core version %2$s or higher. You have version %3$s. The add-on has been disabled.', 'wp-pos-plugin' ),
 					esc_html( $error['addon'] ),
 					esc_html( $error['requires'] ),
 					esc_html( $error['current'] )

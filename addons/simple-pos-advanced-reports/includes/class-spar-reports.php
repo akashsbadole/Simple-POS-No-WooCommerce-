@@ -289,6 +289,6 @@ class SPAR_Reports {
 				$headers = array( 'Tax', 'Rate %', 'Amount' );
 				return array( 'csv' => self::to_csv( $headers, self::tax_summary( $date_from, $date_to ) ) );
 		}
-		return new WP_Error( 'spar_unknown_type', __( 'Unknown report type.', 'simple-pos' ) );
+		return new WP_Error( 'spar_unknown_type', __( 'Unknown report type.', 'wp-pos-plugin' ) );
 	}
 }

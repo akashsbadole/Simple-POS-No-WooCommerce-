@@ -14,7 +14,7 @@
 	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="simple-pos"/>
+			<property name="text_domain" type="array" value="wp-pos-plugin"/>
 		</properties>
 	</rule>
 	<config name="minimum_supported_wp_version" value="5.8"/>

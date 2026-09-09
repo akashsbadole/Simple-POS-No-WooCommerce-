@@ -4,26 +4,26 @@ $settings = Simple_POS_Settings::get_all();
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">
-		<h1><?php esc_html_e('Barcode Labels','simple-pos');?></h1>
+		<h1><?php esc_html_e('Barcode Labels','wp-pos-plugin');?></h1>
 		<div class="simple-pos-page-actions">
-			<button id="pos-print-labels" class="button button-primary"><?php esc_html_e('Print Labels','simple-pos');?></button>
+			<button id="pos-print-labels" class="button button-primary"><?php esc_html_e('Print Labels','wp-pos-plugin');?></button>
 		</div>
 	</div>
-	<p class="description"><?php esc_html_e('Select products/variants to print.','simple-pos');?> <?php esc_html_e('Symbology:','simple-pos');?> <strong><?php echo esc_html($settings['barcode_symbology']);?></strong> | <?php esc_html_e('Sheet:','simple-pos');?> <strong><?php echo esc_html($settings['barcode_label_format']);?></strong> <?php esc_html_e('(change in Settings)','simple-pos');?>.</p>
+	<p class="description"><?php esc_html_e('Select products/variants to print.','wp-pos-plugin');?> <?php esc_html_e('Symbology:','wp-pos-plugin');?> <strong><?php echo esc_html($settings['barcode_symbology']);?></strong> | <?php esc_html_e('Sheet:','wp-pos-plugin');?> <strong><?php echo esc_html($settings['barcode_label_format']);?></strong> <?php esc_html_e('(change in Settings)','wp-pos-plugin');?>.</p>
 	<div class="simple-pos-columns">
 		<div class="simple-pos-col-main">
 			<div class="simple-pos-card simple-pos-filter-bar">
 				<div class="simple-pos-filters">
 					<div class="simple-pos-filter-actions">
-						<label class="simple-pos-checkbox"><input type="checkbox" id="pos-select-all"/> <?php esc_html_e('Select all','simple-pos');?></label>
+						<label class="simple-pos-checkbox"><input type="checkbox" id="pos-select-all"/> <?php esc_html_e('Select all','wp-pos-plugin');?></label>
 					</div>
 				</div>
 			</div>
 			<div class="simple-pos-card simple-pos-table-card">
 				<table class="wp-list-table widefat striped simple-pos-table">
-					<thead><tr><th><input type="checkbox" disabled/></th><th><?php esc_html_e('Product / Variant','simple-pos');?></th><th><?php esc_html_e('SKU','simple-pos');?></th><th><?php esc_html_e('Barcode','simple-pos');?></th><th class="num"><?php esc_html_e('Price','simple-pos');?></th></tr></thead>
+					<thead><tr><th><input type="checkbox" disabled/></th><th><?php esc_html_e('Product / Variant','wp-pos-plugin');?></th><th><?php esc_html_e('SKU','wp-pos-plugin');?></th><th><?php esc_html_e('Barcode','wp-pos-plugin');?></th><th class="num"><?php esc_html_e('Price','wp-pos-plugin');?></th></tr></thead>
 					<tbody>
-					<?php if(empty($products['items'])):?><tr><td colspan="5" class="simple-pos-empty"><?php esc_html_e('No products.','simple-pos');?></td></tr><?php endif;?>
+					<?php if(empty($products['items'])):?><tr><td colspan="5" class="simple-pos-empty"><?php esc_html_e('No products.','wp-pos-plugin');?></td></tr><?php endif;?>
 					<?php foreach($products['items'] as $p):
 						$vars = Simple_POS_Variants::get_variants($p->id);
 						$rows = array_merge(array(array('is_variant'=>0,'name'=>$p->name,'sku'=>$p->sku,'barcode'=>$p->barcode,'price'=>$p->price,'id'=>$p->id)), array_map(function($v) use($p){ return array('is_variant'=>1,'name'=>$p->name.' — '.Simple_POS_Variants::variant_label($v),'sku'=>$v->sku,'barcode'=>$v->barcode,'price'=>$v->price ?? $p->price,'id'=>$v->id,'parent'=>$p->id); }, $vars));
@@ -42,7 +42,7 @@ $settings = Simple_POS_Settings::get_all();
 			</div>
 		</div>
 		<div class="simple-pos-col-side">
-			<div class="postbox simple-pos-form-card"><h2 class="hndle"><span><?php esc_html_e('Preview','simple-pos');?></span></h2><div class="inside"><div id="pos-label-preview" class="pos-label-sheet" style="border:1px solid #ccc;padding:8px;min-height:120px"></div><p class="description"><?php esc_html_e('Uses JsBarcode (CODE128) in print view. For EAN13 ensure 13-digit numeric. QR fallback.','simple-pos');?></p></div></div>
+			<div class="postbox simple-pos-form-card"><h2 class="hndle"><span><?php esc_html_e('Preview','wp-pos-plugin');?></span></h2><div class="inside"><div id="pos-label-preview" class="pos-label-sheet" style="border:1px solid #ccc;padding:8px;min-height:120px"></div><p class="description"><?php esc_html_e('Uses JsBarcode (CODE128) in print view. For EAN13 ensure 13-digit numeric. QR fallback.','wp-pos-plugin');?></p></div></div>
 		</div>
 	</div>
 	<!-- print container -->

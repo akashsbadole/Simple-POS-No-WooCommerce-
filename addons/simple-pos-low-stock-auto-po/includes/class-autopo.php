@@ -104,7 +104,7 @@ class SAPO_AutoPO {
 	 */
 	public static function generate() {
 		if ( ! class_exists( 'Simple_POS_Purchase_Orders' ) ) {
-			return new WP_Error( 'sapo_no_core', __( 'Simple POS purchase orders not available.', 'simple-pos' ) );
+			return new WP_Error( 'sapo_no_core', __( 'Simple POS purchase orders not available.', 'wp-pos-plugin' ) );
 		}
 
 		$settings = self::get_settings();
@@ -142,7 +142,7 @@ class SAPO_AutoPO {
 				'supplier_id' => $supplier_id > 0 ? $supplier_id : null,
 				'note'        => sprintf(
 					/* translators: 1: date/time, 2: product count */
-					__( 'Auto-PO generated %1$s for %2$d low-stock product(s).', 'simple-pos' ),
+					__( 'Auto-PO generated %1$s for %2$d low-stock product(s).', 'wp-pos-plugin' ),
 					current_time( 'mysql' ),
 					count( $items )
 				),
@@ -172,10 +172,10 @@ class SAPO_AutoPO {
 		}
 		wp_mail(
 			$email,
-			__( 'Simple POS: auto-PO drafted', 'simple-pos' ),
+			__( 'Simple POS: auto-PO drafted', 'wp-pos-plugin' ),
 			sprintf(
 				/* translators: 1: PO id, 2: newline list */
-				__( 'Draft PO #%1$s was created with %2$s', 'simple-pos' ),
+				__( 'Draft PO #%1$s was created with %2$s', 'wp-pos-plugin' ),
 				$po_id,
 				"\n" . implode( "\n", $lines )
 			)

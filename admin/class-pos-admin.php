@@ -60,8 +60,8 @@ class Simple_POS_Admin {
 	 */
 	public static function register_menus() {
 		add_menu_page(
-			__( 'POS', 'simple-pos' ),
-			__( 'POS', 'simple-pos' ),
+			__( 'POS', 'wp-pos-plugin' ),
+			__( 'POS', 'wp-pos-plugin' ),
 			'operate_pos',
 			'simple-pos-terminal',
 			array( __CLASS__, 'render_terminal_page' ),
@@ -69,19 +69,19 @@ class Simple_POS_Admin {
 			25
 		);
 
-		add_submenu_page( 'simple-pos-terminal', __( 'Terminal', 'simple-pos' ), __( 'Terminal', 'simple-pos' ), 'operate_pos', 'simple-pos-terminal', array( __CLASS__, 'render_terminal_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Dashboard', 'simple-pos' ), __( 'Dashboard', 'simple-pos' ), 'view_pos_reports', 'simple-pos-dashboard', array( __CLASS__, 'render_dashboard_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Products', 'simple-pos' ), __( 'Products', 'simple-pos' ), 'view_pos_products', 'simple-pos-products', array( __CLASS__, 'render_products_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Customers', 'simple-pos' ), __( 'Customers', 'simple-pos' ), 'operate_pos', 'simple-pos-customers', array( __CLASS__, 'render_customers_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Sales History', 'simple-pos' ), __( 'Sales History', 'simple-pos' ), 'view_pos_sales', 'simple-pos-sales', array( __CLASS__, 'render_sales_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Reports', 'simple-pos' ), __( 'Reports', 'simple-pos' ), 'view_pos_reports', 'simple-pos-reports', array( __CLASS__, 'render_reports_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Taxes', 'simple-pos' ), __( 'Taxes', 'simple-pos' ), 'manage_pos_settings', 'simple-pos-taxes', array( __CLASS__, 'render_taxes_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Suppliers', 'simple-pos' ), __( 'Suppliers', 'simple-pos' ), 'manage_pos_products', 'simple-pos-suppliers', array( __CLASS__, 'render_suppliers_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Purchase Orders', 'simple-pos' ), __( 'Purchase Orders', 'simple-pos' ), 'manage_pos_products', 'simple-pos-purchase-orders', array( __CLASS__, 'render_purchase_orders_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Barcode Labels', 'simple-pos' ), __( 'Barcode Labels', 'simple-pos' ), 'manage_pos_products', 'simple-pos-barcode', array( __CLASS__, 'render_barcode_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Settings', 'simple-pos' ), __( 'Settings', 'simple-pos' ), 'manage_pos_settings', 'simple-pos-settings', array( __CLASS__, 'render_settings_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Backup', 'simple-pos' ), __( 'Backup', 'simple-pos' ), 'manage_pos_settings', 'simple-pos-backup', array( __CLASS__, 'render_backup_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Add-ons', 'simple-pos' ), __( 'Add-ons', 'simple-pos' ), 'manage_pos_settings', 'simple-pos-addons', array( __CLASS__, 'render_addons_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Terminal', 'wp-pos-plugin' ), __( 'Terminal', 'wp-pos-plugin' ), 'operate_pos', 'simple-pos-terminal', array( __CLASS__, 'render_terminal_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Dashboard', 'wp-pos-plugin' ), __( 'Dashboard', 'wp-pos-plugin' ), 'view_pos_reports', 'simple-pos-dashboard', array( __CLASS__, 'render_dashboard_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Products', 'wp-pos-plugin' ), __( 'Products', 'wp-pos-plugin' ), 'view_pos_products', 'simple-pos-products', array( __CLASS__, 'render_products_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Customers', 'wp-pos-plugin' ), __( 'Customers', 'wp-pos-plugin' ), 'operate_pos', 'simple-pos-customers', array( __CLASS__, 'render_customers_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Sales History', 'wp-pos-plugin' ), __( 'Sales History', 'wp-pos-plugin' ), 'view_pos_sales', 'simple-pos-sales', array( __CLASS__, 'render_sales_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Reports', 'wp-pos-plugin' ), __( 'Reports', 'wp-pos-plugin' ), 'view_pos_reports', 'simple-pos-reports', array( __CLASS__, 'render_reports_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Taxes', 'wp-pos-plugin' ), __( 'Taxes', 'wp-pos-plugin' ), 'manage_pos_settings', 'simple-pos-taxes', array( __CLASS__, 'render_taxes_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Suppliers', 'wp-pos-plugin' ), __( 'Suppliers', 'wp-pos-plugin' ), 'manage_pos_products', 'simple-pos-suppliers', array( __CLASS__, 'render_suppliers_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Purchase Orders', 'wp-pos-plugin' ), __( 'Purchase Orders', 'wp-pos-plugin' ), 'manage_pos_products', 'simple-pos-purchase-orders', array( __CLASS__, 'render_purchase_orders_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Barcode Labels', 'wp-pos-plugin' ), __( 'Barcode Labels', 'wp-pos-plugin' ), 'manage_pos_products', 'simple-pos-barcode', array( __CLASS__, 'render_barcode_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Settings', 'wp-pos-plugin' ), __( 'Settings', 'wp-pos-plugin' ), 'manage_pos_settings', 'simple-pos-settings', array( __CLASS__, 'render_settings_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Backup', 'wp-pos-plugin' ), __( 'Backup', 'wp-pos-plugin' ), 'manage_pos_settings', 'simple-pos-backup', array( __CLASS__, 'render_backup_page' ) );
+		add_submenu_page( 'simple-pos-terminal', __( 'Add-ons', 'wp-pos-plugin' ), __( 'Add-ons', 'wp-pos-plugin' ), 'manage_pos_settings', 'simple-pos-addons', array( __CLASS__, 'render_addons_page' ) );
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Simple_POS_Admin {
 	 * @param string $hook Current admin page hook suffix.
 	 */
 	public static function enqueue_assets( $hook ) {
-		if ( strpos( $hook, 'simple-pos' ) === false ) {
+		if ( strpos( $hook, 'wp-pos-plugin' ) === false ) {
 			return;
 		}
 
@@ -131,11 +131,11 @@ class Simple_POS_Admin {
 				'manageCustomers' => current_user_can( 'manage_pos_customers' ),
 			),
 			'i18n'           => array(
-				'confirmVoid'   => __( 'Void this sale and restore stock? This cannot be undone.', 'simple-pos' ),
-				'confirmDelete' => __( 'Delete this item? This cannot be undone.', 'simple-pos' ),
-				'cartEmpty'     => __( 'Cart is empty.', 'simple-pos' ),
-				'checkoutError' => __( 'Checkout failed. Please try again.', 'simple-pos' ),
-				'outOfStock'    => __( 'Out of stock', 'simple-pos' ),
+				'confirmVoid'   => __( 'Void this sale and restore stock? This cannot be undone.', 'wp-pos-plugin' ),
+				'confirmDelete' => __( 'Delete this item? This cannot be undone.', 'wp-pos-plugin' ),
+				'cartEmpty'     => __( 'Cart is empty.', 'wp-pos-plugin' ),
+				'checkoutError' => __( 'Checkout failed. Please try again.', 'wp-pos-plugin' ),
+				'outOfStock'    => __( 'Out of stock', 'wp-pos-plugin' ),
 			),
 		);
 
@@ -210,11 +210,11 @@ class Simple_POS_Admin {
 				'manageCustomers' => current_user_can( 'manage_pos_customers' ),
 			),
 			'i18n'           => array(
-				'confirmVoid'   => __( 'Void this sale and restore stock? This cannot be undone.', 'simple-pos' ),
-				'confirmDelete' => __( 'Delete this item? This cannot be undone.', 'simple-pos' ),
-				'cartEmpty'     => __( 'Cart is empty.', 'simple-pos' ),
-				'checkoutError' => __( 'Checkout failed. Please try again.', 'simple-pos' ),
-				'outOfStock'    => __( 'Out of stock', 'simple-pos' ),
+				'confirmVoid'   => __( 'Void this sale and restore stock? This cannot be undone.', 'wp-pos-plugin' ),
+				'confirmDelete' => __( 'Delete this item? This cannot be undone.', 'wp-pos-plugin' ),
+				'cartEmpty'     => __( 'Cart is empty.', 'wp-pos-plugin' ),
+				'checkoutError' => __( 'Checkout failed. Please try again.', 'wp-pos-plugin' ),
+				'outOfStock'    => __( 'Out of stock', 'wp-pos-plugin' ),
 			),
 		);
 
@@ -229,7 +229,7 @@ class Simple_POS_Admin {
 	 */
 	public static function render_shortcode_terminal() {
 		if ( ! current_user_can( 'operate_pos' ) ) {
-			return '<p>' . esc_html__( 'You do not have permission to use the POS terminal.', 'simple-pos' ) . '</p>';
+			return '<p>' . esc_html__( 'You do not have permission to use the POS terminal.', 'wp-pos-plugin' ) . '</p>';
 		}
 		self::$frontend_terminal_active = true;
 		show_admin_bar( false );
@@ -284,7 +284,7 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_addon_toggle() {
 		if ( ! current_user_can( 'manage_pos_settings' ) ) {
-			wp_die( esc_html__( 'You are not allowed to manage add-ons.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You are not allowed to manage add-ons.', 'wp-pos-plugin' ) );
 		}
 		$addon = isset( $_POST['addon'] ) ? sanitize_key( wp_unslash( $_POST['addon'] ) ) : '';
 		if ( '' === $addon ) {
@@ -311,13 +311,13 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_save_settings() {
 		if ( ! current_user_can( 'manage_pos_settings' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to do this.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_save_settings' );
 
 		Simple_POS_Settings::update( wp_unslash( $_POST ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-		self::redirect_with_result( 'simple-pos-settings', true, __( 'Settings saved.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-settings', true, __( 'Settings saved.', 'wp-pos-plugin' ) );
 	}
 
 	/**
@@ -325,7 +325,7 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_save_product() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to do this.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_save_product' );
 
@@ -337,7 +337,7 @@ class Simple_POS_Admin {
 			? Simple_POS_Products::update_product( $id, $data )
 			: Simple_POS_Products::create_product( $data );
 
-		self::redirect_with_result( 'simple-pos-products', $result, __( 'Product saved.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-products', $result, __( 'Product saved.', 'wp-pos-plugin' ) );
 	}
 
 	/**
@@ -345,12 +345,12 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_delete_product() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to do this.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_delete_product' );
 
 		$result = Simple_POS_Products::delete_product( (int) $_GET['id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		self::redirect_with_result( 'simple-pos-products', $result, __( 'Product deleted.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-products', $result, __( 'Product deleted.', 'wp-pos-plugin' ) );
 	}
 
 	/**
@@ -358,7 +358,7 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_adjust_stock() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to do this.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_adjust_stock' );
 
@@ -367,7 +367,7 @@ class Simple_POS_Admin {
 		$note  = isset( $_POST['note'] ) ? sanitize_text_field( wp_unslash( $_POST['note'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$result = Simple_POS_Products::adjust_stock( $id, $delta, 'restock', null, $note );
-		self::redirect_with_result( 'simple-pos-products', $result, __( 'Stock updated.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-products', $result, __( 'Stock updated.', 'wp-pos-plugin' ) );
 	}
 
 	/**
@@ -375,7 +375,7 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_save_category() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to do this.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_save_category' );
 
@@ -383,7 +383,7 @@ class Simple_POS_Admin {
 		$description = isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$result = Simple_POS_Products::create_category( $name, $description );
-		self::redirect_with_result( 'simple-pos-products', $result, __( 'Category added.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-products', $result, __( 'Category added.', 'wp-pos-plugin' ) );
 	}
 
 	/**
@@ -391,12 +391,12 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_delete_category() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to do this.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_delete_category' );
 
 		Simple_POS_Products::delete_category( (int) $_GET['id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		self::redirect_with_result( 'simple-pos-products', true, __( 'Category deleted.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-products', true, __( 'Category deleted.', 'wp-pos-plugin' ) );
 	}
 
 	/**
@@ -404,7 +404,7 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_save_customer() {
 		if ( ! current_user_can( 'manage_pos_customers' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to do this.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_save_customer' );
 
@@ -415,7 +415,7 @@ class Simple_POS_Admin {
 			? Simple_POS_Customers::update_customer( $id, $data )
 			: Simple_POS_Customers::create_customer( $data );
 
-		self::redirect_with_result( 'simple-pos-customers', $result, __( 'Customer saved.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-customers', $result, __( 'Customer saved.', 'wp-pos-plugin' ) );
 	}
 
 	/**
@@ -423,35 +423,35 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_delete_customer() {
 		if ( ! current_user_can( 'manage_pos_customers' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to do this.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_delete_customer' );
 
 		Simple_POS_Customers::delete_customer( (int) $_GET['id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		self::redirect_with_result( 'simple-pos-customers', true, __( 'Customer deleted.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-customers', true, __( 'Customer deleted.', 'wp-pos-plugin' ) );
 	}
 
 	public static function handle_save_tax_class() {
 		if ( ! current_user_can( 'manage_pos_settings' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_save_tax_class' );
 		$name=isset($_POST['name'])? sanitize_text_field(wp_unslash($_POST['name'])):''; // phpcs:ignore
 		$desc=isset($_POST['description'])? sanitize_textarea_field(wp_unslash($_POST['description'])):''; // phpcs:ignore
 		$res  = Simple_POS_Tax::create_class( $name, $desc );
-		self::redirect_with_result( 'simple-pos-taxes', $res, __( 'Tax class added.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-taxes', $res, __( 'Tax class added.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_delete_tax_class() {
 		if ( ! current_user_can( 'manage_pos_settings' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_delete_tax_class' );
 		Simple_POS_Tax::delete_class((int)$_GET['id']); // phpcs:ignore
-		self::redirect_with_result( 'simple-pos-taxes', true, __( 'Tax class deleted.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-taxes', true, __( 'Tax class deleted.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_save_tax_rate() {
 		if ( ! current_user_can( 'manage_pos_settings' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_save_tax_rate' );
 		$data=wp_unslash($_POST); // phpcs:ignore
@@ -468,19 +468,19 @@ class Simple_POS_Admin {
 			'gst_split'    => ! empty( $data['gst_split'] ),
 		);
 		$res     = $id ? Simple_POS_Tax::update_rate( $id, $payload ) : Simple_POS_Tax::create_rate( $payload );
-		self::redirect_with_result( 'simple-pos-taxes', $res, __( 'Tax rate saved.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-taxes', $res, __( 'Tax rate saved.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_delete_tax_rate() {
 		if ( ! current_user_can( 'manage_pos_settings' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_delete_tax_rate' );
 		Simple_POS_Tax::delete_rate((int)$_GET['id']); // phpcs:ignore
-		self::redirect_with_result( 'simple-pos-taxes', true, __( 'Tax rate deleted.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-taxes', true, __( 'Tax rate deleted.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_save_variant() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_save_variant' );
 		$data=wp_unslash($_POST); // phpcs:ignore
@@ -512,37 +512,37 @@ class Simple_POS_Admin {
 			'status'              => $data['status'] ?? 'active',
 		);
 		$res     = $variant_id ? Simple_POS_Variants::update_variant( $variant_id, $payload ) : Simple_POS_Variants::create_variant( $parent_id, $payload );
-		self::redirect_with_result( 'simple-pos-products', $res, __( 'Variant saved.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-products', $res, __( 'Variant saved.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_delete_variant() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_delete_variant' );
 		Simple_POS_Variants::delete_variant((int)$_GET['id']); // phpcs:ignore
-		self::redirect_with_result( 'simple-pos-products', true, __( 'Variant deleted.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-products', true, __( 'Variant deleted.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_save_supplier() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_save_supplier' );
 		$data=wp_unslash($_POST); // phpcs:ignore
 		$id   = (int) ( $data['supplier_id'] ?? 0 );
 		$res  = $id ? Simple_POS_Suppliers::update_supplier( $id, $data ) : Simple_POS_Suppliers::create_supplier( $data );
-		self::redirect_with_result( 'simple-pos-suppliers', $res, __( 'Supplier saved.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-suppliers', $res, __( 'Supplier saved.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_delete_supplier() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_delete_supplier' );
 		Simple_POS_Suppliers::delete_supplier((int)$_GET['id']); // phpcs:ignore
-		self::redirect_with_result( 'simple-pos-suppliers', true, __( 'Supplier deleted.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-suppliers', true, __( 'Supplier deleted.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_save_po() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_save_po' );
 		$data=wp_unslash($_POST); // phpcs:ignore
@@ -570,11 +570,11 @@ class Simple_POS_Admin {
 			'items'       => $items,
 		);
 		$res     = Simple_POS_Purchase_Orders::create_order( $payload );
-		self::redirect_with_result( 'simple-pos-purchase-orders', $res, __( 'Purchase order created.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-purchase-orders', $res, __( 'Purchase order created.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_receive_po() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_receive_po' );
 		$po_id=(int)($_POST['po_id']??0); // phpcs:ignore
@@ -588,27 +588,28 @@ class Simple_POS_Admin {
 			}
 		}
 		$res = Simple_POS_Purchase_Orders::receive( $po_id, $items );
-		self::redirect_with_result( 'simple-pos-purchase-orders', $res, __( 'PO received, stock updated.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-purchase-orders', $res, __( 'PO received, stock updated.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_delete_po() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_delete_po' );
 		Simple_POS_Purchase_Orders::delete_order((int)$_GET['id']); // phpcs:ignore
-		self::redirect_with_result( 'simple-pos-purchase-orders', true, __( 'PO deleted.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-purchase-orders', true, __( 'PO deleted.', 'wp-pos-plugin' ) );
 	}
 	public static function handle_import_products() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_import_products' );
 		if(empty($_FILES['csv_file']['tmp_name'])){ // phpcs:ignore
-			self::redirect_with_result( 'simple-pos-products', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'simple-pos' ) ), '' );
+			self::redirect_with_result( 'simple-pos-products', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
 		$res=Simple_POS_CSV::import_products($_FILES['csv_file']['tmp_name']); // phpcs:ignore
-		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d products.', 'simple-pos' ), $res['imported'] );
+		/* translators: %d: number of imported products. */
+		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d products.', 'wp-pos-plugin' ), $res['imported'] );
 		if ( ! empty( $res['errors'] ) ) {
 			$msg .= ' ' . implode( ' ', array_slice( $res['errors'], 0, 3 ) );
 		}
@@ -616,7 +617,7 @@ class Simple_POS_Admin {
 	}
 	public static function handle_export_products() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_export_products' );
 		$csv = Simple_POS_CSV::export_products();
@@ -627,7 +628,7 @@ class Simple_POS_Admin {
 	}
 	public static function handle_export_sales() {
 		if ( ! current_user_can( 'view_pos_sales' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_export_sales' );
 		$from=isset($_GET['date_from'])? sanitize_text_field($_GET['date_from']):''; // phpcs:ignore
@@ -644,7 +645,7 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_export_categories() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_export_categories' );
 		$csv = Simple_POS_CSV::export_categories();
@@ -655,15 +656,16 @@ class Simple_POS_Admin {
 	}
 	public static function handle_import_categories() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_import_categories' );
 		if ( empty( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			self::redirect_with_result( 'simple-pos-products', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'simple-pos' ) ), '' );
+			self::redirect_with_result( 'simple-pos-products', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
 		$res = Simple_POS_CSV::import_categories( $_FILES['csv_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d categories.', 'simple-pos' ), $res['imported'] );
+		/* translators: %d: number of imported categories. */
+		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d categories.', 'wp-pos-plugin' ), $res['imported'] );
 		if ( ! empty( $res['errors'] ) ) {
 			$msg .= ' ' . implode( ' ', array_slice( $res['errors'], 0, 3 ) );
 		}
@@ -675,7 +677,7 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_export_variants() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_export_variants' );
 		$csv = Simple_POS_CSV::export_variants();
@@ -690,15 +692,16 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_import_variants() {
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_import_variants' );
 		if ( empty( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			self::redirect_with_result( 'simple-pos-products', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'simple-pos' ) ), '' );
+			self::redirect_with_result( 'simple-pos-products', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
 		$res = Simple_POS_CSV::import_variants( $_FILES['csv_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d variants.', 'simple-pos' ), $res['imported'] );
+		/* translators: %d: number of imported variants. */
+		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d variants.', 'wp-pos-plugin' ), $res['imported'] );
 		if ( ! empty( $res['errors'] ) ) {
 			$msg .= ' ' . implode( ' ', array_slice( $res['errors'], 0, 3 ) );
 		}
@@ -707,15 +710,16 @@ class Simple_POS_Admin {
 
 	public static function handle_import_sales() {
 		if ( ! current_user_can( 'view_pos_sales' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_import_sales' );
 		if ( empty( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			self::redirect_with_result( 'simple-pos-sales', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'simple-pos' ) ), '' );
+			self::redirect_with_result( 'simple-pos-sales', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
 		$res = Simple_POS_CSV::import_sales( $_FILES['csv_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d sales.', 'simple-pos' ), $res['imported'] );
+		/* translators: %d: number of imported sales. */
+		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d sales.', 'wp-pos-plugin' ), $res['imported'] );
 		if ( ! empty( $res['errors'] ) ) {
 			$msg .= ' ' . implode( ' ', array_slice( $res['errors'], 0, 3 ) );
 		}
@@ -727,7 +731,7 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_backup_export() {
 		if ( ! current_user_can( 'manage_pos_settings' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_backup_export' );
 
@@ -767,12 +771,12 @@ class Simple_POS_Admin {
 
 	public static function handle_backup_import() {
 		if ( ! current_user_can( 'manage_pos_settings' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_backup_import' );
 
 		if ( empty( $_FILES['backup_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'simple-pos' ) ), '' );
+			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
 
@@ -781,13 +785,13 @@ class Simple_POS_Admin {
 		$data      = json_decode( $content, true );
 
 		if ( ! is_array( $data ) ) {
-			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_invalid_backup', __( 'Invalid backup file.', 'simple-pos' ) ), '' );
+			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_invalid_backup', __( 'Invalid backup file.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
 
 		// Validate backup version.
 		if ( empty( $data['_backup_version'] ) ) {
-			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_invalid_backup', __( 'Backup file missing version information.', 'simple-pos' ) ), '' );
+			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_invalid_backup', __( 'Backup file missing version information.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
 
@@ -801,7 +805,7 @@ class Simple_POS_Admin {
 					'pos_backup_version_mismatch',
 					sprintf(
 						/* translators: 1: backup version, 2: current version */
-						__( 'Backup is from a newer version (%1$s) than current (%2$s). Please upgrade plugin first.', 'simple-pos' ),
+						__( 'Backup is from a newer version (%1$s) than current (%2$s). Please upgrade plugin first.', 'wp-pos-plugin' ),
 						$backup_version,
 						$current_db_version
 					)
@@ -876,10 +880,10 @@ class Simple_POS_Admin {
 
 		if ( $success ) {
 			$wpdb->query( 'COMMIT' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			self::redirect_with_result( 'simple-pos-backup', true, __( 'Backup restored successfully.', 'simple-pos' ) );
+			self::redirect_with_result( 'simple-pos-backup', true, __( 'Backup restored successfully.', 'wp-pos-plugin' ) );
 		} else {
 			$wpdb->query( 'ROLLBACK' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_backup_error', __( 'Backup restore failed. Data rolled back.', 'simple-pos' ) ), '' );
+			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_backup_error', __( 'Backup restore failed. Data rolled back.', 'wp-pos-plugin' ) ), '' );
 		}
 
 		$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 1' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
@@ -890,7 +894,7 @@ class Simple_POS_Admin {
 	 */
 	public static function handle_void_sale() {
 		if ( ! current_user_can( 'void_pos_sales' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'simple-pos' ) );
+			wp_die( esc_html__( 'You do not have permission to do this.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_void_sale' );
 
@@ -898,7 +902,7 @@ class Simple_POS_Admin {
 		$note = isset( $_POST['note'] ) ? sanitize_text_field( wp_unslash( $_POST['note'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$result = Simple_POS_Sales::void_sale( $id, $note );
-		self::redirect_with_result( 'simple-pos-sales', $result, __( 'Sale voided and stock restored.', 'simple-pos' ) );
+		self::redirect_with_result( 'simple-pos-sales', $result, __( 'Sale voided and stock restored.', 'wp-pos-plugin' ) );
 	}
 
 	/**
@@ -952,7 +956,7 @@ class Simple_POS_Admin {
 	 */
 	public static function low_stock_notice() {
 		$screen = get_current_screen();
-		if ( ! $screen || strpos( $screen->id, 'simple-pos' ) === false ) {
+		if ( ! $screen || strpos( $screen->id, 'wp-pos-plugin' ) === false ) {
 			return;
 		}
 		if ( ! current_user_can( 'manage_pos_products' ) ) {
@@ -968,15 +972,15 @@ class Simple_POS_Admin {
 		?>
 		<div class="notice notice-warning is-dismissible">
 			<p>
-				<strong><?php esc_html_e( 'Simple POS:', 'simple-pos' ); ?></strong>
+				<strong><?php esc_html_e( 'Simple POS:', 'wp-pos-plugin' ); ?></strong>
 				<?php
 				printf(
 					/* translators: %s: comma-separated list of product names */
-					esc_html__( 'Low stock alert for: %s', 'simple-pos' ),
+					esc_html__( 'Low stock alert for: %s', 'wp-pos-plugin' ),
 					esc_html( implode( ', ', array_slice( $names, 0, 6 ) ) )
 				);
 				?>
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-products&filter=low_stock' ) ); ?>"><?php esc_html_e( 'View products', 'simple-pos' ); ?></a>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-products&filter=low_stock' ) ); ?>"><?php esc_html_e( 'View products', 'wp-pos-plugin' ); ?></a>
 			</p>
 		</div>
 		<?php

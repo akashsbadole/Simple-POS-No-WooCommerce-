@@ -31,7 +31,7 @@ class Simple_POS_Sales {
 	 */
 	public static function create_sale( $cart_data ) {
 		if ( empty( $cart_data['items'] ) || ! is_array( $cart_data['items'] ) ) {
-			return new WP_Error( 'pos_empty_cart', __( 'Cart is empty.', 'simple-pos' ) );
+			return new WP_Error( 'pos_empty_cart', __( 'Cart is empty.', 'wp-pos-plugin' ) );
 		}
 		$settings    = Simple_POS_Settings::get_all();
 		$tax_country = isset( $cart_data['tax_country'] ) && '' !== trim( (string) $cart_data['tax_country'] ) ? strtoupper( sanitize_text_field( (string) $cart_data['tax_country'] ) ) : ( isset( $settings['tax_country'] ) ? strtoupper( (string) $settings['tax_country'] ) : 'US' );
@@ -49,17 +49,18 @@ class Simple_POS_Sales {
 			$variant_id = isset( $raw_item['variant_id'] ) ? (int) $raw_item['variant_id'] : 0;
 			$qty        = isset( $raw_item['qty'] ) ? (int) $raw_item['qty'] : 0;
 			if ( $product_id <= 0 || $qty <= 0 ) {
-				return new WP_Error( 'pos_invalid_item', __( 'Invalid item in cart.', 'simple-pos' ) );
+				return new WP_Error( 'pos_invalid_item', __( 'Invalid item in cart.', 'wp-pos-plugin' ) );
 			}
 			$product = Simple_POS_Products::get_product( $product_id );
 			if ( ! $product || 'active' !== $product->status ) {
-				return new WP_Error( 'pos_invalid_item', sprintf( __( 'Product #%d is not available.', 'simple-pos' ), $product_id ) );
+				/* translators: %d: product id. */
+				return new WP_Error( 'pos_invalid_item', sprintf( __( 'Product #%d is not available.', 'wp-pos-plugin' ), $product_id ) );
 			}
 			$variant = null;
 			if ( $variant_id ) {
 				$variant = Simple_POS_Variants::get_variant( $variant_id );
 				if ( ! $variant || (int) $variant->parent_product_id !== $product_id || 'active' !== $variant->status ) {
-					return new WP_Error( 'pos_invalid_item', __( 'Variant not available.', 'simple-pos' ) );
+					return new WP_Error( 'pos_invalid_item', __( 'Variant not available.', 'wp-pos-plugin' ) );
 				}
 			}
 			$price         = null !== ( $variant->price ?? null ) ? (float) $variant->price : (float) $product->price;
@@ -145,7 +146,8 @@ class Simple_POS_Sales {
 					}
 					$available = (int) $item['stock_qty'];
 					if ( ( $available - $item['qty'] ) < 0 && empty( $settings['allow_negative_stock'] ) ) {
-						return new WP_Error( 'pos_insufficient_stock', sprintf( __( 'Not enough stock for "%s".', 'simple-pos' ), $item['product_name'] ) );
+						/* translators: %s: product name. */
+						return new WP_Error( 'pos_insufficient_stock', sprintf( __( 'Not enough stock for "%s".', 'wp-pos-plugin' ), $item['product_name'] ) );
 					}
 				}
 				$sales_table = Simple_POS_DB::table( 'sales' );
@@ -177,7 +179,7 @@ class Simple_POS_Sales {
 					)
 				);
 				if ( false === $inserted ) {
-					return new WP_Error( 'pos_db_error', __( 'Could not record sale.', 'simple-pos' ) );
+					return new WP_Error( 'pos_db_error', __( 'Could not record sale.', 'wp-pos-plugin' ) );
 				}
 				$sale_id = (int) $wpdb->insert_id;
 				foreach ( $line_items as $idx => $item ) {
@@ -248,10 +250,10 @@ class Simple_POS_Sales {
 
 		$sale = self::get_sale( $sale_id );
 		if ( ! $sale ) {
-			return new WP_Error( 'pos_not_found', __( 'Sale not found.', 'simple-pos' ) );
+			return new WP_Error( 'pos_not_found', __( 'Sale not found.', 'wp-pos-plugin' ) );
 		}
 		if ( 'completed' !== $sale->status ) {
-			return new WP_Error( 'pos_invalid_state', __( 'Only completed sales can be voided.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_state', __( 'Only completed sales can be voided.', 'wp-pos-plugin' ) );
 		}
 
 		return Simple_POS_DB::transaction(
@@ -290,7 +292,7 @@ class Simple_POS_Sales {
 				);
 
 				if ( false === $updated ) {
-					return new WP_Error( 'pos_db_error', __( 'Could not void sale.', 'simple-pos' ) );
+					return new WP_Error( 'pos_db_error', __( 'Could not void sale.', 'wp-pos-plugin' ) );
 				}
 
 				Simple_POS_Reports::flush_cache();

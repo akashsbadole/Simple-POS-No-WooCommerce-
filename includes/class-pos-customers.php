@@ -70,7 +70,7 @@ class Simple_POS_Customers {
 
 		$name = isset( $data['name'] ) ? sanitize_text_field( $data['name'] ) : '';
 		if ( empty( $name ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Customer name is required.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Customer name is required.', 'wp-pos-plugin' ) );
 		}
 
 		$table  = Simple_POS_DB::table( 'customers' );
@@ -85,7 +85,7 @@ class Simple_POS_Customers {
 
 		$inserted = $wpdb->insert( $table, $insert ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		if ( false === $inserted ) {
-			return new WP_Error( 'pos_db_error', __( 'Could not create customer.', 'simple-pos' ) );
+			return new WP_Error( 'pos_db_error', __( 'Could not create customer.', 'wp-pos-plugin' ) );
 		}
 
 		return (int) $wpdb->insert_id;
@@ -102,7 +102,7 @@ class Simple_POS_Customers {
 		global $wpdb;
 		$existing = self::get_customer( $id );
 		if ( ! $existing ) {
-			return new WP_Error( 'pos_not_found', __( 'Customer not found.', 'simple-pos' ) );
+			return new WP_Error( 'pos_not_found', __( 'Customer not found.', 'wp-pos-plugin' ) );
 		}
 
 		$table  = Simple_POS_DB::table( 'customers' );

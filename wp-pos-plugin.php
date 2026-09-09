@@ -10,7 +10,7 @@
  * Author URI:        https://example.com
  * License:            GPL v2 or later
  * License URI:        https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:        simple-pos
+ * Text Domain:        wp-pos-plugin
  * Domain Path:        /languages
  */
 
@@ -124,7 +124,7 @@ final class Simple_POS_Plugin {
 	 * Load translations.
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'simple-pos', false, dirname( SIMPLE_POS_PLUGIN_BASENAME ) . '/languages' );
+		load_plugin_textdomain( 'wp-pos-plugin', false, dirname( SIMPLE_POS_PLUGIN_BASENAME ) . '/languages' );
 	}
 
 	/**

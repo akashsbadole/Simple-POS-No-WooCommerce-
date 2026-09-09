@@ -28,14 +28,14 @@ class Simple_POS_Variants {
 		$table  = Simple_POS_DB::table( 'product_variants' );
 		$parent = Simple_POS_Products::get_product( $parent_id );
 		if ( ! $parent ) {
-			return new WP_Error( 'pos_not_found', __( 'Parent product not found.', 'simple-pos' ) );
+			return new WP_Error( 'pos_not_found', __( 'Parent product not found.', 'wp-pos-plugin' ) );
 		}
 		
 		// Check parent is active.
 		if ( $parent->status !== 'active' ) {
 			return new WP_Error(
 				'pos_invalid_state',
-				__( 'Cannot create variant for inactive product. Activate product first.', 'simple-pos' )
+				__( 'Cannot create variant for inactive product. Activate product first.', 'wp-pos-plugin' )
 			);
 		}
 		
@@ -44,17 +44,17 @@ class Simple_POS_Variants {
 			return $clean;
 		}
 		if ( ! empty( $clean['sku'] ) && self::sku_exists( $clean['sku'] ) ) {
-			return new WP_Error( 'pos_duplicate_sku', __( 'SKU already used.', 'simple-pos' ) );
+			return new WP_Error( 'pos_duplicate_sku', __( 'SKU already used.', 'wp-pos-plugin' ) );
 		}
 		if ( ! empty( $clean['barcode'] ) && self::barcode_exists( $clean['barcode'] ) ) {
-			return new WP_Error( 'pos_duplicate_barcode', __( 'Barcode already used.', 'simple-pos' ) );
+			return new WP_Error( 'pos_duplicate_barcode', __( 'Barcode already used.', 'wp-pos-plugin' ) );
 		}
 		$clean['parent_product_id'] = $parent_id;
 		$clean['created_at']        = current_time( 'mysql' );
 		$clean['updated_at']        = current_time( 'mysql' );
 		$inserted                   = $wpdb->insert( $table, $clean );
 		if ( false === $inserted ) {
-			return new WP_Error( 'pos_db_error', __( 'Could not create variant.', 'simple-pos' ) );
+			return new WP_Error( 'pos_db_error', __( 'Could not create variant.', 'wp-pos-plugin' ) );
 		}
 		$id = (int) $wpdb->insert_id;
 		if ( (int) $clean['stock_qty'] > 0 ) {
@@ -68,17 +68,17 @@ class Simple_POS_Variants {
 		$table    = Simple_POS_DB::table( 'product_variants' );
 		$existing = self::get_variant( $id );
 		if ( ! $existing ) {
-			return new WP_Error( 'pos_not_found', __( 'Variant not found.', 'simple-pos' ) );
+			return new WP_Error( 'pos_not_found', __( 'Variant not found.', 'wp-pos-plugin' ) );
 		}
 		$clean = self::sanitize( $data, $existing );
 		if ( is_wp_error( $clean ) ) {
 			return $clean;
 		}
 		if ( ! empty( $clean['sku'] ) && self::sku_exists( $clean['sku'], $id ) ) {
-			return new WP_Error( 'pos_duplicate_sku', __( 'SKU already used.', 'simple-pos' ) );
+			return new WP_Error( 'pos_duplicate_sku', __( 'SKU already used.', 'wp-pos-plugin' ) );
 		}
 		if ( ! empty( $clean['barcode'] ) && self::barcode_exists( $clean['barcode'], $id ) ) {
-			return new WP_Error( 'pos_duplicate_barcode', __( 'Barcode already used.', 'simple-pos' ) );
+			return new WP_Error( 'pos_duplicate_barcode', __( 'Barcode already used.', 'wp-pos-plugin' ) );
 		}
 		$old_qty             = (int) $existing->stock_qty;
 		$new_qty             = (int) $clean['stock_qty'];
@@ -108,7 +108,7 @@ class Simple_POS_Variants {
 		
 		// Validate inputs.
 		if ( ! is_numeric( $delta ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Stock adjustment delta must be numeric.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Stock adjustment delta must be numeric.', 'wp-pos-plugin' ) );
 		}
 		
 		$delta = (int) $delta;
@@ -118,12 +118,12 @@ class Simple_POS_Variants {
 		
 		$variant_id = (int) $variant_id;
 		if ( $variant_id <= 0 ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Invalid variant ID.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Invalid variant ID.', 'wp-pos-plugin' ) );
 		}
 		
 		$variant = self::get_variant( $variant_id );
 		if ( ! $variant ) {
-			return new WP_Error( 'pos_not_found', __( 'Variant not found.', 'simple-pos' ) );
+			return new WP_Error( 'pos_not_found', __( 'Variant not found.', 'wp-pos-plugin' ) );
 		}
 		if ( ! $variant->track_stock ) {
 			return true;
@@ -131,7 +131,8 @@ class Simple_POS_Variants {
 		$settings = Simple_POS_Settings::get_all();
 		$new_qty  = (int) $variant->stock_qty + (int) $delta;
 		if ( $new_qty < 0 && empty( $settings['allow_negative_stock'] ) ) {
-			return new WP_Error( 'pos_insufficient_stock', sprintf( __( 'Not enough stock for variant "%s".', 'simple-pos' ), self::variant_label( $variant ) ) );
+			/* translators: %s: variant label. */
+			return new WP_Error( 'pos_insufficient_stock', sprintf( __( 'Not enough stock for variant "%s".', 'wp-pos-plugin' ), self::variant_label( $variant ) ) );
 		}
 		$table = Simple_POS_DB::table( 'product_variants' );
 		$wpdb->update(
@@ -197,7 +198,7 @@ class Simple_POS_Variants {
 		}
 		$price = isset( $data['price'] ) && $data['price'] !== '' ? (float) $data['price'] : ( $existing->price ?? null );
 		if ( $price !== null && $price < 0 ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Price cannot be negative.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Price cannot be negative.', 'wp-pos-plugin' ) );
 		}
 		$cost = isset( $data['cost_price'] ) && $data['cost_price'] !== '' ? (float) $data['cost_price'] : ( $existing->cost_price ?? null );
 		return array(

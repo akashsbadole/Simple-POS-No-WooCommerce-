@@ -26,13 +26,13 @@ class Simple_POS_Tax {
 		global $wpdb;
 		$name = sanitize_text_field( $name );
 		if ( empty( $name ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Tax class name is required.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Tax class name is required.', 'wp-pos-plugin' ) );
 		}
 		$slug     = sanitize_title( $name );
 		$table    = Simple_POS_DB::table( 'tax_classes' );
 		$existing = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table} WHERE slug = %s", $slug ) );
 		if ( $existing ) {
-			return new WP_Error( 'pos_duplicate', __( 'Tax class already exists.', 'simple-pos' ) );
+			return new WP_Error( 'pos_duplicate', __( 'Tax class already exists.', 'wp-pos-plugin' ) );
 		}
 		$wpdb->insert(
 			$table,
@@ -44,7 +44,7 @@ class Simple_POS_Tax {
 			)
 		);
 		if ( false === $wpdb->insert_id ) {
-			return new WP_Error( 'pos_db_error', __( 'Could not create tax class.', 'simple-pos' ) );
+			return new WP_Error( 'pos_db_error', __( 'Could not create tax class.', 'wp-pos-plugin' ) );
 		}
 		return (int) $wpdb->insert_id;
 	}
@@ -83,7 +83,7 @@ class Simple_POS_Tax {
 		$table    = Simple_POS_DB::table( 'tax_rates' );
 		$class_id = isset( $data['class_id'] ) ? (int) $data['class_id'] : 0;
 		if ( ! $class_id || ! self::get_class( $class_id ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Invalid tax class.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Invalid tax class.', 'wp-pos-plugin' ) );
 		}
 		$country = isset( $data['country_code'] ) ? strtoupper( sanitize_text_field( $data['country_code'] ) ) : '';
 		if ( empty( $country ) ) {
@@ -92,7 +92,7 @@ class Simple_POS_Tax {
 		$state = isset( $data['state_code'] ) && $data['state_code'] !== '' ? strtoupper( sanitize_text_field( $data['state_code'] ) ) : null;
 		$rate  = isset( $data['rate'] ) ? (float) $data['rate'] : 0;
 		if ( $rate < 0 || $rate > 100 ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Rate must be 0-100.', 'simple-pos' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Rate must be 0-100.', 'wp-pos-plugin' ) );
 		}
 		$res = $wpdb->insert(
 			$table,
@@ -110,7 +110,7 @@ class Simple_POS_Tax {
 			)
 		);
 		if ( false === $res ) {
-			return new WP_Error( 'pos_db_error', __( 'Could not create rate.', 'simple-pos' ) );
+			return new WP_Error( 'pos_db_error', __( 'Could not create rate.', 'wp-pos-plugin' ) );
 		}
 		return (int) $wpdb->insert_id;
 	}
@@ -120,7 +120,7 @@ class Simple_POS_Tax {
 		$table    = Simple_POS_DB::table( 'tax_rates' );
 		$existing = self::get_rate( $id );
 		if ( ! $existing ) {
-			return new WP_Error( 'pos_not_found', __( 'Rate not found.', 'simple-pos' ) );
+			return new WP_Error( 'pos_not_found', __( 'Rate not found.', 'wp-pos-plugin' ) );
 		}
 		$upd = array();
 		if ( isset( $data['country_code'] ) ) {
@@ -132,7 +132,7 @@ class Simple_POS_Tax {
 		if ( isset( $data['rate'] ) ) {
 			$rate = (float) $data['rate'];
 			if ( $rate < 0 || $rate > 100 ) {
-				return new WP_Error( 'pos_invalid_input', __( 'Rate must be 0-100.', 'simple-pos' ) );
+				return new WP_Error( 'pos_invalid_input', __( 'Rate must be 0-100.', 'wp-pos-plugin' ) );
 			}
 			$upd['rate'] = $rate;
 		}
@@ -154,7 +154,7 @@ class Simple_POS_Tax {
 		if ( isset( $data['class_id'] ) ) {
 			$cid = (int) $data['class_id'];
 			if ( ! self::get_class( $cid ) ) {
-				return new WP_Error( 'pos_invalid_input', __( 'Invalid tax class.', 'simple-pos' ) );
+				return new WP_Error( 'pos_invalid_input', __( 'Invalid tax class.', 'wp-pos-plugin' ) );
 			}
 			$upd['class_id'] = $cid;
 		}
