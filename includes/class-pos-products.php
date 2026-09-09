@@ -63,7 +63,7 @@ class Simple_POS_Products {
 		$orderby         = in_array( $args['orderby'], $allowed_orderby, true ) ? $args['orderby'] : 'name';
 		$order           = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
 
-		$per_page = max( 1, min( 200, (int) $args['per_page'] ) );
+		$per_page = max( 1, min( Simple_POS_DB::MAX_PER_PAGE, (int) $args['per_page'] ) );
 		$page     = max( 1, (int) $args['page'] );
 		$offset   = ( $page - 1 ) * $per_page;
 
@@ -254,6 +254,7 @@ class Simple_POS_Products {
 	 * Delete (soft-delete) a product by marking it inactive, unless it has
 	 * no sale history in which case it is hard-deleted. Preserves sale_items
 	 * referential integrity for reporting on historical sales.
+	 * Cascades status to variants when soft-deleting.
 	 *
 	 * @param int $id Product ID.
 	 * @return true|WP_Error
@@ -262,13 +263,19 @@ class Simple_POS_Products {
 		global $wpdb;
 		$items_table    = Simple_POS_DB::table( 'sale_items' );
 		$products_table = Simple_POS_DB::table( 'products' );
+		$variants_table = Simple_POS_DB::table( 'product_variants' );
 
 		$used_in_sales = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$items_table} WHERE product_id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		if ( $used_in_sales > 0 ) {
 			$wpdb->update( $products_table, array( 'status' => 'inactive' ), array( 'id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			// Cascade inactive status to all variants of this product.
+			$wpdb->update( $variants_table, array( 'status' => 'inactive' ), array( 'parent_product_id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			return true;
 		}
+
+		// Hard delete: also remove all variants.
+		$wpdb->delete( $variants_table, array( 'parent_product_id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		$deleted = $wpdb->delete( $products_table, array( 'id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
@@ -281,15 +288,15 @@ class Simple_POS_Products {
 
 	/**
 	 * Products at or below their low-stock threshold (for admin alerts/reports).
-	 * Includes variant low stock.
+	 * Includes variant low stock. Variants with track_stock=0 inherit from parent.
 	 */
 	public static function get_low_stock_products( $limit = 50 ) {
 		global $wpdb;
 		$pt       = Simple_POS_DB::table( 'products' );
 		$vt       = Simple_POS_DB::table( 'product_variants' );
-		$products = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$pt} WHERE track_stock=1 AND status='active' AND stock_qty <= low_stock_threshold ORDER BY stock_qty ASC LIMIT %d", $limit ) );
-		$variants = $wpdb->get_results( $wpdb->prepare( "SELECT v.*, p.name as parent_name FROM {$vt} v INNER JOIN {$pt} p ON p.id=v.parent_product_id WHERE v.track_stock=1 AND v.status='active' AND v.stock_qty <= v.low_stock_threshold ORDER BY v.stock_qty ASC LIMIT %d", $limit ) );
-		// Merge and label variants
+		$products = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$pt} WHERE track_stock=1 AND status='active' AND stock_qty <= low_stock_threshold ORDER BY stock_qty ASC LIMIT %d", $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$variants = $wpdb->get_results( $wpdb->prepare( "SELECT v.*, p.name as parent_name, p.stock_qty as parent_stock_qty, p.low_stock_threshold as parent_low_stock_threshold, p.track_stock as parent_track_stock FROM {$vt} v INNER JOIN {$pt} p ON p.id=v.parent_product_id WHERE v.status='active' AND ((v.track_stock=1 AND v.stock_qty <= v.low_stock_threshold) OR (v.track_stock=0 AND p.track_stock=1 AND p.stock_qty <= p.low_stock_threshold)) ORDER BY v.stock_qty ASC LIMIT %d", $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// Merge and label variants.
 		foreach ( $variants as $v ) {
 			$v->name       = $v->parent_name . ' — ' . Simple_POS_Variants::variant_label( $v );
 			$v->is_variant = 1;
@@ -310,6 +317,22 @@ class Simple_POS_Products {
 	 */
 	public static function adjust_stock( $product_id, $delta, $reason = 'adjustment', $reference_id = null, $note = '', $variant_id = null ) {
 		global $wpdb;
+		
+		// Validate inputs.
+		if ( ! is_numeric( $delta ) ) {
+			return new WP_Error( 'pos_invalid_input', __( 'Stock adjustment delta must be numeric.', 'simple-pos' ) );
+		}
+		
+		$delta = (int) $delta;
+		if ( $delta === 0 ) {
+			return true; // No-op, but not an error.
+		}
+		
+		$product_id = (int) $product_id;
+		if ( $product_id <= 0 ) {
+			return new WP_Error( 'pos_invalid_input', __( 'Invalid product ID.', 'simple-pos' ) );
+		}
+		
 		if ( $variant_id && class_exists( 'Simple_POS_Variants' ) ) {
 			return Simple_POS_Variants::adjust_stock( $variant_id, $delta, $reason, $reference_id, $note );
 		}
@@ -472,7 +495,8 @@ class Simple_POS_Products {
 	}
 
 	/**
-	 * Delete a category. Products in it are not deleted, only unassigned.
+	 * Delete a category. Products in it are reassigned to "Uncategorized"
+	 * rather than being set to NULL.
 	 *
 	 * @param int $id Category ID.
 	 * @return true
@@ -482,9 +506,28 @@ class Simple_POS_Products {
 		$products_table   = Simple_POS_DB::table( 'products' );
 		$categories_table = Simple_POS_DB::table( 'categories' );
 
-		$wpdb->update( $products_table, array( 'category_id' => null ), array( 'category_id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// Get or create "Uncategorized" default category.
+		$uncategorized_id = self::get_or_create_uncategorized();
+
+		$wpdb->update( $products_table, array( 'category_id' => $uncategorized_id ), array( 'category_id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$wpdb->delete( $categories_table, array( 'id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		return true;
+	}
+
+	/**
+	 * Get the ID of the "Uncategorized" category, creating it if it doesn't exist.
+	 *
+	 * @return int Category ID.
+	 */
+	private static function get_or_create_uncategorized() {
+		global $wpdb;
+		$table = Simple_POS_DB::table( 'categories' );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table} WHERE slug = %s LIMIT 1", 'uncategorized' ) );
+		if ( $id ) {
+			return $id;
+		}
+		return self::create_category( 'Uncategorized', 'Default category for unassigned products' );
 	}
 }

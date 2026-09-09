@@ -30,6 +30,15 @@ class Simple_POS_Variants {
 		if ( ! $parent ) {
 			return new WP_Error( 'pos_not_found', __( 'Parent product not found.', 'simple-pos' ) );
 		}
+		
+		// Check parent is active.
+		if ( $parent->status !== 'active' ) {
+			return new WP_Error(
+				'pos_invalid_state',
+				__( 'Cannot create variant for inactive product. Activate product first.', 'simple-pos' )
+			);
+		}
+		
 		$clean = self::sanitize( $data );
 		if ( is_wp_error( $clean ) ) {
 			return $clean;
@@ -96,6 +105,22 @@ class Simple_POS_Variants {
 
 	public static function adjust_stock( $variant_id, $delta, $reason = 'adjustment', $reference_id = null, $note = '' ) {
 		global $wpdb;
+		
+		// Validate inputs.
+		if ( ! is_numeric( $delta ) ) {
+			return new WP_Error( 'pos_invalid_input', __( 'Stock adjustment delta must be numeric.', 'simple-pos' ) );
+		}
+		
+		$delta = (int) $delta;
+		if ( $delta === 0 ) {
+			return true; // No-op, but not an error.
+		}
+		
+		$variant_id = (int) $variant_id;
+		if ( $variant_id <= 0 ) {
+			return new WP_Error( 'pos_invalid_input', __( 'Invalid variant ID.', 'simple-pos' ) );
+		}
+		
 		$variant = self::get_variant( $variant_id );
 		if ( ! $variant ) {
 			return new WP_Error( 'pos_not_found', __( 'Variant not found.', 'simple-pos' ) );

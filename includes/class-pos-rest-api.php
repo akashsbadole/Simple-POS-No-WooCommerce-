@@ -133,6 +133,25 @@ class Simple_POS_REST_API {
 			)
 		);
 
+		register_rest_route(
+			self::NS,
+			'/products/variants/import',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( __CLASS__, 'import_variants' ),
+				'permission_callback' => array( __CLASS__, 'can_manage_products' ),
+			)
+		);
+		register_rest_route(
+			self::NS,
+			'/products/variants/export',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( __CLASS__, 'export_variants' ),
+				'permission_callback' => array( __CLASS__, 'can_manage_products' ),
+			)
+		);
+
 		// ---- Categories -------------------------------------------------
 		register_rest_route(
 			self::NS,
@@ -361,6 +380,11 @@ class Simple_POS_REST_API {
 					'permission_callback' => array( __CLASS__, 'can_manage_products' ),
 				),
 				array(
+					'methods'             => WP_REST_Server::EDITABLE,
+					'callback'            => array( __CLASS__, 'update_purchase_order' ),
+					'permission_callback' => array( __CLASS__, 'can_manage_products' ),
+				),
+				array(
 					'methods'             => WP_REST_Server::DELETABLE,
 					'callback'            => array( __CLASS__, 'delete_purchase_order' ),
 					'permission_callback' => array( __CLASS__, 'can_manage_products' ),
@@ -424,6 +448,17 @@ class Simple_POS_REST_API {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( __CLASS__, 'reports_low_stock' ),
 				'permission_callback' => array( __CLASS__, 'can_view_reports' ),
+			)
+		);
+
+		// ---- Barcode -------------------------------------------------
+		register_rest_route(
+			self::NS,
+			'/products/(?P<id>\d+)/barcode-image',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( __CLASS__, 'get_barcode_image' ),
+				'permission_callback' => array( __CLASS__, 'can_view_products' ),
 			)
 		);
 	}
@@ -511,6 +546,22 @@ class Simple_POS_REST_API {
 		$response = new WP_REST_Response( $csv, 200 );
 		$response->header( 'Content-Type', 'text/csv' );
 		$response->header( 'Content-Disposition', 'attachment; filename="pos-products.csv"' );
+		return $response;
+	}
+
+	public static function import_variants( WP_REST_Request $request ) {
+		$files = $request->get_file_params();
+		if ( empty( $files['file']['tmp_name'] ) ) {
+			return new WP_Error( 'pos_invalid_input', __( 'No file uploaded.', 'simple-pos' ), array( 'status' => 400 ) );
+		}
+		$result = Simple_POS_CSV::import_variants( $files['file']['tmp_name'] );
+		return self::respond_or_error( $result, $result );
+	}
+	public static function export_variants() {
+		$csv      = Simple_POS_CSV::export_variants();
+		$response = new WP_REST_Response( $csv, 200 );
+		$response->header( 'Content-Type', 'text/csv' );
+		$response->header( 'Content-Disposition', 'attachment; filename="pos-variants.csv"' );
 		return $response;
 	}
 
@@ -678,7 +729,31 @@ class Simple_POS_REST_API {
 	public static function tax_calculate( WP_REST_Request $r ) {
 		$p               = $r->get_json_params();
 		$lines           = $p['lines'] ?? array();
-		$country         = isset( $p['country'] ) && '' !== trim( (string) $p['country'] ) ? strtoupper( sanitize_text_field( (string) $p['country'] ) ) : strtoupper( (string) Simple_POS_Settings::get( 'tax_country', 'US' ) );
+		
+		// Validate country is provided.
+		if ( empty( $p['country'] ) || '' === trim( (string) $p['country'] ) ) {
+			// Try settings fallback.
+			$country = Simple_POS_Settings::get( 'tax_country', '' );
+			if ( '' === $country ) {
+				return new WP_Error(
+					'pos_missing_country',
+					__( 'Tax country is required for calculation. Configure default tax country in POS Settings.', 'simple-pos' ),
+					array( 'status' => 400 )
+				);
+			}
+		} else {
+			$country = strtoupper( sanitize_text_field( (string) $p['country'] ) );
+		}
+		
+		// Validate country code format (ISO 3166-1 alpha-2).
+		if ( ! preg_match( '/^[A-Z]{2}$/', $country ) ) {
+			return new WP_Error(
+				'pos_invalid_country',
+				sprintf( __( 'Invalid country code: %s. Must be 2-letter ISO code (e.g., US, GB, IN).', 'simple-pos' ), $country ),
+				array( 'status' => 400 )
+			);
+		}
+		
 		$state           = $p['state'] ?? Simple_POS_Settings::get( 'tax_state', '' );
 		$discount_type   = $p['discount_type'] ?? 'fixed';
 		$discount_amount = $p['discount_amount'] ?? 0;
@@ -732,6 +807,24 @@ class Simple_POS_REST_API {
 	public static function delete_purchase_order( WP_REST_Request $r ) {
 		$res = Simple_POS_Purchase_Orders::delete_order( (int) $r['id'] );
 		return self::respond_or_error( $res, array( 'success' => true ) ); }
+	
+	public static function update_purchase_order( WP_REST_Request $r ) {
+		$id = (int) $r['id'];
+		$order = Simple_POS_Purchase_Orders::get_order( $id );
+		
+		if ( ! $order ) {
+			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'simple-pos' ), array( 'status' => 404 ) );
+		}
+		
+		// Only allow editing draft POs.
+		if ( ! in_array( $order->status, array( 'draft' ), true ) ) {
+			return new WP_Error( 'pos_invalid_state', __( 'Can only edit draft POs.', 'simple-pos' ), array( 'status' => 400 ) );
+		}
+		
+		$result = Simple_POS_Purchase_Orders::update_order( $id, $r->get_json_params() );
+		return self::respond_or_error( $result, array( 'success' => true ) );
+	}
+	
 	public static function receive_purchase_order( WP_REST_Request $r ) {
 		$p     = $r->get_json_params();
 		$items = $p['items'] ?? $p;
@@ -768,6 +861,166 @@ class Simple_POS_REST_API {
 	public static function reports_low_stock( WP_REST_Request $request ) {
 		$limit = $request->get_param( 'limit' ) ?: 50;
 		return rest_ensure_response( Simple_POS_Products::get_low_stock_products( $limit ) );
+	}
+
+	/*
+	---------------------------------------------------------------
+	 * Barcode Image
+	 * ------------------------------------------------------------- */
+
+	/**
+	 * Generate a barcode image (PNG) for a product's barcode or SKU.
+	 * Uses PHP GD library — no external dependencies required.
+	 *
+	 * @param WP_REST_Request $request Request with product ID.
+	 */
+	public static function get_barcode_image( WP_REST_Request $request ) {
+		$product = Simple_POS_Products::get_product( (int) $request['id'] );
+		if ( ! $product ) {
+			return new WP_Error( 'pos_not_found', __( 'Product not found.', 'simple-pos' ), array( 'status' => 404 ) );
+		}
+
+		$code = $product->barcode ?: $product->sku;
+		if ( empty( $code ) ) {
+			return new WP_Error( 'pos_no_barcode', __( 'Product has no barcode or SKU.', 'simple-pos' ), array( 'status' => 400 ) );
+		}
+
+		// Validate and normalize barcode for basic rendering.
+		// Note: This is a preview feature. For production use, export product codes
+		// to professional label printing software. Full compliance barcode support
+		// coming in v1.2.
+		$code_upper = strtoupper( $code );
+		if ( $code_upper !== $code ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'POS: Barcode contains lowercase/unsupported characters, converting to uppercase for basic rendering' );
+			}
+		}
+		// Strip unsupported characters (keep only uppercase alphanumeric and space).
+		$code = preg_replace( '/[^A-Z0-9 ]/', '', $code_upper );
+
+		// Check GD extension.
+		if ( ! function_exists( 'imagecreate' ) ) {
+			return new WP_Error( 'pos_no_gd', __( 'GD library is required for barcode images.', 'simple-pos' ), array( 'status' => 500 ) );
+		}
+
+		// Limit scale to prevent memory exhaustion attacks (max 10x).
+		$scale  = max( 1, min( 10, (int) $request->get_param( 'scale' ) ?: 2 ) );
+		$height = 60 * $scale;
+		$bar_width = $scale;
+
+		// Simple CODE128-like barcode renderer (basic implementation).
+		// Encode characters to bars using a simplified pattern.
+		$bars = self::encode_barcode_bars( $code );
+		$total_width = count( $bars ) * $bar_width + 20 * $scale;
+
+		// Validate image dimensions to prevent memory exhaustion.
+		$max_width  = 5000; // Max 5000px width.
+		$max_height = 500;  // Max 500px height.
+		$img_height = $height + 20 * $scale;
+
+		if ( $total_width > $max_width || $img_height > $max_height ) {
+			return new WP_Error(
+				'pos_image_too_large',
+				__( 'Barcode image dimensions exceed limits. Use a smaller scale value.', 'simple-pos' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		$img = imagecreate( $total_width, $img_height );
+		$white = imagecolorallocate( $img, 255, 255, 255 );
+		$black = imagecolorallocate( $img, 0, 0, 0 );
+
+		$x = 10 * $scale;
+		$y_top = 5 * $scale;
+		$bar_height = $height - 10 * $scale;
+
+		foreach ( $bars as $bar ) {
+			if ( $bar ) {
+				imagesetthickness( $img, $bar_width );
+				imageline( $img, $x, $y_top, $x, $y_top + $bar_height, $black );
+			}
+			$x += $bar_width;
+		}
+
+		// Draw text below barcode.
+		$font_size = max( 1, 4 * $scale );
+		$text_width = strlen( $code ) * imagefontwidth( $font_size );
+		$text_x = ( $total_width - $text_width ) / 2;
+		imagestring( $img, $font_size, $text_x, $height + 5 * $scale, $code, $black );
+
+		header( 'Content-Type: image/png' );
+		header( 'Cache-Control: public, max-age=3600' );
+		imagepng( $img );
+		imagedestroy( $img );
+		exit;
+	}
+
+	/**
+	 * Encode a string into a simple bar pattern for barcode rendering.
+	 * Returns an array of 0s (space) and 1s (bar).
+	 *
+	 * @param string $code Code to encode.
+	 * @return array Bar pattern.
+	 */
+	private static function encode_barcode_bars( $code ) {
+		// Simple encoding: each character maps to a fixed-width pattern.
+		// This is a simplified CODE128-like encoding for basic barcodes.
+		$patterns = array(
+			'0' => array( 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1 ),
+			'1' => array( 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1 ),
+			'2' => array( 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1 ),
+			'3' => array( 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1 ),
+			'4' => array( 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1 ),
+			'5' => array( 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1 ),
+			'6' => array( 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1 ),
+			'7' => array( 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1 ),
+			'8' => array( 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1 ),
+			'9' => array( 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1 ),
+			'A' => array( 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1 ),
+			'B' => array( 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1 ),
+			'C' => array( 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1 ),
+			'D' => array( 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1 ),
+			'E' => array( 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1 ),
+			'F' => array( 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1 ),
+			'G' => array( 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 ),
+			'H' => array( 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1 ),
+			'I' => array( 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1 ),
+			'J' => array( 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1 ),
+			'K' => array( 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1 ),
+			'L' => array( 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1 ),
+			'M' => array( 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1 ),
+			'N' => array( 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 ),
+			'O' => array( 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1 ),
+			'P' => array( 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1 ),
+			'Q' => array( 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1 ),
+			'R' => array( 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1 ),
+			'S' => array( 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1 ),
+			'T' => array( 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1 ),
+			'U' => array( 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1 ),
+			'V' => array( 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1 ),
+			'W' => array( 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1 ),
+			'X' => array( 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1 ),
+			'Y' => array( 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1 ),
+			'Z' => array( 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1 ),
+			'-' => array( 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1 ),
+			'_' => array( 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0 ),
+			' ' => array( 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1 ),
+			'$' => array( 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1 ),
+			'.' => array( 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1 ),
+		);
+
+		$bars = array( 1, 1, 0, 1, 1, 0, 1, 0 ); // Start pattern.
+		$chars = str_split( strtoupper( $code ) );
+		foreach ( $chars as $char ) {
+			if ( isset( $patterns[ $char ] ) ) {
+				$bars = array_merge( $bars, $patterns[ $char ] );
+			} else {
+				// Unknown character: use space pattern.
+				$bars = array_merge( $bars, $patterns[' '] );
+			}
+		}
+		$bars = array_merge( $bars, array( 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0 ) ); // End pattern.
+		return $bars;
 	}
 
 	/*

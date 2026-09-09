@@ -41,6 +41,12 @@ $variants_for_edit = $editing_product ? Simple_POS_Variants::get_variants($editi
 					<input type="file" name="csv_file" accept=".csv" required />
 					<button class="button" type="submit"><?php esc_html_e( 'Import Products CSV', 'simple-pos' ); ?></button>
 				</form>
+				<a class="page-title-action" href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=simple_pos_export_variants'), 'simple_pos_export_variants'));?>"><?php esc_html_e( 'Export Variants CSV', 'simple-pos' ); ?></a>
+				<form method="post" enctype="multipart/form-data" action="<?php echo esc_url(admin_url('admin-post.php'));?>" class="simple-pos-inline-form">
+					<?php wp_nonce_field('simple_pos_import_variants');?><input type="hidden" name="action" value="simple_pos_import_variants" />
+					<input type="file" name="csv_file" accept=".csv" required />
+					<button class="button" type="submit"><?php esc_html_e( 'Import Variants CSV', 'simple-pos' ); ?></button>
+				</form>
 			</div>
 		</div>
 	<div class="simple-pos-columns">

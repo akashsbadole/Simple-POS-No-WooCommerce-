@@ -171,6 +171,83 @@ class Simple_POS_Purchase_Orders {
 		);
 		return $result;
 	}
+	
+	public static function update_order( $id, $data ) {
+		global $wpdb;
+		$order = self::get_order( $id );
+		if ( ! $order ) {
+			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'simple-pos' ) );
+		}
+		
+		// Only allow editing draft POs.
+		if ( $order->status !== 'draft' ) {
+			return new WP_Error( 'pos_invalid_state', __( 'Can only edit draft POs.', 'simple-pos' ) );
+		}
+		
+		$supplier_id = isset( $data['supplier_id'] ) ? (int) $data['supplier_id'] : $order->supplier_id;
+		$note        = isset( $data['note'] ) ? sanitize_textarea_field( $data['note'] ) : $order->note;
+		$items       = isset( $data['items'] ) && is_array( $data['items'] ) ? $data['items'] : null;
+		
+		$po_table   = Simple_POS_DB::table( 'purchase_orders' );
+		$item_table = Simple_POS_DB::table( 'po_items' );
+		
+		return Simple_POS_DB::transaction(
+			function () use ( $id, $po_table, $item_table, $supplier_id, $note, $items, $order ) {
+				global $wpdb;
+				
+				// Update PO header.
+				$wpdb->update(
+					$po_table,
+					array(
+						'supplier_id' => $supplier_id,
+						'note'        => $note,
+					),
+					array( 'id' => $id )
+				);
+				
+				// Update items if provided.
+				if ( null !== $items ) {
+					// Delete existing items.
+					$wpdb->delete( $item_table, array( 'po_id' => $id ) );
+					
+					// Recalculate total cost.
+					$total_cost = 0;
+					foreach ( $items as $it ) {
+						$product_id = ! empty( $it['product_id'] ) ? (int) $it['product_id'] : null;
+						$variant_id = ! empty( $it['variant_id'] ) ? (int) $it['variant_id'] : null;
+						if ( ! $product_id && ! $variant_id ) {
+							continue;
+						}
+						$qty  = max( 1, (int) ( $it['qty'] ?? 1 ) );
+						$cost = (float) ( $it['cost_price'] ?? 0 );
+						$total_cost += $cost * $qty;
+						
+						$wpdb->insert(
+							$item_table,
+							array(
+								'po_id'        => $id,
+								'product_id'   => $product_id,
+								'variant_id'   => $variant_id,
+								'qty'          => $qty,
+								'cost_price'   => $cost,
+								'received_qty' => 0,
+							)
+						);
+					}
+					
+					// Update total cost.
+					$wpdb->update(
+						$po_table,
+						array( 'total_cost' => round( $total_cost, 2 ) ),
+						array( 'id' => $id )
+					);
+				}
+				
+				return true;
+			}
+		);
+	}
+	
 	public static function update_status( $id, $status ) {
 		global $wpdb;
 		$allowed = array( 'draft', 'ordered', 'partial', 'received', 'cancelled' );
@@ -221,12 +298,27 @@ class Simple_POS_Purchase_Orders {
 					}
 					$wpdb->query( $wpdb->prepare( "UPDATE {$po_items_table} SET received_qty = received_qty + %d WHERE id=%d", $to_receive, $item_id ) );
 					if ( $item->variant_id ) {
-						Simple_POS_Variants::adjust_stock( $item->variant_id, $to_receive, 'purchase', $id, 'PO ' . $order->po_number );
+						$stock_result = Simple_POS_Variants::adjust_stock( $item->variant_id, $to_receive, 'purchase', $id, 'PO ' . $order->po_number );
+						if ( is_wp_error( $stock_result ) ) {
+							return $stock_result;
+						}
 						if ( $item->cost_price ) {
-							// optionally update cost_price on variant? keep product cost_price
+							$cost_result = Simple_POS_Variants::update_variant( $item->variant_id, array( 'cost_price' => $item->cost_price ) );
+							if ( is_wp_error( $cost_result ) ) {
+								return $cost_result;
+							}
 						}
 					} elseif ( $item->product_id ) {
-						Simple_POS_Products::adjust_stock( $item->product_id, $to_receive, 'purchase', $id, 'PO ' . $order->po_number );
+						$stock_result = Simple_POS_Products::adjust_stock( $item->product_id, $to_receive, 'purchase', $id, 'PO ' . $order->po_number );
+						if ( is_wp_error( $stock_result ) ) {
+							return $stock_result;
+						}
+						if ( $item->cost_price ) {
+							$cost_result = Simple_POS_Products::update_product( $item->product_id, array( 'cost_price' => $item->cost_price ) );
+							if ( is_wp_error( $cost_result ) ) {
+								return $cost_result;
+							}
+						}
 					}
 				}
 				// Check if fully received

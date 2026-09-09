@@ -173,14 +173,87 @@ class Simple_POS_Addons {
 	 * Load the bundled add-ons that are enabled. Runs during core includes —
 	 * before simple_pos_init fires — so each addon's hooks land normally.
 	 * Disabled addons are never loaded; their files just sit on disk.
+	 * Includes version compatibility checks to prevent fatal errors.
 	 */
 	public static function load_enabled() {
 		if ( ! defined( 'SIMPLE_POS_PLUGIN_DIR' ) ) {
 			return;
 		}
+
+		$core_version = defined( 'SIMPLE_POS_VERSION' ) ? SIMPLE_POS_VERSION : '0.0.0';
+
 		foreach ( self::get_bundled() as $addon ) {
-			if ( self::is_enabled( $addon['slug'] ) ) {
-				require_once SIMPLE_POS_PLUGIN_DIR . 'addons/' . $addon['slug'] . '/' . $addon['slug'] . '.php';
+			if ( ! self::is_enabled( $addon['slug'] ) ) {
+				continue;
+			}
+
+			$addon_file = SIMPLE_POS_PLUGIN_DIR . 'addons/' . $addon['slug'] . '/' . $addon['slug'] . '.php';
+
+			// Check if file exists.
+			if ( ! file_exists( $addon_file ) ) {
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'POS: Addon ' . $addon['slug'] . ' file missing, skipping' );
+				}
+				continue;
+			}
+
+			// Check version compatibility.
+			$headers = get_file_data(
+				$addon_file,
+				array(
+					'requires_core' => 'Requires POS Core',
+					'tested_up_to'  => 'Tested up to',
+				)
+			);
+
+			if ( ! empty( $headers['requires_core'] ) && version_compare( $core_version, $headers['requires_core'], '<' ) ) {
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( 'POS: Addon ' . $addon['slug'] . ' requires core ' . $headers['requires_core'] . ', have ' . $core_version . '. Skipping.' );
+				}
+				set_transient(
+					'simple_pos_addon_compat_error_' . $addon['slug'],
+					array(
+						'addon'    => $addon['name'],
+						'requires' => $headers['requires_core'],
+						'current'  => $core_version,
+					),
+					WEEK_IN_SECONDS
+				);
+				continue;
+			}
+
+			require_once $addon_file;
+		}
+	}
+
+	/**
+	 * Raw enabled map for all add-ons (slug => 0|1), as stored in the
+	 * 'simple_pos_addons_enabled' option. Missing slugs are treated as
+	 * enabled by {@see is_enabled()}; this getter returns only what is stored.
+	 *
+	 * @return array<string,int>
+	 */
+	public static function get_enabled() {
+		$enabled = get_option( self::OPTION_KEY_ENABLED, array() );
+		return is_array( $enabled ) ? $enabled : array();
+	}
+
+	/**
+	 * Show admin notice for incompatible add-ons.
+	 */
+	public static function show_compatibility_notices() {
+		$enabled = array_filter( self::get_enabled() );
+		foreach ( array_keys( $enabled ) as $slug ) {
+			$error = get_transient( 'simple_pos_addon_compat_error_' . $slug );
+			if ( $error ) {
+				echo '<div class="notice notice-error"><p>';
+				printf(
+					esc_html__( 'Add-on "%s" requires POS Core version %s or higher. You have version %s. The add-on has been disabled.', 'simple-pos' ),
+					esc_html( $error['addon'] ),
+					esc_html( $error['requires'] ),
+					esc_html( $error['current'] )
+				);
+				echo '</p></div>';
 			}
 		}
 	}

@@ -292,12 +292,50 @@ function showVariantPicker(product){
 			if(existing){ existing.qty+=1; } else {
 				state.cart.push({product_id:product.id, variant_id:v.id, name:product.name, variant_label:label, sku:v.sku||product.sku, price:price, qty:1, stock_qty:v.stock_qty, track_stock:!!v.track_stock});
 			}
-			modal.hidden=true; els.amountPaid.dataset.touched=''; totalsCache=null; renderCart();
+			closeVariantPicker();
 		});
 		container.appendChild(btn);
 	});
 	modal.hidden=false;
-	document.getElementById('simple-pos-variant-cancel').onclick=function(){ modal.hidden=true; };
+	modal.setAttribute('role', 'dialog');
+	modal.setAttribute('aria-label', 'Select product variant');
+	modal.setAttribute('aria-modal', 'true');
+	
+	// Focus first button
+	var firstBtn = container.querySelector('button:not([disabled])');
+	if (firstBtn) firstBtn.focus();
+	
+	// Trap focus and handle escape key
+	modal.addEventListener('keydown', function trapFocus(e) {
+		if (e.key === 'Tab') {
+			var focusables = modal.querySelectorAll('button:not([disabled])');
+			var first = focusables[0];
+			var last = focusables[focusables.length - 1];
+			
+			if (e.shiftKey && document.activeElement === first) {
+				e.preventDefault();
+				last.focus();
+			} else if (!e.shiftKey && document.activeElement === last) {
+				e.preventDefault();
+				first.focus();
+			}
+		} else if (e.key === 'Escape') {
+			closeVariantPicker();
+		}
+	});
+	
+	document.getElementById('simple-pos-variant-cancel').onclick=function(){ closeVariantPicker(); };
+}
+
+function closeVariantPicker() {
+	var modal = document.getElementById('simple-pos-variant-modal');
+	modal.hidden = true;
+	modal.removeAttribute('role');
+	modal.removeAttribute('aria-label');
+	modal.removeAttribute('aria-modal');
+	
+	// Return focus to scan input
+	els.scanInput.focus();
 }
 function changeQty(index,delta){
 	var item=state.cart[index]; if(!item) return; item.qty+=delta; if(item.qty<=0) state.cart.splice(index,1);

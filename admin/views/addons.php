@@ -29,19 +29,6 @@ $addon_catalog  = Simple_POS_Addons::get_catalog();
 					<?php
 					$addon_slug = isset( $addon['slug'] ) ? sanitize_key( $addon['slug'] ) : sanitize_key( $addon['name'] ?? '' );
 					$addon_on   = Simple_POS_Addons::is_enabled( $addon_slug );
-					$toggle_url = $addon_slug
-						? wp_nonce_url(
-							add_query_arg(
-								array(
-									'action' => 'simple_pos_addon_toggle',
-									'addon'  => $addon_slug,
-									'on'     => $addon_on ? 0 : 1,
-								),
-								admin_url( 'admin-post.php' )
-							),
-							'simple_pos_addon_toggle_' . $addon_slug
-						)
-						: '';
 					?>
 					<tr style="<?php echo $addon_on ? '' : 'opacity:.55'; ?>">
 						<td><strong><?php echo esc_html( $addon['name'] ?? '' ); ?></strong></td>
@@ -53,8 +40,14 @@ $addon_catalog  = Simple_POS_Addons::get_catalog();
 							<?php else : ?>
 								<span style="color:#787c82;font-weight:600"><?php esc_html_e( 'Disabled', 'simple-pos' ); ?></span>
 							<?php endif; ?>
-							<?php if ( $toggle_url ) : ?>
-								<a class="button button-small" style="margin-left:6px" href="<?php echo esc_url( $toggle_url ); ?>"><?php echo esc_html( $addon_on ? __( 'Disable', 'simple-pos' ) : __( 'Enable', 'simple-pos' ) ); ?></a>
+							<?php if ( $addon_slug ) : ?>
+								<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline;margin-left:6px">
+									<?php wp_nonce_field( 'simple_pos_addon_toggle_' . esc_attr( $addon_slug ) ); ?>
+									<input type="hidden" name="action" value="simple_pos_addon_toggle" />
+									<input type="hidden" name="addon" value="<?php echo esc_attr( $addon_slug ); ?>" />
+									<input type="hidden" name="enable" value="<?php echo $addon_on ? '0' : '1'; ?>" />
+									<button type="submit" class="button button-small"><?php echo esc_html( $addon_on ? __( 'Disable', 'simple-pos' ) : __( 'Enable', 'simple-pos' ) ); ?></button>
+								</form>
 							<?php endif; ?>
 						</td>
 					</tr>

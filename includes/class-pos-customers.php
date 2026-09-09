@@ -34,7 +34,7 @@ class Simple_POS_Customers {
 		$total_sql = "SELECT COUNT(*) FROM {$table} WHERE {$where}";
 		$total     = (int) $wpdb->get_var( $params ? $wpdb->prepare( $total_sql, $params ) : $total_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-		$per_page = max( 1, min( 200, (int) $per_page ) );
+		$per_page = max( 1, min( Simple_POS_DB::MAX_PER_PAGE, (int) $per_page ) );
 		$offset   = ( max( 1, (int) $page ) - 1 ) * $per_page;
 
 		$sql          = "SELECT * FROM {$table} WHERE {$where} ORDER BY name ASC LIMIT %d OFFSET %d";
@@ -128,6 +128,9 @@ class Simple_POS_Customers {
 	 */
 	public static function delete_customer( $id ) {
 		global $wpdb;
+		// Nullify customer reference in sales before deleting to prevent orphaned records.
+		$sales_table = Simple_POS_DB::table( 'sales' );
+		$wpdb->update( $sales_table, array( 'customer_id' => null ), array( 'customer_id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$table = Simple_POS_DB::table( 'customers' );
 		$wpdb->delete( $table, array( 'id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		return true;

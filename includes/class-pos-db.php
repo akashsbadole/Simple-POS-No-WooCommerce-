@@ -10,6 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Simple_POS_DB {
 
 	/**
+	 * Maximum items per page for paginated queries.
+	 */
+	const MAX_PER_PAGE = 200;
+
+	/**
 	 * Get a fully-qualified custom table name.
 	 *
 	 * @param string $name Short table name, e.g. 'products'.
@@ -17,14 +22,14 @@ class Simple_POS_DB {
 	 */
 	public static function table( $name ) {
 		global $wpdb;
-		return $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX . $name;
+		// Sanitize prefix to prevent SQL injection if constant is ever filtered.
+		$prefix = preg_replace( '/[^a-z0-9_]/i', '', SIMPLE_POS_TABLE_PREFIX );
+		return $wpdb->prefix . $prefix . $name;
 	}
 
 	/**
 	 * Generate the next sequential sale number, e.g. POS-000123.
-	 * Uses a dedicated autoincrement-backed counter (the sales table's own
-	 * AUTO_INCREMENT id) rather than COUNT(*), so it stays correct even
-	 * after sales are voided/deleted.
+	 * Uses a dedicated sequence table with AUTO_INCREMENT for atomic operation.
 	 *
 	 * @return string
 	 */
@@ -33,15 +38,17 @@ class Simple_POS_DB {
 		$settings = Simple_POS_Settings::get_all();
 		$prefix   = isset( $settings['sale_number_prefix'] ) ? $settings['sale_number_prefix'] : 'POS-';
 
-		$table = self::table( 'sales' );
-		// Try information_schema first (may be restricted on some hosts), fallback to MAX(id)+1.
-		$next_id = (int) $wpdb->get_var( "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$table}'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared
-		if ( ! $next_id ) {
-			$max_id  = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$next_id = $max_id + 1;
-			if ( $next_id < 1 ) {
-				$next_id = 1;
-			}
+		$seq_table = self::table( 'sale_sequences' );
+
+		// Insert and get AUTO_INCREMENT ID (atomic operation - no race condition).
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->query( "INSERT INTO {$seq_table} VALUES ()" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$next_id = (int) $wpdb->insert_id;
+
+		// Optionally clean up old sequence entries (every 1000 inserts).
+		if ( $next_id % 1000 === 0 && $next_id > 100 ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->query( "DELETE FROM {$seq_table} WHERE id < " . ( $next_id - 100 ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
 		return $prefix . str_pad( $next_id, 6, '0', STR_PAD_LEFT );
@@ -123,13 +130,39 @@ class Simple_POS_DB {
 	public static function transaction( $callback ) {
 		global $wpdb;
 
+		// Check if the sales table supports transactions (InnoDB).
+		$sample_table = self::table( 'sales' );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$engine = $wpdb->get_var( "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$sample_table}'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		if ( 'InnoDB' !== $engine ) {
+			// Table does not support transactions — run callback directly.
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PWP.DevelopmentFunctions.error_log_error_log
+				error_log( 'POS: Table engine is ' . ( $engine ?: 'unknown' ) . ', running transaction callback without transaction wrapping.' );
+			}
+			return call_user_func( $callback );
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->query( 'START TRANSACTION' );
 
 		$result = call_user_func( $callback );
 
 		if ( is_wp_error( $result ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PWP.DevelopmentFunctions.error_log_error_log
+				error_log( 'POS Transaction failed: ' . $result->get_error_message() );
+				$error_data = $result->get_error_data();
+				if ( $error_data ) {
+					// phpcs:ignore WordPress.PWP.DevelopmentFunctions.error_log_error_log
+					error_log( 'POS Error context: ' . wp_json_encode( $error_data ) );
+				}
+			}
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->query( 'ROLLBACK' );
 		} else {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->query( 'COMMIT' );
 		}
 

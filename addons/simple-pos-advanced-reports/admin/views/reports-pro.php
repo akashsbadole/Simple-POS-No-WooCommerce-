@@ -39,55 +39,55 @@ $export_url = function ( $type ) use ( $date_from, $date_to, $cashier ) {
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">
-		<h1><?php esc_html_e( 'Reports Pro', 'simple-pos-adv-reports' ); ?></h1>
+		<h1><?php esc_html_e( 'Reports Pro', 'simple-pos' ); ?></h1>
 	</div>
 
 	<form method="get" class="simple-pos-card simple-pos-filters">
 		<input type="hidden" name="page" value="simple-pos-adv-reports" />
 		<div class="simple-pos-filter-field">
-			<label><?php esc_html_e( 'From', 'simple-pos-adv-reports' ); ?></label>
+			<label><?php esc_html_e( 'From', 'simple-pos' ); ?></label>
 			<input type="date" name="date_from" value="<?php echo esc_attr( $date_from ); ?>" />
 		</div>
 		<div class="simple-pos-filter-field">
-			<label><?php esc_html_e( 'To', 'simple-pos-adv-reports' ); ?></label>
+			<label><?php esc_html_e( 'To', 'simple-pos' ); ?></label>
 			<input type="date" name="date_to" value="<?php echo esc_attr( $date_to ); ?>" />
 		</div>
 		<div class="simple-pos-filter-field">
-			<label><?php esc_html_e( 'Cashier', 'simple-pos-adv-reports' ); ?></label>
+			<label><?php esc_html_e( 'Cashier', 'simple-pos' ); ?></label>
 			<select name="cashier_id">
-				<option value="0"><?php esc_html_e( 'All cashiers', 'simple-pos-adv-reports' ); ?></option>
+				<option value="0"><?php esc_html_e( 'All cashiers', 'simple-pos' ); ?></option>
 				<?php foreach ( $cashiers as $c ) : ?>
 					<option value="<?php echo esc_attr( $c->cashier_id ); ?>" <?php selected( $cashier, (int) $c->cashier_id ); ?>><?php echo esc_html( $c->cashier_name ); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</div>
 		<div class="simple-pos-filter-actions">
-			<button class="button button-primary" type="submit"><?php esc_html_e( 'Apply', 'simple-pos-adv-reports' ); ?></button>
+			<button class="button button-primary" type="submit"><?php esc_html_e( 'Apply', 'simple-pos' ); ?></button>
 		</div>
 	</form>
 
 	<div class="simple-pos-card simple-pos-table-card">
 		<h2 class="simple-pos-section-title" style="margin:0;padding:14px 14px 0">
-			<?php esc_html_e( 'X / Z summary', 'simple-pos-adv-reports' ); ?>
-			<a class="button" style="float:right" href="<?php echo esc_url( $export_url( 'xz' ) ); ?>"><?php esc_html_e( 'CSV', 'simple-pos-adv-reports' ); ?></a>
+			<?php esc_html_e( 'X / Z summary', 'simple-pos' ); ?>
+			<a class="button" style="float:right" href="<?php echo esc_url( $export_url( 'xz' ) ); ?>"><?php esc_html_e( 'CSV', 'simple-pos' ); ?></a>
 		</h2>
 		<table class="wp-list-table widefat striped simple-pos-table" style="margin-top:10px">
 			<tbody>
-				<tr><td><strong><?php esc_html_e( 'Sales', 'simple-pos-adv-reports' ); ?></strong></td><td><?php echo esc_html( $xz['sale_count'] ); ?></td><td><strong><?php esc_html_e( 'Items sold', 'simple-pos-adv-reports' ); ?></strong></td><td><?php echo esc_html( $xz['items_sold'] ); ?></td></tr>
-				<tr><td><strong><?php esc_html_e( 'Gross', 'simple-pos-adv-reports' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['gross'] ) ); ?></td><td><strong><?php esc_html_e( 'Discount', 'simple-pos-adv-reports' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['discount'] ) ); ?></td></tr>
-				<tr><td><strong><?php esc_html_e( 'Tax', 'simple-pos-adv-reports' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['tax'] ) ); ?></td><td><strong><?php esc_html_e( 'Net', 'simple-pos-adv-reports' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['net'] ) ); ?></td></tr>
-				<tr><td><strong><?php esc_html_e( 'Avg basket', 'simple-pos-adv-reports' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['avg_basket'] ) ); ?></td><td><strong><?php esc_html_e( 'Gross profit', 'simple-pos-adv-reports' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['gross_profit'] ) ); ?></td></tr>
+				<tr><td><strong><?php esc_html_e( 'Sales', 'simple-pos' ); ?></strong></td><td><?php echo esc_html( $xz['sale_count'] ); ?></td><td><strong><?php esc_html_e( 'Items sold', 'simple-pos' ); ?></strong></td><td><?php echo esc_html( $xz['items_sold'] ); ?></td></tr>
+				<tr><td><strong><?php esc_html_e( 'Gross', 'simple-pos' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['gross'] ) ); ?></td><td><strong><?php esc_html_e( 'Discount', 'simple-pos' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['discount'] ) ); ?></td></tr>
+				<tr><td><strong><?php esc_html_e( 'Tax', 'simple-pos' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['tax'] ) ); ?></td><td><strong><?php esc_html_e( 'Net', 'simple-pos' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['net'] ) ); ?></td></tr>
+				<tr><td><strong><?php esc_html_e( 'Avg basket', 'simple-pos' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['avg_basket'] ) ); ?></td><td><strong><?php esc_html_e( 'Gross profit', 'simple-pos' ); ?></strong></td><td><?php echo esc_html( Simple_POS_DB::format_currency( $xz['gross_profit'] ) ); ?></td></tr>
 			</tbody>
 		</table>
 	</div>
 
 	<div class="simple-pos-card simple-pos-table-card">
 		<h2 class="simple-pos-section-title" style="margin:0;padding:14px 14px 0">
-			<?php esc_html_e( 'Hourly sales', 'simple-pos-adv-reports' ); ?>
-			<a class="button" style="float:right" href="<?php echo esc_url( $export_url( 'hourly' ) ); ?>"><?php esc_html_e( 'CSV', 'simple-pos-adv-reports' ); ?></a>
+			<?php esc_html_e( 'Hourly sales', 'simple-pos' ); ?>
+			<a class="button" style="float:right" href="<?php echo esc_url( $export_url( 'hourly' ) ); ?>"><?php esc_html_e( 'CSV', 'simple-pos' ); ?></a>
 		</h2>
 		<table class="wp-list-table widefat striped simple-pos-table" style="margin-top:10px">
-			<thead><tr><th><?php esc_html_e( 'Hour', 'simple-pos-adv-reports' ); ?></th><th class="num"><?php esc_html_e( 'Sales', 'simple-pos-adv-reports' ); ?></th><th class="num"><?php esc_html_e( 'Revenue', 'simple-pos-adv-reports' ); ?></th><th style="width:40%">&nbsp;</th></tr></thead>
+			<thead><tr><th><?php esc_html_e( 'Hour', 'simple-pos' ); ?></th><th class="num"><?php esc_html_e( 'Sales', 'simple-pos' ); ?></th><th class="num"><?php esc_html_e( 'Revenue', 'simple-pos' ); ?></th><th style="width:40%">&nbsp;</th></tr></thead>
 			<tbody>
 				<?php foreach ( $hourly as $h ) : ?>
 					<tr>
@@ -103,13 +103,13 @@ $export_url = function ( $type ) use ( $date_from, $date_to, $cashier ) {
 
 	<div class="simple-pos-card simple-pos-table-card">
 		<h2 class="simple-pos-section-title" style="margin:0;padding:14px 14px 0">
-			<?php esc_html_e( 'Payment mix', 'simple-pos-adv-reports' ); ?>
-			<a class="button" style="float:right" href="<?php echo esc_url( $export_url( 'payments' ) ); ?>"><?php esc_html_e( 'CSV', 'simple-pos-adv-reports' ); ?></a>
+			<?php esc_html_e( 'Payment mix', 'simple-pos' ); ?>
+			<a class="button" style="float:right" href="<?php echo esc_url( $export_url( 'payments' ) ); ?>"><?php esc_html_e( 'CSV', 'simple-pos' ); ?></a>
 		</h2>
 		<table class="wp-list-table widefat striped simple-pos-table" style="margin-top:10px">
-			<thead><tr><th><?php esc_html_e( 'Payment method', 'simple-pos-adv-reports' ); ?></th><th class="num"><?php esc_html_e( 'Sales', 'simple-pos-adv-reports' ); ?></th><th class="num"><?php esc_html_e( 'Revenue', 'simple-pos-adv-reports' ); ?></th></tr></thead>
+			<thead><tr><th><?php esc_html_e( 'Payment method', 'simple-pos' ); ?></th><th class="num"><?php esc_html_e( 'Sales', 'simple-pos' ); ?></th><th class="num"><?php esc_html_e( 'Revenue', 'simple-pos' ); ?></th></tr></thead>
 			<tbody>
-				<?php if ( empty( $payments ) ) : ?><tr><td colspan="3" class="simple-pos-empty"><?php esc_html_e( 'No sales in this range.', 'simple-pos-adv-reports' ); ?></td></tr><?php endif; ?>
+				<?php if ( empty( $payments ) ) : ?><tr><td colspan="3" class="simple-pos-empty"><?php esc_html_e( 'No sales in this range.', 'simple-pos' ); ?></td></tr><?php endif; ?>
 				<?php foreach ( $payments as $p ) : ?>
 					<tr><td><?php echo esc_html( ucfirst( $p->payment_method ) ); ?></td><td class="num"><?php echo esc_html( $p->sale_count ); ?></td><td class="num"><?php echo esc_html( Simple_POS_DB::format_currency( $p->revenue ) ); ?></td></tr>
 				<?php endforeach; ?>
@@ -119,13 +119,13 @@ $export_url = function ( $type ) use ( $date_from, $date_to, $cashier ) {
 
 	<div class="simple-pos-card simple-pos-table-card">
 		<h2 class="simple-pos-section-title" style="margin:0;padding:14px 14px 0">
-			<?php esc_html_e( 'Product mix (top 20)', 'simple-pos-adv-reports' ); ?>
-			<a class="button" style="float:right" href="<?php echo esc_url( $export_url( 'products' ) ); ?>"><?php esc_html_e( 'CSV', 'simple-pos-adv-reports' ); ?></a>
+			<?php esc_html_e( 'Product mix (top 20)', 'simple-pos' ); ?>
+			<a class="button" style="float:right" href="<?php echo esc_url( $export_url( 'products' ) ); ?>"><?php esc_html_e( 'CSV', 'simple-pos' ); ?></a>
 		</h2>
 		<table class="wp-list-table widefat striped simple-pos-table" style="margin-top:10px">
-			<thead><tr><th><?php esc_html_e( 'Product', 'simple-pos-adv-reports' ); ?></th><th><?php esc_html_e( 'SKU', 'simple-pos-adv-reports' ); ?></th><th class="num"><?php esc_html_e( 'Qty', 'simple-pos-adv-reports' ); ?></th><th class="num"><?php esc_html_e( 'Revenue', 'simple-pos-adv-reports' ); ?></th><th class="num"><?php esc_html_e( 'Profit', 'simple-pos-adv-reports' ); ?></th><th class="num"><?php esc_html_e( 'Margin', 'simple-pos-adv-reports' ); ?></th></tr></thead>
+			<thead><tr><th><?php esc_html_e( 'Product', 'simple-pos' ); ?></th><th><?php esc_html_e( 'SKU', 'simple-pos' ); ?></th><th class="num"><?php esc_html_e( 'Qty', 'simple-pos' ); ?></th><th class="num"><?php esc_html_e( 'Revenue', 'simple-pos' ); ?></th><th class="num"><?php esc_html_e( 'Profit', 'simple-pos' ); ?></th><th class="num"><?php esc_html_e( 'Margin', 'simple-pos' ); ?></th></tr></thead>
 			<tbody>
-				<?php if ( empty( $products ) ) : ?><tr><td colspan="6" class="simple-pos-empty"><?php esc_html_e( 'No sales in this range.', 'simple-pos-adv-reports' ); ?></td></tr><?php endif; ?>
+				<?php if ( empty( $products ) ) : ?><tr><td colspan="6" class="simple-pos-empty"><?php esc_html_e( 'No sales in this range.', 'simple-pos' ); ?></td></tr><?php endif; ?>
 				<?php foreach ( $products as $p ) : ?>
 					<tr>
 						<td><?php echo esc_html( $p->product_name ); ?></td>
@@ -142,13 +142,13 @@ $export_url = function ( $type ) use ( $date_from, $date_to, $cashier ) {
 
 	<div class="simple-pos-card simple-pos-table-card">
 		<h2 class="simple-pos-section-title" style="margin:0;padding:14px 14px 0">
-			<?php esc_html_e( 'Tax summary', 'simple-pos-adv-reports' ); ?>
-			<a class="button" style="float:right" href="<?php echo esc_url( $export_url( 'taxes' ) ); ?>"><?php esc_html_e( 'CSV', 'simple-pos-adv-reports' ); ?></a>
+			<?php esc_html_e( 'Tax summary', 'simple-pos' ); ?>
+			<a class="button" style="float:right" href="<?php echo esc_url( $export_url( 'taxes' ) ); ?>"><?php esc_html_e( 'CSV', 'simple-pos' ); ?></a>
 		</h2>
 		<table class="wp-list-table widefat striped simple-pos-table" style="margin-top:10px">
-			<thead><tr><th><?php esc_html_e( 'Tax', 'simple-pos-adv-reports' ); ?></th><th class="num"><?php esc_html_e( 'Rate', 'simple-pos-adv-reports' ); ?></th><th class="num"><?php esc_html_e( 'Amount', 'simple-pos-adv-reports' ); ?></th></tr></thead>
+			<thead><tr><th><?php esc_html_e( 'Tax', 'simple-pos' ); ?></th><th class="num"><?php esc_html_e( 'Rate', 'simple-pos' ); ?></th><th class="num"><?php esc_html_e( 'Amount', 'simple-pos' ); ?></th></tr></thead>
 			<tbody>
-				<?php if ( empty( $taxes ) ) : ?><tr><td colspan="3" class="simple-pos-empty"><?php esc_html_e( 'No tax collected in this range.', 'simple-pos-adv-reports' ); ?></td></tr><?php endif; ?>
+				<?php if ( empty( $taxes ) ) : ?><tr><td colspan="3" class="simple-pos-empty"><?php esc_html_e( 'No tax collected in this range.', 'simple-pos' ); ?></td></tr><?php endif; ?>
 				<?php foreach ( $taxes as $t ) : ?>
 					<tr><td><?php echo esc_html( $t['name'] ); ?></td><td class="num"><?php echo esc_html( $t['rate'] . '%' ); ?></td><td class="num"><?php echo esc_html( Simple_POS_DB::format_currency( $t['amount'] ) ); ?></td></tr>
 				<?php endforeach; ?>

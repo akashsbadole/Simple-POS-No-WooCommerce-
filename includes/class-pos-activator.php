@@ -275,6 +275,12 @@ class Simple_POS_Activator {
 			KEY variant_id (variant_id)
 		) $charset_collate;";
 
+		// Sale number sequence table for atomic sale number generation.
+		$sql_sale_sequences = "CREATE TABLE {$prefix}sale_sequences (
+			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+			PRIMARY KEY (id)
+		) $charset_collate;";
+
 		dbDelta( $sql_categories );
 		dbDelta( $sql_tax_classes );
 		dbDelta( $sql_tax_rates );
@@ -287,6 +293,7 @@ class Simple_POS_Activator {
 		dbDelta( $sql_suppliers );
 		dbDelta( $sql_pos );
 		dbDelta( $sql_po_items );
+		dbDelta( $sql_sale_sequences );
 
 		self::seed_tax_data();
 		self::migrate_legacy_tax_rates();
@@ -294,6 +301,8 @@ class Simple_POS_Activator {
 		self::migrate_add_hsn_sac_columns();
 		self::migrate_add_gst_split_column();
 		self::migrate_add_customer_type_columns();
+		self::migrate_add_foreign_keys();
+		self::migrate_drop_legacy_tax_rate();
 	}
 
 	private static function seed_tax_data() {
@@ -482,6 +491,56 @@ class Simple_POS_Activator {
 			if ( $merged !== $existing ) {
 				update_option( 'simple_pos_settings', $merged );
 			}
+		}
+	}
+
+	/**
+	 * Add foreign key constraints to enforce referential integrity.
+	 * Runs only on InnoDB tables; silently skips on MyISAM.
+	 */
+	private static function migrate_add_foreign_keys() {
+		global $wpdb;
+		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+
+		// Check if foreign keys already exist.
+		$existing = $wpdb->get_var( "SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND TABLE_NAME = '{$prefix}sale_items'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( (int) $existing > 0 ) {
+			return;
+		}
+
+		// Verify InnoDB engine before adding FKs.
+		$engine = $wpdb->get_var( "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$prefix}sales'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( 'InnoDB' !== $engine ) {
+			return;
+		}
+
+		// Add foreign keys (use separate queries to handle partial failures).
+		$wpdb->query( "ALTER TABLE `{$prefix}sale_items` ADD CONSTRAINT fk_sale_items_sale FOREIGN KEY (sale_id) REFERENCES `{$prefix}sales`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$prefix}sale_items` ADD CONSTRAINT fk_sale_items_product FOREIGN KEY (product_id) REFERENCES `{$prefix}products`(id) ON DELETE SET NULL" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$prefix}product_variants` ADD CONSTRAINT fk_variants_product FOREIGN KEY (parent_product_id) REFERENCES `{$prefix}products`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$prefix}stock_log` ADD CONSTRAINT fk_stock_log_product FOREIGN KEY (product_id) REFERENCES `{$prefix}products`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$prefix}po_items` ADD CONSTRAINT fk_po_items_po FOREIGN KEY (po_id) REFERENCES `{$prefix}purchase_orders`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+
+	/**
+	 * Drop the legacy tax_rate column if all products have been migrated
+	 * to the new tax_class_id system.
+	 */
+	private static function migrate_drop_legacy_tax_rate() {
+		global $wpdb;
+		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		$table  = $prefix . 'products';
+
+		// Check if column exists.
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$table}` WHERE Field = 'tax_rate'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( empty( $col ) ) {
+			return;
+		}
+
+		// Check if any products still use legacy tax_rate.
+		$has_legacy = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}` WHERE tax_rate > 0 AND (tax_class_id IS NULL OR tax_class_id = 0)" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( 0 === $has_legacy ) {
+			$wpdb->query( "ALTER TABLE `{$table}` DROP COLUMN tax_rate" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}
 }

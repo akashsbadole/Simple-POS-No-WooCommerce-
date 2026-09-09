@@ -228,12 +228,34 @@ class Simple_POS_Tax {
 		if ( 'IN' !== strtoupper( $country ) ) {
 			return $breakdown;
 		}
-		$sale_state = strtoupper( $state );
+		
+		// Use sale state, fallback to store state if empty.
+		$sale_state = strtoupper( trim( $state ) );
+		if ( '' === $sale_state ) {
+			$settings = Simple_POS_Settings::get_all();
+			$sale_state = strtoupper( isset( $settings['tax_state'] ) ? $settings['tax_state'] : '' );
+		}
+		
 		$out = array();
 		foreach ( $breakdown as $b ) {
 			if ( ! empty( $b['gst_split'] ) ) {
-				$rate_state = strtoupper( $b['state_code'] );
-				if ( $rate_state !== '' && $rate_state === $sale_state ) {
+				$rate_state = strtoupper( trim( $b['state_code'] ?? '' ) );
+				
+				// Determine if intrastate (same state) or interstate.
+				$is_intrastate = false;
+				if ( '' !== $rate_state && '' !== $sale_state ) {
+					// Both rate and sale have specific states - compare them.
+					$is_intrastate = ( $rate_state === $sale_state );
+				} elseif ( '' === $rate_state ) {
+					// Rate applies to all states in India (country-level rate).
+					// Treat as intrastate if sale state matches any state-specific rate.
+					// Otherwise, treat as interstate (IGST).
+					$is_intrastate = ( '' !== $sale_state );
+				}
+				// If sale_state is empty but rate has state_code, treat as interstate.
+				
+				if ( $is_intrastate ) {
+					// Intrastate: Split into CGST + SGST (50/50).
 					$half = self::pos_round( $b['amount'] / 2, 2 );
 					$remainder = self::pos_round( $b['amount'] - 2 * $half, 2 );
 					$out[] = array(
@@ -242,6 +264,7 @@ class Simple_POS_Tax {
 						'amount'    => $half + $remainder,
 						'inclusive' => $b['inclusive'],
 						'compound'  => $b['compound'],
+						'state_code' => $rate_state,
 					);
 					$out[] = array(
 						'name'      => 'SGST',
@@ -249,14 +272,17 @@ class Simple_POS_Tax {
 						'amount'    => $half,
 						'inclusive' => $b['inclusive'],
 						'compound'  => $b['compound'],
+						'state_code' => $rate_state,
 					);
 				} else {
+					// Interstate: Apply IGST (full rate).
 					$out[] = array(
 						'name'      => 'IGST',
 						'rate'      => $b['rate'],
 						'amount'    => $b['amount'],
 						'inclusive' => $b['inclusive'],
 						'compound'  => $b['compound'],
+						'state_code' => $rate_state,
 					);
 				}
 			} else {

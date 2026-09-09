@@ -53,7 +53,7 @@ if($view_id){
 	<?php return; }
 $orders=Simple_POS_Purchase_Orders::get_orders(array('per_page'=>20,'page'=> isset($_GET['paged'])? (int)$_GET['paged']:1));
 $suppliers=Simple_POS_Suppliers::get_suppliers();
-$all_products=Simple_POS_Products::get_products(array('per_page'=>200,'page'=>1,'status'=>'active'));
+$all_products=Simple_POS_Products::get_products(array('per_page'=>Simple_POS_DB::MAX_PER_PAGE,'page'=>1,'status'=>'active'));
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">

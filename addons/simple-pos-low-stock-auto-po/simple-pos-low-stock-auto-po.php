@@ -4,7 +4,7 @@
  * Description: Automatically drafts purchase orders for low-stock products. Requires the free Simple POS plugin.
  * Version:     1.0.0
  * Author:      Simple POS
- * Text Domain: simple-pos-autopo
+ * Text Domain: simple-pos
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,7 +23,7 @@ function sapo_boot() {
 	if ( ! class_exists( 'Simple_POS_Addons' ) ) {
 		add_action( 'admin_notices', function () {
 			echo '<div class="notice notice-error"><p>';
-			esc_html_e( 'Simple POS — Low-Stock Auto-PO requires the free Simple POS plugin to be installed and active.', 'simple-pos-autopo' );
+			esc_html_e( 'Simple POS — Low-Stock Auto-PO requires the free Simple POS plugin to be installed and active.', 'simple-pos' );
 			echo '</p></div>';
 		} );
 		return;
@@ -34,9 +34,9 @@ function sapo_boot() {
 	add_filter( 'simple_pos_registered_addons', function ( $addons ) {
 		$addons[] = array(
 			'slug'        => 'low-stock-auto-po',
-			'name'        => __( 'Low-Stock Auto-PO', 'simple-pos-autopo' ),
+			'name'        => __( 'Low-Stock Auto-PO', 'simple-pos' ),
 			'version'     => SAPO_VERSION,
-			'description' => __( 'Daily cron + one-click draft purchase orders for products below their low-stock threshold.', 'simple-pos-autopo' ),
+			'description' => __( 'Daily cron + one-click draft purchase orders for products below their low-stock threshold.', 'simple-pos' ),
 		);
 		return $addons;
 	} );
@@ -51,8 +51,8 @@ function sapo_boot() {
 	add_action( 'admin_menu', function () {
 		add_submenu_page(
 			'simple-pos-terminal',
-			__( 'Auto-PO', 'simple-pos-autopo' ),
-			__( 'Auto-PO', 'simple-pos-autopo' ),
+			__( 'Auto-PO', 'simple-pos' ),
+			__( 'Auto-PO', 'simple-pos' ),
 			'manage_pos_products',
 			'simple-pos-autopo',
 			'sapo_render_page'
@@ -80,7 +80,7 @@ function sapo_deactivate() {
  */
 function sapo_render_page() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to manage purchase orders.', 'simple-pos-autopo' ) );
+		wp_die( esc_html__( 'You are not allowed to manage purchase orders.', 'simple-pos' ) );
 	}
 	include __DIR__ . '/admin/views/auto-po.php';
 }
@@ -90,7 +90,7 @@ function sapo_render_page() {
  */
 function sapo_handle_save() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to manage purchase orders.', 'simple-pos-autopo' ) );
+		wp_die( esc_html__( 'You are not allowed to manage purchase orders.', 'simple-pos' ) );
 	}
 	check_admin_referer( 'simple_pos_autopo_save' );
 
@@ -114,7 +114,7 @@ function sapo_handle_save() {
  */
 function sapo_handle_generate() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to manage purchase orders.', 'simple-pos-autopo' ) );
+		wp_die( esc_html__( 'You are not allowed to manage purchase orders.', 'simple-pos' ) );
 	}
 	check_admin_referer( 'simple_pos_autopo_generate' );
 

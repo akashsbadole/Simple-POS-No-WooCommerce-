@@ -204,8 +204,8 @@ class Simple_POS_Settings {
 			'delete_data_on_uninstall' => ! empty( $input['delete_data_on_uninstall'] ) ? 1 : 0,
 		);
 
-		// Keep autoload light (<1KB effective). Option stays small; 'yes' is fine for perf.
-		update_option( self::OPTION_KEY, $sanitized, 'yes' );
+		// Keep autoload light — set to 'no' so settings are only loaded on POS screens.
+		update_option( self::OPTION_KEY, $sanitized, 'no' );
 
 		return $sanitized;
 	}

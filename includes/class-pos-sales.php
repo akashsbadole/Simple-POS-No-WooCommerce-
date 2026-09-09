@@ -264,12 +264,18 @@ class Simple_POS_Sales {
 					if ( $item->variant_id ) {
 						$variant = Simple_POS_Variants::get_variant( $item->variant_id );
 						if ( $variant && $variant->track_stock ) {
-								Simple_POS_Variants::adjust_stock( $item->variant_id, (int) $item->qty, 'void', $sale_id, $note );
+							$stock_result = Simple_POS_Variants::adjust_stock( $item->variant_id, (int) $item->qty, 'void', $sale_id, $note );
+							if ( is_wp_error( $stock_result ) ) {
+								return $stock_result; // Rollback transaction on stock error.
+							}
 						}
 					} elseif ( $item->product_id ) {
 						$product = Simple_POS_Products::get_product( $item->product_id );
 						if ( $product && $product->track_stock ) {
-							Simple_POS_Products::adjust_stock( $item->product_id, (int) $item->qty, 'void', $sale_id, $note );
+							$stock_result = Simple_POS_Products::adjust_stock( $item->product_id, (int) $item->qty, 'void', $sale_id, $note );
+							if ( is_wp_error( $stock_result ) ) {
+								return $stock_result; // Rollback transaction on stock error.
+							}
 						}
 					}
 				}
@@ -370,7 +376,7 @@ class Simple_POS_Sales {
 		$count_sql = "SELECT COUNT(*) FROM {$table} WHERE {$where_sql}";
 		$total     = (int) $wpdb->get_var( $params ? $wpdb->prepare( $count_sql, $params ) : $count_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-		$per_page = max( 1, min( 200, (int) $args['per_page'] ) );
+		$per_page = max( 1, min( Simple_POS_DB::MAX_PER_PAGE, (int) $args['per_page'] ) );
 		$page     = max( 1, (int) $args['page'] );
 		$offset   = ( $page - 1 ) * $per_page;
 
