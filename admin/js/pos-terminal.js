@@ -159,7 +159,24 @@ function renderProductGrid(){
 		'</button>';
 	});
 	els.productGrid.innerHTML=html;
+	equalizeProductCards();
 }
+// Keep every product card the same height as the tallest one, so the
+// grid stays aligned no matter how long product names are.
+function equalizeProductCards(){
+	if(!els.productGrid) return;
+	var cards=els.productGrid.querySelectorAll('.simple-pos-product-card');
+	var i, max=0;
+	if(!cards.length) return;
+	for(i=0;i<cards.length;i++){ cards[i].style.minHeight=''; }
+	for(i=0;i<cards.length;i++){ if(cards[i].offsetHeight>max) max=cards[i].offsetHeight; }
+	if(max>0){ for(i=0;i<cards.length;i++){ cards[i].style.minHeight=max+'px'; } }
+}
+var equalizeTimer=null;
+window.addEventListener('resize', function(){
+	if(equalizeTimer) clearTimeout(equalizeTimer);
+	equalizeTimer=setTimeout(equalizeProductCards, 150);
+});
 function renderPagination(){
 	var totalPages=Math.ceil(state.productsTotal/state.perPage);
 	if(totalPages<=1){ els.pagination.innerHTML=''; return; }

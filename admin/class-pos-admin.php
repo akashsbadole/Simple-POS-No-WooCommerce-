@@ -14,6 +14,9 @@ class Simple_POS_Admin {
 	 */
 	public static function init() {
 		add_action( 'admin_menu', array( __CLASS__, 'register_menus' ) );
+		// Settings is registered late so it stays the last submenu item,
+		// even when add-ons (e.g. Auto-PO) append their own pages.
+		add_action( 'admin_menu', array( __CLASS__, 'register_settings_menu' ), 99 );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_frontend_assets' ) );
 		add_action( 'admin_post_simple_pos_save_settings', array( __CLASS__, 'handle_save_settings' ) );
@@ -79,9 +82,16 @@ class Simple_POS_Admin {
 		add_submenu_page( 'simple-pos-terminal', __( 'Suppliers', 'wp-pos-plugin' ), __( 'Suppliers', 'wp-pos-plugin' ), 'manage_pos_products', 'simple-pos-suppliers', array( __CLASS__, 'render_suppliers_page' ) );
 		add_submenu_page( 'simple-pos-terminal', __( 'Purchase Orders', 'wp-pos-plugin' ), __( 'Purchase Orders', 'wp-pos-plugin' ), 'manage_pos_products', 'simple-pos-purchase-orders', array( __CLASS__, 'render_purchase_orders_page' ) );
 		add_submenu_page( 'simple-pos-terminal', __( 'Barcode Labels', 'wp-pos-plugin' ), __( 'Barcode Labels', 'wp-pos-plugin' ), 'manage_pos_products', 'simple-pos-barcode', array( __CLASS__, 'render_barcode_page' ) );
-		add_submenu_page( 'simple-pos-terminal', __( 'Settings', 'wp-pos-plugin' ), __( 'Settings', 'wp-pos-plugin' ), 'manage_pos_settings', 'simple-pos-settings', array( __CLASS__, 'render_settings_page' ) );
 		add_submenu_page( 'simple-pos-terminal', __( 'Backup', 'wp-pos-plugin' ), __( 'Backup', 'wp-pos-plugin' ), 'manage_pos_settings', 'simple-pos-backup', array( __CLASS__, 'render_backup_page' ) );
 		add_submenu_page( 'simple-pos-terminal', __( 'Add-ons', 'wp-pos-plugin' ), __( 'Add-ons', 'wp-pos-plugin' ), 'manage_pos_settings', 'simple-pos-addons', array( __CLASS__, 'render_addons_page' ) );
+	}
+
+	/**
+	 * Register the Settings submenu last (see init() — hooked at a late
+	 * priority so add-on pages always land above it).
+	 */
+	public static function register_settings_menu() {
+		add_submenu_page( 'simple-pos-terminal', __( 'Settings', 'wp-pos-plugin' ), __( 'Settings', 'wp-pos-plugin' ), 'manage_pos_settings', 'simple-pos-settings', array( __CLASS__, 'render_settings_page' ) );
 	}
 
 	/**

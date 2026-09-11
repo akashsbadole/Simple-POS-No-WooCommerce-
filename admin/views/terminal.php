@@ -86,8 +86,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</select>
 			</div>
 
-			<div style="display:flex;gap:8px;margin-bottom:8px">
-				<label for="simple-pos-tax-country" style="flex:1"><?php esc_html_e( 'Tax country', 'wp-pos-plugin' ); ?> <?php
+		<div class="simple-pos-tax-row">
+			<div class="simple-pos-tax-field">
+				<label for="simple-pos-tax-country"><?php esc_html_e( 'Tax country', 'wp-pos-plugin' ); ?></label>
+				<?php
 				$pos_countries  = Simple_POS_Tax::get_configured_countries();
 				$pos_current    = strtoupper( (string) Simple_POS_Settings::get( 'tax_country', 'US' ) );
 				$pos_country_ns = Simple_POS_Tax::country_list();
@@ -96,16 +98,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 					sort( $pos_countries );
 				}
 				if ( $pos_countries ) : ?>
-					<select id="simple-pos-tax-country" style="width:80px" aria-label="<?php esc_attr_e( 'Tax country', 'wp-pos-plugin' ); ?>">
+					<select id="simple-pos-tax-country" aria-label="<?php esc_attr_e( 'Tax country', 'wp-pos-plugin' ); ?>">
 						<?php foreach ( $pos_countries as $pos_cc ) : ?>
 							<option value="<?php echo esc_attr( $pos_cc ); ?>" <?php selected( $pos_current, $pos_cc ); ?>><?php echo esc_html( isset( $pos_country_ns[ $pos_cc ] ) ? $pos_cc . ' — ' . $pos_country_ns[ $pos_cc ] : $pos_cc ); ?></option>
 						<?php endforeach; ?>
 					</select>
 				<?php else : ?>
-					<input type="text" id="simple-pos-tax-country" class="widefat" value="<?php echo esc_attr( $pos_current ); ?>" style="width:80px" aria-label="<?php esc_attr_e( 'Tax country', 'wp-pos-plugin' ); ?>" />
-				<?php endif; ?></label>
-				<label for="simple-pos-tax-state" style="flex:1"><?php esc_html_e( 'State', 'wp-pos-plugin' ); ?> <input type="text" id="simple-pos-tax-state" class="widefat" value="<?php echo esc_attr( Simple_POS_Settings::get( 'tax_state', '' ) ); ?>" style="width:80px" aria-label="<?php esc_attr_e( 'State', 'wp-pos-plugin' ); ?>" /></label>
+					<input type="text" id="simple-pos-tax-country" value="<?php echo esc_attr( $pos_current ); ?>" aria-label="<?php esc_attr_e( 'Tax country', 'wp-pos-plugin' ); ?>" />
+				<?php endif; ?>
 			</div>
+			<div class="simple-pos-tax-field">
+				<label for="simple-pos-tax-state"><?php esc_html_e( 'State', 'wp-pos-plugin' ); ?></label>
+				<input type="text" id="simple-pos-tax-state" value="<?php echo esc_attr( Simple_POS_Settings::get( 'tax_state', '' ) ); ?>" aria-label="<?php esc_attr_e( 'State', 'wp-pos-plugin' ); ?>" />
+			</div>
+		</div>
 			<div class="simple-pos-totals" id="simple-pos-totals">
 				<div class="simple-pos-totals-row"><span><?php esc_html_e( 'Subtotal', 'wp-pos-plugin' ); ?></span><span id="simple-pos-subtotal">—</span></div>
 				<div class="simple-pos-totals-row"><span><?php esc_html_e( 'Discount', 'wp-pos-plugin' ); ?></span><span id="simple-pos-discount-amount">—</span></div>

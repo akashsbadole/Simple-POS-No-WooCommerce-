@@ -387,6 +387,13 @@ class Simple_POS_Activator {
 	private static function migrate_legacy_tax_rates() {
 		global $wpdb;
 		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		// The legacy column may have been dropped on some installs — the
+		// queries below reference it, so bail early when it is absent
+		// (migrate_ensure_sales_columns() re-adds it further below).
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$prefix}products` WHERE Field = 'tax_rate'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( empty( $col ) ) {
+			return;
+		}
 		// If products still use legacy tax_rate and tax_class_id is all NULL, create mapping.
 		$has_class = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$prefix}products WHERE tax_class_id IS NOT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( $has_class > 0 ) {

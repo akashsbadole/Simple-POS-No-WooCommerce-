@@ -87,7 +87,7 @@ $variants_for_edit = $editing_product ? Simple_POS_Variants::get_variants($editi
 								<td><strong><?php echo esc_html( $product->name ); ?></strong> <?php if($is_variant) echo '<em class="simple-pos-pill">'.esc_html__('variant','wp-pos-plugin').'</em>';?></td>
 								<td><code><?php echo esc_html( $product->sku ); ?></code></td><td><?php echo esc_html( $cat_name ); ?></td>
 								<td class="num"><?php echo esc_html( Simple_POS_DB::format_currency( $product->price ) ); ?></td>
-								<td><?php echo esc_html($tc_name);?> <?php if(!$is_variant && $product->tax_rate) echo '<small>('.esc_html($product->tax_rate).'%)</small>';?></td>
+								<td><?php echo esc_html($tc_name);?> <?php if(!$is_variant && ($product->tax_rate ?? 0)) echo '<small>('.esc_html($product->tax_rate).'%)</small>';?></td>
 								<td class="num"><?php if ( $product->track_stock ) : ?><span class="<?php echo $is_low ? 'simple-pos-low-stock' : ''; ?>"><?php echo esc_html( $product->stock_qty ); ?></span><?php else : ?><em class="simple-pos-muted"><?php esc_html_e( 'not tracked', 'wp-pos-plugin' ); ?></em><?php endif; ?></td>
 								<td><span class="simple-pos-status simple-pos-status-<?php echo esc_attr($product->status);?>"><?php echo esc_html( ucfirst( $product->status ) ); ?></span></td>
 								<td class="simple-pos-row-actions">

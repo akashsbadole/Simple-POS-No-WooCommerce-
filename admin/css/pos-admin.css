@@ -210,6 +210,28 @@
 .simple-pos-payment-row {
   margin-bottom: 4px;
 }
+/* Terminal tax country/state row: two equal fields filling the panel width. */
+.simple-pos-tax-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.simple-pos-tax-field {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.simple-pos-tax-field > label {
+  font-weight: 600;
+}
+.simple-pos-tax-field select,
+.simple-pos-tax-field input {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
 .simple-pos-customer-row,
 .simple-pos-discount-row {
   margin-bottom: 6px;
@@ -288,7 +310,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   overflow-y: auto;
-  align-items: start;
+  align-items: stretch;
 }
 .simple-pos-loading-msg {
   grid-column: 1 / -1;
@@ -839,6 +861,33 @@
 }
 
 .simple-pos-wrap .simple-pos-table-card { padding: 0; overflow: hidden; }
+.simple-pos-wrap .simple-pos-card-head { padding: 14px 16px 0; }
+.simple-pos-wrap .simple-pos-card-head .simple-pos-section-title { margin: 0; }
+.simple-pos-wrap .simple-pos-card-head p {
+  margin: 4px 0 12px;
+  color: #646970;
+  font-size: 12px;
+}
+.simple-pos-wrap .simple-pos-card-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 16px 14px;
+  border-top: 1px solid #f0f0f1;
+}
+.simple-pos-wrap .simple-pos-card-foot .description { margin: 0; }
+/* Stacked sidebar forms: space rows vertically. */
+.simple-pos-wrap .simple-pos-stack > * + * { margin-top: 12px; }
+.simple-pos-wrap .simple-pos-stat-value-sm {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1d2327;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .simple-pos-wrap .simple-pos-table {
   margin: 0;
   border: none;
