@@ -18,7 +18,7 @@ var state = {
 var els = {};
 function apiFetch(path,options){
 	options=options||{}; options.headers=Object.assign({'X-WP-Nonce':window.SimplePOS.nonce,'Content-Type':'application/json'},options.headers||{});
-	return fetch(window.SimplePOS.restUrl+path, options).then(function(response){ return response.json().then(function(body){ if(!response.ok){ var m=(body&&body.message)?body.message:'Request failed'; return Promise.reject(new Error(m)); } return body; }); });
+	return fetch(window.SimplePOS.restUrl+path, options).then(function(response){ return response.json().then(function(body){ if(!response.ok){ var m=(body&&body.message)?body.message:'Request failed'; var code=(body&&body.code)?(' ['+body.code+']'):''; try{ console.error('[SimplePOS] '+path+' failed:', response.status, body, options.body||null); }catch(e){} return Promise.reject(new Error(m+code)); } return body; }); });
 }
 function formatCurrency(amount){
 	var num=Number(amount||0).toFixed(window.SimplePOS.currency.decimals);

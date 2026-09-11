@@ -42,8 +42,45 @@ class Simple_POS_DB {
 
 		// Insert and get AUTO_INCREMENT ID (atomic operation - no race condition).
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		$wpdb->query( "INSERT INTO {$seq_table} VALUES ()" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$ok = $wpdb->query( "INSERT INTO {$seq_table} VALUES ()" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( false === $ok ) {
+			// Self-heal: sequences table missing on installs that upgraded
+			// without a DB version bump. Create it and retry once. Guarded
+			// on upgrade.php so CLI/test contexts fall through to the
+			// MAX(id) fallback instead of fataling on a missing require.
+			if ( class_exists( 'Simple_POS_Activator' ) && method_exists( 'Simple_POS_Activator', 'create_tables' ) && file_exists( ABSPATH . 'wp-admin/includes/upgrade.php' ) ) {
+				Simple_POS_Activator::create_tables();
+				$ok = $wpdb->query( "INSERT INTO {$seq_table} VALUES ()" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			}
+		}
+		if ( false === $ok ) {
+			// Last resort: derive from max sale id so checkout still works.
+			$sales_table = self::table( 'sales' );
+			$max_id      = (int) $wpdb->get_var( "SELECT COALESCE(MAX(id),0) FROM {$sales_table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			return $prefix . str_pad( $max_id + 1, 6, '0', STR_PAD_LEFT );
+		}
 		$next_id = (int) $wpdb->insert_id;
+
+		// Guard against a sequence that fell behind existing sale_numbers
+		// (CSV imports, manual rows and restored backups write to sales
+		// without bumping the sequence, and the sequence insert above is
+		// rolled back together with a failed sale). Burn sequence ids
+		// until the candidate number is actually free, so the sales
+		// INSERT below cannot fail its UNIQUE(sale_number) key.
+		$sales_table = self::table( 'sales' );
+		for ( $attempt = 0; $attempt < 20; $attempt++ ) {
+			$candidate = $prefix . str_pad( $next_id, 6, '0', STR_PAD_LEFT );
+			$exists    = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$sales_table} WHERE sale_number = %s", $candidate ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( 0 === $exists ) {
+				break;
+			}
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$retry = $wpdb->query( "INSERT INTO {$seq_table} VALUES ()" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( false === $retry ) {
+				break;
+			}
+			$next_id = (int) $wpdb->insert_id;
+		}
 
 		// Optionally clean up old sequence entries (every 1000 inserts).
 		if ( $next_id % 1000 === 0 && $next_id > 100 ) {

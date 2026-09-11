@@ -1053,7 +1053,13 @@ class Simple_POS_REST_API {
 	private static function respond_or_error( $result, $success_body ) {
 		if ( is_wp_error( $result ) ) {
 			$status = 'pos_not_found' === $result->get_error_code() ? 404 : 400;
-			return new WP_Error( $result->get_error_code(), $result->get_error_message(), array( 'status' => $status ) );
+			$data   = array( 'status' => $status );
+			foreach ( (array) $result->get_all_error_data() as $d ) {
+				if ( is_array( $d ) ) {
+					$data = array_merge( $data, $d );
+				}
+			}
+			return new WP_Error( $result->get_error_code(), $result->get_error_message(), $data );
 		}
 		return rest_ensure_response( $success_body );
 	}

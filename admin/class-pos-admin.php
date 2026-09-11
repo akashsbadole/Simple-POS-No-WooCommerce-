@@ -91,9 +91,17 @@ class Simple_POS_Admin {
 	 * @param string $hook Current admin page hook suffix.
 	 */
 	public static function enqueue_assets( $hook ) {
-		if ( strpos( $hook, 'wp-pos-plugin' ) === false ) {
+		// $hook values look like "toplevel_page_simple-pos-terminal" and
+		// "simple-pos-terminal_page_simple-pos-products" — they contain
+		// "simple-pos", never "wp-pos-plugin" (that's only the text domain).
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$is_pos_page = ( false !== strpos( (string) $hook, 'simple-pos' ) ) || ( 0 === strpos( $page, 'simple-pos-' ) );
+		if ( ! $is_pos_page ) {
 			return;
 		}
+
+		$is_terminal = ( 'simple-pos-terminal' === $page ) || ( 'toplevel_page_simple-pos-terminal' === $hook );
+		$is_barcode  = ( 'simple-pos-barcode' === $page );
 
 		wp_enqueue_style( 'simple-pos-admin', SIMPLE_POS_PLUGIN_URL . 'admin/css/pos-admin.css', array(), SIMPLE_POS_VERSION );
 
@@ -143,19 +151,22 @@ class Simple_POS_Admin {
 		wp_register_script( 'simple-pos-jsbarcode', SIMPLE_POS_PLUGIN_URL . 'admin/js/vendor/jsbarcode.min.js', array(), '3.11.6', true );
 
 		// Terminal screen: cart/checkout logic + barcode input.
-		if ( false !== strpos( $hook, 'simple-pos-terminal' ) ) {
+		// NOTE: every POS submenu hook starts with "simple-pos-terminal_",
+		// so match the exact Terminal page only — otherwise all admin
+		// screens would get the terminal script and miss pos-admin.js.
+		if ( $is_terminal ) {
 			wp_enqueue_script( 'simple-pos-terminal', SIMPLE_POS_PLUGIN_URL . 'admin/js/pos-terminal.js', array(), SIMPLE_POS_VERSION, true );
 			wp_localize_script( 'simple-pos-terminal', 'SimplePOS', $shared_data );
 		}
 
 		// Barcode labels screen needs JsBarcode.
-		if ( false !== strpos( $hook, 'simple-pos-barcode' ) ) {
+		if ( $is_barcode ) {
 			wp_enqueue_script( 'simple-pos-jsbarcode' );
 		}
 
 		// Shared admin script (products, customers, sales, reports, settings, taxes, barcode).
 		// On the Terminal screen the terminal script owns the SimplePOS global; do not re-emit it here.
-		if ( false === strpos( $hook, 'simple-pos-terminal' ) ) {
+		if ( ! $is_terminal ) {
 			wp_enqueue_script( 'simple-pos-admin', SIMPLE_POS_PLUGIN_URL . 'admin/js/pos-admin.js', array(), SIMPLE_POS_VERSION, true );
 			wp_localize_script( 'simple-pos-admin', 'SimplePOS', $shared_data );
 			// Expose vendor URL for print window (same origin, no CDN).
@@ -171,8 +182,22 @@ class Simple_POS_Admin {
 	 * Enqueues the same CSS/JS as the admin terminal screen and hides the admin bar.
 	 */
 	public static function enqueue_frontend_assets() {
-		if ( ! self::$frontend_terminal_active ) {
+		static $done = false;
+		if ( $done ) {
 			return;
+		}
+		if ( ! self::$frontend_terminal_active ) {
+			// Early <head> load: detect the shortcode before the_content runs.
+			// (When rendering via shortcode we set the flag + call this again.)
+			if ( function_exists( 'is_singular' ) && is_singular() ) {
+				$post = get_queried_object();
+				if ( $post instanceof WP_Post && function_exists( 'has_shortcode' ) && has_shortcode( (string) $post->post_content, 'simple_pos_terminal' ) ) {
+					self::$frontend_terminal_active = true;
+				}
+			}
+			if ( ! self::$frontend_terminal_active ) {
+				return;
+			}
 		}
 		wp_enqueue_style( 'simple-pos-admin', SIMPLE_POS_PLUGIN_URL . 'admin/css/pos-admin.css', array(), SIMPLE_POS_VERSION );
 
@@ -221,6 +246,7 @@ class Simple_POS_Admin {
 		wp_enqueue_script( 'simple-pos-terminal', SIMPLE_POS_PLUGIN_URL . 'admin/js/pos-terminal.js', array(), SIMPLE_POS_VERSION, true );
 		wp_localize_script( 'simple-pos-terminal', 'SimplePOS', $shared_data );
 		wp_add_inline_script( 'simple-pos-terminal', 'window.SimplePOSVendorUrl=' . wp_json_encode( SIMPLE_POS_PLUGIN_URL . 'admin/js/vendor/jsbarcode.min.js' ) . ';', 'before' );
+		$done = true;
 	}
 
 	/**
@@ -233,8 +259,13 @@ class Simple_POS_Admin {
 		}
 		self::$frontend_terminal_active = true;
 		show_admin_bar( false );
+		// Shortcodes must RETURN markup (not echo). Buffer the view so it
+		// lands in place, and enqueue assets now — the_content runs after
+		// wp_enqueue_scripts, so the flag alone would be too late.
+		self::enqueue_frontend_assets();
+		ob_start();
 		include SIMPLE_POS_PLUGIN_DIR . 'admin/views/terminal.php';
-		return '';
+		return (string) ob_get_clean();
 	}
 
 	public static $frontend_terminal_active = false;
@@ -956,7 +987,7 @@ class Simple_POS_Admin {
 	 */
 	public static function low_stock_notice() {
 		$screen = get_current_screen();
-		if ( ! $screen || strpos( $screen->id, 'wp-pos-plugin' ) === false ) {
+		if ( ! $screen || false === strpos( $screen->id, 'simple-pos' ) ) {
 			return;
 		}
 		if ( ! current_user_can( 'manage_pos_products' ) ) {

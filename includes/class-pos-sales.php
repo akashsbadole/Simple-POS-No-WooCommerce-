@@ -179,12 +179,21 @@ class Simple_POS_Sales {
 					)
 				);
 				if ( false === $inserted ) {
-					return new WP_Error( 'pos_db_error', __( 'Could not record sale.', 'wp-pos-plugin' ) );
+					$db_err = isset( $wpdb->last_error ) ? trim( (string) $wpdb->last_error ) : '';
+					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						error_log( 'POS create_sale insert failed: ' . $db_err ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					}
+					/* translators: %s: database error detail. */
+					$msg = __( 'Could not record sale.', 'wp-pos-plugin' );
+					if ( '' !== $db_err && ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ) {
+						$msg .= ' ' . $db_err;
+					}
+					return new WP_Error( 'pos_db_error', $msg, array( 'db_error' => $db_err ) );
 				}
 				$sale_id = (int) $wpdb->insert_id;
 				foreach ( $line_items as $idx => $item ) {
 						$line_calc = $calc['lines'][ $idx ];
-						$wpdb->insert(
+						$item_ok   = $wpdb->insert(
 							$items_table,
 							array(
 								'sale_id'          => $sale_id,
@@ -203,6 +212,13 @@ class Simple_POS_Sales {
 								'line_total'       => $line_calc['gross'],
 							)
 						);
+					if ( false === $item_ok ) {
+						$db_err = isset( $wpdb->last_error ) ? trim( (string) $wpdb->last_error ) : '';
+						if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+							error_log( 'POS create_sale item insert failed: ' . $db_err ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+						}
+						return new WP_Error( 'pos_db_error', __( 'Could not record sale items.', 'wp-pos-plugin' ), array( 'db_error' => $db_err ) );
+					}
 					if ( $item['track_stock'] ) {
 						if ( $item['variant_id'] ) {
 							Simple_POS_Variants::adjust_stock( $item['variant_id'], -1 * $item['qty'], 'sale', $sale_id );

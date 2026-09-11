@@ -301,8 +301,13 @@ class Simple_POS_Activator {
 		self::migrate_add_hsn_sac_columns();
 		self::migrate_add_gst_split_column();
 		self::migrate_add_customer_type_columns();
+		self::migrate_ensure_sale_sequences();
+		self::migrate_resync_sale_sequences();
+		self::migrate_ensure_sales_columns();
 		self::migrate_add_foreign_keys();
-		self::migrate_drop_legacy_tax_rate();
+		// NOTE: do NOT drop the legacy products.tax_rate column. Product
+		// queries/CSV still reference it and dropping it breaks installs
+		// where code and schema versions drift. It is harmless to keep.
 	}
 
 	private static function seed_tax_data() {
@@ -448,6 +453,110 @@ class Simple_POS_Activator {
 		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$items}` WHERE Field = 'customer_type'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( empty( $col ) ) {
 			$wpdb->query( "ALTER TABLE `{$items}` ADD COLUMN customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c' AFTER tax_rate_applied" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
+	}
+
+	/**
+	 * 2.1.1 repair: the sale_sequences table was introduced without a DB
+	 * version bump, so installs already on 2.1.0 never created it — every
+	 * checkout then reuses sale_number POS-000000 and the 2nd sale fails
+	 * with "Could not record sale." (duplicate key). CREATE IF NOT EXISTS
+	 * is safe to run on every upgrade.
+	 */
+	private static function migrate_ensure_sale_sequences() {
+		global $wpdb;
+		$prefix   = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		$charset  = $wpdb->get_charset_collate();
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}sale_sequences` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) ) {$charset}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+
+	/**
+	 * Repair: fast-forward the sale_sequences counter past the highest
+	 * sale_number suffix already stored, so next_sale_number() cannot
+	 * hand out a duplicate (which fails checkout with "Could not record
+	 * sale."). Imports, manual rows and rolled-back checkouts can leave
+	 * the sequence behind sales; inserting an explicit id bumps the
+	 * AUTO_INCREMENT counter without touching existing rows.
+	 */
+	private static function migrate_resync_sale_sequences() {
+		global $wpdb;
+		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		$seq    = $prefix . 'sale_sequences';
+		$sales  = $prefix . 'sales';
+
+		$settings = get_option( 'simple_pos_settings', array() );
+		$number_prefix = isset( $settings['sale_number_prefix'] ) ? (string) $settings['sale_number_prefix'] : 'POS-';
+
+		$numbers = $wpdb->get_col( "SELECT sale_number FROM `{$sales}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( empty( $numbers ) ) {
+			return;
+		}
+		$max = 0;
+		foreach ( (array) $numbers as $n ) {
+			$n = (string) $n;
+			if ( '' !== $number_prefix && 0 !== strpos( $n, $number_prefix ) ) {
+				continue;
+			}
+			if ( preg_match( '/(\d+)\s*$/', $n, $m ) ) {
+				$max = max( $max, (int) $m[1] );
+			}
+		}
+		if ( $max <= 0 ) {
+			return;
+		}
+		$seq_max = (int) $wpdb->get_var( "SELECT COALESCE(MAX(id),0) FROM `{$seq}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( $seq_max >= $max ) {
+			return;
+		}
+		// Explicit-id insert advances AUTO_INCREMENT to $max + 1. If the
+		// id already exists the counter is already past it — ignore.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO `{$seq}` (id) VALUES (%d)", $max ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	}
+
+	/**
+	 * 2.1.1 repair: ensure every column that create_sale()/sale-items
+	 * writes actually exists (upgrades that skipped versions may miss
+	 * them and $wpdb->insert then fails with "Unknown column").
+	 */
+	private static function migrate_ensure_sales_columns() {
+		global $wpdb;
+		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
+		$sales  = $prefix . 'sales';
+		$items  = $prefix . 'sale_items';
+		$want_sales = array(
+			'customer_type'  => "ADD COLUMN customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c'",
+			'tax_country'    => 'ADD COLUMN tax_country VARCHAR(10) NULL',
+			'tax_state'      => 'ADD COLUMN tax_state VARCHAR(50) NULL',
+			'tax_breakdown'  => 'ADD COLUMN tax_breakdown TEXT NULL',
+			'currency_code'  => 'ADD COLUMN currency_code VARCHAR(10) NULL',
+			'exchange_rate'  => 'ADD COLUMN exchange_rate DECIMAL(12,6) NULL',
+		);
+		$want_items = array(
+			'tax_class_id'     => 'ADD COLUMN tax_class_id BIGINT UNSIGNED NULL',
+			'tax_breakdown'    => 'ADD COLUMN tax_breakdown TEXT NULL',
+			'tax_rate_applied' => 'ADD COLUMN tax_rate_applied DECIMAL(7,4) NULL',
+			'customer_type'    => "ADD COLUMN customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c'",
+			'line_total'       => 'ADD COLUMN line_total DECIMAL(12,2) NOT NULL DEFAULT 0',
+		);
+		foreach ( $want_sales as $col => $ddl ) {
+			$exists = $wpdb->get_col( "SHOW COLUMNS FROM `{$sales}` WHERE Field = '{$col}'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( empty( $exists ) ) {
+				$wpdb->query( "ALTER TABLE `{$sales}` {$ddl}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			}
+		}
+		foreach ( $want_items as $col => $ddl ) {
+			$exists = $wpdb->get_col( "SHOW COLUMNS FROM `{$items}` WHERE Field = '{$col}'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			if ( empty( $exists ) ) {
+				$wpdb->query( "ALTER TABLE `{$items}` {$ddl}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			}
+		}
+		// Keep legacy products.tax_rate (see note above) — re-add if a
+		// previous version dropped it, so product SELECTs keep working.
+		$products = $prefix . 'products';
+		$exists   = $wpdb->get_col( "SHOW COLUMNS FROM `{$products}` WHERE Field = 'tax_rate'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( empty( $exists ) ) {
+			$wpdb->query( "ALTER TABLE `{$products}` ADD COLUMN tax_rate DECIMAL(5,2) NOT NULL DEFAULT 0 AFTER cost_price" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}
 

@@ -3,12 +3,26 @@
  * Simple POS — Test Runner
  *
  * Usage: php run-tests.php
+ *
+ * Runs the full PHPUnit suite (tests/Unit) when PHPUnit is installed,
+ * otherwise falls back to a small standalone smoke test that needs no
+ * dependencies.
  */
-require_once __DIR__ . '/vendor/autoload.php';
+
+$phpunit = __DIR__ . '/vendor/bin/phpunit' . ( 0 === stripos( PHP_OS, 'WIN' ) ? '.bat' : '' );
+
+if ( is_file( $phpunit ) ) {
+    // Canonical path: entire suite, including checkout/tax/void/stock
+    // regression coverage (Test_Pos_Checkout).
+    passthru( escapeshellarg( $phpunit ) . ' --colors=never', $code );
+    exit( is_int( $code ) ? $code : 1 );
+}
+
+// --- Fallback: dependency-free smoke test -------------------------------
 require_once __DIR__ . '/tests/bootstrap.php';
 require_once __DIR__ . '/tests/Unit/Pos_DBTest.php';
 
-echo "=== Simple POS Unit Tests ===" . PHP_EOL . PHP_EOL;
+echo "=== Simple POS Unit Tests (fallback smoke test; PHPUnit not installed) ===" . PHP_EOL . PHP_EOL;
 
 $tests = new Test_Pos_DB();
 $pass  = 0;

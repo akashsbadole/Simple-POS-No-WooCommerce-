@@ -4,7 +4,7 @@ Tags: pos, point of sale, retail, inventory, cash register
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.0.0
+Stable tag: 2.0.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://example.com/donate
@@ -111,11 +111,22 @@ Sales are calculated server-side via `Simple_POS_Tax::calculate_order()` using t
 
 == Upgrade Notice ==
 
+= 2.0.9 =
+
+Maintenance release. Fixes terminal CSS never loading on POS admin screens, checkout failing with "Could not record sale." on installs missing the sale-number sequence table (schema upgraded to DB 2.1.1 automatically on next admin load — no data loss), and frontend shortcode assets/markup. Just update; no settings changes needed.
+
 = 2.0.0 =
 
 Major update: adds tax classes/rates (US/IN/EU presets), product variants, suppliers/purchase orders, barcode label sheets, store-wide currency and USB ESC/POS (WebUSB + browser fallback). On upgrade the activator seeds `pos_tax_classes`/`pos_tax_rates` and migrates legacy `tax_rate` → `tax_class_id`. No data loss. Flush rewrite rules and visit POS → Settings to review tax country/state.
 
 == Changelog ==
+
+= 2.0.9 =
+* Fix: admin CSS/JS now load on all POS screens (wrong screen check meant pos-admin.css never enqueued); terminal script no longer loads on non-terminal screens.
+* Fix: checkout "Could not record sale." — schema auto-upgrade to DB 2.1.1 creates a missing sale-number sequence table and any missing sale columns; sale-number generation self-heals with a fallback.
+* Fix: [simple_pos_terminal] shortcode now returns markup in place and enqueues its assets reliably.
+* Fix: legacy products.tax_rate column is preserved (dropping it broke product lookups/saves on upgraded installs).
+* Checkout and line-item DB failures now log the real SQL error (WP_DEBUG) instead of a generic message.
 
 = 2.0.0 =
 * Tax engine: classes/rates per country+state, presets for US/IN/EU, inclusive/compound/priority, breakdown on sales, terminal preview via /tax/calculate, DB migration.

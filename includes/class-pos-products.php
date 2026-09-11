@@ -121,7 +121,7 @@ class Simple_POS_Products {
 		}
 		$variant = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT v.*, p.name as parent_name, p.category_id, p.tax_rate, p.tax_class_id FROM {$vt} v INNER JOIN {$pt} p ON p.id=v.parent_product_id WHERE (v.sku = %s OR v.barcode = %s) AND v.status='active' LIMIT 1",
+				"SELECT v.*, p.name as parent_name, p.category_id, p.tax_class_id FROM {$vt} v INNER JOIN {$pt} p ON p.id=v.parent_product_id WHERE (v.sku = %s OR v.barcode = %s) AND v.status='active' LIMIT 1",
 				$code,
 				$code
 			)
@@ -295,11 +295,14 @@ class Simple_POS_Products {
 		$pt       = Simple_POS_DB::table( 'products' );
 		$vt       = Simple_POS_DB::table( 'product_variants' );
 		$products = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$pt} WHERE track_stock=1 AND status='active' AND stock_qty <= low_stock_threshold ORDER BY stock_qty ASC LIMIT %d", $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$variants = $wpdb->get_results( $wpdb->prepare( "SELECT v.*, p.name as parent_name, p.stock_qty as parent_stock_qty, p.low_stock_threshold as parent_low_stock_threshold, p.track_stock as parent_track_stock FROM {$vt} v INNER JOIN {$pt} p ON p.id=v.parent_product_id WHERE v.status='active' AND ((v.track_stock=1 AND v.stock_qty <= v.low_stock_threshold) OR (v.track_stock=0 AND p.track_stock=1 AND p.stock_qty <= p.low_stock_threshold)) ORDER BY v.stock_qty ASC LIMIT %d", $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$variants = $wpdb->get_results( $wpdb->prepare( "SELECT v.*, p.name as parent_name, p.category_id as parent_category_id, p.stock_qty as parent_stock_qty, p.low_stock_threshold as parent_low_stock_threshold, p.track_stock as parent_track_stock FROM {$vt} v INNER JOIN {$pt} p ON p.id=v.parent_product_id WHERE v.status='active' AND ((v.track_stock=1 AND v.stock_qty <= v.low_stock_threshold) OR (v.track_stock=0 AND p.track_stock=1 AND p.stock_qty <= p.low_stock_threshold)) ORDER BY v.stock_qty ASC LIMIT %d", $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		// Merge and label variants.
 		foreach ( $variants as $v ) {
-			$v->name       = $v->parent_name . ' — ' . Simple_POS_Variants::variant_label( $v );
-			$v->is_variant = 1;
+			$v->name        = $v->parent_name . ' — ' . Simple_POS_Variants::variant_label( $v );
+			$v->is_variant  = 1;
+			// Variants have no category of their own — inherit the parent's
+			// so list views can safely read $item->category_id on every row.
+			$v->category_id = isset( $v->parent_category_id ) ? $v->parent_category_id : null;
 		}
 		$merged = array_merge( $products, $variants );
 		usort(
@@ -427,14 +430,13 @@ class Simple_POS_Products {
 		if ( ! empty( $data['barcode'] ) && self::barcode_exists( sanitize_text_field( $data['barcode'] ), $existing->id ?? 0 ) ) {
 			return new WP_Error( 'pos_duplicate_barcode', __( 'Barcode already exists.', 'wp-pos-plugin' ) );
 		}
-		return array(
+		$clean = array(
 			'name'                => $name,
 			'category_id'         => isset( $data['category_id'] ) ? ( (int) $data['category_id'] ?: null ) : ( $existing->category_id ?? null ),
 			'sku'                 => isset( $data['sku'] ) ? sanitize_text_field( $data['sku'] ) : ( $existing->sku ?? '' ),
 			'barcode'             => isset( $data['barcode'] ) ? sanitize_text_field( $data['barcode'] ) : ( $existing->barcode ?? '' ),
 			'price'               => $price,
 			'cost_price'          => isset( $data['cost_price'] ) ? (float) $data['cost_price'] : ( $existing->cost_price ?? 0 ),
-			'tax_rate'            => isset( $data['tax_rate'] ) ? (float) $data['tax_rate'] : ( $existing->tax_rate ?? 0 ),
 			'tax_class_id'        => $tax_class_id,
 			'stock_qty'           => isset( $data['stock_qty'] ) ? (int) $data['stock_qty'] : ( $existing->stock_qty ?? 0 ),
 			'low_stock_threshold' => isset( $data['low_stock_threshold'] ) ? (int) $data['low_stock_threshold'] : ( $existing->low_stock_threshold ?? 5 ),
@@ -443,6 +445,29 @@ class Simple_POS_Products {
 		'hsn_sac_code'        => isset( $data['hsn_sac_code'] ) ? sanitize_text_field( $data['hsn_sac_code'] ) : ( $existing->hsn_sac_code ?? '' ),
 		'status'              => isset( $data['status'] ) && in_array( $data['status'], array( 'active', 'inactive' ), true ) ? $data['status'] : ( $existing->status ?? 'active' ),
 		);
+		// Legacy tax_rate column: only write it when it exists (older DBs).
+		// Never fail product save just because the column was dropped.
+		if ( self::products_has_tax_rate_column() ) {
+			$clean['tax_rate'] = isset( $data['tax_rate'] ) ? (float) $data['tax_rate'] : ( $existing->tax_rate ?? 0 );
+		}
+		return $clean;
+	}
+
+	/**
+	 * Whether the legacy products.tax_rate column exists (cached).
+	 *
+	 * @return bool
+	 */
+	private static function products_has_tax_rate_column() {
+		global $wpdb;
+		static $has = null;
+		if ( null !== $has ) {
+			return $has;
+		}
+		$table = Simple_POS_DB::table( 'products' );
+		$col   = $wpdb->get_col( "SHOW COLUMNS FROM `{$table}` WHERE Field = 'tax_rate'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$has   = ! empty( $col );
+		return $has;
 	}
 
 	/*

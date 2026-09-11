@@ -3,7 +3,7 @@
  * Plugin Name:       Simple POS (No WooCommerce)
  * Plugin URI:        https://example.com/simple-pos
  * Description:       A lightweight, standalone Point of Sale system for WordPress. No WooCommerce required. Custom database tables, REST API, barcode-ready terminal, per-country tax, variants, suppliers/POs, barcode labels, USB ESC/POS, inventory, reports and role-based access.
- * Version:           2.0.0
+ * Version:           2.0.9
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Your Name
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Core plugin constants.
  */
 define( 'SIMPLE_POS_VERSION', '2.0.9' );
-define( 'SIMPLE_POS_DB_VERSION', '2.1.0' );
+define( 'SIMPLE_POS_DB_VERSION', '2.1.1' );
 define( 'SIMPLE_POS_PLUGIN_FILE', __FILE__ );
 define( 'SIMPLE_POS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SIMPLE_POS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -140,7 +140,9 @@ final class Simple_POS_Plugin {
 	 */
 	public function maybe_upgrade_db() {
 		$installed = get_option( 'simple_pos_db_version', '' );
-		if ( $installed !== SIMPLE_POS_DB_VERSION ) {
+		// version_compare (not !==) so installs stuck on 2.1.0 without the
+		// sale_sequences table / FKs still upgrade when DB_VERSION bumps.
+		if ( '' === $installed || version_compare( $installed, SIMPLE_POS_DB_VERSION, '<' ) ) {
 			Simple_POS_Activator::create_tables();
 			update_option( 'simple_pos_db_version', SIMPLE_POS_DB_VERSION );
 		}

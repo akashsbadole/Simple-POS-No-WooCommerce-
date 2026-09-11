@@ -45,15 +45,20 @@ function simple_pos_uninstall_drop_tables() {
 		'stock_log',
 		'sale_items',
 		'sales',
+		'sale_sequences',
 		'customers',
 		'products',
 		'categories',
 	);
+	// Disable FK checks so child tables drop cleanly regardless of order.
+	$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 0' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 	foreach ( $tables as $table ) {
 		$wpdb->query( "DROP TABLE IF EXISTS {$prefix}{$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared
 	}
+	$wpdb->query( 'SET FOREIGN_KEY_CHECKS = 1' ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 	delete_option( 'simple_pos_settings' );
 	delete_option( 'simple_pos_db_version' );
+	delete_option( 'simple_pos_vertical' );
 	// Clean transients left by reports.
 	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_simple_pos_%' OR option_name LIKE '_transient_timeout_simple_pos_%'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 }

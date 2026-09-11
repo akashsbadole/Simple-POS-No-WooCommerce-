@@ -78,7 +78,7 @@ $variants_for_edit = $editing_product ? Simple_POS_Variants::get_variants($editi
 					<tbody>
 						<?php if ( empty( $products_result['items'] ) ) : ?><tr><td colspan="8" class="simple-pos-empty"><?php esc_html_e( 'No products found.', 'wp-pos-plugin' ); ?></td></tr>
 						<?php else : foreach ( $products_result['items'] as $product ) :
-							$cat_name='—'; foreach($categories as $cat) if((int)$cat->id===(int)$product->category_id){$cat_name=$cat->name;break;}
+							$cat_name='—'; $prod_cat_id=(int)($product->category_id ?? 0); foreach($categories as $cat) if((int)$cat->id===$prod_cat_id){$cat_name=$cat->name;break;}
 							$is_low=$product->track_stock && $product->stock_qty <= $product->low_stock_threshold;
 							$tc_name='—'; foreach($tax_classes as $tc) if((int)$tc->id===(int)($product->tax_class_id??0)){$tc_name=$tc->name;break;}
 							$is_variant=!empty($product->is_variant);

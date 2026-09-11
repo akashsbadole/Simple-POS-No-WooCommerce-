@@ -238,6 +238,13 @@ Ensure products have at least one variant or no variants configured. Check brows
 
 ## Changelog
 
+### 2.0.9
+- Fix: admin CSS/JS load on all POS screens (screen check never matched, so pos-admin.css was never enqueued)
+- Fix: checkout "Could not record sale." — DB auto-upgrade to 2.1.1 creates missing sale-number sequence table and sale columns; sale-number generation self-heals
+- Fix: [simple_pos_terminal] shortcode returns markup in place with reliable asset loading
+- Fix: legacy products.tax_rate column preserved (dropping it broke product lookups/saves)
+- Checkout DB failures now log the real SQL error under WP_DEBUG
+
 ### 2.0.0
 - Tax engine with classes/rates per country+state (US/IN/EU presets)
 - Product variants (free-form attributes, per-variant stock/pricing)
