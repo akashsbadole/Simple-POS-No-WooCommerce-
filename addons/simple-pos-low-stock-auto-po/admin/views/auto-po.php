@@ -112,7 +112,7 @@ $has_low      = ! empty( $low );
 						<?php endif; ?>
 						<?php foreach ( $low as $p ) : ?>
 							<tr>
-								<td><strong><?php echo esc_html( $p->name ); ?></strong></td>
+								<td><strong><?php echo esc_html( $p->name ); ?></strong><?php if ( ! empty( $p->variant_id ) ) : ?> <em class="simple-pos-pill"><?php esc_html_e( 'variant', 'wp-pos-plugin' ); ?></em><?php endif; ?></td>
 								<td><code><?php echo esc_html( $p->sku ?: '—' ); ?></code></td>
 								<td class="num"><span class="simple-pos-low-stock"><?php echo esc_html( $p->stock_qty ); ?></span></td>
 								<td class="num simple-pos-muted"><?php echo esc_html( $p->low_stock_threshold ); ?></td>

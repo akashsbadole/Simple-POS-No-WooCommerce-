@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name:       Simple POS (No WooCommerce)
- * Plugin URI:        https://example.com/simple-pos
+ * Plugin URI:        https://appixen.com
  * Description:       A lightweight, standalone Point of Sale system for WordPress. No WooCommerce required. Custom database tables, REST API, barcode-ready terminal, per-country tax, variants, suppliers/POs, barcode labels, USB ESC/POS, inventory, reports and role-based access.
- * Version:           2.0.9
+ * Version:           2.1.0
  * Requires at least: 5.8
  * Requires PHP:      7.4
- * Author:            Your Name
- * Author URI:        https://example.com
+ * Author:            akash
+ * Author URI:        https://appixen.com
  * License:            GPL v2 or later
  * License URI:        https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:        wp-pos-plugin
@@ -22,8 +22,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Core plugin constants.
  */
-define( 'SIMPLE_POS_VERSION', '2.0.9' );
-define( 'SIMPLE_POS_DB_VERSION', '2.1.2' );
+define( 'SIMPLE_POS_VERSION', '2.1.0' );
+define( 'SIMPLE_POS_DB_VERSION', '2.1.3' );
 define( 'SIMPLE_POS_PLUGIN_FILE', __FILE__ );
 define( 'SIMPLE_POS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SIMPLE_POS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

@@ -661,6 +661,7 @@ class Simple_POS_REST_API {
 				'date_from'  => $request->get_param( 'date_from' ),
 				'date_to'    => $request->get_param( 'date_to' ),
 				'cashier_id' => $request->get_param( 'cashier_id' ),
+				'outlet_id'  => $request->get_param( 'outlet_id' ) ?: 0,
 				'status'     => $request->get_param( 'status' ) ?: 'any',
 				'per_page'   => $request->get_param( 'per_page' ) ?: 20,
 				'page'       => $request->get_param( 'page' ) ?: 1,
@@ -762,11 +763,15 @@ class Simple_POS_REST_API {
 		$calc_lines = array();
 		foreach ( $lines as $l ) {
 			$pid          = (int) ( $l['product_id'] ?? 0 );
+			$vid          = (int) ( $l['variant_id'] ?? 0 );
 			$prod         = $pid ? Simple_POS_Products::get_product( $pid ) : null;
 			$calc_lines[] = array(
 				'price'    => isset( $l['price'] ) ? (float) $l['price'] : ( $prod ? (float) $prod->price : 0 ),
-				'qty'      => (int) ( $l['qty'] ?? 1 ),
-				'class_id' => $prod ? (int) $prod->tax_class_id : 0,
+				// Same floor as the engine (calculate_line coerces to min
+				// 1); checkout itself rejects qty < 1 outright.
+				'qty'      => max( 1, (int) ( $l['qty'] ?? 1 ) ),
+				// Variant-aware: must match checkout's class resolution.
+				'class_id' => Simple_POS_Tax::resolve_line_tax_class( $pid, $vid ),
 			);
 		}
 		$res = Simple_POS_Tax::calculate_order( $calc_lines, $country, $state, $discount_type, $discount_amount );

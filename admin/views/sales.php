@@ -39,6 +39,9 @@ if ( $view_id ) {
 				<tr><th><?php esc_html_e( 'Customer', 'wp-pos-plugin' ); ?></th><td><?php echo esc_html( $customer ? $customer->name : __( 'Walk-in', 'wp-pos-plugin' ) ); ?></td></tr>
 				<tr><th><?php esc_html_e( 'Customer type', 'wp-pos-plugin' ); ?></th><td><?php echo esc_html( strtoupper( $sale->customer_type ?? 'b2c' ) ); ?></td></tr>
 				<tr><th><?php esc_html_e( 'Payment method', 'wp-pos-plugin' ); ?></th><td><?php echo esc_html( ucfirst( $sale->payment_method ) ); ?></td></tr>
+				<?php if ( ! empty( $sale->outlet_id ) && class_exists( 'SMO_Outlets' ) && ( $pos_sale_outlet = SMO_Outlets::get_outlet( (int) $sale->outlet_id ) ) ) : ?>
+				<tr><th><?php esc_html_e( 'Outlet', 'wp-pos-plugin' ); ?></th><td><?php echo esc_html( $pos_sale_outlet->name ); ?></td></tr>
+				<?php endif; ?>
 					<tr><th><?php esc_html_e( 'Tax country/state', 'wp-pos-plugin' ); ?></th><td><?php echo esc_html( ($sale->tax_country?:'—').' / '.($sale->tax_state?:'—') ); ?></td></tr>
 					<?php if($tax_breakdown): ?><tr><th><?php esc_html_e('Tax breakdown','wp-pos-plugin');?></th><td><?php foreach($tax_breakdown as $b) echo esc_html($b['name'].' '.$b['rate'].'% '.Simple_POS_DB::format_currency($b['amount'])).'<br>';?></td></tr><?php endif;?>
 				</tbody>
@@ -62,7 +65,7 @@ if ( $view_id ) {
 						<tr>
 							<td>
 								<?php echo esc_html( $item->product_name ); ?>
-								<?php if ( ! empty( $item->hsn_sac_code ) ) : ?><br><code><?php echo esc_html( $item->hsn_sac_code ); ?></code><?php endif; ?>
+								<?php if ( ! empty( $item->hsn_sac_code ?? '' ) ) : ?><br><code><?php echo esc_html( $item->hsn_sac_code ); ?></code><?php endif; ?>
 							</td>
 							<td><code><?php echo esc_html( $item->sku ); ?></code></td>
 							<td class="num"><?php echo esc_html( $item->qty ); ?></td>
@@ -100,12 +103,15 @@ if ( $view_id ) {
 $date_from  = isset( $_GET['date_from'] ) ? sanitize_text_field( wp_unslash( $_GET['date_from'] ) ) : gmdate( 'Y-m-d', strtotime( '-7 days' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $date_to    = isset( $_GET['date_to'] ) ? sanitize_text_field( wp_unslash( $_GET['date_to'] ) ) : gmdate( 'Y-m-d' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $status     = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : 'any'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$outlet_id  = isset( $_GET['outlet_id'] ) ? (int) $_GET['outlet_id'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $paged      = isset( $_GET['paged'] ) ? max( 1, (int) $_GET['paged'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$pos_outlet_filter = ( class_exists( 'Simple_POS_Addons' ) && Simple_POS_Addons::is_enabled( 'simple-pos-multi-outlet' ) && class_exists( 'SMO_Outlets' ) ) ? SMO_Outlets::get_outlets() : array();
 
 $result      = Simple_POS_Sales::get_sales( array(
 	'date_from' => $date_from,
 	'date_to'   => $date_to,
 	'status'    => $status,
+	'outlet_id' => $outlet_id,
 	'per_page'  => 20,
 	'page'      => $paged,
 ) );
@@ -147,6 +153,17 @@ $total_pages = (int) ceil( $result['total'] / 20 );
 					<option value="voided" <?php selected( $status, 'voided' ); ?>><?php esc_html_e( 'Voided', 'wp-pos-plugin' ); ?></option>
 				</select>
 			</div>
+			<?php if ( ! empty( $pos_outlet_filter ) ) : ?>
+			<div class="simple-pos-filter-field">
+				<label for="sales-outlet"><?php esc_html_e( 'Outlet', 'wp-pos-plugin' ); ?></label>
+				<select id="sales-outlet" name="outlet_id">
+					<option value="0"><?php esc_html_e( 'All outlets', 'wp-pos-plugin' ); ?></option>
+					<?php foreach ( $pos_outlet_filter as $pos_o ) : ?>
+						<option value="<?php echo esc_attr( $pos_o->id ); ?>" <?php selected( $outlet_id, (int) $pos_o->id ); ?>><?php echo esc_html( $pos_o->name ); ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<?php endif; ?>
 			<div class="simple-pos-filter-actions">
 				<button type="submit" class="button button-primary"><?php esc_html_e( 'Filter', 'wp-pos-plugin' ); ?></button>
 			</div>

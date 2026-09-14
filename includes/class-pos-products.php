@@ -148,7 +148,8 @@ class Simple_POS_Products {
 			$obj->track_stock         = $variant->track_stock;
 			$obj->image_url           = $variant->image_url ?: $parent->image_url;
 			$obj->name                = $parent->name . ' — ' . Simple_POS_Variants::variant_label( $variant );
-			// Keep parent tax class
+			// Variant tax-class override when set, else parent class.
+			$obj->tax_class_id        = ! empty( $variant->tax_class_id ) ? (int) $variant->tax_class_id : (int) $parent->tax_class_id;
 			return $obj;
 		}
 		return null;

@@ -148,12 +148,17 @@ class Simple_POS_Admin {
 				'manageProducts'  => current_user_can( 'manage_pos_products' ),
 				'manageCustomers' => current_user_can( 'manage_pos_customers' ),
 			),
+			// Offline sale queue (offline-mode add-on toggles this; on by default).
+			'offlineQueue'   => ! class_exists( 'Simple_POS_Addons' ) || Simple_POS_Addons::is_enabled( 'simple-pos-offline-mode' ),
+			'customerDisplay'=> class_exists( 'Simple_POS_Addons' ) && Simple_POS_Addons::is_enabled( 'simple-pos-customer-display' ),
 			'i18n'           => array(
-				'confirmVoid'   => __( 'Void this sale and restore stock? This cannot be undone.', 'wp-pos-plugin' ),
-				'confirmDelete' => __( 'Delete this item? This cannot be undone.', 'wp-pos-plugin' ),
+				'confirmVoid'   => __( 'Void this sale and restore stock?', 'wp-pos-plugin' ),
+				'confirmDelete' => __( 'Delete this item?', 'wp-pos-plugin' ),
 				'cartEmpty'     => __( 'Cart is empty.', 'wp-pos-plugin' ),
 				'checkoutError' => __( 'Checkout failed. Please try again.', 'wp-pos-plugin' ),
 				'outOfStock'    => __( 'Out of stock', 'wp-pos-plugin' ),
+				'paidIn'        => __( 'Paid in', 'wp-pos-plugin' ),
+				'sync'          => __( 'Sync', 'wp-pos-plugin' ),
 			),
 		);
 
@@ -244,12 +249,17 @@ class Simple_POS_Admin {
 				'manageProducts'  => current_user_can( 'manage_pos_products' ),
 				'manageCustomers' => current_user_can( 'manage_pos_customers' ),
 			),
+			// Offline sale queue (offline-mode add-on toggles this; on by default).
+			'offlineQueue'   => ! class_exists( 'Simple_POS_Addons' ) || Simple_POS_Addons::is_enabled( 'simple-pos-offline-mode' ),
+			'customerDisplay'=> class_exists( 'Simple_POS_Addons' ) && Simple_POS_Addons::is_enabled( 'simple-pos-customer-display' ),
 			'i18n'           => array(
-				'confirmVoid'   => __( 'Void this sale and restore stock? This cannot be undone.', 'wp-pos-plugin' ),
-				'confirmDelete' => __( 'Delete this item? This cannot be undone.', 'wp-pos-plugin' ),
+				'confirmVoid'   => __( 'Void this sale and restore stock?', 'wp-pos-plugin' ),
+				'confirmDelete' => __( 'Delete this item?', 'wp-pos-plugin' ),
 				'cartEmpty'     => __( 'Cart is empty.', 'wp-pos-plugin' ),
 				'checkoutError' => __( 'Checkout failed. Please try again.', 'wp-pos-plugin' ),
 				'outOfStock'    => __( 'Out of stock', 'wp-pos-plugin' ),
+				'paidIn'        => __( 'Paid in', 'wp-pos-plugin' ),
+				'sync'          => __( 'Sync', 'wp-pos-plugin' ),
 			),
 		);
 

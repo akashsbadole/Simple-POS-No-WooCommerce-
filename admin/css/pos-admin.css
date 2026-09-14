@@ -820,6 +820,49 @@
   max-width: 200px;
 }
 
+/* Products page: import/export actions as a table-like grouped grid. */
+.simple-pos-wrap .simple-pos-action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.simple-pos-wrap .simple-pos-action-group {
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-radius: 6px;
+  padding: 12px 14px 14px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.simple-pos-wrap .simple-pos-action-group h3 {
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f1;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #50575e;
+}
+.simple-pos-wrap .simple-pos-action-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.simple-pos-wrap .simple-pos-action-items .button {
+  justify-content: center;
+}
+.simple-pos-wrap .simple-pos-action-items .simple-pos-inline-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+.simple-pos-wrap .simple-pos-action-items .simple-pos-inline-form input[type="file"] {
+  max-width: none;
+  width: 100%;
+}
+
 .simple-pos-wrap .simple-pos-card {
   background: #fff;
   border: 1px solid #dcdcde;

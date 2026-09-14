@@ -107,10 +107,11 @@ $edit_rate = $edit_rate_id ? Simple_POS_Tax::get_rate($edit_rate_id) : null;
 						<label><?php esc_html_e('Name','wp-pos-plugin');?></label>
 						<input type="text" name="name" value="<?php echo esc_attr($edit_rate->name ?? '');?>" class="widefat" />
 					</div>
-					<div class="simple-pos-form-row" style="margin-top:8px">
-						<label><?php esc_html_e('Priority','wp-pos-plugin');?></label>
-						<input type="number" name="priority" value="<?php echo esc_attr($edit_rate->priority ?? 0);?>" class="widefat" />
-					</div>
+				<div class="simple-pos-form-row" style="margin-top:8px">
+					<label><?php esc_html_e('Priority','wp-pos-plugin');?></label>
+					<input type="number" name="priority" value="<?php echo esc_attr($edit_rate->priority ?? 0);?>" class="widefat" />
+					<p class="description"><?php esc_html_e('Same priority = one rate wins: a state rate replaces the country rate. Stack rates (e.g. federal + state) with different priorities + compound.','wp-pos-plugin');?></p>
+				</div>
 					<div class="simple-pos-form-row" style="margin-top:8px">
 						<label class="simple-pos-checkbox"><input type="checkbox" name="is_inclusive" value="1" <?php checked($edit_rate->is_inclusive ?? 0,1);?> /> <?php esc_html_e('Inclusive (price contains tax)','wp-pos-plugin');?></label>
 					</div>

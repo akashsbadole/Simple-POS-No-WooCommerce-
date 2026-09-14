@@ -1,0 +1,2091 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple POS 2.0.9\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-pos-plugin\n"
+"POT-Creation-Date: 2026-09-14 11:56+0000\n"
+"PO-Revision-Date: 2026-09-14 11:56+0000\n"
+"Last-Translator: Simple POS\n"
+"Language-Team: Simple POS\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Simple POS i18n build\n"
+
+msgid "(ISO2 or * for all)"
+msgstr "(ISO2 ou * pour tous)"
+
+msgid "(change in Settings)"
+msgstr "(à changer dans Réglages)"
+
+msgid "(optional)"
+msgstr "(facultatif)"
+
+msgid "(optional, for variant restock)"
+msgstr "(facultatif, pour réassort variante)"
+
+msgid "* — all countries"
+msgstr "* — tous pays"
+
+msgid "+ New"
+msgstr "+ Nouveau"
+
+msgid "58mm"
+msgstr "58mm"
+
+msgid "80mm"
+msgstr "80mm"
+
+msgid "A product with this SKU already exists."
+msgstr "Un produit avec ce SKU existe déjà."
+
+msgid "A4 30-up (Avery 5160)"
+msgstr "A4 30 par page (Avery 5160)"
+
+msgid "A4 65-up"
+msgstr "A4 65 par page"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Active"
+msgstr "Actif"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "Add &amp; select"
+msgstr "Ajouter &amp; sélectionner"
+
+msgid "Add Category"
+msgstr "Ajouter une catégorie"
+
+msgid "Add Class"
+msgstr "Ajouter une classe"
+
+msgid "Add Customer"
+msgstr "Ajouter un client"
+
+msgid "Add Product"
+msgstr "Ajouter un produit"
+
+msgid "Add Rate"
+msgstr "Ajouter un taux"
+
+msgid "Add Supplier"
+msgstr "Ajouter un fournisseur"
+
+msgid "Add Variant"
+msgstr "Ajouter une variante"
+
+msgid "Add at least one item."
+msgstr "Ajoutez au moins un article."
+
+msgid "Add line"
+msgstr "Ajouter une ligne"
+
+msgid "Add new customer"
+msgstr "Ajouter un nouveau client"
+
+msgid "Add variant"
+msgstr "Ajouter une variante"
+
+msgid "Add-on \"%1$s\" requires POS Core version %2$s or higher. You have version %3$s. The add-on has been disabled."
+msgstr "L’extension « %1$s » exige POS Core %2$s ou plus. Vous avez %3$s. Extension désactivée."
+
+msgid "Add-on setting saved."
+msgstr "Réglage d’extension enregistré."
+
+msgid "Add-ons"
+msgstr "Extensions"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Advanced"
+msgstr "Avancé"
+
+msgid "Advanced Reports"
+msgstr "Rapports avancés"
+
+msgid "After (10.00$)"
+msgstr "Après (10,00 $)"
+
+msgid "All add-ons are free and included with Simple POS — enable or disable them below. Changes apply on the next page load."
+msgstr "Toutes les extensions sont gratuites avec Simple POS — activez-les ci-dessous. Changements au prochain chargement."
+
+msgid "All cashiers"
+msgstr "Tous caissiers"
+
+msgid "All categories"
+msgstr "Toutes catégories"
+
+msgid "All products are well stocked."
+msgstr "Tous les produits sont bien stockés."
+
+msgid "Allow checkout even if stock would go negative"
+msgstr "Permettre la vente même en stock négatif"
+
+msgid "Allow overselling"
+msgstr "Permettre la survente"
+
+msgid "Amount"
+msgstr "Montant"
+
+msgid "Amount tendered"
+msgstr "Montant reçu"
+
+msgid "Any status"
+msgstr "Tout statut"
+
+msgid "Apply"
+msgstr "Appliquer"
+
+msgid "Apply discount before tax"
+msgstr "Remise avant taxe"
+
+msgid "Assign under Users:"
+msgstr "Assigner sous Utilisateurs :"
+
+msgid "Attr e.g. Color"
+msgstr "Attr. ex. Couleur"
+
+msgid "Attr e.g. Size"
+msgstr "Attr. ex. Taille"
+
+msgid "Attributes"
+msgstr "Attributs"
+
+msgid "Auto kick drawer on sale complete"
+msgstr "Ouvrir le tiroir à la vente"
+
+msgid "Auto-PO"
+msgstr "Commande auto"
+
+msgid "Auto-PO generated %1$s for %2$d low-stock product(s)."
+msgstr "Commande auto %1$s pour %2$d produit(s) en bas stock."
+
+msgid "Automation"
+msgstr "Automatisation"
+
+msgid "Available add-ons"
+msgstr "Extensions dispo."
+
+msgid "Avg basket"
+msgstr "Panier moy."
+
+msgid "Avg. Sale"
+msgstr "Vente moy."
+
+msgid "B2B"
+msgstr "B2B"
+
+msgid "B2C"
+msgstr "B2C"
+
+msgid "Back to POs"
+msgstr "Retour commandes"
+
+msgid "Back to Sales"
+msgstr "Retour ventes"
+
+msgid "Backup"
+msgstr "Sauvegarde"
+
+msgid "Backup file"
+msgstr "Fichier sauvegarde"
+
+msgid "Backup file missing version information."
+msgstr "Fichier sans info de version."
+
+msgid "Backup is from a newer version (%1$s) than current (%2$s). Please upgrade plugin first."
+msgstr "Sauvegarde plus récente (%1$s) que version (%2$s). Mettez l’extension à jour."
+
+msgid "Backup restore failed. Data rolled back."
+msgstr "Restauration échouée. Données rétablies."
+
+msgid "Backup restored successfully."
+msgstr "Sauvegarde restaurée."
+
+msgid "Barcode"
+msgstr "Code-barres"
+
+msgid "Barcode Labels"
+msgstr "Étiquettes code-barres"
+
+msgid "Barcode already exists."
+msgstr "Code-barres déjà existant."
+
+msgid "Barcode already used."
+msgstr "Code-barres déjà utilisé."
+
+msgid "Barcode image dimensions exceed limits. Use a smaller scale value."
+msgstr "Image code-barres trop grande. Réduisez l’échelle."
+
+msgid "Barcode symbology"
+msgstr "Symbologie"
+
+msgid "Base currency"
+msgstr "Devise de base"
+
+msgid "Before ($10.00)"
+msgstr "Avant ($10.00)"
+
+msgid "Browser print"
+msgstr "Impression navigateur"
+
+msgid "Business Setup"
+msgstr "Assistant commerce"
+
+msgid "By Cashier"
+msgstr "Par caissier"
+
+msgid "CSV"
+msgstr "CSV"
+
+msgid "CSV file missing."
+msgstr "Fichier CSV manquant."
+
+msgid "Can only edit draft POs."
+msgstr "Brouillons seuls modifiables."
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Cannot create variant for inactive product. Activate product first."
+msgstr "Variante impossible sur produit inactif. Activez-le d’abord."
+
+msgid "Card"
+msgstr "Carte"
+
+msgid "Cart is empty."
+msgstr "Panier vide."
+
+msgid "Cart is empty. Scan or click a product to add it."
+msgstr "Panier vide. Scannez ou cliquez un produit."
+
+msgid "Cash"
+msgstr "Espèces"
+
+msgid "Cash drawer"
+msgstr "Tiroir-caisse"
+
+msgid "Cashier"
+msgstr "Caissier"
+
+msgid "Cashier shifts, hours and per-shift cash reconciliation."
+msgstr "Équipes, heures et rapprochement caisse par équipe."
+
+msgid "Categories"
+msgstr "Catégories"
+
+msgid "Category"
+msgstr "Catégorie"
+
+msgid "Category added."
+msgstr "Catégorie ajoutée."
+
+msgid "Category deleted."
+msgstr "Catégorie supprimée."
+
+msgid "Category name is required."
+msgstr "Nom de catégorie requis."
+
+msgid "Change due"
+msgstr "Monnaie à rendre"
+
+msgid "Checkout failed. Please try again."
+msgstr "Vente échouée. Réessayez."
+
+msgid "Choose your business type"
+msgstr "Choisissez votre commerce"
+
+msgid "Choose your business type to seed starting categories, taxes and sample products."
+msgstr "Choisissez pour créer catégories, taxes et produits d’exemple."
+
+msgid "Class"
+msgstr "Classe"
+
+msgid "Class name"
+msgstr "Nom de classe"
+
+msgid "Clear"
+msgstr "Effacer"
+
+msgid "Clear low-stock filter"
+msgstr "Retirer filtre bas stock"
+
+msgid "Coming soon"
+msgstr "Bientôt"
+
+msgid "Comp"
+msgstr "Composé"
+
+msgid "Complete Sale"
+msgstr "Valider la vente"
+
+msgid "Completed"
+msgstr "Terminée"
+
+msgid "Compound (on top of prior taxes)"
+msgstr "Composé (sur taxes précédentes)"
+
+msgid "Compound: e.g. Canada PST 7% compound on top of GST 5% — set GST prio 0, PST prio 1 compound=1."
+msgstr "Composé : ex. PST 7 % sur GST 5 % — GST prio 0, PST prio 1 composé=1."
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Contact name"
+msgstr "Nom du contact"
+
+msgid "Cost"
+msgstr "Coût"
+
+msgid "Cost price"
+msgstr "Prix d’achat"
+
+msgid "Cost/unit"
+msgstr "Coût/unité"
+
+msgid "Could not create PO."
+msgstr "Commande non créée."
+
+msgid "Could not create category (name may already exist)."
+msgstr "Catégorie non créée (nom peut-être existant)."
+
+msgid "Could not create customer."
+msgstr "Client non créé."
+
+msgid "Could not create product."
+msgstr "Produit non créé."
+
+msgid "Could not create rate."
+msgstr "Taux non créé."
+
+msgid "Could not create tax class."
+msgstr "Classe de taxe non créée."
+
+msgid "Could not create variant."
+msgstr "Variante non créée."
+
+msgid "Could not delete product."
+msgstr "Produit non supprimé."
+
+msgid "Could not generate the purchase order. Please try again."
+msgstr "Commande non créée. Réessayez."
+
+msgid "Could not insert sale."
+msgstr "Vente non enregistrée."
+
+msgid "Could not open CSV."
+msgstr "CSV illisible."
+
+msgid "Could not record sale items."
+msgstr "Articles non enregistrés."
+
+msgid "Could not record sale."
+msgstr "Vente non enregistrée."
+
+msgid "Could not update product."
+msgstr "Produit non mis à jour."
+
+msgid "Could not void sale."
+msgstr "Vente non annulée."
+
+msgid "Counter-facing second screen mirroring the running cart and totals."
+msgstr "Second écran client reflétant panier et totaux."
+
+msgid "Country"
+msgstr "Pays"
+
+msgid "Create PO"
+msgstr "Créer commande"
+
+msgid "Created"
+msgstr "Créé"
+
+msgid "Currency"
+msgstr "Devise"
+
+msgid "Currency symbol"
+msgstr "Symbole monétaire"
+
+msgid "Current Sale"
+msgstr "Vente en cours"
+
+msgid "Custom range"
+msgstr "Période perso"
+
+msgid "Customer"
+msgstr "Client"
+
+msgid "Customer Displays"
+msgstr "Écrans clients"
+
+msgid "Customer deleted."
+msgstr "Client supprimé."
+
+msgid "Customer name is required."
+msgstr "Nom du client requis."
+
+msgid "Customer not found."
+msgstr "Client introuvable."
+
+msgid "Customer saved."
+msgstr "Client enregistré."
+
+msgid "Customer type"
+msgstr "Type de client"
+
+msgid "Customers"
+msgstr "Clients"
+
+msgid "Customers order from a QR link; orders drop straight into the POS queue."
+msgstr "Clients commandent par QR ; commandes direct en file POS."
+
+msgid "Daily"
+msgstr "Quotidien"
+
+msgid "Daily cron + one-click draft purchase orders for products below their low-stock threshold."
+msgstr "Cron quotidien + brouillons en 1 clic pour bas stocks."
+
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Decimal places"
+msgstr "Décimales"
+
+msgid "Default low stock threshold"
+msgstr "Seuil bas stock défaut"
+
+msgid "Default state"
+msgstr "État par défaut"
+
+msgid "Default supplier"
+msgstr "Fournisseur défaut"
+
+msgid "Default tax class"
+msgstr "Classe de taxe défaut"
+
+msgid "Default tax country"
+msgstr "Pays de taxe défaut"
+
+msgid "Del"
+msgstr "Suppr."
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Delete PO?"
+msgstr "Supprimer commande ?"
+
+msgid "Delete all POS data when plugin is deleted"
+msgstr "Supprimer données POS à la désinstallation"
+
+msgid "Delete tax class?"
+msgstr "Supprimer classe de taxe ?"
+
+msgid "Delete this category? Products stay, just unassigned."
+msgstr "Supprimer catégorie ? Produits gardés, non assignés."
+
+msgid "Delete this customer?"
+msgstr "Supprimer ce client ?"
+
+msgid "Delete this item? This cannot be undone."
+msgstr "Supprimer l’article ? Irréversible."
+
+msgid "Delete this product?"
+msgstr "Supprimer ce produit ?"
+
+msgid "Delete variant?"
+msgstr "Supprimer variante ?"
+
+msgid "Delete?"
+msgstr "Supprimer ?"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Disable"
+msgstr "Désactiver"
+
+msgid "Disabled"
+msgstr "Désactivé"
+
+msgid "Discount"
+msgstr "Remise"
+
+msgid "Discount before tax"
+msgstr "Remise avant taxe"
+
+msgid "Download Backup"
+msgstr "Télécharger sauvegarde"
+
+msgid "Download a complete JSON backup of all POS data, or restore from a previous backup. Keep backup files in a safe place."
+msgstr "Téléchargez sauvegarde JSON complète, ou restaurez. Gardez-les en lieu sûr."
+
+msgid "Draft PO #%1$s was created with %2$s"
+msgstr "Brouillon #%1$s créé avec %2$s"
+
+msgid "Draft PO created with %1$d item(s); %2$d product(s) were already on an open PO and skipped."
+msgstr "Brouillon à %1$d article(s) ; %2$d produit(s) déjà sur commande ouverte, ignorés."
+
+msgid "Edit"
+msgstr "Modifier"
+
+msgid "Edit Customer"
+msgstr "Modifier client"
+
+msgid "Edit Product"
+msgstr "Modifier produit"
+
+msgid "Edit Rate"
+msgstr "Modifier taux"
+
+msgid "Edit Supplier"
+msgstr "Modifier fournisseur"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Empty CSV."
+msgstr "CSV vide."
+
+msgid "Enable"
+msgstr "Activer"
+
+msgid "Enabled"
+msgstr "Activé"
+
+msgid "Enter quantity received for each item (leave 0 to skip)."
+msgstr "Quantité reçue par article (0 pour passer)."
+
+msgid "Everything at or below its low-stock threshold. Generating a PO orders each line up to threshold × multiplier."
+msgstr "Tout au/niveau seuil bas stock. La commande remplit chaque ligne jusqu’à seuil × multiplicateur."
+
+msgid "Example Add-on"
+msgstr "Extension d’exemple"
+
+msgid "Examples"
+msgstr "Exemples"
+
+msgid "Export CSV"
+msgstr "Exporter CSV"
+
+msgid "Export Categories CSV"
+msgstr "Exporter catégories CSV"
+
+msgid "Export Products CSV"
+msgstr "Exporter produits CSV"
+
+msgid "Export Variants CSV"
+msgstr "Exporter variantes CSV"
+
+msgid "Fallback if no class rate matches"
+msgstr "Repli si aucun taux de classe"
+
+msgid "Fallback only; prefer tax classes."
+msgstr "Repli seul ; préférez classes de taxe."
+
+msgid "File exceeds 5MB limit."
+msgstr "Fichier > 5 Mo."
+
+msgid "Filter"
+msgstr "Filtrer"
+
+msgid "Filter by category"
+msgstr "Filtrer par catégorie"
+
+msgid "Footer"
+msgstr "Pied de page"
+
+msgid "Free"
+msgstr "Gratuit"
+
+msgid "From"
+msgstr "De"
+
+msgid "Full Reports"
+msgstr "Tous rapports"
+
+msgid "GD library is required for barcode images."
+msgstr "Librairie GD requise pour codes-barres."
+
+msgid "GST split (50/50 CGST+SGST for intrastate, IGST for interstate)"
+msgstr "GST 50/50 CGST+SGST intra-État, IGST inter-États"
+
+msgid "GSTIN"
+msgstr "GSTIN"
+
+msgid "Generate automatically once a day (WP-Cron)"
+msgstr "Générer auto 1×/jour (WP-Cron)"
+
+msgid "Generate draft PO now"
+msgstr "Créer brouillon"
+
+msgid "Gift Cards"
+msgstr "Cartes cadeaux"
+
+msgid "Gross"
+msgstr "Brut"
+
+msgid "Gross Profit"
+msgstr "Marge brute"
+
+msgid "Gross profit"
+msgstr "Marge brute"
+
+msgid "HSN/SAC Code"
+msgstr "Code HSN/SAC"
+
+msgid "Header"
+msgstr "En-tête"
+
+msgid "Hold"
+msgstr "Suspendre"
+
+msgid "Hour"
+msgstr "Heure"
+
+msgid "Hourly sales"
+msgstr "Ventes horaires"
+
+msgid "ISO2 e.g. US, IN"
+msgstr "ISO2 ex. US, IN"
+
+msgid "Image URL"
+msgstr "URL image"
+
+msgid "Import CSV"
+msgstr "Importer CSV"
+
+msgid "Import Categories CSV"
+msgstr "Importer catégories CSV"
+
+msgid "Import Products CSV"
+msgstr "Importer produits CSV"
+
+msgid "Import Variants CSV"
+msgstr "Importer variantes CSV"
+
+msgid "Imported %d categories."
+msgstr "%d catégories importées."
+
+msgid "Imported %d products."
+msgstr "%d produits importés."
+
+msgid "Imported %d sales."
+msgstr "%d ventes importées."
+
+msgid "Imported %d variants."
+msgstr "%d variantes importées."
+
+msgid "Inactive"
+msgstr "Inactif"
+
+msgid "Inc"
+msgstr "Incl."
+
+msgid "Included add-ons"
+msgstr "Extensions incluses"
+
+msgid "Inclusive (price contains tax)"
+msgstr "Incluse (prix TTC)"
+
+msgid "Initial stock on product creation"
+msgstr "Stock initial à la création"
+
+msgid "Invalid backup file."
+msgstr "Fichier invalide."
+
+msgid "Invalid country code: %s. Must be 2-letter ISO code (e.g., US, GB, IN)."
+msgstr "Code pays invalide : %s. Code ISO 2 lettres (ex. US, GB, IN)."
+
+msgid "Invalid item in cart."
+msgstr "Article panier invalide."
+
+msgid "Invalid parent product ID."
+msgstr "ID produit parent invalide."
+
+msgid "Invalid product ID."
+msgstr "ID produit invalide."
+
+msgid "Invalid status."
+msgstr "Statut invalide."
+
+msgid "Invalid tax class."
+msgstr "Classe de taxe invalide."
+
+msgid "Invalid variant ID."
+msgstr "ID variante invalide."
+
+msgid "Inventory"
+msgstr "Inventaire"
+
+msgid "Item"
+msgstr "Article"
+
+msgid "Items"
+msgstr "Articles"
+
+msgid "Items Sold"
+msgstr "Articles vendus"
+
+msgid "Items sold"
+msgstr "Articles vendus"
+
+msgid "Kick Drawer"
+msgstr "Ouvrir tiroir"
+
+msgid "Kitchen Display System"
+msgstr "Écran cuisine"
+
+msgid "Label sheet"
+msgstr "Planche étiquettes"
+
+msgid "Last 30 days"
+msgstr "30 derniers jours"
+
+msgid "Last 7 days"
+msgstr "7 derniers jours"
+
+msgid "Last run: %s"
+msgstr "Dernier : %s"
+
+msgid "Leave empty to use default."
+msgstr "Vide pour défaut."
+
+msgid "Legacy tax rate (%)"
+msgstr "Ancien taux (%)"
+
+msgid "Line Total"
+msgstr "Total ligne"
+
+msgid "Loading products…"
+msgstr "Chargement produits…"
+
+msgid "Logs every completed sale. Fork me into a paid add-on."
+msgstr "Journalise chaque vente. Déclinez-moi en payant."
+
+msgid "Low Stock"
+msgstr "Bas stock"
+
+msgid "Low stock alert for: %s"
+msgstr "Alerte bas stock : %s"
+
+msgid "Low stock threshold"
+msgstr "Seuil bas stock"
+
+msgid "Low thresh"
+msgstr "Seuil bas"
+
+msgid "Low-Stock Auto-PO"
+msgstr "Commande auto bas stock"
+
+msgid "Low-stock products"
+msgstr "Produits bas stock"
+
+msgid "Loyalty & Store Credit"
+msgstr "Fidélité & avoir"
+
+msgid "Manual edit"
+msgstr "Modif manuelle"
+
+msgid "Margin"
+msgstr "Marge"
+
+msgid "Minimum order qty per product"
+msgstr "Qté mini par produit"
+
+msgid "Missing column: %s"
+msgstr "Colonne manquante : %s"
+
+msgid "Multi-Currency & FX"
+msgstr "Multi-devises & FX"
+
+msgid "Multi-Outlet"
+msgstr "Multi-magasins"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "Name, SKU, barcode…"
+msgstr "Nom, SKU, code-barres…"
+
+msgid "Name, phone, email…"
+msgstr "Nom, tél., e-mail…"
+
+msgid "Net"
+msgstr "Net"
+
+msgid "Network ESC/POS"
+msgstr "Réseau ESC/POS"
+
+msgid "Network printer IP"
+msgstr "IP imprimante réseau"
+
+msgid "Never run yet."
+msgstr "Jamais exécuté."
+
+msgid "New"
+msgstr "Nouveau"
+
+msgid "New Purchase Order"
+msgstr "Nouvelle commande"
+
+msgid "New Sale"
+msgstr "Nouvelle vente"
+
+msgid "New category name"
+msgstr "Nom nouvelle catégorie"
+
+msgid "No POs yet."
+msgstr "Aucune commande."
+
+msgid "No add-ons bundled yet."
+msgstr "Aucune extension."
+
+msgid "No categories yet."
+msgstr "Aucune catégorie."
+
+msgid "No customers found."
+msgstr "Aucun client."
+
+msgid "No file uploaded."
+msgstr "Aucun fichier."
+
+msgid "No product matches that code."
+msgstr "Aucun produit pour ce code."
+
+msgid "No products found."
+msgstr "Aucun produit."
+
+msgid "No products."
+msgstr "Aucun produit."
+
+msgid "No rates. Seeded US/IN/EU defaults exist after activation — if empty, deactivate/reactivate or check DB."
+msgstr "Aucun taux. Défauts US/IN/EU après activation — si vide, réactiver ou voir BDD."
+
+msgid "No sales found for this range."
+msgstr "Aucune vente sur période."
+
+msgid "No sales in this range."
+msgstr "Aucune vente sur période."
+
+msgid "No sales yet."
+msgstr "Aucune vente."
+
+msgid "No suppliers."
+msgstr "Aucun fournisseur."
+
+msgid "No tax classes yet."
+msgstr "Aucune classe de taxe."
+
+msgid "No tax collected in this range."
+msgstr "Aucune taxe sur période."
+
+msgid "No variants yet."
+msgstr "Aucune variante."
+
+msgid "None"
+msgstr "Aucun"
+
+msgid "Not enough stock for \"%s\"."
+msgstr "Stock insuffisant pour « %s »."
+
+msgid "Not enough stock for variant \"%s\"."
+msgstr "Stock insuffisant pour variante « %s »."
+
+msgid "Note"
+msgstr "Note"
+
+msgid "Note (optional)"
+msgstr "Note (facultatif)"
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Nothing below the low-stock threshold. Nice."
+msgstr "Rien sous le seuil. Parfait."
+
+msgid "Nothing to order — %d product(s) are already on an open PO."
+msgstr "Rien à commander — %d produit(s) déjà sur commande ouverte."
+
+msgid "Nothing to order — no products are below their low-stock threshold."
+msgstr "Rien à commander — aucun produit sous seuil."
+
+msgid "Notify email (optional)"
+msgstr "E-mail notif (facultatif)"
+
+msgid "Off"
+msgstr "Off"
+
+msgid "Offline Mode"
+msgstr "Mode hors-ligne"
+
+msgid "Online Ordering & QR Menu"
+msgstr "Commande en ligne & menu QR"
+
+msgid "Only CSV files are allowed."
+msgstr "CSV uniquement."
+
+msgid "Only completed sales can be voided."
+msgstr "Seules ventes terminées annulables."
+
+msgid "Open Terminal"
+msgstr "Ouvrir caisse"
+
+msgid "Open setup"
+msgstr "Ouvrir assistant"
+
+msgid "Order enough to reach threshold × this value."
+msgstr "Commander jusqu’à seuil × valeur."
+
+msgid "Ordered"
+msgstr "Commandé"
+
+msgid "Other"
+msgstr "Autre"
+
+msgid "Out of stock"
+msgstr "Rupture"
+
+msgid "PO #"
+msgstr "Cde #"
+
+msgid "PO %s"
+msgstr "Cde %s"
+
+msgid "PO already closed."
+msgstr "Commande déjà clôturée."
+
+msgid "PO deleted."
+msgstr "Commande supprimée."
+
+msgid "PO not found."
+msgstr "Commande introuvable."
+
+msgid "PO number prefix"
+msgstr "Préfixe n° commande"
+
+msgid "PO received, stock updated."
+msgstr "Commande reçue, stock à jour."
+
+msgid "POS"
+msgstr "POS"
+
+msgid "POS Cashier"
+msgstr "Caissier POS"
+
+msgid "POS Dashboard"
+msgstr "Tableau POS"
+
+msgid "POS Manager"
+msgstr "Manager POS"
+
+msgid "POS Settings"
+msgstr "Réglages POS"
+
+msgid "POS Terminal"
+msgstr "Caisse POS"
+
+msgid "Paper width"
+msgstr "Largeur papier"
+
+msgid "Parent product #%d not found."
+msgstr "Produit parent #%d introuvable."
+
+msgid "Parent product not found."
+msgstr "Produit parent introuvable."
+
+msgid "Payment"
+msgstr "Paiement"
+
+msgid "Payment method"
+msgstr "Moyen de paiement"
+
+msgid "Payment mix"
+msgstr "Mix paiements"
+
+msgid "Per line"
+msgstr "Par ligne"
+
+msgid "Per order"
+msgstr "Par commande"
+
+msgid "Phone"
+msgstr "Tél."
+
+msgid "Points per purchase, redeem at checkout, gift-card style store credit balances."
+msgstr "Points par achat, à utiliser en caisse, avoirs façon cartes cadeaux."
+
+msgid "Popular"
+msgstr "Populaire"
+
+msgid "Preview"
+msgstr "Aperçu"
+
+msgid "Price"
+msgstr "Prix"
+
+msgid "Price cannot be negative."
+msgstr "Prix non négatif."
+
+msgid "Price override"
+msgstr "Prix forcé"
+
+msgid "Prices include tax"
+msgstr "Prix TTC"
+
+msgid "Print"
+msgstr "Imprimer"
+
+msgid "Print Labels"
+msgstr "Imprimer étiquettes"
+
+msgid "Print Receipt"
+msgstr "Imprimer ticket"
+
+msgid "Printer"
+msgstr "Imprimante"
+
+msgid "Printing & Barcode"
+msgstr "Impression & code-barres"
+
+msgid "Prio"
+msgstr "Prio"
+
+msgid "Priority"
+msgstr "Priorité"
+
+msgid "Product"
+msgstr "Produit"
+
+msgid "Product #%d is not available."
+msgstr "Produit #%d indisponible."
+
+msgid "Product / Variant"
+msgstr "Produit / Variante"
+
+msgid "Product deleted."
+msgstr "Produit supprimé."
+
+msgid "Product has no barcode or SKU."
+msgstr "Produit sans code-barres ni SKU."
+
+msgid "Product mix (top 20)"
+msgstr "Mix produits (top 20)"
+
+msgid "Product name is required."
+msgstr "Nom produit requis."
+
+msgid "Product not found."
+msgstr "Produit introuvable."
+
+msgid "Product saved."
+msgstr "Produit enregistré."
+
+msgid "Products"
+msgstr "Produits"
+
+msgid "Products to order"
+msgstr "Produits à commander"
+
+msgid "Profit"
+msgstr "Profit"
+
+msgid "Purchase History"
+msgstr "Historique achats"
+
+msgid "Purchase Orders"
+msgstr "Commandes"
+
+msgid "Purchase order created."
+msgstr "Commande créée."
+
+msgid "Qty"
+msgstr "Qté"
+
+msgid "Qty Sold"
+msgstr "Qté vendue"
+
+msgid "Quick add. You can edit full details later from the Customers screen."
+msgstr "Ajout rapide. Détails modifiables plus tard (Clients)."
+
+msgid "Quick restock"
+msgstr "Réassort rapide"
+
+msgid "Range"
+msgstr "Période"
+
+msgid "Rate"
+msgstr "Taux"
+
+msgid "Rate %"
+msgstr "Taux %"
+
+msgid "Rate must be 0-100."
+msgstr "Taux 0-100."
+
+msgid "Rate not found."
+msgstr "Taux introuvable."
+
+msgid "Reason (optional)"
+msgstr "Motif (facultatif)"
+
+msgid "Recall"
+msgstr "Rappeler"
+
+msgid "Receipt"
+msgstr "Ticket"
+
+msgid "Receive"
+msgstr "Réceptionner"
+
+msgid "Receive & Update Stock"
+msgstr "Réceptionner & stock"
+
+msgid "Received"
+msgstr "Reçu"
+
+msgid "Recent Sales"
+msgstr "Ventes récentes"
+
+msgid "Reports"
+msgstr "Rapports"
+
+msgid "Reports Pro"
+msgstr "Rapports Pro"
+
+msgid "Restaurant mode: floor plan, open tabs, split bills and kitchen tickets."
+msgstr "Mode resto : plan, additions ouvertes, notes partagées, tickets cuisine."
+
+msgid "Restore Backup"
+msgstr "Restaurer sauvegarde"
+
+msgid "Restore from Backup"
+msgstr "Restaurer depuis sauvegarde"
+
+msgid "Revenue"
+msgstr "Chiffre d’affaires"
+
+msgid "Revenue by Day"
+msgstr "CA par jour"
+
+msgid "Roll 58mm"
+msgstr "Rouleau 58mm"
+
+msgid "Roll 80mm"
+msgstr "Rouleau 80mm"
+
+msgid "Run several shops from one install: per-outlet stock, registers and sales reports."
+msgstr "Plusieurs magasins, une install : stocks, caisses, rapports par point."
+
+msgid "SKU"
+msgstr "SKU"
+
+msgid "SKU already used."
+msgstr "SKU déjà utilisé."
+
+msgid "Sale #"
+msgstr "Vente #"
+
+msgid "Sale %s"
+msgstr "Vente %s"
+
+msgid "Sale not found."
+msgstr "Vente introuvable."
+
+msgid "Sale number prefix"
+msgstr "Préfixe n° vente"
+
+msgid "Sale voided and stock restored."
+msgstr "Vente annulée, stock rétabli."
+
+msgid "Sales"
+msgstr "Ventes"
+
+msgid "Sales History"
+msgstr "Historique ventes"
+
+msgid "Sales Today"
+msgstr "Ventes du jour"
+
+msgid "Same priority = one rate wins: a state rate replaces the country rate. Stack rates (e.g. federal + state) with different priorities + compound."
+msgstr "Même priorité = un taux gagne : taux État remplace pays. Cumulez (ex. fédéral + État) avec prios + composé."
+
+msgid "Save Settings"
+msgstr "Enregistrer réglages"
+
+msgid "Save settings"
+msgstr "Enregistrer réglages"
+
+msgid "Scan barcode or SKU"
+msgstr "Scannez code-barres/SKU"
+
+msgid "Scan barcode or type SKU"
+msgstr "Scannez ou saisissez SKU"
+
+msgid "Scan barcode or type SKU, then press Enter…"
+msgstr "Scannez/saisissez, puis Entrée…"
+
+msgid "Search"
+msgstr "Chercher"
+
+msgid "Search products"
+msgstr "Chercher produits"
+
+msgid "Search products…"
+msgstr "Chercher produits…"
+
+msgid "Second-screen prep queue with item states and timers for kitchens."
+msgstr "File prépa 2e écran : états, minuteurs cuisine."
+
+msgid "Select all"
+msgstr "Tout choisir"
+
+msgid "Select product"
+msgstr "Choisir produit"
+
+msgid "Select products/variants to print."
+msgstr "Choisir produits/variantes à imprimer."
+
+msgid "Select variant"
+msgstr "Choisir variante"
+
+msgid "Sell and redeem plastic or digital gift cards as a payment method."
+msgstr "Vendez et encaissez cartes cadeaux plastiques/numériques."
+
+msgid "Sell in foreign currencies; pairs with the per-country tax engine."
+msgstr "Vendez en devises ; avec moteur de taxe par pays."
+
+msgid "Set ISO country codes (US, IN, DE, FR, GB...) + optional state (CA, MH). Priority low runs first; compound applies on top of prior taxes. Inclusive = price already contains tax."
+msgstr "Codes ISO (US, IN, DE, FR, GB…) + État facultatif (CA, MH). Prio basse d’abord ; composé sur taxes précédentes. Inclus = prix TTC."
+
+msgid "Settings"
+msgstr "Réglages"
+
+msgid "Settings saved."
+msgstr "Réglages enregistrés."
+
+msgid "Sheet:"
+msgstr "Feuille :"
+
+msgid "Simple POS purchase orders not available."
+msgstr "Commandes Simple POS indisponibles."
+
+msgid "Simple POS — Advanced Reports requires the free Simple POS plugin to be installed and active."
+msgstr "Simple POS — Rapports avancés exige Simple POS gratuit, installé et actif."
+
+msgid "Simple POS — Low-Stock Auto-PO requires the free Simple POS plugin to be installed and active."
+msgstr "Simple POS — Commande auto exige Simple POS gratuit, installé et actif."
+
+msgid "Simple POS:"
+msgstr "Simple POS :"
+
+msgid "Simple POS: auto-PO drafted"
+msgstr "Simple POS : brouillon auto-créé"
+
+msgid "Single store-wide currency. Symbol can be overridden below."
+msgstr "Une devise pour la boutique. Symbole modifiable ci-dessous."
+
+msgid "Slug"
+msgstr "Slug"
+
+msgid "Staff Roles"
+msgstr "Rôles équipe"
+
+msgid "State"
+msgstr "État"
+
+msgid "Status"
+msgstr "Statut"
+
+msgid "Stock"
+msgstr "Stock"
+
+msgid "Stock adjustment delta must be numeric."
+msgstr "Ajustement stock numérique requis."
+
+msgid "Stock quantity"
+msgstr "Quantité stock"
+
+msgid "Stock updated."
+msgstr "Stock à jour."
+
+msgid "Store"
+msgstr "Boutique"
+
+msgid "Store name"
+msgstr "Nom boutique"
+
+msgid "Subtotal"
+msgstr "Sous-total"
+
+msgid "Suggested order"
+msgstr "Qté suggérée"
+
+msgid "Supplier"
+msgstr "Fournisseur"
+
+msgid "Supplier deleted."
+msgstr "Fournisseur supprimé."
+
+msgid "Supplier name required."
+msgstr "Nom fournisseur requis."
+
+msgid "Supplier not found."
+msgstr "Fournisseur introuvable."
+
+msgid "Supplier saved."
+msgstr "Fournisseur enregistré."
+
+msgid "Suppliers"
+msgstr "Fournisseurs"
+
+msgid "Symbol position"
+msgstr "Position symbole"
+
+msgid "Symbology:"
+msgstr "Symbologie :"
+
+msgid "Table Service"
+msgstr "Service à table"
+
+msgid "Target multiplier"
+msgstr "Multiplicateur cible"
+
+msgid "Tax"
+msgstr "Taxe"
+
+msgid "Tax Classes"
+msgstr "Classes de taxe"
+
+msgid "Tax Rates"
+msgstr "Taux de taxe"
+
+msgid "Tax breakdown"
+msgstr "Détail taxe"
+
+msgid "Tax class"
+msgstr "Classe de taxe"
+
+msgid "Tax class added."
+msgstr "Classe ajoutée."
+
+msgid "Tax class already exists."
+msgstr "Classe déjà existante."
+
+msgid "Tax class deleted."
+msgstr "Classe supprimée."
+
+msgid "Tax class name is required."
+msgstr "Nom de classe requis."
+
+msgid "Tax country"
+msgstr "Pays de taxe"
+
+msgid "Tax country is required for calculation. Configure default tax country in POS Settings."
+msgstr "Pays requis pour calcul. Réglez pays défaut (Réglages POS)."
+
+msgid "Tax country/state"
+msgstr "Pays/État de taxe"
+
+msgid "Tax defaults"
+msgstr "Taxes par défaut"
+
+msgid "Tax inclusive pricing"
+msgstr "Prix TTC"
+
+msgid "Tax rate deleted."
+msgstr "Taux supprimé."
+
+msgid "Tax rate saved."
+msgstr "Taux enregistré."
+
+msgid "Tax rounding"
+msgstr "Arrondi taxe"
+
+msgid "Tax summary"
+msgstr "Résumé taxe"
+
+msgid "Taxes"
+msgstr "Taxes"
+
+msgid "Taxes — per-country classes & rates"
+msgstr "Taxes — classes & taux par pays"
+
+msgid "Terminal"
+msgstr "Caisse"
+
+msgid "Terminal keeps selling without internet and syncs sales when back online."
+msgstr "La caisse vend hors-ligne et synchro au retour."
+
+msgid "This month"
+msgstr "Ce mois"
+
+msgid "Threshold"
+msgstr "Seuil"
+
+msgid "Time"
+msgstr "Heure"
+
+msgid "Time Clock & Shifts"
+msgstr "Pointeuse & équipes"
+
+msgid "To"
+msgstr "À"
+
+msgid "Today"
+msgstr "Aujourd’hui"
+
+msgid "Today's Revenue"
+msgstr "CA du jour"
+
+msgid "Top Products"
+msgstr "Top produits"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "Total cost"
+msgstr "Coût total"
+
+msgid "Track stock"
+msgstr "Suivre stock"
+
+msgid "Track stock for this product"
+msgstr "Suivre stock produit"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "US-CA 7.25% Standard | IN 18% GST | DE 19% VAT | FR reduced 5.5% | Zero * 0%"
+msgstr "US-CA 7,25 % Standard | IN 18 % GST | DE 19 % TVA | FR réduit 5,5 % | Zéro * 0 %"
+
+msgid "USB ESC/POS (WebUSB)"
+msgstr "USB ESC/POS (WebUSB)"
+
+msgid "Uninstall"
+msgstr "Désinstaller"
+
+msgid "Units suggested"
+msgstr "Unités suggérées"
+
+msgid "Unknown"
+msgstr "Inconnu"
+
+msgid "Unknown report type."
+msgstr "Type rapport inconnu."
+
+msgid "Update"
+msgstr "Mettre à jour"
+
+msgid "Update Customer"
+msgstr "Maj client"
+
+msgid "Update Product"
+msgstr "Maj produit"
+
+msgid "Upload a JSON backup file to restore. This will replace existing data with the same IDs."
+msgstr "Envoyez sauvegarde JSON. Remplacera données mêmes ID."
+
+msgid "Use this"
+msgstr "Utiliser ceci"
+
+msgid "Uses JsBarcode (CODE128) in print view. For EAN13 ensure 13-digit numeric. QR fallback."
+msgstr "Vue impression : JsBarcode (CODE128). EAN13 : 13 chiffres. QR repli."
+
+msgid "Value e.g. M"
+msgstr "Valeur ex. M"
+
+msgid "Value e.g. Red"
+msgstr "Valeur ex. Rouge"
+
+msgid "Variant"
+msgstr "Variante"
+
+msgid "Variant ID"
+msgstr "ID variante"
+
+msgid "Variant deleted."
+msgstr "Variante supprimée."
+
+msgid "Variant not available."
+msgstr "Variante indisponible."
+
+msgid "Variant not found."
+msgstr "Variante introuvable."
+
+msgid "Variant saved."
+msgstr "Variante enregistrée."
+
+msgid "Variants"
+msgstr "Variantes"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "View"
+msgstr "Voir"
+
+msgid "View add-on"
+msgstr "Voir extension"
+
+msgid "View products"
+msgstr "Voir produits"
+
+msgid "View purchase orders"
+msgstr "Voir commandes"
+
+msgid "Void Last Sale"
+msgstr "Annuler dernière vente"
+
+msgid "Void Sale"
+msgstr "Annuler vente"
+
+msgid "Void This Sale"
+msgstr "Annuler cette vente"
+
+msgid "Void this sale and restore stock? This cannot be undone."
+msgstr "Annuler vente et rétablir stock ? Irréversible."
+
+msgid "Voided"
+msgstr "Annulée"
+
+msgid "Walk-in"
+msgstr "Passage"
+
+msgid "Walk-in customer"
+msgstr "Client de passage"
+
+msgid "We will seed sensible starting categories, taxes and sample products for your business. You can change everything later in Settings."
+msgstr "Nous créons catégories, taxes et exemples. Tout modifiable ensuite."
+
+msgid "X / Z summary"
+msgstr "Rapport X / Z"
+
+msgid "X/Z summaries, hourly heatmap, payment mix, product mix, tax summary and CSV exports."
+msgstr "Rapports X/Z, heatmap horaire, mix paiements/produits, résumé taxe, exports CSV."
+
+msgid "You are not allowed to export reports."
+msgstr "Export rapports interdit."
+
+msgid "You are not allowed to manage add-ons."
+msgstr "Gestion extensions interdite."
+
+msgid "You are not allowed to manage purchase orders."
+msgstr "Gestion commandes interdite."
+
+msgid "You are not allowed to view reports."
+msgstr "Rapports interdits."
+
+msgid "You do not have permission to do this."
+msgstr "Action non permise."
+
+msgid "You do not have permission to perform this action."
+msgstr "Action non permise."
+
+msgid "You do not have permission to use the POS terminal."
+msgstr "Caisse non permise."
+
+msgid "e.g. 10 or -2"
+msgstr "ex. 10 ou -2"
+
+msgid "e.g. 27AABCT1234R1ZX"
+msgstr "ex. 27AABCT1234R1ZX"
+
+msgid "e.g. CA, MH"
+msgstr "ex. CA, MH"
+
+msgid "e.g. Standard"
+msgstr "ex. Standard"
+
+msgid "empty = parent"
+msgstr "vide = parent"
+
+msgid "free-form attributes"
+msgstr "attributs libres"
+
+msgid "full POS + reports, voids, taxes, POs"
+msgstr "POS complet + rapports, annulations, taxes, commandes"
+
+msgid "not tracked"
+msgstr "non suivi"
+
+msgid "remaining %d"
+msgstr "restant %d"
+
+msgid "terminal + view sales"
+msgstr "caisse + voir ventes"
+
+msgid "variant"
+msgstr "variante"
+
+msgid "you@store.com"
+msgstr "you@store.com"
+
+msgid "— none —"
+msgstr "— aucun —"
+
+msgid "0"
+msgstr ""
+
+msgid "Accept foreign-currency tender with editable exchange rates."
+msgstr ""
+
+msgid "Add Outlet"
+msgstr ""
+
+msgid "Add Table"
+msgstr ""
+
+msgid "Add to order"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "All outlets"
+msgstr ""
+
+msgid "All queued sales (all terminals)"
+msgstr ""
+
+msgid "At checkout, customers can redeem points for a fixed-amount discount."
+msgstr ""
+
+msgid "Balance"
+msgstr ""
+
+msgid "Balance topped up."
+msgstr ""
+
+msgid "Bump to Ready"
+msgstr ""
+
+msgid "By cashier"
+msgstr ""
+
+msgid "Cards"
+msgstr ""
+
+msgid "Cashier clock-in/out with shift reports."
+msgstr ""
+
+msgid "Clock in"
+msgstr ""
+
+msgid "Clock out"
+msgstr ""
+
+msgid "Clock-out recorded (%d min)."
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+msgid "Code and a positive amount are required."
+msgstr ""
+
+msgid "Could not place the order. Please try again."
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Create Card"
+msgstr ""
+
+msgid "Currencies"
+msgstr ""
+
+msgid "Currency code"
+msgstr ""
+
+msgid "Currency value per point"
+msgstr ""
+
+msgid "Customer Display"
+msgstr ""
+
+msgid "Customers earn points on every sale based on the points-per-currency rate."
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Default Outlet"
+msgstr ""
+
+msgid "Delete this item?"
+msgstr ""
+
+msgid "Delete this outlet?"
+msgstr ""
+
+msgid "Delete this rate?"
+msgstr ""
+
+msgid "Delivery address"
+msgstr ""
+
+msgid "Duration"
+msgstr ""
+
+msgid "Each sale is tagged with its outlet. Stock stays global across outlets."
+msgstr ""
+
+msgid "Earn and redeem loyalty points on purchases."
+msgstr ""
+
+msgid "Edit Outlet"
+msgstr ""
+
+msgid "Edit Table"
+msgstr ""
+
+msgid "Enable loyalty points"
+msgstr ""
+
+msgid "Enable offline sale queueing"
+msgstr ""
+
+msgid "Enable the loyalty integration in POS → Add-ons to activate."
+msgstr ""
+
+msgid "Floor"
+msgstr ""
+
+msgid "Gift Card"
+msgstr ""
+
+msgid "Gift card code"
+msgstr ""
+
+msgid "Gift card created."
+msgstr ""
+
+msgid "How it works"
+msgstr ""
+
+msgid "Incoming orders appear here. Load them at the terminal to process via normal checkout (stock is deducted at that point)."
+msgstr ""
+
+msgid "Initial balance"
+msgstr ""
+
+msgid "Invalid or inactive gift card code."
+msgstr ""
+
+msgid "Kitchen Display"
+msgstr ""
+
+msgid "Loading…"
+msgstr ""
+
+msgid "Loyalty"
+msgstr ""
+
+msgid "Loyalty Points"
+msgstr ""
+
+msgid "Max discount (% of subtotal)"
+msgstr ""
+
+msgid "Minimum points to redeem"
+msgstr ""
+
+msgid "Multi-Currency"
+msgstr ""
+
+msgid "Name is required."
+msgstr ""
+
+msgid "New sale items appear here automatically. Tap a card to bump the whole order to Ready."
+msgstr ""
+
+msgid "No gift cards yet."
+msgstr ""
+
+msgid "No online orders yet."
+msgstr ""
+
+msgid "No open shift found."
+msgstr ""
+
+msgid "No outlets yet."
+msgstr ""
+
+msgid "No rates yet."
+msgstr ""
+
+msgid "No shifts in this range."
+msgstr ""
+
+msgid "No shifts recorded."
+msgstr ""
+
+msgid "No tables."
+msgstr ""
+
+msgid "Nothing here."
+msgstr ""
+
+msgid "Nothing left to pay with the gift card."
+msgstr ""
+
+msgid "Offline Queue"
+msgstr ""
+
+msgid "Online Ordering"
+msgstr ""
+
+msgid "Online Orders"
+msgstr ""
+
+msgid "Optional"
+msgstr ""
+
+msgid "Order #"
+msgstr ""
+
+msgid "Order bumped."
+msgstr ""
+
+msgid "Order received — we will call you to confirm."
+msgstr ""
+
+msgid "Outlet"
+msgstr ""
+
+msgid "Outlet deleted."
+msgstr ""
+
+msgid "Outlet name required."
+msgstr ""
+
+msgid "Outlets"
+msgstr ""
+
+msgid "Outlets with per-sale tagging and outlet-filtered sales history."
+msgstr ""
+
+msgid "Paid in"
+msgstr ""
+
+msgid "Place order"
+msgstr ""
+
+msgid "Placed"
+msgstr ""
+
+msgid "Points are stored in a per-customer ledger. Voids reverse the earned points."
+msgstr ""
+
+msgid "Points per currency unit"
+msgstr ""
+
+msgid "Preselected on the terminal"
+msgstr ""
+
+msgid "Public storefront that captures orders for the terminal."
+msgstr ""
+
+msgid "Queued sales are stored in the browser&#8217;s localStorage and sync automatically when connectivity returns."
+msgstr ""
+
+msgid "Queued sales live in each browser&#8217;s localStorage. Only that browser can sync or inspect them; server-side visibility is limited until sync completes."
+msgstr ""
+
+msgid "Rate deleted."
+msgstr ""
+
+msgid "Rate saved."
+msgstr ""
+
+msgid "Rate to base"
+msgstr ""
+
+msgid "Rates"
+msgstr ""
+
+msgid "Rates are expressed as 1 foreign unit = X %s. The terminal shows the foreign amount and records sales in the base currency."
+msgstr ""
+
+msgid "Ready"
+msgstr ""
+
+msgid "Ready for your order"
+msgstr ""
+
+msgid "Recent shifts"
+msgstr ""
+
+msgid "Redeem loyalty points"
+msgstr ""
+
+msgid "Restaurant kitchen order view with item-level prep status."
+msgstr ""
+
+msgid "Restaurant-style table management with active orders."
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Saved."
+msgstr ""
+
+msgid "Seats"
+msgstr ""
+
+msgid "Secondary-screen customer view for the POS terminal."
+msgstr ""
+
+msgid "Sell, top up and redeem gift card codes at checkout."
+msgstr ""
+
+msgid "Shifts"
+msgstr ""
+
+msgid "Simple POS — Customer Display requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Gift Cards requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Kitchen Display requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Loyalty requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Multi-Currency requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Multi-Outlet requires the free Simple POS plugin to be installed and active."
+msgstr ""
+
+msgid "Simple POS — Offline Mode requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Online Ordering requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Table Service requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Time Clock requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Sync"
+msgstr ""
+
+msgid "Table"
+msgstr ""
+
+msgid "Table deleted."
+msgstr ""
+
+msgid "Tables"
+msgstr ""
+
+msgid "The server deduplicates via a client key, so the same sale can never be created twice."
+msgstr ""
+
+msgid "Time Clock"
+msgstr ""
+
+msgid "To prepare"
+msgstr ""
+
+msgid "Toggle offline sale queueing with an admin dashboard."
+msgstr ""
+
+msgid "Toggling this flag does not clear already-queued sales in the browser."
+msgstr ""
+
+msgid "Top up"
+msgstr ""
+
+msgid "Total hours"
+msgstr ""
+
+msgid "Units of base (%s) per 1 unit"
+msgstr ""
+
+msgid "Update Outlet"
+msgstr ""
+
+msgid "Updated"
+msgstr ""
+
+msgid "Updated."
+msgstr ""
+
+msgid "Use a 3-letter currency code and a positive rate."
+msgstr ""
+
+msgid "Void this sale and restore stock?"
+msgstr ""
+
+msgid "When enabled, the terminal queues sales if the browser loses its network connection."
+msgstr ""
+
+msgid "While offline, stock is NOT decremented server-side. Expect stock drift until sync completes."
+msgstr ""
+
+msgid "You are clocked in."
+msgstr ""
+
+msgid "You are not allowed to access the kitchen display."
+msgstr ""
+
+msgid "You are not allowed to bump orders."
+msgstr ""
+
+msgid "You are not allowed to manage currencies."
+msgstr ""
+
+msgid "You are not allowed to manage gift cards."
+msgstr ""
+
+msgid "You are not allowed to manage loyalty settings."
+msgstr ""
+
+msgid "You are not allowed to manage offline settings."
+msgstr ""
+
+msgid "You are not allowed to manage outlets."
+msgstr ""
+
+msgid "You are not allowed to manage tables."
+msgstr ""
+
+msgid "You are not allowed to update orders."
+msgstr ""
+
+msgid "You are not allowed to view online orders."
+msgstr ""
+
+msgid "You are not allowed to view shifts."
+msgstr ""
+
+msgid "Your order"
+msgstr ""
+
+msgid "Your order is empty."
+msgstr ""
+
+msgid "Logs every completed sale. Fork me into your own add-on."
+msgstr ""
+

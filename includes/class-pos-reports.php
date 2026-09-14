@@ -70,10 +70,10 @@ class Simple_POS_Reports {
 
 		$result = array(
 			'sale_count'   => (int) $row->sale_count,
-			'revenue'      => round( (float) $row->revenue, 2 ),
-			'avg_sale'     => round( (float) $row->avg_sale, 2 ),
+			'revenue'      => Simple_POS_Tax::pos_round( (float) $row->revenue, 2 ),
+			'avg_sale'     => Simple_POS_Tax::pos_round( (float) $row->avg_sale, 2 ),
 			'items_sold'   => $items_sold,
-			'gross_profit' => round( $profit, 2 ),
+			'gross_profit' => Simple_POS_Tax::pos_round( $profit, 2 ),
 		);
 
 		set_transient( $cache_key, $result, self::CACHE_TTL );

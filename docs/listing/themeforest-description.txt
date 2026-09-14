@@ -1,0 +1,72 @@
+== Item Title ==
+
+Simple POS – Standalone Point of Sale for WordPress (No WooCommerce)
+
+== Short Description ==
+
+A lightweight, standalone POS system for WordPress. No WooCommerce required. Custom tables, REST API, per-country VAT/GST, product variants, barcode labels, USB ESC/POS printing, suppliers & purchase orders, and 12 bundled add-ons.
+
+== Extended Description ==
+
+Simple POS turns an ordinary WordPress site into a full retail checkout system — fast, self-contained, and free of WooCommerce dependencies. It comes with its own database tables, its own REST API, and a dedicated admin area, so it stays quick even on busy WordPress installs.
+
+### Key features
+
+* **POS Terminal** – searchable grid, barcode/SKU scan-to-add, variant picker, live tax breakdown, discounts, payments & change, browser + USB ESC/POS (WebUSB) + network printing with drawer kick.
+* **Products & Variants** – per-product tax class, free-form variant attributes (size/colour), stock per variant + parent, images, low-stock threshold, CSV import/export upsert by SKU.
+* **Per-country Taxes** – classes & rates per country/state (US, India GST, EU VAT presets), inclusive/compound/priority support.
+* **Inventory + Purchase Orders** – full stock audit log, suppliers, draft→ordered→partial→received PO workflow with stock-in on receive, low-stock dashboard notice.
+* **Barcode Labels** – JsBarcode CODE128/EAN13/QR sheets for A4 and 58/80 mm rolls, fully vendored (no CDN).
+* **Sales History** – date/status filters, per-sale tax breakdown, void with variant stock restore, CSV export.
+* **Reports & Dashboard** – revenue, gross profit, top products, revenue-by-day chart, low-stock.
+* **Roles** – dedicated POS Cashier and POS Manager roles; every screen and endpoint is capability + nonce protected.
+* **12 bundled add-ons** – Kitchen Display, Customer Display, Multi-Outlet, Gift Cards, Loyalty Points, Multi-Currency, Table Service, Online Ordering, Offline Mode helper, Time Clock, Low-Stock Auto-PO, Advanced Reports.
+
+### Why standalone
+
+* Atomic checkout – sale and stock deduction committed in a single DB transaction or rolled back entirely.
+* Indexed custom tables (`wp_pos_*`), not post types — built for high-volume transactional data.
+* All queries prepared, all output escaped, no external API keys, no CDNs, no build step.
+* Multisite-safe (site-prefixed tables), i18n-ready (7 bundled locales incl. Hindi, Bengali, Marathi, Gujarati, Punjabi).
+
+### Requirements
+
+WordPress 5.8+ (tested to 7.1), PHP 7.4+ (tested to 8.x).
+
+== Installation ==
+1. Upload the zip via **Plugins → Add New → Upload Plugin** (zip contains a single `wp-pos-plugin` folder), or unzip into `wp-content/plugins/` and Activate.
+2. Follow **POS → Settings** to set store name, currency, tax country/state and printer type.
+3. Add products under **POS → Products**, then start selling from **POS → Terminal**.
+
+Full documentation is included in the item’s docs folder (user guide covers every screen, bundled add-ons, shortcodes, FAQ and troubleshooting).
+
+== Item Details ==
+- High Resolution: Yes (essential layout only)
+- Widget Ready: No
+- Documentation: Included (Markdown + this page)
+- License: GPL v2 or later
+- Software Version: 2.1.0
+- Compatible With: WordPress 5.8 – 7.1, PHP 7.4 – 8.x
+
+== Tags (for listing) ==
+pos, point of sale, retail, inventory, cash register, barcode, GST, VAT, restaurant, shop, billing, e-commerce, woocommerce alternative
+
+== FAQs (item page) ==
+
+Q: Does this require WooCommerce?
+A: No. It is 100% standalone and never reads or writes WooCommerce data.
+
+Q: Can I track stock for services or non-physical items?
+A: Yes — untick “Track stock” on the product.
+
+Q: What happens to sales data if the plugin is deactivated?
+A: Nothing. Deactivating never touches data; data is only removed if you delete the plugin AND have checked “Delete all data on uninstall” in Settings.
+
+Q: Can I void/refund a sale?
+A: Yes — open the sale in Sales History and click Void Sale; stock (including variants) is restored. Partial refunds are on the roadmap.
+
+Q: Do I need special hardware?
+A: Only for ESC/POS printing (WebUSB) or network printers. The default browser printing works everywhere.
+
+Q: Is any feature gated behind a license key?
+A: No. All add-ons are included — the GPL license permits free sharing and modification.

@@ -1,0 +1,2091 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple POS 2.0.9\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-pos-plugin\n"
+"POT-Creation-Date: 2026-09-14 11:56+0000\n"
+"PO-Revision-Date: 2026-09-14 11:56+0000\n"
+"Last-Translator: Simple POS\n"
+"Language-Team: Simple POS\n"
+"Language: gu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Simple POS i18n build\n"
+
+msgid "(ISO2 or * for all)"
+msgstr "(ISO2 અથવા બધા માટે *)"
+
+msgid "(change in Settings)"
+msgstr "(સેટિંગ્સમાં બદલો)"
+
+msgid "(optional)"
+msgstr "(વૈકલ્પિક)"
+
+msgid "(optional, for variant restock)"
+msgstr "(વૈકલ્પિક, વેરિઅન્ટ રીસ્ટોક માટે)"
+
+msgid "* — all countries"
+msgstr "* — બધા દેશો"
+
+msgid "+ New"
+msgstr "+ નવું"
+
+msgid "58mm"
+msgstr "58mm"
+
+msgid "80mm"
+msgstr "80mm"
+
+msgid "A product with this SKU already exists."
+msgstr "આ SKU વાળું ઉત્પાદન પહેલેથી અસ્તિત્વમાં છે."
+
+msgid "A4 30-up (Avery 5160)"
+msgstr "A4 30-અપ (Avery 5160)"
+
+msgid "A4 65-up"
+msgstr "A4 65-અપ"
+
+msgid "Action"
+msgstr "ક્રિયા"
+
+msgid "Actions"
+msgstr "ક્રિયાઓ"
+
+msgid "Active"
+msgstr "સક્રિય"
+
+msgid "Add"
+msgstr "ઉમેરો"
+
+msgid "Add &amp; select"
+msgstr "ઉમેરો &amp; પસંદ કરો"
+
+msgid "Add Category"
+msgstr "શ્રેણી ઉમેરો"
+
+msgid "Add Class"
+msgstr "વર્ગ ઉમેરો"
+
+msgid "Add Customer"
+msgstr "ગ્રાહક ઉમેરો"
+
+msgid "Add Product"
+msgstr "ઉત્પાદન ઉમેરો"
+
+msgid "Add Rate"
+msgstr "દર ઉમેરો"
+
+msgid "Add Supplier"
+msgstr "સપ્લાયર ઉમેરો"
+
+msgid "Add Variant"
+msgstr "વેરિઅન્ટ ઉમેરો"
+
+msgid "Add at least one item."
+msgstr "ઓછામાં ઓછી એક આઇટમ ઉમેરો."
+
+msgid "Add line"
+msgstr "લાઇન ઉમેરો"
+
+msgid "Add new customer"
+msgstr "નવો ગ્રાહક ઉમેરો"
+
+msgid "Add variant"
+msgstr "વેરિઅન્ટ ઉમેરો"
+
+msgid "Add-on \"%1$s\" requires POS Core version %2$s or higher. You have version %3$s. The add-on has been disabled."
+msgstr "ઍડ-ઑન \"%1$s\" માટે POS કોર આવૃત્તિ %2$s કે તેથી વધુ જોઈએ. તમારી પાસે આવૃત્તિ %3$s છે. ઍડ-ઑન અક્ષમ કરાયું છે."
+
+msgid "Add-on setting saved."
+msgstr "ઍડ-ઑન સેટિંગ સાચવાયું."
+
+msgid "Add-ons"
+msgstr "ઍડ-ઑન"
+
+msgid "Address"
+msgstr "સરનામું"
+
+msgid "Advanced"
+msgstr "અદ્યતન"
+
+msgid "Advanced Reports"
+msgstr "અદ્યતન રિપોર્ટ"
+
+msgid "After (10.00$)"
+msgstr "પછી (10.00$)"
+
+msgid "All add-ons are free and included with Simple POS — enable or disable them below. Changes apply on the next page load."
+msgstr "બધા ઍડ-ઑન Simple POS સાથે મફત છે — નીચે સક્ષમ કે અક્ષમ કરો. ફેરફારો આગલી વાર પેજ લોડ થશે ત્યારે લાગુ થશે."
+
+msgid "All cashiers"
+msgstr "બધા કેશિયર"
+
+msgid "All categories"
+msgstr "બધી શ્રેણીઓ"
+
+msgid "All products are well stocked."
+msgstr "બધા ઉત્પાદનોમાં પૂરતો સ્ટોક છે."
+
+msgid "Allow checkout even if stock would go negative"
+msgstr "સ્ટોક નેગેટિવ થતો હોય તો પણ ચેકઆઉટની મંજૂરી આપો"
+
+msgid "Allow overselling"
+msgstr "વધુ વેચાણની મંજૂરી આપો"
+
+msgid "Amount"
+msgstr "રકમ"
+
+msgid "Amount tendered"
+msgstr "આપેલી રકમ"
+
+msgid "Any status"
+msgstr "કોઈપણ સ્થિતિ"
+
+msgid "Apply"
+msgstr "લાગુ કરો"
+
+msgid "Apply discount before tax"
+msgstr "કર પહેલા ડિસ્કાઉન્ટ લાગુ કરો"
+
+msgid "Assign under Users:"
+msgstr "યુઝર્સ હેઠળ સોંપો:"
+
+msgid "Attr e.g. Color"
+msgstr "વિશેષતા દા.ત. રંગ"
+
+msgid "Attr e.g. Size"
+msgstr "વિશેષતા દા.ત. સાઇઝ"
+
+msgid "Attributes"
+msgstr "વિશેષતાઓ"
+
+msgid "Auto kick drawer on sale complete"
+msgstr "વેચાણ પૂર્ણ થતાં ડ્રોઅર આપમેળે ખોલો"
+
+msgid "Auto-PO"
+msgstr "ઓટો-PO"
+
+msgid "Auto-PO generated %1$s for %2$d low-stock product(s)."
+msgstr "%2$d ઓછા-સ્ટોક ઉત્પાદનો માટે ઓટો-PO %1$s બનાવાયું."
+
+msgid "Automation"
+msgstr "ઓટોમેશન"
+
+msgid "Available add-ons"
+msgstr "ઉપલબ્ધ ઍડ-ઑન"
+
+msgid "Avg basket"
+msgstr "સરેરાશ બાસ્કેટ"
+
+msgid "Avg. Sale"
+msgstr "સરેરાશ વેચાણ"
+
+msgid "B2B"
+msgstr "B2B"
+
+msgid "B2C"
+msgstr "B2C"
+
+msgid "Back to POs"
+msgstr "PO પર પાછા જાઓ"
+
+msgid "Back to Sales"
+msgstr "વેચાણ પર પાછા જાઓ"
+
+msgid "Backup"
+msgstr "બેકઅપ"
+
+msgid "Backup file"
+msgstr "બેકઅપ ફાઇલ"
+
+msgid "Backup file missing version information."
+msgstr "બેકઅપ ફાઇલમાં આવૃત્તિ માહિતી નથી."
+
+msgid "Backup is from a newer version (%1$s) than current (%2$s). Please upgrade plugin first."
+msgstr "બેકઅપ વર્તમાન (%2$s) કરતાં નવી આવૃત્તિ (%1$s)નું છે. પહેલા પ્લગઇન અપગ્રેડ કરો."
+
+msgid "Backup restore failed. Data rolled back."
+msgstr "બેકઅપ પુનઃસ્થાપન નિષ્ફળ. ડેટા પાછો વાળ્યો."
+
+msgid "Backup restored successfully."
+msgstr "બેકઅપ સફળતાપૂર્વક પુનઃસ્થાપિત થયું."
+
+msgid "Barcode"
+msgstr "બારકોડ"
+
+msgid "Barcode Labels"
+msgstr "બારકોડ લેબલ"
+
+msgid "Barcode already exists."
+msgstr "બારકોડ પહેલેથી અસ્તિત્વમાં છે."
+
+msgid "Barcode already used."
+msgstr "બારકોડ પહેલેથી વપરાયેલો છે."
+
+msgid "Barcode image dimensions exceed limits. Use a smaller scale value."
+msgstr "બારકોડ છબીનું માપ મર્યાદા વટાવે છે. નાની સ્કેલ કિંમત વાપરો."
+
+msgid "Barcode symbology"
+msgstr "બારકોડ પદ્ધતિ"
+
+msgid "Base currency"
+msgstr "મૂળ ચલણ"
+
+msgid "Before ($10.00)"
+msgstr "પહેલા ($10.00)"
+
+msgid "Browser print"
+msgstr "બ્રાઉઝર પ્રિન્ટ"
+
+msgid "Business Setup"
+msgstr "વ્યવસાય સેટઅપ"
+
+msgid "By Cashier"
+msgstr "કેશિયર પ્રમાણે"
+
+msgid "CSV"
+msgstr "CSV"
+
+msgid "CSV file missing."
+msgstr "CSV ફાઇલ મળી નથી."
+
+msgid "Can only edit draft POs."
+msgstr "ફક્ત ડ્રાફ્ટ PO સંપાદિત કરી શકાય."
+
+msgid "Cancel"
+msgstr "રદ કરો"
+
+msgid "Cannot create variant for inactive product. Activate product first."
+msgstr "નિષ્ક્રિય ઉત્પાદન માટે વેરિઅન્ટ બનાવી શકાતું નથી. પહેલા ઉત્પાદન સક્રિય કરો."
+
+msgid "Card"
+msgstr "કાર્ડ"
+
+msgid "Cart is empty."
+msgstr "કાર્ટ ખાલી છે."
+
+msgid "Cart is empty. Scan or click a product to add it."
+msgstr "કાર્ટ ખાલી છે. ઉમેરવા માટે ઉત્પાદન સ્કેન કરો અથવા ક્લિક કરો."
+
+msgid "Cash"
+msgstr "રોકડ"
+
+msgid "Cash drawer"
+msgstr "રોકડ ડ્રોઅર"
+
+msgid "Cashier"
+msgstr "કેશિયર"
+
+msgid "Cashier shifts, hours and per-shift cash reconciliation."
+msgstr "કેશિયર શિફ્ટ, કલાકો અને શિફ્ટ-દીઠ રોકડ મેળવણી."
+
+msgid "Categories"
+msgstr "શ્રેણીઓ"
+
+msgid "Category"
+msgstr "શ્રેણી"
+
+msgid "Category added."
+msgstr "શ્રેણી ઉમેરાઈ."
+
+msgid "Category deleted."
+msgstr "શ્રેણી કાઢી નખાઈ."
+
+msgid "Category name is required."
+msgstr "શ્રેણીનું નામ જરૂરી છે."
+
+msgid "Change due"
+msgstr "પરત રકમ"
+
+msgid "Checkout failed. Please try again."
+msgstr "ચેકઆઉટ નિષ્ફળ. ફરી પ્રયાસ કરો."
+
+msgid "Choose your business type"
+msgstr "તમારો વ્યવસાય પ્રકાર પસંદ કરો"
+
+msgid "Choose your business type to seed starting categories, taxes and sample products."
+msgstr "શરૂઆતની શ્રેણીઓ, કર અને નમૂના ઉત્પાદનો માટે તમારો વ્યવસાય પ્રકાર પસંદ કરો."
+
+msgid "Class"
+msgstr "વર્ગ"
+
+msgid "Class name"
+msgstr "વર્ગનું નામ"
+
+msgid "Clear"
+msgstr "સાફ કરો"
+
+msgid "Clear low-stock filter"
+msgstr "ઓછા-સ્ટોક ફિલ્ટર દૂર કરો"
+
+msgid "Coming soon"
+msgstr "ટૂંક સમયમાં"
+
+msgid "Comp"
+msgstr "કંપાઉન્ડ"
+
+msgid "Complete Sale"
+msgstr "વેચાણ પૂર્ણ કરો"
+
+msgid "Completed"
+msgstr "પૂર્ણ"
+
+msgid "Compound (on top of prior taxes)"
+msgstr "કંપાઉન્ડ (અગાઉના કર ઉપર)"
+
+msgid "Compound: e.g. Canada PST 7% compound on top of GST 5% — set GST prio 0, PST prio 1 compound=1."
+msgstr "કંપાઉન્ડ: દા.ત. 5% GST ઉપર 7% PST — GST પ્રાથમિકતા 0, PST પ્રાથમિકતા 1 કંપાઉન્ડ=1 રાખો."
+
+msgid "Contact"
+msgstr "સંપર્ક"
+
+msgid "Contact name"
+msgstr "સંપર્ક નામ"
+
+msgid "Cost"
+msgstr "પડતર"
+
+msgid "Cost price"
+msgstr "પડતર કિંમત"
+
+msgid "Cost/unit"
+msgstr "પડતર/નંગ"
+
+msgid "Could not create PO."
+msgstr "PO બનાવી શકાયું નહીં."
+
+msgid "Could not create category (name may already exist)."
+msgstr "શ્રેણી બનાવી શકાઈ નહીં (નામ પહેલેથી હોઈ શકે)."
+
+msgid "Could not create customer."
+msgstr "ગ્રાહક બનાવી શકાયો નહીં."
+
+msgid "Could not create product."
+msgstr "ઉત્પાદન બનાવી શકાયું નહીં."
+
+msgid "Could not create rate."
+msgstr "દર બનાવી શકાયો નહીં."
+
+msgid "Could not create tax class."
+msgstr "કર વર્ગ બનાવી શકાયો નહીં."
+
+msgid "Could not create variant."
+msgstr "વેરિઅન્ટ બનાવી શકાયું નહીં."
+
+msgid "Could not delete product."
+msgstr "ઉત્પાદન કાઢી શકાયું નહીં."
+
+msgid "Could not generate the purchase order. Please try again."
+msgstr "ખરીદ ઓર્ડર બનાવી શકાયો નહીં. ફરી પ્રયાસ કરો."
+
+msgid "Could not insert sale."
+msgstr "વેચાણ નોંધી શકાયું નહીં."
+
+msgid "Could not open CSV."
+msgstr "CSV ખોલી શકાઈ નહીં."
+
+msgid "Could not record sale items."
+msgstr "વેચાણ આઇટમો નોંધી શકાઈ નહીં."
+
+msgid "Could not record sale."
+msgstr "વેચાણ નોંધી શકાયું નહીં."
+
+msgid "Could not update product."
+msgstr "ઉત્પાદન અપડેટ કરી શકાયું નહીં."
+
+msgid "Could not void sale."
+msgstr "વેચાણ રદ કરી શકાયું નહીં."
+
+msgid "Counter-facing second screen mirroring the running cart and totals."
+msgstr "ચાલુ કાર્ટ અને કુલ બતાવતી ગ્રાહક-સામે બીજી સ્ક્રીન."
+
+msgid "Country"
+msgstr "દેશ"
+
+msgid "Create PO"
+msgstr "PO બનાવો"
+
+msgid "Created"
+msgstr "બનાવાયું"
+
+msgid "Currency"
+msgstr "ચલણ"
+
+msgid "Currency symbol"
+msgstr "ચલણ ચિહ્ન"
+
+msgid "Current Sale"
+msgstr "ચાલુ વેચાણ"
+
+msgid "Custom range"
+msgstr "કસ્ટમ સમયગાળો"
+
+msgid "Customer"
+msgstr "ગ્રાહક"
+
+msgid "Customer Displays"
+msgstr "ગ્રાહક ડિસ્પ્લે"
+
+msgid "Customer deleted."
+msgstr "ગ્રાહક કાઢી નખાયો."
+
+msgid "Customer name is required."
+msgstr "ગ્રાહકનું નામ જરૂરી છે."
+
+msgid "Customer not found."
+msgstr "ગ્રાહક મળ્યો નથી."
+
+msgid "Customer saved."
+msgstr "ગ્રાહક સાચવાયો."
+
+msgid "Customer type"
+msgstr "ગ્રાહક પ્રકાર"
+
+msgid "Customers"
+msgstr "ગ્રાહકો"
+
+msgid "Customers order from a QR link; orders drop straight into the POS queue."
+msgstr "ગ્રાહકો QR લિંકથી ઓર્ડર કરે છે; ઓર્ડર સીધા POS કતારમાં આવે છે."
+
+msgid "Daily"
+msgstr "દૈનિક"
+
+msgid "Daily cron + one-click draft purchase orders for products below their low-stock threshold."
+msgstr "ઓછા-સ્ટોક ઉત્પાદનો માટે દૈનિક ક્રોન + એક-ક્લિક ડ્રાફ્ટ ખરીદ ઓર્ડર."
+
+msgid "Dashboard"
+msgstr "ડેશબોર્ડ"
+
+msgid "Date"
+msgstr "તારીખ"
+
+msgid "Decimal places"
+msgstr "દશાંશ સ્થાન"
+
+msgid "Default low stock threshold"
+msgstr "ડિફોલ્ટ ઓછા-સ્ટોક મર્યાદા"
+
+msgid "Default state"
+msgstr "ડિફોલ્ટ રાજ્ય"
+
+msgid "Default supplier"
+msgstr "ડિફોલ્ટ સપ્લાયર"
+
+msgid "Default tax class"
+msgstr "ડિફોલ્ટ કર વર્ગ"
+
+msgid "Default tax country"
+msgstr "ડિફોલ્ટ કર દેશ"
+
+msgid "Del"
+msgstr "કાઢો"
+
+msgid "Delete"
+msgstr "કાઢી નાખો"
+
+msgid "Delete PO?"
+msgstr "PO કાઢી નાખવો?"
+
+msgid "Delete all POS data when plugin is deleted"
+msgstr "પ્લગઇન કાઢી નાખો ત્યારે બધો POS ડેટા કાઢી નાખો"
+
+msgid "Delete tax class?"
+msgstr "કર વર્ગ કાઢી નાખવો?"
+
+msgid "Delete this category? Products stay, just unassigned."
+msgstr "આ શ્રેણી કાઢી નાખવી? ઉત્પાદનો રહેશે, ફક્ત અસાઇન થયેલા નહીં."
+
+msgid "Delete this customer?"
+msgstr "આ ગ્રાહક કાઢી નાખવો?"
+
+msgid "Delete this item? This cannot be undone."
+msgstr "આ આઇટમ કાઢી નાખવી? આ પાછું વાળી શકાશે નહીં."
+
+msgid "Delete this product?"
+msgstr "આ ઉત્પાદન કાઢી નાખવું?"
+
+msgid "Delete variant?"
+msgstr "વેરિઅન્ટ કાઢી નાખવું?"
+
+msgid "Delete?"
+msgstr "કાઢી નાખવું?"
+
+msgid "Description"
+msgstr "વર્ણન"
+
+msgid "Disable"
+msgstr "અક્ષમ કરો"
+
+msgid "Disabled"
+msgstr "અક્ષમ"
+
+msgid "Discount"
+msgstr "ડિસ્કાઉન્ટ"
+
+msgid "Discount before tax"
+msgstr "કર પહેલા ડિસ્કાઉન્ટ"
+
+msgid "Download Backup"
+msgstr "બેકઅપ ડાઉનલોડ કરો"
+
+msgid "Download a complete JSON backup of all POS data, or restore from a previous backup. Keep backup files in a safe place."
+msgstr "બધા POS ડેટાનો સંપૂર્ણ JSON બેકઅપ ડાઉનલોડ કરો અથવા અગાઉના બેકઅપથી પુનઃસ્થાપિત કરો. બેકઅપ ફાઇલો સુરક્ષિત રાખો."
+
+msgid "Draft PO #%1$s was created with %2$s"
+msgstr "ડ્રાફ્ટ PO #%1$s %2$s સાથે બનાવાયું"
+
+msgid "Draft PO created with %1$d item(s); %2$d product(s) were already on an open PO and skipped."
+msgstr "%1$d આઇટમ વાળું ડ્રાફ્ટ PO બન્યું; %2$d ઉત્પાદનો પહેલેથી ખુલ્લા PO પર હતા, છોડાયા."
+
+msgid "Edit"
+msgstr "સંપાદિત કરો"
+
+msgid "Edit Customer"
+msgstr "ગ્રાહક સંપાદિત કરો"
+
+msgid "Edit Product"
+msgstr "ઉત્પાદન સંપાદિત કરો"
+
+msgid "Edit Rate"
+msgstr "દર સંપાદિત કરો"
+
+msgid "Edit Supplier"
+msgstr "સપ્લાયર સંપાદિત કરો"
+
+msgid "Email"
+msgstr "ઈમેલ"
+
+msgid "Empty CSV."
+msgstr "CSV ખાલી છે."
+
+msgid "Enable"
+msgstr "સક્ષમ કરો"
+
+msgid "Enabled"
+msgstr "સક્ષમ"
+
+msgid "Enter quantity received for each item (leave 0 to skip)."
+msgstr "દરેક આઇટમની મળેલી સંખ્યા લખો (છોડવા 0 રાખો)."
+
+msgid "Everything at or below its low-stock threshold. Generating a PO orders each line up to threshold × multiplier."
+msgstr "ઓછા-સ્ટોક મર્યાદા પર કે નીચે બધું. PO બનાવવાથી દરેક લાઇન મર્યાદા × ગુણક સુધી ઓર્ડર થશે."
+
+msgid "Example Add-on"
+msgstr "ઉદાહરણ ઍડ-ઑન"
+
+msgid "Examples"
+msgstr "ઉદાહરણો"
+
+msgid "Export CSV"
+msgstr "CSV નિકાસ કરો"
+
+msgid "Export Categories CSV"
+msgstr "શ્રેણીઓ CSV નિકાસ કરો"
+
+msgid "Export Products CSV"
+msgstr "ઉત્પાદનો CSV નિકાસ કરો"
+
+msgid "Export Variants CSV"
+msgstr "વેરિઅન્ટ CSV નિકાસ કરો"
+
+msgid "Fallback if no class rate matches"
+msgstr "વર્ગ દર ન મળે તો વિકલ્પ"
+
+msgid "Fallback only; prefer tax classes."
+msgstr "ફક્ત વિકલ્પ; કર વર્ગોને પ્રાધાન્ય આપો."
+
+msgid "File exceeds 5MB limit."
+msgstr "ફાઇલ 5MB મર્યાદા વટાવે છે."
+
+msgid "Filter"
+msgstr "ફિલ્ટર"
+
+msgid "Filter by category"
+msgstr "શ્રેણી પ્રમાણે ગાળો"
+
+msgid "Footer"
+msgstr "ફૂટર"
+
+msgid "Free"
+msgstr "મફત"
+
+msgid "From"
+msgstr "થી"
+
+msgid "Full Reports"
+msgstr "સંપૂર્ણ રિપોર્ટ"
+
+msgid "GD library is required for barcode images."
+msgstr "બારકોડ છબીઓ માટે GD લાઇબ્રેરી જરૂરી છે."
+
+msgid "GST split (50/50 CGST+SGST for intrastate, IGST for interstate)"
+msgstr "GST વિભાજન (એક જ રાજ્યમાં 50/50 CGST+SGST, આંતરરાજ્યમાં IGST)"
+
+msgid "GSTIN"
+msgstr "GSTIN"
+
+msgid "Generate automatically once a day (WP-Cron)"
+msgstr "દિવસમાં એકવાર આપમેળે બનાવો (WP-Cron)"
+
+msgid "Generate draft PO now"
+msgstr "હમણાં ડ્રાફ્ટ PO બનાવો"
+
+msgid "Gift Cards"
+msgstr "ગિફ્ટ કાર્ડ"
+
+msgid "Gross"
+msgstr "કુલ"
+
+msgid "Gross Profit"
+msgstr "કુલ નફો"
+
+msgid "Gross profit"
+msgstr "કુલ નફો"
+
+msgid "HSN/SAC Code"
+msgstr "HSN/SAC કોડ"
+
+msgid "Header"
+msgstr "હેડર"
+
+msgid "Hold"
+msgstr "હોલ્ડ"
+
+msgid "Hour"
+msgstr "કલાક"
+
+msgid "Hourly sales"
+msgstr "કલાકદીઠ વેચાણ"
+
+msgid "ISO2 e.g. US, IN"
+msgstr "ISO2 દા.ત. US, IN"
+
+msgid "Image URL"
+msgstr "છબી URL"
+
+msgid "Import CSV"
+msgstr "CSV આયાત કરો"
+
+msgid "Import Categories CSV"
+msgstr "શ્રેણીઓ CSV આયાત કરો"
+
+msgid "Import Products CSV"
+msgstr "ઉત્પાદનો CSV આયાત કરો"
+
+msgid "Import Variants CSV"
+msgstr "વેરિઅન્ટ CSV આયાત કરો"
+
+msgid "Imported %d categories."
+msgstr "%d શ્રેણીઓ આયાત થઈ."
+
+msgid "Imported %d products."
+msgstr "%d ઉત્પાદનો આયાત થયા."
+
+msgid "Imported %d sales."
+msgstr "%d વેચાણ આયાત થયા."
+
+msgid "Imported %d variants."
+msgstr "%d વેરિઅન્ટ આયાત થયા."
+
+msgid "Inactive"
+msgstr "નિષ્ક્રિય"
+
+msgid "Inc"
+msgstr "સમાવિ."
+
+msgid "Included add-ons"
+msgstr "સમાવિષ્ટ ઍડ-ઑન"
+
+msgid "Inclusive (price contains tax)"
+msgstr "સમાવેશી (કિંમતમાં કર સમાવિષ્ટ)"
+
+msgid "Initial stock on product creation"
+msgstr "ઉત્પાદન બનાવતી વખતે શરૂઆતનો સ્ટોક"
+
+msgid "Invalid backup file."
+msgstr "અમાન્ય બેકઅપ ફાઇલ."
+
+msgid "Invalid country code: %s. Must be 2-letter ISO code (e.g., US, GB, IN)."
+msgstr "અમાન્ય દેશ કોડ: %s. 2-અક્ષર ISO કોડ હોવો જોઈએ (દા.ત. US, GB, IN)."
+
+msgid "Invalid item in cart."
+msgstr "કાર્ટમાં અમાન્ય આઇટમ."
+
+msgid "Invalid parent product ID."
+msgstr "અમાન્ય પેરેન્ટ ઉત્પાદન ID."
+
+msgid "Invalid product ID."
+msgstr "અમાન્ય ઉત્પાદન ID."
+
+msgid "Invalid status."
+msgstr "અમાન્ય સ્થિતિ."
+
+msgid "Invalid tax class."
+msgstr "અમાન્ય કર વર્ગ."
+
+msgid "Invalid variant ID."
+msgstr "અમાન્ય વેરિઅન્ટ ID."
+
+msgid "Inventory"
+msgstr "ઇન્વેન્ટરી"
+
+msgid "Item"
+msgstr "આઇટમ"
+
+msgid "Items"
+msgstr "આઇટમો"
+
+msgid "Items Sold"
+msgstr "વેચાયેલી આઇટમો"
+
+msgid "Items sold"
+msgstr "વેચાયેલી આઇટમો"
+
+msgid "Kick Drawer"
+msgstr "ડ્રોઅર ખોલો"
+
+msgid "Kitchen Display System"
+msgstr "કિચન ડિસ્પ્લે સિસ્ટમ"
+
+msgid "Label sheet"
+msgstr "લેબલ શીટ"
+
+msgid "Last 30 days"
+msgstr "છેલ્લા 30 દિવસ"
+
+msgid "Last 7 days"
+msgstr "છેલ્લા 7 દિવસ"
+
+msgid "Last run: %s"
+msgstr "છેલ્લી વાર: %s"
+
+msgid "Leave empty to use default."
+msgstr "ડિફોલ્ટ માટે ખાલી રાખો."
+
+msgid "Legacy tax rate (%)"
+msgstr "જૂનો કર દર (%)"
+
+msgid "Line Total"
+msgstr "લાઇન કુલ"
+
+msgid "Loading products…"
+msgstr "ઉત્પાદનો લોડ થઈ રહ્યા…"
+
+msgid "Logs every completed sale. Fork me into a paid add-on."
+msgstr "દરેક પૂર્ણ વેચાણ નોંધે છે. મને પેઇડ ઍડ-ઑન બનાવો."
+
+msgid "Low Stock"
+msgstr "ઓછો સ્ટોક"
+
+msgid "Low stock alert for: %s"
+msgstr "ઓછા સ્ટોકની ચેતવણી: %s"
+
+msgid "Low stock threshold"
+msgstr "ઓછા-સ્ટોક મર્યાદા"
+
+msgid "Low thresh"
+msgstr "ઓછી મર્યાદા"
+
+msgid "Low-Stock Auto-PO"
+msgstr "ઓછા-સ્ટોક ઓટો-PO"
+
+msgid "Low-stock products"
+msgstr "ઓછા-સ્ટોક ઉત્પાદનો"
+
+msgid "Loyalty & Store Credit"
+msgstr "લોયલ્ટી અને સ્ટોર ક્રેડિટ"
+
+msgid "Manual edit"
+msgstr "મેન્યુઅલ સંપાદન"
+
+msgid "Margin"
+msgstr "માર્જિન"
+
+msgid "Minimum order qty per product"
+msgstr "ઉત્પાદનદીઠ લઘુત્તમ ઓર્ડર સંખ્યા"
+
+msgid "Missing column: %s"
+msgstr "કોલમ મળી નથી: %s"
+
+msgid "Multi-Currency & FX"
+msgstr "મલ્ટી-કરન્સી અને FX"
+
+msgid "Multi-Outlet"
+msgstr "મલ્ટી-આઉટલેટ"
+
+msgid "Name"
+msgstr "નામ"
+
+msgid "Name, SKU, barcode…"
+msgstr "નામ, SKU, બારકોડ…"
+
+msgid "Name, phone, email…"
+msgstr "નામ, ફોન, ઈમેલ…"
+
+msgid "Net"
+msgstr "ચોખ્ખું"
+
+msgid "Network ESC/POS"
+msgstr "નેટવર્ક ESC/POS"
+
+msgid "Network printer IP"
+msgstr "નેટવર્ક પ્રિન્ટર IP"
+
+msgid "Never run yet."
+msgstr "હજુ ક્યારેય ચલાવ્યું નથી."
+
+msgid "New"
+msgstr "નવું"
+
+msgid "New Purchase Order"
+msgstr "નવો ખરીદ ઓર્ડર"
+
+msgid "New Sale"
+msgstr "નવું વેચાણ"
+
+msgid "New category name"
+msgstr "નવી શ્રેણીનું નામ"
+
+msgid "No POs yet."
+msgstr "હજુ PO નથી."
+
+msgid "No add-ons bundled yet."
+msgstr "હજુ ઍડ-ઑન નથી."
+
+msgid "No categories yet."
+msgstr "હજુ શ્રેણીઓ નથી."
+
+msgid "No customers found."
+msgstr "ગ્રાહકો મળ્યા નથી."
+
+msgid "No file uploaded."
+msgstr "ફાઇલ અપલોડ થઈ નથી."
+
+msgid "No product matches that code."
+msgstr "તે કોડ વાળું ઉત્પાદન નથી."
+
+msgid "No products found."
+msgstr "ઉત્પાદનો મળ્યા નથી."
+
+msgid "No products."
+msgstr "ઉત્પાદનો નથી."
+
+msgid "No rates. Seeded US/IN/EU defaults exist after activation — if empty, deactivate/reactivate or check DB."
+msgstr "દરો નથી. સક્રિયકરણ પછી US/IN/EU ડિફોલ્ટ ભરાય છે — ખાલી હોય તો નિષ્ક્રિય/સક્રિય કરો અથવા DB તપાસો."
+
+msgid "No sales found for this range."
+msgstr "આ સમયગાળાનું વેચાણ મળ્યું નથી."
+
+msgid "No sales in this range."
+msgstr "આ સમયગાળામાં વેચાણ નથી."
+
+msgid "No sales yet."
+msgstr "હજુ વેચાણ નથી."
+
+msgid "No suppliers."
+msgstr "સપ્લાયર નથી."
+
+msgid "No tax classes yet."
+msgstr "હજુ કર વર્ગો નથી."
+
+msgid "No tax collected in this range."
+msgstr "આ સમયગાળામાં કર વસૂલાયો નથી."
+
+msgid "No variants yet."
+msgstr "હજુ વેરિઅન્ટ નથી."
+
+msgid "None"
+msgstr "કંઈ નહીં"
+
+msgid "Not enough stock for \"%s\"."
+msgstr "\"%s\" માટે પૂરતો સ્ટોક નથી."
+
+msgid "Not enough stock for variant \"%s\"."
+msgstr "વેરિઅન્ટ \"%s\" માટે પૂરતો સ્ટોક નથી."
+
+msgid "Note"
+msgstr "નોંધ"
+
+msgid "Note (optional)"
+msgstr "નોંધ (વૈકલ્પિક)"
+
+msgid "Notes"
+msgstr "નોંધો"
+
+msgid "Nothing below the low-stock threshold. Nice."
+msgstr "ઓછા-સ્ટોક મર્યાદા નીચે કંઈ નથી. સરસ."
+
+msgid "Nothing to order — %d product(s) are already on an open PO."
+msgstr "ઓર્ડર કરવા કંઈ નથી — %d ઉત્પાદનો પહેલેથી ખુલ્લા PO પર છે."
+
+msgid "Nothing to order — no products are below their low-stock threshold."
+msgstr "ઓર્ડર કરવા કંઈ નથી — કોઈ ઉત્પાદનો ઓછા-સ્ટોક મર્યાદા નીચે નથી."
+
+msgid "Notify email (optional)"
+msgstr "સૂચના ઈમેલ (વૈકલ્પિક)"
+
+msgid "Off"
+msgstr "બંધ"
+
+msgid "Offline Mode"
+msgstr "ઑફલાઇન મોડ"
+
+msgid "Online Ordering & QR Menu"
+msgstr "ઑનલાઇન ઓર્ડર અને QR મેનુ"
+
+msgid "Only CSV files are allowed."
+msgstr "ફક્ત CSV ફાઇલોની મંજૂરી છે."
+
+msgid "Only completed sales can be voided."
+msgstr "ફક્ત પૂર્ણ વેચાણ રદ થઈ શકે."
+
+msgid "Open Terminal"
+msgstr "ટર્મિનલ ખોલો"
+
+msgid "Open setup"
+msgstr "સેટઅપ ખોલો"
+
+msgid "Order enough to reach threshold × this value."
+msgstr "મર્યાદા × આ કિંમત સુધી પહોંચે એટલો ઓર્ડર કરો."
+
+msgid "Ordered"
+msgstr "ઓર્ડર કરેલો"
+
+msgid "Other"
+msgstr "અન્ય"
+
+msgid "Out of stock"
+msgstr "સ્ટોક ખતમ"
+
+msgid "PO #"
+msgstr "PO #"
+
+msgid "PO %s"
+msgstr "PO %s"
+
+msgid "PO already closed."
+msgstr "PO પહેલેથી બંધ છે."
+
+msgid "PO deleted."
+msgstr "PO કાઢી નખાયું."
+
+msgid "PO not found."
+msgstr "PO મળ્યું નથી."
+
+msgid "PO number prefix"
+msgstr "PO નંબર ઉપસર્ગ"
+
+msgid "PO received, stock updated."
+msgstr "PO મળ્યું, સ્ટોક અપડેટ થયો."
+
+msgid "POS"
+msgstr "POS"
+
+msgid "POS Cashier"
+msgstr "POS કેશિયર"
+
+msgid "POS Dashboard"
+msgstr "POS ડેશબોર્ડ"
+
+msgid "POS Manager"
+msgstr "POS મેનેજર"
+
+msgid "POS Settings"
+msgstr "POS સેટિંગ્સ"
+
+msgid "POS Terminal"
+msgstr "POS ટર્મિનલ"
+
+msgid "Paper width"
+msgstr "કાગળ પહોળાઈ"
+
+msgid "Parent product #%d not found."
+msgstr "પેરેન્ટ ઉત્પાદન #%d મળ્યું નથી."
+
+msgid "Parent product not found."
+msgstr "પેરેન્ટ ઉત્પાદન મળ્યું નથી."
+
+msgid "Payment"
+msgstr "ચુકવણી"
+
+msgid "Payment method"
+msgstr "ચુકવણી પદ્ધતિ"
+
+msgid "Payment mix"
+msgstr "ચુકવણી મિશ્રણ"
+
+msgid "Per line"
+msgstr "લાઇનદીઠ"
+
+msgid "Per order"
+msgstr "ઓર્ડરદીઠ"
+
+msgid "Phone"
+msgstr "ફોન"
+
+msgid "Points per purchase, redeem at checkout, gift-card style store credit balances."
+msgstr "ખરીદીદીઠ પોઇન્ટ, ચેકઆઉટ પર વટાવો, ગિફ્ટ-કાર્ડ સ્ટાઇલ સ્ટોર ક્રેડિટ બેલેન્સ."
+
+msgid "Popular"
+msgstr "લોકપ્રિય"
+
+msgid "Preview"
+msgstr "પૂર્વાવલોકન"
+
+msgid "Price"
+msgstr "કિંમત"
+
+msgid "Price cannot be negative."
+msgstr "કિંમત નેગેટિવ ન હોઈ શકે."
+
+msgid "Price override"
+msgstr "કિંમત ઓવરરાઇડ"
+
+msgid "Prices include tax"
+msgstr "કિંમતોમાં કર સમાવિષ્ટ"
+
+msgid "Print"
+msgstr "પ્રિન્ટ કરો"
+
+msgid "Print Labels"
+msgstr "લેબલ પ્રિન્ટ કરો"
+
+msgid "Print Receipt"
+msgstr "રસીદ પ્રિન્ટ કરો"
+
+msgid "Printer"
+msgstr "પ્રિન્ટર"
+
+msgid "Printing & Barcode"
+msgstr "પ્રિન્ટિંગ અને બારકોડ"
+
+msgid "Prio"
+msgstr "પ્રાથમિકતા"
+
+msgid "Priority"
+msgstr "પ્રાથમિકતા"
+
+msgid "Product"
+msgstr "ઉત્પાદન"
+
+msgid "Product #%d is not available."
+msgstr "ઉત્પાદન #%d ઉપલબ્ધ નથી."
+
+msgid "Product / Variant"
+msgstr "ઉત્પાદન / વેરિઅન્ટ"
+
+msgid "Product deleted."
+msgstr "ઉત્પાદન કાઢી નખાયું."
+
+msgid "Product has no barcode or SKU."
+msgstr "ઉત્પાદનમાં બારકોડ કે SKU નથી."
+
+msgid "Product mix (top 20)"
+msgstr "ઉત્પાદન મિશ્રણ (ટોચ 20)"
+
+msgid "Product name is required."
+msgstr "ઉત્પાદનનું નામ જરૂરી છે."
+
+msgid "Product not found."
+msgstr "ઉત્પાદન મળ્યું નથી."
+
+msgid "Product saved."
+msgstr "ઉત્પાદન સાચવાયું."
+
+msgid "Products"
+msgstr "ઉત્પાદનો"
+
+msgid "Products to order"
+msgstr "ઓર્ડર કરવાના ઉત્પાદનો"
+
+msgid "Profit"
+msgstr "નફો"
+
+msgid "Purchase History"
+msgstr "ખરીદ ઇતિહાસ"
+
+msgid "Purchase Orders"
+msgstr "ખરીદ ઓર્ડર"
+
+msgid "Purchase order created."
+msgstr "ખરીદ ઓર્ડર બનાવાયો."
+
+msgid "Qty"
+msgstr "સંખ્યા"
+
+msgid "Qty Sold"
+msgstr "વેચાયેલી સંખ્યા"
+
+msgid "Quick add. You can edit full details later from the Customers screen."
+msgstr "ઝડપી ઉમેરો. ગ્રાહક સ્ક્રીનથી પછીથી સંપૂર્ણ વિગતો સંપાદિત કરી શકો."
+
+msgid "Quick restock"
+msgstr "ઝડપી રીસ્ટોક"
+
+msgid "Range"
+msgstr "સમયગાળો"
+
+msgid "Rate"
+msgstr "દર"
+
+msgid "Rate %"
+msgstr "દર %"
+
+msgid "Rate must be 0-100."
+msgstr "દર 0-100 હોવો જોઈએ."
+
+msgid "Rate not found."
+msgstr "દર મળ્યો નથી."
+
+msgid "Reason (optional)"
+msgstr "કારણ (વૈકલ્પિક)"
+
+msgid "Recall"
+msgstr "પાછું લાવો"
+
+msgid "Receipt"
+msgstr "રસીદ"
+
+msgid "Receive"
+msgstr "સ્વીકારો"
+
+msgid "Receive & Update Stock"
+msgstr "સ્વીકારો અને સ્ટોક અપડેટ કરો"
+
+msgid "Received"
+msgstr "મળ્યું"
+
+msgid "Recent Sales"
+msgstr "તાજેતરનું વેચાણ"
+
+msgid "Reports"
+msgstr "રિપોર્ટ"
+
+msgid "Reports Pro"
+msgstr "રિપોર્ટ પ્રો"
+
+msgid "Restaurant mode: floor plan, open tabs, split bills and kitchen tickets."
+msgstr "રેસ્ટોરન્ટ મોડ: ફ્લોર પ્લાન, ખુલ્લા ટેબ, બિલ વિભાજન અને કિચન ટિકિટ."
+
+msgid "Restore Backup"
+msgstr "બેકઅપ પુનઃસ્થાપિત કરો"
+
+msgid "Restore from Backup"
+msgstr "બેકઅપથી પુનઃસ્થાપિત કરો"
+
+msgid "Revenue"
+msgstr "આવક"
+
+msgid "Revenue by Day"
+msgstr "દિવસદીઠ આવક"
+
+msgid "Roll 58mm"
+msgstr "રોલ 58mm"
+
+msgid "Roll 80mm"
+msgstr "રોલ 80mm"
+
+msgid "Run several shops from one install: per-outlet stock, registers and sales reports."
+msgstr "એક ઇન્સ્ટોલથી અનેક દુકાનો ચલાવો: આઉટલેટદીઠ સ્ટોક, રજિસ્ટર અને વેચાણ રિપોર્ટ."
+
+msgid "SKU"
+msgstr "SKU"
+
+msgid "SKU already used."
+msgstr "SKU પહેલેથી વપરાયેલો છે."
+
+msgid "Sale #"
+msgstr "વેચાણ #"
+
+msgid "Sale %s"
+msgstr "વેચાણ %s"
+
+msgid "Sale not found."
+msgstr "વેચાણ મળ્યું નથી."
+
+msgid "Sale number prefix"
+msgstr "વેચાણ નંબર ઉપસર્ગ"
+
+msgid "Sale voided and stock restored."
+msgstr "વેચાણ રદ, સ્ટોક પાછો."
+
+msgid "Sales"
+msgstr "વેચાણ"
+
+msgid "Sales History"
+msgstr "વેચાણ ઇતિહાસ"
+
+msgid "Sales Today"
+msgstr "આજનું વેચાણ"
+
+msgid "Same priority = one rate wins: a state rate replaces the country rate. Stack rates (e.g. federal + state) with different priorities + compound."
+msgstr "સમાન પ્રાથમિકતા = એક દર જીતે: રાજ્ય દર દેશ દરની જગ્યા લે. દરો જોડવા (દા.ત. કેન્દ્ર + રાજ્ય) અલગ પ્રાથમિકતા + કંપાઉન્ડ આપો."
+
+msgid "Save Settings"
+msgstr "સેટિંગ્સ સાચવો"
+
+msgid "Save settings"
+msgstr "સેટિંગ્સ સાચવો"
+
+msgid "Scan barcode or SKU"
+msgstr "બારકોડ કે SKU સ્કેન કરો"
+
+msgid "Scan barcode or type SKU"
+msgstr "બારકોડ સ્કેન કરો કે SKU લખો"
+
+msgid "Scan barcode or type SKU, then press Enter…"
+msgstr "બારકોડ સ્કેન કરો કે SKU લખો, પછી Enter દબાવો…"
+
+msgid "Search"
+msgstr "શોધો"
+
+msgid "Search products"
+msgstr "ઉત્પાદનો શોધો"
+
+msgid "Search products…"
+msgstr "ઉત્પાદનો શોધો…"
+
+msgid "Second-screen prep queue with item states and timers for kitchens."
+msgstr "કિચન માટે આઇટમ સ્થિતિ અને ટાઇમર વાળી બીજી સ્ક્રીન કતાર."
+
+msgid "Select all"
+msgstr "બધા પસંદ કરો"
+
+msgid "Select product"
+msgstr "ઉત્પાદન પસંદ કરો"
+
+msgid "Select products/variants to print."
+msgstr "પ્રિન્ટ માટે ઉત્પાદનો/વેરિઅન્ટ પસંદ કરો."
+
+msgid "Select variant"
+msgstr "વેરિઅન્ટ પસંદ કરો"
+
+msgid "Sell and redeem plastic or digital gift cards as a payment method."
+msgstr "ચુકવણી પદ્ધતિ તરીકે પ્લાસ્ટિક કે ડિજિટલ ગિફ્ટ કાર્ડ વેચો અને વટાવો."
+
+msgid "Sell in foreign currencies; pairs with the per-country tax engine."
+msgstr "વિદેશી ચલણોમાં વેચો; દેશદીઠ કર એન્જિન સાથે જોડાય છે."
+
+msgid "Set ISO country codes (US, IN, DE, FR, GB...) + optional state (CA, MH). Priority low runs first; compound applies on top of prior taxes. Inclusive = price already contains tax."
+msgstr "ISO દેશ કોડ સેટ કરો (US, IN, DE, FR, GB...) + વૈકલ્પિક રાજ્ય (CA, MH). ઓછી પ્રાથમિકતા પહેલા ચાલે; કંપાઉન્ડ અગાઉના કર ઉપર લાગે. સમાવેશી = કિંમતમાં કર સમાવિષ્ટ."
+
+msgid "Settings"
+msgstr "સેટિંગ્સ"
+
+msgid "Settings saved."
+msgstr "સેટિંગ્સ સાચવાઈ."
+
+msgid "Sheet:"
+msgstr "શીટ:"
+
+msgid "Simple POS purchase orders not available."
+msgstr "Simple POS ખરીદ ઓર્ડર ઉપલબ્ધ નથી."
+
+msgid "Simple POS — Advanced Reports requires the free Simple POS plugin to be installed and active."
+msgstr "Simple POS — અદ્યતન રિપોર્ટ માટે મફત Simple POS પ્લગઇન ઇન્સ્ટોલ અને સક્રિય હોવું જોઈએ."
+
+msgid "Simple POS — Low-Stock Auto-PO requires the free Simple POS plugin to be installed and active."
+msgstr "Simple POS — ઓછા-સ્ટોક ઓટો-PO માટે મફત Simple POS પ્લગઇન ઇન્સ્ટોલ અને સક્રિય હોવું જોઈએ."
+
+msgid "Simple POS:"
+msgstr "Simple POS:"
+
+msgid "Simple POS: auto-PO drafted"
+msgstr "Simple POS: ઓટો-PO ડ્રાફ્ટ બન્યો"
+
+msgid "Single store-wide currency. Symbol can be overridden below."
+msgstr "સમગ્ર સ્ટોર માટે એક ચલણ. ચિહ્ન નીચે બદલી શકાય."
+
+msgid "Slug"
+msgstr "સ્લગ"
+
+msgid "Staff Roles"
+msgstr "સ્ટાફ ભૂમિકાઓ"
+
+msgid "State"
+msgstr "રાજ્ય"
+
+msgid "Status"
+msgstr "સ્થિતિ"
+
+msgid "Stock"
+msgstr "સ્ટોક"
+
+msgid "Stock adjustment delta must be numeric."
+msgstr "સ્ટોક ગોઠવણ તફાવત આંકડાકીય હોવો જોઈએ."
+
+msgid "Stock quantity"
+msgstr "સ્ટોક સંખ્યા"
+
+msgid "Stock updated."
+msgstr "સ્ટોક અપડેટ થયો."
+
+msgid "Store"
+msgstr "સ્ટોર"
+
+msgid "Store name"
+msgstr "સ્ટોરનું નામ"
+
+msgid "Subtotal"
+msgstr "પેટા-કુલ"
+
+msgid "Suggested order"
+msgstr "સૂચવેલ ઓર્ડર"
+
+msgid "Supplier"
+msgstr "સપ્લાયર"
+
+msgid "Supplier deleted."
+msgstr "સપ્લાયર કાઢી નખાયો."
+
+msgid "Supplier name required."
+msgstr "સપ્લાયરનું નામ જરૂરી છે."
+
+msgid "Supplier not found."
+msgstr "સપ્લાયર મળ્યો નથી."
+
+msgid "Supplier saved."
+msgstr "સપ્લાયર સાચવાયો."
+
+msgid "Suppliers"
+msgstr "સપ્લાયર"
+
+msgid "Symbol position"
+msgstr "ચિહ્ન સ્થાન"
+
+msgid "Symbology:"
+msgstr "પદ્ધતિ:"
+
+msgid "Table Service"
+msgstr "ટેબલ સેવા"
+
+msgid "Target multiplier"
+msgstr "લક્ષ્ય ગુણક"
+
+msgid "Tax"
+msgstr "કર"
+
+msgid "Tax Classes"
+msgstr "કર વર્ગો"
+
+msgid "Tax Rates"
+msgstr "કર દરો"
+
+msgid "Tax breakdown"
+msgstr "કર વિગત"
+
+msgid "Tax class"
+msgstr "કર વર્ગ"
+
+msgid "Tax class added."
+msgstr "કર વર્ગ ઉમેરાયો."
+
+msgid "Tax class already exists."
+msgstr "કર વર્ગ પહેલેથી અસ્તિત્વમાં છે."
+
+msgid "Tax class deleted."
+msgstr "કર વર્ગ કાઢી નખાયો."
+
+msgid "Tax class name is required."
+msgstr "કર વર્ગનું નામ જરૂરી છે."
+
+msgid "Tax country"
+msgstr "કર દેશ"
+
+msgid "Tax country is required for calculation. Configure default tax country in POS Settings."
+msgstr "ગણતરી માટે કર દેશ જરૂરી છે. POS સેટિંગ્સમાં ડિફોલ્ટ કર દેશ સેટ કરો."
+
+msgid "Tax country/state"
+msgstr "કર દેશ/રાજ્ય"
+
+msgid "Tax defaults"
+msgstr "કર ડિફોલ્ટ"
+
+msgid "Tax inclusive pricing"
+msgstr "સમાવેશી કર કિંમત"
+
+msgid "Tax rate deleted."
+msgstr "કર દર કાઢી નખાયો."
+
+msgid "Tax rate saved."
+msgstr "કર દર સાચવાયો."
+
+msgid "Tax rounding"
+msgstr "કર પૂર્ણાંક"
+
+msgid "Tax summary"
+msgstr "કર સારાંશ"
+
+msgid "Taxes"
+msgstr "કર"
+
+msgid "Taxes — per-country classes & rates"
+msgstr "કર — દેશદીઠ વર્ગો અને દરો"
+
+msgid "Terminal"
+msgstr "ટર્મિનલ"
+
+msgid "Terminal keeps selling without internet and syncs sales when back online."
+msgstr "ટર્મિનલ ઇન્ટરનેટ વિના વેચતું રહે છે અને ઑનલાઇન આવ્યે વેચાણ સિંક કરે છે."
+
+msgid "This month"
+msgstr "આ મહિને"
+
+msgid "Threshold"
+msgstr "મર્યાદા"
+
+msgid "Time"
+msgstr "સમય"
+
+msgid "Time Clock & Shifts"
+msgstr "ટાઇમ ઘડિયાળ અને શિફ્ટ"
+
+msgid "To"
+msgstr "સુધી"
+
+msgid "Today"
+msgstr "આજે"
+
+msgid "Today's Revenue"
+msgstr "આજની આવક"
+
+msgid "Top Products"
+msgstr "ટોચના ઉત્પાદનો"
+
+msgid "Total"
+msgstr "કુલ"
+
+msgid "Total cost"
+msgstr "કુલ પડતર"
+
+msgid "Track stock"
+msgstr "સ્ટોક ટ્રેક કરો"
+
+msgid "Track stock for this product"
+msgstr "આ ઉત્પાદનનો સ્ટોક ટ્રેક કરો"
+
+msgid "Type"
+msgstr "પ્રકાર"
+
+msgid "US-CA 7.25% Standard | IN 18% GST | DE 19% VAT | FR reduced 5.5% | Zero * 0%"
+msgstr "US-CA 7.25% સ્ટાન્ડર્ડ | IN 18% GST | DE 19% VAT | FR ઘટાડેલ 5.5% | શૂન્ય * 0%"
+
+msgid "USB ESC/POS (WebUSB)"
+msgstr "USB ESC/POS (WebUSB)"
+
+msgid "Uninstall"
+msgstr "અનઇન્સ્ટોલ"
+
+msgid "Units suggested"
+msgstr "સૂચવેલા નંગ"
+
+msgid "Unknown"
+msgstr "અજ્ઞાત"
+
+msgid "Unknown report type."
+msgstr "અજ્ઞાત રિપોર્ટ પ્રકાર."
+
+msgid "Update"
+msgstr "અપડેટ કરો"
+
+msgid "Update Customer"
+msgstr "ગ્રાહક અપડેટ કરો"
+
+msgid "Update Product"
+msgstr "ઉત્પાદન અપડેટ કરો"
+
+msgid "Upload a JSON backup file to restore. This will replace existing data with the same IDs."
+msgstr "પુનઃસ્થાપિત કરવા JSON બેકઅપ ફાઇલ અપલોડ કરો. આ સમાન ID વાળો હાલનો ડેટા બદલશે."
+
+msgid "Use this"
+msgstr "આ વાપરો"
+
+msgid "Uses JsBarcode (CODE128) in print view. For EAN13 ensure 13-digit numeric. QR fallback."
+msgstr "પ્રિન્ટ વ્યૂમાં JsBarcode (CODE128) વપરાય છે. EAN13 માટે 13-અંકી આંકડાકીય ખાતરી કરો. QR વિકલ્પ."
+
+msgid "Value e.g. M"
+msgstr "કિંમત દા.ત. M"
+
+msgid "Value e.g. Red"
+msgstr "કિંમત દા.ત. લાલ"
+
+msgid "Variant"
+msgstr "વેરિઅન્ટ"
+
+msgid "Variant ID"
+msgstr "વેરિઅન્ટ ID"
+
+msgid "Variant deleted."
+msgstr "વેરિઅન્ટ કાઢી નખાયું."
+
+msgid "Variant not available."
+msgstr "વેરિઅન્ટ ઉપલબ્ધ નથી."
+
+msgid "Variant not found."
+msgstr "વેરિઅન્ટ મળ્યું નથી."
+
+msgid "Variant saved."
+msgstr "વેરિઅન્ટ સાચવાયું."
+
+msgid "Variants"
+msgstr "વેરિઅન્ટ"
+
+msgid "Version"
+msgstr "આવૃત્તિ"
+
+msgid "View"
+msgstr "જુઓ"
+
+msgid "View add-on"
+msgstr "ઍડ-ઑન જુઓ"
+
+msgid "View products"
+msgstr "ઉત્પાદનો જુઓ"
+
+msgid "View purchase orders"
+msgstr "ખરીદ ઓર્ડર જુઓ"
+
+msgid "Void Last Sale"
+msgstr "છેલ્લું વેચાણ રદ કરો"
+
+msgid "Void Sale"
+msgstr "વેચાણ રદ કરો"
+
+msgid "Void This Sale"
+msgstr "આ વેચાણ રદ કરો"
+
+msgid "Void this sale and restore stock? This cannot be undone."
+msgstr "આ વેચાણ રદ કરી સ્ટોક પાછો લાવવો? આ પાછું વાળી શકાશે નહીં."
+
+msgid "Voided"
+msgstr "રદ કરેલું"
+
+msgid "Walk-in"
+msgstr "વોક-ઇન"
+
+msgid "Walk-in customer"
+msgstr "વોક-ઇન ગ્રાહક"
+
+msgid "We will seed sensible starting categories, taxes and sample products for your business. You can change everything later in Settings."
+msgstr "અમે તમારા વ્યવસાય માટે યોગ્ય શરૂઆતની શ્રેણીઓ, કર અને નમૂના ઉત્પાદનો ભરીશું. પછીથી સેટિંગ્સમાં બધું બદલી શકો."
+
+msgid "X / Z summary"
+msgstr "X / Z સારાંશ"
+
+msgid "X/Z summaries, hourly heatmap, payment mix, product mix, tax summary and CSV exports."
+msgstr "X/Z સારાંશ, કલાકદીઠ હીટમેપ, ચુકવણી મિશ્રણ, ઉત્પાદન મિશ્રણ, કર સારાંશ અને CSV નિકાસ."
+
+msgid "You are not allowed to export reports."
+msgstr "તમને રિપોર્ટ નિકાસની મંજૂરી નથી."
+
+msgid "You are not allowed to manage add-ons."
+msgstr "તમને ઍડ-ઑન સંચાલનની મંજૂરી નથી."
+
+msgid "You are not allowed to manage purchase orders."
+msgstr "તમને ખરીદ ઓર્ડર સંચાલનની મંજૂરી નથી."
+
+msgid "You are not allowed to view reports."
+msgstr "તમને રિપોર્ટ જોવાની મંજૂરી નથી."
+
+msgid "You do not have permission to do this."
+msgstr "તમને આ કરવાની પરવાનગી નથી."
+
+msgid "You do not have permission to perform this action."
+msgstr "તમને આ ક્રિયા કરવાની પરવાનગી નથી."
+
+msgid "You do not have permission to use the POS terminal."
+msgstr "તમને POS ટર્મિનલ વાપરવાની પરવાનગી નથી."
+
+msgid "e.g. 10 or -2"
+msgstr "દા.ત. 10 કે -2"
+
+msgid "e.g. 27AABCT1234R1ZX"
+msgstr "દા.ત. 27AABCT1234R1ZX"
+
+msgid "e.g. CA, MH"
+msgstr "દા.ત. CA, MH"
+
+msgid "e.g. Standard"
+msgstr "દા.ત. સ્ટાન્ડર્ડ"
+
+msgid "empty = parent"
+msgstr "ખાલી = પેરેન્ટ"
+
+msgid "free-form attributes"
+msgstr "મુક્ત-સ્વરૂપ વિશેષતાઓ"
+
+msgid "full POS + reports, voids, taxes, POs"
+msgstr "સંપૂર્ણ POS + રિપોર્ટ, રદ, કર, PO"
+
+msgid "not tracked"
+msgstr "ટ્રેક નથી"
+
+msgid "remaining %d"
+msgstr "બાકી %d"
+
+msgid "terminal + view sales"
+msgstr "ટર્મિનલ + વેચાણ જુઓ"
+
+msgid "variant"
+msgstr "વેરિઅન્ટ"
+
+msgid "you@store.com"
+msgstr "you@store.com"
+
+msgid "— none —"
+msgstr "— કંઈ નહીં —"
+
+msgid "0"
+msgstr ""
+
+msgid "Accept foreign-currency tender with editable exchange rates."
+msgstr ""
+
+msgid "Add Outlet"
+msgstr ""
+
+msgid "Add Table"
+msgstr ""
+
+msgid "Add to order"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "All outlets"
+msgstr ""
+
+msgid "All queued sales (all terminals)"
+msgstr ""
+
+msgid "At checkout, customers can redeem points for a fixed-amount discount."
+msgstr ""
+
+msgid "Balance"
+msgstr ""
+
+msgid "Balance topped up."
+msgstr ""
+
+msgid "Bump to Ready"
+msgstr ""
+
+msgid "By cashier"
+msgstr ""
+
+msgid "Cards"
+msgstr ""
+
+msgid "Cashier clock-in/out with shift reports."
+msgstr ""
+
+msgid "Clock in"
+msgstr ""
+
+msgid "Clock out"
+msgstr ""
+
+msgid "Clock-out recorded (%d min)."
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+msgid "Code and a positive amount are required."
+msgstr ""
+
+msgid "Could not place the order. Please try again."
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Create Card"
+msgstr ""
+
+msgid "Currencies"
+msgstr ""
+
+msgid "Currency code"
+msgstr ""
+
+msgid "Currency value per point"
+msgstr ""
+
+msgid "Customer Display"
+msgstr ""
+
+msgid "Customers earn points on every sale based on the points-per-currency rate."
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Default Outlet"
+msgstr ""
+
+msgid "Delete this item?"
+msgstr ""
+
+msgid "Delete this outlet?"
+msgstr ""
+
+msgid "Delete this rate?"
+msgstr ""
+
+msgid "Delivery address"
+msgstr ""
+
+msgid "Duration"
+msgstr ""
+
+msgid "Each sale is tagged with its outlet. Stock stays global across outlets."
+msgstr ""
+
+msgid "Earn and redeem loyalty points on purchases."
+msgstr ""
+
+msgid "Edit Outlet"
+msgstr ""
+
+msgid "Edit Table"
+msgstr ""
+
+msgid "Enable loyalty points"
+msgstr ""
+
+msgid "Enable offline sale queueing"
+msgstr ""
+
+msgid "Enable the loyalty integration in POS → Add-ons to activate."
+msgstr ""
+
+msgid "Floor"
+msgstr ""
+
+msgid "Gift Card"
+msgstr ""
+
+msgid "Gift card code"
+msgstr ""
+
+msgid "Gift card created."
+msgstr ""
+
+msgid "How it works"
+msgstr ""
+
+msgid "Incoming orders appear here. Load them at the terminal to process via normal checkout (stock is deducted at that point)."
+msgstr ""
+
+msgid "Initial balance"
+msgstr ""
+
+msgid "Invalid or inactive gift card code."
+msgstr ""
+
+msgid "Kitchen Display"
+msgstr ""
+
+msgid "Loading…"
+msgstr ""
+
+msgid "Loyalty"
+msgstr ""
+
+msgid "Loyalty Points"
+msgstr ""
+
+msgid "Max discount (% of subtotal)"
+msgstr ""
+
+msgid "Minimum points to redeem"
+msgstr ""
+
+msgid "Multi-Currency"
+msgstr ""
+
+msgid "Name is required."
+msgstr ""
+
+msgid "New sale items appear here automatically. Tap a card to bump the whole order to Ready."
+msgstr ""
+
+msgid "No gift cards yet."
+msgstr ""
+
+msgid "No online orders yet."
+msgstr ""
+
+msgid "No open shift found."
+msgstr ""
+
+msgid "No outlets yet."
+msgstr ""
+
+msgid "No rates yet."
+msgstr ""
+
+msgid "No shifts in this range."
+msgstr ""
+
+msgid "No shifts recorded."
+msgstr ""
+
+msgid "No tables."
+msgstr ""
+
+msgid "Nothing here."
+msgstr ""
+
+msgid "Nothing left to pay with the gift card."
+msgstr ""
+
+msgid "Offline Queue"
+msgstr ""
+
+msgid "Online Ordering"
+msgstr ""
+
+msgid "Online Orders"
+msgstr ""
+
+msgid "Optional"
+msgstr ""
+
+msgid "Order #"
+msgstr ""
+
+msgid "Order bumped."
+msgstr ""
+
+msgid "Order received — we will call you to confirm."
+msgstr ""
+
+msgid "Outlet"
+msgstr ""
+
+msgid "Outlet deleted."
+msgstr ""
+
+msgid "Outlet name required."
+msgstr ""
+
+msgid "Outlets"
+msgstr ""
+
+msgid "Outlets with per-sale tagging and outlet-filtered sales history."
+msgstr ""
+
+msgid "Paid in"
+msgstr ""
+
+msgid "Place order"
+msgstr ""
+
+msgid "Placed"
+msgstr ""
+
+msgid "Points are stored in a per-customer ledger. Voids reverse the earned points."
+msgstr ""
+
+msgid "Points per currency unit"
+msgstr ""
+
+msgid "Preselected on the terminal"
+msgstr ""
+
+msgid "Public storefront that captures orders for the terminal."
+msgstr ""
+
+msgid "Queued sales are stored in the browser&#8217;s localStorage and sync automatically when connectivity returns."
+msgstr ""
+
+msgid "Queued sales live in each browser&#8217;s localStorage. Only that browser can sync or inspect them; server-side visibility is limited until sync completes."
+msgstr ""
+
+msgid "Rate deleted."
+msgstr ""
+
+msgid "Rate saved."
+msgstr ""
+
+msgid "Rate to base"
+msgstr ""
+
+msgid "Rates"
+msgstr ""
+
+msgid "Rates are expressed as 1 foreign unit = X %s. The terminal shows the foreign amount and records sales in the base currency."
+msgstr ""
+
+msgid "Ready"
+msgstr ""
+
+msgid "Ready for your order"
+msgstr ""
+
+msgid "Recent shifts"
+msgstr ""
+
+msgid "Redeem loyalty points"
+msgstr ""
+
+msgid "Restaurant kitchen order view with item-level prep status."
+msgstr ""
+
+msgid "Restaurant-style table management with active orders."
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Saved."
+msgstr ""
+
+msgid "Seats"
+msgstr ""
+
+msgid "Secondary-screen customer view for the POS terminal."
+msgstr ""
+
+msgid "Sell, top up and redeem gift card codes at checkout."
+msgstr ""
+
+msgid "Shifts"
+msgstr ""
+
+msgid "Simple POS — Customer Display requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Gift Cards requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Kitchen Display requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Loyalty requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Multi-Currency requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Multi-Outlet requires the free Simple POS plugin to be installed and active."
+msgstr ""
+
+msgid "Simple POS — Offline Mode requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Online Ordering requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Table Service requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Simple POS — Time Clock requires the free Simple POS plugin."
+msgstr ""
+
+msgid "Sync"
+msgstr ""
+
+msgid "Table"
+msgstr ""
+
+msgid "Table deleted."
+msgstr ""
+
+msgid "Tables"
+msgstr ""
+
+msgid "The server deduplicates via a client key, so the same sale can never be created twice."
+msgstr ""
+
+msgid "Time Clock"
+msgstr ""
+
+msgid "To prepare"
+msgstr ""
+
+msgid "Toggle offline sale queueing with an admin dashboard."
+msgstr ""
+
+msgid "Toggling this flag does not clear already-queued sales in the browser."
+msgstr ""
+
+msgid "Top up"
+msgstr ""
+
+msgid "Total hours"
+msgstr ""
+
+msgid "Units of base (%s) per 1 unit"
+msgstr ""
+
+msgid "Update Outlet"
+msgstr ""
+
+msgid "Updated"
+msgstr ""
+
+msgid "Updated."
+msgstr ""
+
+msgid "Use a 3-letter currency code and a positive rate."
+msgstr ""
+
+msgid "Void this sale and restore stock?"
+msgstr ""
+
+msgid "When enabled, the terminal queues sales if the browser loses its network connection."
+msgstr ""
+
+msgid "While offline, stock is NOT decremented server-side. Expect stock drift until sync completes."
+msgstr ""
+
+msgid "You are clocked in."
+msgstr ""
+
+msgid "You are not allowed to access the kitchen display."
+msgstr ""
+
+msgid "You are not allowed to bump orders."
+msgstr ""
+
+msgid "You are not allowed to manage currencies."
+msgstr ""
+
+msgid "You are not allowed to manage gift cards."
+msgstr ""
+
+msgid "You are not allowed to manage loyalty settings."
+msgstr ""
+
+msgid "You are not allowed to manage offline settings."
+msgstr ""
+
+msgid "You are not allowed to manage outlets."
+msgstr ""
+
+msgid "You are not allowed to manage tables."
+msgstr ""
+
+msgid "You are not allowed to update orders."
+msgstr ""
+
+msgid "You are not allowed to view online orders."
+msgstr ""
+
+msgid "You are not allowed to view shifts."
+msgstr ""
+
+msgid "Your order"
+msgstr ""
+
+msgid "Your order is empty."
+msgstr ""
+
+msgid "Logs every completed sale. Fork me into your own add-on."
+msgstr ""
+

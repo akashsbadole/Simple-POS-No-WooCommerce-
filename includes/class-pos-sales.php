@@ -116,7 +116,22 @@ class Simple_POS_Sales {
 		$change_due     = max( 0, Simple_POS_Tax::pos_round( $amount_paid - $total, 2 ) );
 		$customer_id    = ! empty( $cart_data['customer_id'] ) ? (int) $cart_data['customer_id'] : null;
 		$note           = isset( $cart_data['note'] ) ? sanitize_textarea_field( $cart_data['note'] ) : '';
-		$currency_code  = isset( $settings['currency_code'] ) ? $settings['currency_code'] : 'USD';
+		$currency_code  = isset( $cart_data['currency_code'] ) && '' !== trim( (string) $cart_data['currency_code'] ) ? strtoupper( sanitize_text_field( (string) $cart_data['currency_code'] ) ) : ( isset( $settings['currency_code'] ) ? $settings['currency_code'] : 'USD' );
+		$exchange_rate  = isset( $cart_data['exchange_rate'] ) ? max( 0.000001, (float) $cart_data['exchange_rate'] ) : 1;
+		// Outlet / table tagging (multi-outlet & table-service add-ons).
+		$outlet_id = ! empty( $cart_data['outlet_id'] ) ? (int) $cart_data['outlet_id'] : null;
+		$table_id  = ! empty( $cart_data['table_id'] ) ? (int) $cart_data['table_id'] : null;
+		// Idempotency key for retried/offline-synced checkouts.
+		$client_key = isset( $cart_data['client_key'] ) && '' !== trim( (string) $cart_data['client_key'] ) ? substr( sanitize_key( (string) $cart_data['client_key'] ), 0, 64 ) : null;
+
+		/**
+		 * Let add-ons veto a checkout (e.g. gift-card balance check)
+		 * after totals are known. Return WP_Error to abort the sale.
+		 */
+		$validation = apply_filters( 'simple_pos_validate_checkout', true, $cart_data, array( 'subtotal' => $subtotal, 'discount' => $discount_amount, 'tax' => $tax_total, 'total' => $total ) );
+		if ( is_wp_error( $validation ) ) {
+			return $validation;
+		}
 
 		return Simple_POS_DB::transaction(
 			function () use (
@@ -135,11 +150,27 @@ class Simple_POS_Sales {
 				$tax_country,
 				$tax_state,
 				$tax_breakdown,
+				$outlet_id,
+				$table_id,
+				$client_key,
+				$cart_data,
 				$currency_code,
+				$exchange_rate,
 				$calc
 			) {
 				global $wpdb;
 				$settings = Simple_POS_Settings::get_all();
+				$sales_table = Simple_POS_DB::table( 'sales' );
+				$items_table = Simple_POS_DB::table( 'sale_items' );
+				// Idempotent retry: a client_key already stored means this
+				// exact checkout was recorded (e.g. offline sync retried
+				// after a timeout) — return the original sale, no duplicate.
+				if ( null !== $client_key ) {
+					$existing_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$sales_table} WHERE client_key = %s", $client_key ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					if ( $existing_id > 0 ) {
+						return $existing_id;
+					}
+				}
 				foreach ( $line_items as $item ) {
 					if ( ! $item['track_stock'] ) {
 						continue;
@@ -150,8 +181,6 @@ class Simple_POS_Sales {
 						return new WP_Error( 'pos_insufficient_stock', sprintf( __( 'Not enough stock for "%s".', 'wp-pos-plugin' ), $item['product_name'] ) );
 					}
 				}
-				$sales_table = Simple_POS_DB::table( 'sales' );
-				$items_table = Simple_POS_DB::table( 'sale_items' );
 				$sale_number = Simple_POS_DB::next_sale_number();
 				$inserted    = $wpdb->insert(
 					$sales_table,
@@ -174,7 +203,10 @@ class Simple_POS_Sales {
 						'tax_state'       => $tax_state,
 						'tax_breakdown'   => wp_json_encode( $tax_breakdown ),
 						'currency_code'   => $currency_code,
-						'exchange_rate'   => 1,
+						'exchange_rate'   => $exchange_rate,
+						'outlet_id'       => $outlet_id,
+						'table_id'        => $table_id,
+						'client_key'      => $client_key,
 						'created_at'      => current_time( 'mysql' ),
 					)
 				);
@@ -207,7 +239,7 @@ class Simple_POS_Sales {
 								'tax_amount'       => $line_calc['tax_amount'],
 								'tax_class_id'     => $item['tax_class_id'],
 								'tax_breakdown'    => wp_json_encode( $line_calc['breakdown'] ),
-								'tax_rate_applied' => isset( $line_calc['breakdown'][0]['rate'] ) ? $line_calc['breakdown'][0]['rate'] : 0,
+								'tax_rate_applied' => Simple_POS_Tax::breakdown_rate_total( $line_calc['breakdown'] ?? array() ),
 								'customer_type'   => $customer_type,
 								'line_total'       => $line_calc['gross'],
 							)
@@ -230,8 +262,9 @@ class Simple_POS_Sales {
 				/**
 				 * Fires after a sale, its line items and stock movements are
 				 * stored. $calc holds the full totals/tax breakdown.
+				 * $cart_data (4th arg) carries payment/outlet/gift context.
 				 */
-				do_action( 'simple_pos_sale_created', $sale_id, $calc, $line_items );
+				do_action( 'simple_pos_sale_created', $sale_id, $calc, $line_items, $cart_data );
 
 				return $sale_id;
 			}
@@ -313,6 +346,12 @@ class Simple_POS_Sales {
 
 				Simple_POS_Reports::flush_cache();
 
+				/**
+				 * Fires after a sale is voided and its stock restored.
+				 * Lets add-ons reverse side effects (loyalty points, etc).
+				 */
+				do_action( 'simple_pos_sale_voided', $sale_id );
+
 				return true;
 			}
 		);
@@ -349,6 +388,7 @@ class Simple_POS_Sales {
 	 *     @type string $date_from  Y-m-d.
 	 *     @type string $date_to    Y-m-d.
 	 *     @type int    $cashier_id Filter by cashier.
+	 *     @type int    $outlet_id  Filter by outlet (multi-outlet add-on).
 	 *     @type string $status     completed|voided|any. Default any.
 	 *     @type int    $per_page   Default 20.
 	 *     @type int    $page       Default 1.
@@ -362,6 +402,7 @@ class Simple_POS_Sales {
 			'date_from'  => '',
 			'date_to'    => '',
 			'cashier_id' => 0,
+			'outlet_id'  => 0,
 			'status'     => 'any',
 			'per_page'   => 20,
 			'page'       => 1,
@@ -383,6 +424,10 @@ class Simple_POS_Sales {
 		if ( ! empty( $args['cashier_id'] ) ) {
 			$where[]  = 'cashier_id = %d';
 			$params[] = (int) $args['cashier_id'];
+		}
+		if ( ! empty( $args['outlet_id'] ) ) {
+			$where[]  = 'outlet_id = %d';
+			$params[] = (int) $args['outlet_id'];
 		}
 		if ( 'any' !== $args['status'] ) {
 			$where[]  = 'status = %s';

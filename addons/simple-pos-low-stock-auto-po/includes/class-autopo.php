@@ -48,20 +48,48 @@ class SAPO_AutoPO {
 	}
 
 	/**
-	 * Active, stock-tracked products at or below their threshold.
+	 * Active, stock-tracked products AND variants at or below their
+	 * threshold. Variant rows carry product_id (parent) + variant_id and
+	 * a merged display name; plain rows have variant_id 0.
 	 *
 	 * @return object[]
 	 */
 	public static function find_low_stock() {
 		global $wpdb;
 		$products = Simple_POS_DB::table( 'products' );
-		return $wpdb->get_results(
-			"SELECT id, name, sku, stock_qty, low_stock_threshold, cost_price
+		$rows = $wpdb->get_results(
+			"SELECT id, id AS product_id, 0 AS variant_id, 0 AS is_variant, name, sku, stock_qty, low_stock_threshold, cost_price
 			 FROM {$products}
 			 WHERE status = 'active' AND track_stock = 1 AND stock_qty <= low_stock_threshold
 			 ORDER BY name ASC
 			 LIMIT 200" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		);
+		if ( ! class_exists( 'Simple_POS_Variants' ) ) {
+			return $rows;
+		}
+		$variants_table = Simple_POS_DB::table( 'product_variants' );
+		$vars = $wpdb->get_results(
+			"SELECT v.id AS variant_id, v.parent_product_id AS product_id, v.sku, v.stock_qty,
+			        v.low_stock_threshold, v.cost_price, v.attributes, p.name AS parent_name,
+			        p.cost_price AS parent_cost
+			 FROM {$variants_table} v
+			 INNER JOIN {$products} p ON p.id = v.parent_product_id
+			 WHERE v.status = 'active' AND p.status = 'active'
+			   AND v.track_stock = 1 AND v.stock_qty <= v.low_stock_threshold
+			 ORDER BY p.name ASC
+			 LIMIT 200" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		);
+		foreach ( (array) $vars as $v ) {
+			$v->id                 = (int) $v->product_id;
+			$v->variant_id         = (int) $v->variant_id;
+			$v->is_variant         = 1;
+			$v->name               = $v->parent_name . ' — ' . Simple_POS_Variants::variant_label( $v );
+			if ( null === $v->cost_price ) {
+				$v->cost_price = $v->parent_cost;
+			}
+			$rows[] = $v;
+		}
+		return $rows;
 	}
 
 	/**
@@ -85,6 +113,30 @@ class SAPO_AutoPO {
 			"SELECT DISTINCT pi.product_id
 			 FROM {$pi} pi INNER JOIN {$po} po ON po.id = pi.po_id
 			 WHERE po.status IN ('draft','ordered','partial') AND pi.product_id IN ({$ids})" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		);
+		return array_map( 'intval', (array) $rows );
+	}
+
+	/**
+	 * Variant ids among the given ones that already sit on an open PO.
+	 *
+	 * @param int[] $variant_ids.
+	 * @return int[]
+	 */
+	public static function on_open_po_variants( $variant_ids ) {
+		global $wpdb;
+		$variant_ids = array_map( 'absint', (array) $variant_ids );
+		$variant_ids = array_filter( $variant_ids );
+		if ( empty( $variant_ids ) ) {
+			return array();
+		}
+		$po = Simple_POS_DB::table( 'purchase_orders' );
+		$pi = Simple_POS_DB::table( 'po_items' );
+		$ids = implode( ',', $variant_ids );
+		$rows = $wpdb->get_col(
+			"SELECT DISTINCT pi.variant_id
+			 FROM {$pi} pi INNER JOIN {$po} po ON po.id = pi.po_id
+			 WHERE po.status IN ('draft','ordered','partial') AND pi.variant_id IN ({$ids})" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		);
 		return array_map( 'intval', (array) $rows );
 	}
@@ -115,19 +167,30 @@ class SAPO_AutoPO {
 			return array( 'created' => 0, 'items' => 0, 'skipped' => 0 );
 		}
 
-		$open    = self::on_open_po( wp_list_pluck( $low, 'id' ) );
-		$items   = array();
-		$skipped = 0;
+		$open      = self::on_open_po( wp_list_pluck( $low, 'product_id' ) );
+		$open_vars = self::on_open_po_variants( wp_list_pluck( $low, 'variant_id' ) );
+		$items     = array();
+		$skipped   = 0;
 		foreach ( $low as $p ) {
-			if ( in_array( (int) $p->id, $open, true ) ) {
+			$is_variant = ! empty( $p->variant_id );
+			if ( $is_variant ) {
+				if ( in_array( (int) $p->variant_id, $open_vars, true ) ) {
+					$skipped++;
+					continue;
+				}
+			} elseif ( in_array( (int) $p->product_id, $open, true ) ) {
 				$skipped++;
 				continue;
 			}
-			$items[] = array(
-				'product_id' => (int) $p->id,
+			$item = array(
+				'product_id' => (int) $p->product_id,
 				'qty'        => self::suggest_qty( $p->stock_qty, $p->low_stock_threshold, $settings['multiplier'], $settings['min_qty'] ),
 				'cost_price' => (float) $p->cost_price,
 			);
+			if ( $is_variant ) {
+				$item['variant_id'] = (int) $p->variant_id;
+			}
+			$items[] = $item;
 		}
 
 		self::touch_last_run();

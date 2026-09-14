@@ -220,76 +220,209 @@ class Simple_POS_Tax {
 		return $list;
 	}
 
+	/**
+	 * Decimal-correct half-up rounding for money.
+	 *
+	 * PHP's round() works on the binary float, so exact-half decimal
+	 * values (5.715, 2.675, 0.855 …) are stored a hair below the half
+	 * and wrongly round down, silently losing paise. Rounding on the
+	 * decimal expansion instead makes 5.715 → 5.72, every time.
+	 *
+	 * @param float $value
+	 * @param int   $decimals
+	 * @return float
+	 */
 	public static function pos_round( $value, $decimals = 2 ) {
-		return round( (float) $value, $decimals, PHP_ROUND_HALF_UP );
+		$decimals = max( 0, (int) $decimals );
+		$neg      = (float) $value < 0 ? -1 : 1;
+		// 12 decimal places: money-scale inputs carry at most ~8
+		// significant decimals, so binary float dust (which lives
+		// ~15dp out) can never flip the half-up decision.
+		$expanded = sprintf( '%.12F', abs( (float) $value ) );
+		$dot      = strpos( $expanded, '.' );
+		$int_part = false === $dot ? $expanded : substr( $expanded, 0, $dot );
+		$frac     = false === $dot ? '' : substr( $expanded, $dot + 1 );
+		$frac     = str_pad( $frac, $decimals + 1, '0' );
+		$keep     = 0 === $decimals ? '' : substr( $frac, 0, $decimals );
+		$next     = (int) substr( $frac, $decimals, 1 );
+		if ( $next >= 5 ) {
+			if ( '' === $keep ) {
+				// decimals = 0: rounding up from x.5+ means +1 on the integer.
+				$int_part = (string) ( (int) $int_part + 1 );
+			} else {
+				$keep  = str_pad( (string) ( (int) $keep + 1 ), $decimals, '0', STR_PAD_LEFT );
+				$carry = strlen( $keep ) > $decimals;
+				if ( $carry ) {
+					$keep     = str_repeat( '0', $decimals );
+					$int_part = (string) ( (int) $int_part + 1 );
+				}
+			}
+		}
+		$result = 0 === $decimals ? $int_part : ( $int_part . '.' . $keep );
+		$float  = (float) $result;
+		return 0.0 === $float ? 0.0 : $neg * $float;
 	}
 
-	private static function apply_india_gst_split( $breakdown, $country, $state ) {
+	/**
+	 * A tax component computed from its taxable base with paise-exact
+	 * half-up rounding (e.g. 9% of ₹63.50 → ₹5.72, never ₹5.71).
+	 *
+	 * @param float $base_rupees Taxable base in rupees.
+	 * @param float $rate_pct    Component rate, e.g. 9 for 9%.
+	 * @return float Component amount in rupees, 2dp.
+	 */
+	public static function component_from_base( $base_rupees, $rate_pct ) {
+		$base_paise = (int) self::pos_round( (float) $base_rupees * 100, 0 );
+		$comp_paise = (int) self::pos_round( $base_paise * (float) $rate_pct / 100, 0 );
+		// Normalize through pos_round so the return is always a float
+		// (int/int with an even division would otherwise yield an int).
+		return self::pos_round( $comp_paise / 100, 2 );
+	}
+
+	/**
+	 * Tax class for a cart line: the variant's override when set,
+	 * otherwise the parent product's class. Single source of truth —
+	 * checkout, previews and scanner lookups must all agree.
+	 *
+	 * @param int $product_id
+	 * @param int $variant_id 0 = no variant.
+	 * @return int Tax class ID (0 = untaxed).
+	 */
+	public static function resolve_line_tax_class( $product_id, $variant_id = 0 ) {
+		$product = $product_id ? Simple_POS_Products::get_product( $product_id ) : null;
+		$class   = $product ? (int) ( $product->tax_class_id ?: 0 ) : 0;
+		if ( $variant_id && class_exists( 'Simple_POS_Variants' ) ) {
+			$variant = Simple_POS_Variants::get_variant( $variant_id );
+			if ( $variant && (int) $variant->parent_product_id === (int) $product_id && ! empty( $variant->tax_class_id ) ) {
+				$class = (int) $variant->tax_class_id;
+			}
+		}
+		return $class;
+	}
+
+	/**
+	 * Combined rate of a (possibly GST-split) breakdown, e.g. 9 + 9 = 18.
+	 * Used for the stored per-line applied rate.
+	 *
+	 * @param array $breakdown Breakdown entries with 'rate' keys.
+	 * @return float
+	 */
+	public static function breakdown_rate_total( $breakdown ) {
+		$sum = 0.0;
+		foreach ( (array) $breakdown as $b ) {
+			if ( isset( $b['rate'] ) && is_numeric( $b['rate'] ) ) {
+				$sum += (float) $b['rate'];
+			}
+		}
+		return self::pos_round( $sum, 4 );
+	}
+
+	/**
+	 * Split an Indian GST rate into CGST + SGST (intrastate) or IGST.
+	 *
+	 * Each half is derived from the component's taxable base with
+	 * paise-exact rounding — never by halving the already-rounded full
+	 * amount (that loses a paise whenever the full amount is odd, e.g.
+	 * 18% of ₹63.50 = ₹11.43 → 5.71 + 5.72 instead of 5.72 + 5.72).
+	 * Split components are therefore always line-rounded to 2dp, even
+	 * in per-order rounding mode (GST law rounds per line item).
+	 *
+	 * @param array  $breakdown Breakdown entries (each carries 'base').
+	 * @param string $country
+	 * @param string $state
+	 * @param array|null $settings Settings override (uses live settings when null).
+	 * @return array { breakdown, split, split_exclusive }
+	 */
+	private static function apply_india_gst_split( $breakdown, $country, $state, $settings = null ) {
+		$none = array( 'breakdown' => $breakdown, 'split' => false, 'split_exclusive' => false );
 		if ( 'IN' !== strtoupper( $country ) ) {
-			return $breakdown;
+			return $none;
 		}
-		
-		// Use sale state, fallback to store state if empty.
-		$sale_state = strtoupper( trim( $state ) );
-		if ( '' === $sale_state ) {
+
+		// Seller = store state; buyer = sale state (fallback to seller).
+		// Intrastate (CGST+SGST) needs buyer and seller in the SAME state;
+		// anything cross-state is IGST. Amounts are identical either way —
+		// only the labels (and thus the invoice) differ.
+		if ( null === $settings ) {
 			$settings = Simple_POS_Settings::get_all();
-			$sale_state = strtoupper( isset( $settings['tax_state'] ) ? $settings['tax_state'] : '' );
 		}
-		
-		$out = array();
+		$seller_state = strtoupper( trim( (string) ( isset( $settings['tax_state'] ) ? $settings['tax_state'] : '' ) ) );
+		$buyer_state  = strtoupper( trim( (string) $state ) );
+		if ( '' === $buyer_state ) {
+			$buyer_state = $seller_state;
+		}
+
+		$out             = array();
+		$split           = false;
+		$split_exclusive = false;
 		foreach ( $breakdown as $b ) {
 			if ( ! empty( $b['gst_split'] ) ) {
 				$rate_state = strtoupper( trim( $b['state_code'] ?? '' ) );
-				
+
 				// Determine if intrastate (same state) or interstate.
-				$is_intrastate = false;
-				if ( '' !== $rate_state && '' !== $sale_state ) {
-					// Both rate and sale have specific states - compare them.
-					$is_intrastate = ( $rate_state === $sale_state );
-				} elseif ( '' === $rate_state ) {
-					// Rate applies to all states in India (country-level rate).
-					// Treat as intrastate if sale state matches any state-specific rate.
-					// Otherwise, treat as interstate (IGST).
-					$is_intrastate = ( '' !== $sale_state );
+				$seller_agrees = ( '' === $seller_state || $seller_state === $buyer_state );
+				if ( '' !== $rate_state ) {
+					// State-specific rate: applies to this buyer and the
+					// seller must be local too (unknown seller = assume local).
+					$is_intrastate = ( $rate_state === $buyer_state ) && $seller_agrees;
+				} else {
+					// Country-level rate: intrastate when buyer and seller agree.
+					$is_intrastate = ( '' !== $buyer_state ) && $seller_agrees;
 				}
-				// If sale_state is empty but rate has state_code, treat as interstate.
-				
+
 				if ( $is_intrastate ) {
-					// Intrastate: Split into CGST + SGST (50/50).
-					$half = self::pos_round( $b['amount'] / 2, 2 );
-					$remainder = self::pos_round( $b['amount'] - 2 * $half, 2 );
+					// Intrastate: CGST + SGST, each derived from the base.
+					$split     = true;
+					$full_rate = (float) $b['rate'];
+					$half_rate = self::pos_round( $full_rate / 2, 2 );
+					$base      = isset( $b['base'] ) && is_numeric( $b['base'] )
+						? (float) $b['base']
+						: ( $full_rate > 0 ? (float) $b['amount'] * 100 / $full_rate : 0 );
+					if ( ! empty( $b['inclusive'] ) ) {
+						// MRP-preserving plug: CGST from the base, SGST takes
+						// the rest of the extracted amount so the gross total
+						// never drifts away from the inclusive price.
+						$cgst = self::component_from_base( $base, $half_rate );
+						$sgst = self::pos_round( (float) $b['amount'] - $cgst, 2 );
+					} else {
+						$split_exclusive = true;
+						$cgst = self::component_from_base( $base, $half_rate );
+						$sgst = self::component_from_base( $base, $half_rate );
+					}
 					$out[] = array(
 						'name'      => 'CGST',
-						'rate'      => self::pos_round( $b['rate'] / 2, 2 ),
-						'amount'    => $half + $remainder,
-						'inclusive' => $b['inclusive'],
-						'compound'  => $b['compound'],
+						'rate'      => $half_rate,
+						'amount'    => $cgst,
+						'inclusive' => $b['inclusive'] ?? 0,
+						'compound'  => $b['compound'] ?? 0,
 						'state_code' => $rate_state,
 					);
 					$out[] = array(
 						'name'      => 'SGST',
-						'rate'      => self::pos_round( $b['rate'] / 2, 2 ),
-						'amount'    => $half,
-						'inclusive' => $b['inclusive'],
-						'compound'  => $b['compound'],
+						'rate'      => $half_rate,
+						'amount'    => $sgst,
+						'inclusive' => $b['inclusive'] ?? 0,
+						'compound'  => $b['compound'] ?? 0,
 						'state_code' => $rate_state,
 					);
 				} else {
 					// Interstate: Apply IGST (full rate).
 					$out[] = array(
 						'name'      => 'IGST',
-						'rate'      => $b['rate'],
+						'rate'      => (float) $b['rate'],
 						'amount'    => $b['amount'],
-						'inclusive' => $b['inclusive'],
-						'compound'  => $b['compound'],
+						'inclusive' => $b['inclusive'] ?? 0,
+						'compound'  => $b['compound'] ?? 0,
 						'state_code' => $rate_state,
 					);
 				}
 			} else {
-				$out[] = $b;
+				$kept = $b;
+				unset( $kept['base'] );
+				$out[] = $kept;
 			}
 		}
-		return $out;
+		return array( 'breakdown' => $out, 'split' => $split, 'split_exclusive' => $split_exclusive );
 	}
 
 	/**
@@ -423,41 +556,46 @@ class Simple_POS_Tax {
 					return $force_inclusive || $r->is_inclusive;
 				}
 			);
-			$incl_tax        = 0;
-			$net = $taxable;
-			foreach ( $inclusive_rates as $r ) {
-				$rate = (float) $r->rate;
-				$tax         = $net - ( $net / ( 1 + $rate / 100 ) );
-				$tax         = $round ? self::pos_round( $tax, 2 ) : $tax;
-				$incl_tax   += $tax;
-				$net         = $net - $tax;
-				$breakdown[] = array(
-					'name'      => $r->name ?: $r->country_code,
-					'rate'      => $rate,
-					'amount'    => $tax,
-					'inclusive' => 1,
-					'compound'  => (int) $r->is_compound,
-					'gst_split' => ! empty( $r->gst_split ) ? 1 : 0,
-					'state_code' => $r->state_code ?: '',
-				);
-			}
+		$incl_tax        = 0;
+		$net = $taxable;
+		foreach ( $inclusive_rates as $r ) {
+			$rate = (float) $r->rate;
+			$tax         = $net - ( $net / ( 1 + $rate / 100 ) );
+			$tax         = $round ? self::pos_round( $tax, 2 ) : $tax;
+			$incl_tax   += $tax;
+			$net         = $net - $tax;
+			// Base AFTER extracting this rate (the net it applies to) —
+			// the GST splitter derives CGST/SGST from it, never by
+			// halving the already-rounded amount.
+			$breakdown[] = array(
+				'name'      => $r->name ?: $r->country_code,
+				'rate'      => $rate,
+				'amount'    => $tax,
+				'base'      => $round ? self::pos_round( $net, 2 ) : $net,
+				'inclusive' => 1,
+				'compound'  => (int) $r->is_compound,
+				'gst_split' => ! empty( $r->gst_split ) ? 1 : 0,
+				'state_code' => $r->state_code ?: '',
+			);
+		}
 			$running_taxable = $net;
 			$total_tax      += $incl_tax;
-			foreach ( $exclusive_rates as $r ) {
-				$rate          = (float) $r->rate;
-				$base_for_this = $r->is_compound ? ( $running_taxable + $total_tax ) : $running_taxable;
-				$tax           = $round ? self::pos_round( $base_for_this * $rate / 100, 2 ) : ( $base_for_this * $rate / 100 );
-				$total_tax    += $tax;
-				$breakdown[]   = array(
-					'name'      => $r->name ?: $r->country_code,
-					'rate'      => $rate,
-					'amount'    => $tax,
-					'inclusive' => 0,
-					'compound'  => (int) $r->is_compound,
-					'gst_split' => ! empty( $r->gst_split ) ? 1 : 0,
-					'state_code' => $r->state_code ?: '',
-				);
-			}
+		foreach ( $exclusive_rates as $r ) {
+			$rate          = (float) $r->rate;
+			$base_for_this = $r->is_compound ? ( $running_taxable + $total_tax ) : $running_taxable;
+			$tax           = $round ? self::pos_round( $base_for_this * $rate / 100, 2 ) : ( $base_for_this * $rate / 100 );
+			$total_tax    += $tax;
+			$breakdown[]   = array(
+				'name'      => $r->name ?: $r->country_code,
+				'rate'      => $rate,
+				'amount'    => $tax,
+				'base'      => $round ? self::pos_round( $base_for_this, 2 ) : $base_for_this,
+				'inclusive' => 0,
+				'compound'  => (int) $r->is_compound,
+				'gst_split' => ! empty( $r->gst_split ) ? 1 : 0,
+				'state_code' => $r->state_code ?: '',
+			);
+		}
 			$gross = $taxable + array_sum(
 				array_column(
 					array_filter(
@@ -472,42 +610,75 @@ class Simple_POS_Tax {
 			if ( ! $discount_before_tax && $discount_share > 0 ) {
 				$gross = max( 0, $gross - $discount_share );
 			}
-			$breakdown = self::apply_india_gst_split( $breakdown, $country, $state );
-			return array(
-				'taxable'    => $round ? self::pos_round( $running_taxable, 2 ) : $running_taxable,
-				'tax_amount' => $round ? self::pos_round( $total_tax, 2 ) : $total_tax,
-				'gross'      => $round ? self::pos_round( $gross, 2 ) : $gross,
-				'breakdown'  => $breakdown,
-				'rate'       => null,
-			);
-		} else {
-			foreach ( $rates as $r ) {
-				$rate          = (float) $r->rate;
-				$base_for_this = $r->is_compound ? ( $running_taxable + $total_tax ) : $running_taxable;
-				$tax           = $round ? self::pos_round( $base_for_this * $rate / 100, 2 ) : ( $base_for_this * $rate / 100 );
-				$total_tax    += $tax;
-				$breakdown[]   = array(
-					'name'      => $r->name ?: $r->country_code,
-					'rate'      => $rate,
-					'amount'    => $tax,
-					'inclusive' => 0,
-					'compound'  => (int) $r->is_compound,
-					'gst_split' => ! empty( $r->gst_split ) ? 1 : 0,
-					'state_code' => $r->state_code ?: '',
-				);
+		$split_res = self::apply_india_gst_split( $breakdown, $country, $state, $settings );
+		$breakdown = $split_res['breakdown'];
+		if ( $split_res['split_exclusive'] ) {
+			// A stacked exclusive leg was split: recompute it from the
+			// CGST/SGST components. Inclusive legs preserve their extracted
+			// totals via the plug, so the MRP gross is untouched otherwise.
+			$exclusive_sum = 0.0;
+			foreach ( $breakdown as $split_b ) {
+				if ( empty( $split_b['inclusive'] ) ) {
+					$exclusive_sum += (float) $split_b['amount'];
+				}
 			}
+			$exclusive_sum = self::pos_round( $exclusive_sum, 2 );
+			$total_tax     = $incl_tax + $exclusive_sum;
+			$gross         = $taxable + $exclusive_sum;
+			if ( ! $discount_before_tax && $discount_share > 0 ) {
+				$gross = max( 0, $gross - $discount_share );
+			}
+		}
+		return array(
+			'taxable'    => $round ? self::pos_round( $running_taxable, 2 ) : $running_taxable,
+			'tax_amount' => $round ? self::pos_round( $total_tax, 2 ) : $total_tax,
+			'gross'      => $round ? self::pos_round( $gross, 2 ) : $gross,
+			'breakdown'  => $breakdown,
+			'rate'       => null,
+		);
+		} else {
+		foreach ( $rates as $r ) {
+			$rate          = (float) $r->rate;
+			$base_for_this = $r->is_compound ? ( $running_taxable + $total_tax ) : $running_taxable;
+			$tax           = $round ? self::pos_round( $base_for_this * $rate / 100, 2 ) : ( $base_for_this * $rate / 100 );
+			$total_tax    += $tax;
+			$breakdown[]   = array(
+				'name'      => $r->name ?: $r->country_code,
+				'rate'      => $rate,
+				'amount'    => $tax,
+				'base'      => $round ? self::pos_round( $base_for_this, 2 ) : $base_for_this,
+				'inclusive' => 0,
+				'compound'  => (int) $r->is_compound,
+				'gst_split' => ! empty( $r->gst_split ) ? 1 : 0,
+				'state_code' => $r->state_code ?: '',
+			);
+		}
 			$gross = $running_taxable + $total_tax;
 			if ( ! $discount_before_tax && $discount_share > 0 ) {
 				$gross = max( 0, $gross - $discount_share );
 			}
-			$breakdown = self::apply_india_gst_split( $breakdown, $country, $state );
-			return array(
-				'taxable'    => $round ? self::pos_round( $running_taxable, 2 ) : $running_taxable,
-				'tax_amount' => $round ? self::pos_round( $total_tax, 2 ) : $total_tax,
-				'gross'      => $round ? self::pos_round( $gross, 2 ) : $gross,
-				'breakdown'  => $breakdown,
-				'rate'       => $rates ? (float) $rates[0]->rate : 0,
-			);
+		$split_res = self::apply_india_gst_split( $breakdown, $country, $state, $settings );
+		$breakdown = $split_res['breakdown'];
+		if ( $split_res['split'] ) {
+			// Recompute the line from the CGST/SGST components so the
+			// stored tax and line total match the displayed split.
+			$total_tax = 0.0;
+			foreach ( $breakdown as $split_b ) {
+				$total_tax += (float) $split_b['amount'];
+			}
+			$total_tax = self::pos_round( $total_tax, 2 );
+			$gross     = $running_taxable + $total_tax;
+			if ( ! $discount_before_tax && $discount_share > 0 ) {
+				$gross = max( 0, $gross - $discount_share );
+			}
+		}
+		return array(
+			'taxable'    => $round ? self::pos_round( $running_taxable, 2 ) : $running_taxable,
+			'tax_amount' => $round ? self::pos_round( $total_tax, 2 ) : $total_tax,
+			'gross'      => $round ? self::pos_round( $gross, 2 ) : $gross,
+			'breakdown'  => $breakdown,
+			'rate'       => $rates ? (float) $rates[0]->rate : 0,
+		);
 		}
 	}
 
@@ -543,7 +714,9 @@ class Simple_POS_Tax {
 			$share     = $subtotal > 0 ? self::pos_round( $discount * ( $line_base / $subtotal ), 2 ) : 0;
 			if ( $idx === count( $lines ) - 1 ) {
 				$allocated = array_sum( array_column( $line_calcs, 'discount_share' ) );
-				$share     = $discount - $allocated;
+				// Plug the last line so shares sum to the discount exactly
+				// (rounded — never leave binary float dust in the totals).
+				$share     = self::pos_round( $discount - $allocated, 2 );
 			}
 			$class_id               = isset( $l['class_id'] ) ? (int) $l['class_id'] : 0;
 			$calc                   = self::calculate_line( (float) $l['price'], (int) $l['qty'], $class_id, $country, $state, $share, $settings, $round );

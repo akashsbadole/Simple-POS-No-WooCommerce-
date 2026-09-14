@@ -1,17 +1,14 @@
 === Simple POS – No WooCommerce ===
-Contributors: yourname
+Contributors: badoleakash
 Tags: pos, point of sale, retail, inventory, cash register
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.0.9
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Donate link: https://example.com/donate
 
 A lightweight, standalone Point of Sale system for WordPress. No WooCommerce required. Custom tables, REST API, per-country VAT/GST, variants, suppliers & purchase orders, barcode labels and ESC/POS printing.
-
-> **Packaging note:** when building the zip for WordPress.org, zip the folder as `simple-pos` so the Text Domain `simple-pos` matches the slug.
 
 == Description ==
 
@@ -111,6 +108,10 @@ Sales are calculated server-side via `Simple_POS_Tax::calculate_order()` using t
 
 == Upgrade Notice ==
 
+= 2.1.0 =
+
+Maintenance release. Fixes an empty error screen when a user without permission opens the Kitchen Display / bumps an order, updates author metadata for the marketplace release, and bumps "Tested up to" to WordPress 7.1. No settings changes; just update.
+
 = 2.0.9 =
 
 Maintenance release. Fixes terminal CSS never loading on POS admin screens, checkout failing with "Could not record sale." on installs missing the sale-number sequence table (schema upgraded to DB 2.1.1 automatically on next admin load — no data loss), and frontend shortcode assets/markup. Just update; no settings changes needed.
@@ -120,6 +121,11 @@ Maintenance release. Fixes terminal CSS never loading on POS admin screens, chec
 Major update: adds tax classes/rates (US/IN/EU presets), product variants, suppliers/purchase orders, barcode label sheets, store-wide currency and USB ESC/POS (WebUSB + browser fallback). On upgrade the activator seeds `pos_tax_classes`/`pos_tax_rates` and migrates legacy `tax_rate` → `tax_class_id`. No data loss. Flush rewrite rules and visit POS → Settings to review tax country/state.
 
 == Changelog ==
+
+= 2.1.0 =
+* Fix: Kitchen Display + bump actions now show the permission error correctly — `wp_die( esc_html_e() )` echoed the message and passed empty to `wp_die`, rendering a blank error screen (switched to `esc_html__`).
+* Polish: release metadata updated (Author, Author URI, Plugin URI, Contributors) for WordPress.org and ThemeForest submission.
+* Polish: readme aligned — "Tested up to" WordPress 7.1, placeholder links and the legacy `simple-pos` packaging note removed.
 
 = 2.0.9 =
 * Fix: admin CSS/JS now load on all POS screens (wrong screen check meant pos-admin.css never enqueued); terminal script no longer loads on non-terminal screens.

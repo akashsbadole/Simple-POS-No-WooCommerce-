@@ -179,12 +179,17 @@ class Simple_POS_Activator {
 			tax_breakdown TEXT NULL,
 			currency_code VARCHAR(10) NULL,
 			exchange_rate DECIMAL(12,6) NULL,
+			outlet_id BIGINT UNSIGNED NULL,
+			table_id BIGINT UNSIGNED NULL,
+			client_key VARCHAR(64) NULL,
 			created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY  (id),
 			UNIQUE KEY sale_number (sale_number),
+			UNIQUE KEY client_key (client_key),
 			KEY customer_id (customer_id),
 			KEY cashier_id (cashier_id),
 			KEY status (status),
+			KEY outlet_id (outlet_id),
 			KEY created_at (created_at)
 		) $charset_collate;";
 
@@ -538,6 +543,9 @@ class Simple_POS_Activator {
 			'tax_breakdown'  => 'ADD COLUMN tax_breakdown TEXT NULL',
 			'currency_code'  => 'ADD COLUMN currency_code VARCHAR(10) NULL',
 			'exchange_rate'  => 'ADD COLUMN exchange_rate DECIMAL(12,6) NULL',
+			'outlet_id'      => 'ADD COLUMN outlet_id BIGINT UNSIGNED NULL, ADD KEY outlet_id (outlet_id)',
+			'table_id'       => 'ADD COLUMN table_id BIGINT UNSIGNED NULL',
+			'client_key'     => 'ADD COLUMN client_key VARCHAR(64) NULL, ADD UNIQUE KEY client_key (client_key)',
 		);
 		$want_items = array(
 			'tax_class_id'     => 'ADD COLUMN tax_class_id BIGINT UNSIGNED NULL',
@@ -638,25 +646,8 @@ class Simple_POS_Activator {
 		$wpdb->query( "ALTER TABLE `{$prefix}po_items` ADD CONSTRAINT fk_po_items_po FOREIGN KEY (po_id) REFERENCES `{$prefix}purchase_orders`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
-	/**
-	 * Drop the legacy tax_rate column if all products have been migrated
-	 * to the new tax_class_id system.
-	 */
-	private static function migrate_drop_legacy_tax_rate() {
-		global $wpdb;
-		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
-		$table  = $prefix . 'products';
-
-		// Check if column exists.
-		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$table}` WHERE Field = 'tax_rate'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		if ( empty( $col ) ) {
-			return;
-		}
-
-		// Check if any products still use legacy tax_rate.
-		$has_legacy = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}` WHERE tax_rate > 0 AND (tax_class_id IS NULL OR tax_class_id = 0)" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		if ( 0 === $has_legacy ) {
-			$wpdb->query( "ALTER TABLE `{$table}` DROP COLUMN tax_rate" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		}
-	}
+	// NOTE: the legacy products.tax_rate column is intentionally never
+	// dropped (an earlier version did, which broke product reads on
+	// installs whose code expected it). migrate_ensure_sales_columns()
+	// re-adds it if missing; nothing here may remove it.
 }

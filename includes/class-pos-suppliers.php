@@ -69,7 +69,17 @@ class Simple_POS_Purchase_Orders {
 		$table    = Simple_POS_DB::table( 'purchase_orders' );
 		$max      = $wpdb->get_var( "SELECT MAX(id) FROM {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$next     = $max ? ( (int) $max + 1 ) : 1;
-		// try AUTO_INCREMENT as fallback but MAX is safer
+		// Guard against reuse/collisions (deleted latest PO, prefix
+		// changes, concurrent creates): advance until free, so the
+		// UNIQUE(po_number) insert below cannot fail on a duplicate.
+		for ( $attempt = 0; $attempt < 20; $attempt++ ) {
+			$candidate = $prefix . str_pad( $next, 6, '0', STR_PAD_LEFT );
+			$exists    = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$table} WHERE po_number = %s", $candidate ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			if ( 0 === $exists ) {
+				return $candidate;
+			}
+			$next++;
+		}
 		return $prefix . str_pad( $next, 6, '0', STR_PAD_LEFT );
 	}
 
@@ -130,10 +140,10 @@ class Simple_POS_Purchase_Orders {
 				$wpdb->insert(
 					$po_table,
 					array(
-						'po_number'   => $po_number,
-						'supplier_id' => $supplier_id,
-						'status'      => 'draft',
-						'total_cost'  => round( $total_cost, 2 ),
+					'po_number'   => $po_number,
+					'supplier_id' => $supplier_id,
+					'status'      => 'draft',
+					'total_cost'  => Simple_POS_Tax::pos_round( $total_cost, 2 ),
 						'note'        => $note,
 						'created_at'  => current_time( 'mysql' ),
 						'created_by'  => get_current_user_id(),
@@ -236,11 +246,11 @@ class Simple_POS_Purchase_Orders {
 					}
 					
 					// Update total cost.
-					$wpdb->update(
-						$po_table,
-						array( 'total_cost' => round( $total_cost, 2 ) ),
-						array( 'id' => $id )
-					);
+				$wpdb->update(
+					$po_table,
+					array( 'total_cost' => Simple_POS_Tax::pos_round( $total_cost, 2 ) ),
+					array( 'id' => $id )
+				);
 				}
 				
 				return true;

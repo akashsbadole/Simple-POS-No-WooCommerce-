@@ -238,6 +238,10 @@ Ensure products have at least one variant or no variants configured. Check brows
 
 ## Changelog
 
+### 2.1.0
+- Fix: Kitchen Display + bump actions render the permission error correctly (`wp_die( esc_html_e() )` passed empty to `wp_die`)
+- Polish: author/URI/Contributor metadata updated for WordPress.org + ThemeForest submission
+
 ### 2.0.9
 - Fix: admin CSS/JS load on all POS screens (screen check never matched, so pos-admin.css was never enqueued)
 - Fix: checkout "Could not record sale." — DB auto-upgrade to 2.1.1 creates missing sale-number sequence table and sale columns; sale-number generation self-heals

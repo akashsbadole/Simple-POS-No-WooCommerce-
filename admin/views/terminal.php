@@ -54,6 +54,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<div class="simple-pos-cart-actions">
 					<button type="button" id="simple-pos-hold-btn" class="button-link" disabled><?php esc_html_e( 'Hold', 'wp-pos-plugin' ); ?></button>
 					<button type="button" id="simple-pos-recall-btn" class="button-link" disabled><?php esc_html_e( 'Recall', 'wp-pos-plugin' ); ?></button>
+					<button type="button" id="simple-pos-sync-btn" class="button-link" hidden><?php esc_html_e( 'Sync', 'wp-pos-plugin' ); ?></button>
 					<button type="button" id="simple-pos-clear-cart" class="button-link simple-pos-clear-link"><?php esc_html_e( 'Clear', 'wp-pos-plugin' ); ?></button>
 				</div>
 			</div>
@@ -76,6 +77,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<option value="b2b"><?php esc_html_e( 'B2B', 'wp-pos-plugin' ); ?></option>
 			</select>
 		</div>
+		<?php
+		// Outlet selector (multi-outlet add-on). Hidden unless outlets exist.
+		$pos_outlets = ( class_exists( 'Simple_POS_Addons' ) && Simple_POS_Addons::is_enabled( 'simple-pos-multi-outlet' ) && class_exists( 'SMO_Outlets' ) ) ? SMO_Outlets::get_outlets() : array();
+		if ( ! empty( $pos_outlets ) ) :
+			$pos_default_outlet = class_exists( 'SMO_Outlets' ) ? (int) SMO_Outlets::get_default_outlet_id() : 0;
+			?>
+		<div class="simple-pos-customer-row">
+			<label for="simple-pos-outlet"><?php esc_html_e( 'Outlet', 'wp-pos-plugin' ); ?></label>
+			<select id="simple-pos-outlet">
+				<?php foreach ( $pos_outlets as $pos_o ) : ?>
+					<option value="<?php echo esc_attr( $pos_o->id ); ?>" <?php selected( $pos_default_outlet, (int) $pos_o->id ); ?>><?php echo esc_html( $pos_o->name ); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<?php endif; ?>
+		<?php
+		// Table selector (table-service add-on). Hidden unless tables exist.
+		$pos_tables = ( class_exists( 'Simple_POS_Addons' ) && Simple_POS_Addons::is_enabled( 'simple-pos-table-service' ) && class_exists( 'STS_Tables' ) ) ? STS_Tables::get_tables() : array();
+		if ( ! empty( $pos_tables ) ) :
+			?>
+		<div class="simple-pos-customer-row">
+			<label for="simple-pos-table"><?php esc_html_e( 'Table', 'wp-pos-plugin' ); ?></label>
+			<select id="simple-pos-table">
+				<option value="0"><?php esc_html_e( '— none —', 'wp-pos-plugin' ); ?></option>
+				<?php foreach ( $pos_tables as $pos_t ) : ?>
+					<option value="<?php echo esc_attr( $pos_t->id ); ?>"><?php echo esc_html( $pos_t->name ); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<?php endif; ?>
 
 			<div class="simple-pos-discount-row">
 				<label for="simple-pos-discount-value"><?php esc_html_e( 'Discount', 'wp-pos-plugin' ); ?></label>
@@ -125,9 +156,40 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<select id="simple-pos-payment-method">
 					<option value="cash"><?php esc_html_e( 'Cash', 'wp-pos-plugin' ); ?></option>
 					<option value="card"><?php esc_html_e( 'Card', 'wp-pos-plugin' ); ?></option>
+					<?php if ( class_exists( 'Simple_POS_Addons' ) && Simple_POS_Addons::is_enabled( 'simple-pos-gift-cards' ) && class_exists( 'SGC_Gift_Cards' ) ) : ?>
+						<option value="gift_card"><?php esc_html_e( 'Gift Card', 'wp-pos-plugin' ); ?></option>
+					<?php endif; ?>
 					<option value="other"><?php esc_html_e( 'Other', 'wp-pos-plugin' ); ?></option>
 				</select>
 			</div>
+			<?php if ( class_exists( 'Simple_POS_Addons' ) && Simple_POS_Addons::is_enabled( 'simple-pos-gift-cards' ) && class_exists( 'SGC_Gift_Cards' ) ) : ?>
+			<div class="simple-pos-payment-row">
+				<label for="simple-pos-gift-code"><?php esc_html_e( 'Gift card code', 'wp-pos-plugin' ); ?></label>
+				<input type="text" id="simple-pos-gift-code" autocomplete="off" placeholder="<?php esc_attr_e( 'Optional', 'wp-pos-plugin' ); ?>" />
+			</div>
+			<?php endif; ?>
+			<?php if ( class_exists( 'Simple_POS_Addons' ) && Simple_POS_Addons::is_enabled( 'simple-pos-loyalty' ) && class_exists( 'SLOY_Loyalty' ) ) : ?>
+			<div class="simple-pos-payment-row">
+				<label for="simple-pos-loyalty-points"><?php esc_html_e( 'Redeem loyalty points', 'wp-pos-plugin' ); ?></label>
+				<input type="number" min="0" step="1" id="simple-pos-loyalty-points" placeholder="<?php esc_attr_e( '0', 'wp-pos-plugin' ); ?>" />
+			</div>
+			<?php endif; ?>
+			<?php
+			// Foreign-currency tender (multi-currency add-on). Hidden unless rates exist.
+			$pos_fx_rates = ( class_exists( 'Simple_POS_Addons' ) && Simple_POS_Addons::is_enabled( 'simple-pos-multi-currency' ) && class_exists( 'SFX_Rates' ) ) ? SFX_Rates::get_rates() : array();
+			$pos_base_ccy = strtoupper( (string) Simple_POS_Settings::get( 'currency_code', 'USD' ) );
+			if ( ! empty( $pos_fx_rates ) ) :
+				?>
+			<div class="simple-pos-payment-row">
+				<label for="simple-pos-currency"><?php esc_html_e( 'Currency', 'wp-pos-plugin' ); ?></label>
+				<select id="simple-pos-currency" data-base="<?php echo esc_attr( $pos_base_ccy ); ?>">
+					<option value="<?php echo esc_attr( $pos_base_ccy ); ?>" data-rate="1"><?php echo esc_html( $pos_base_ccy ); ?></option>
+					<?php foreach ( $pos_fx_rates as $pos_fx ) : ?>
+						<option value="<?php echo esc_attr( strtoupper( $pos_fx->currency_code ) ); ?>" data-rate="<?php echo esc_attr( $pos_fx->rate_to_base ); ?>"><?php echo esc_html( strtoupper( $pos_fx->currency_code ) ); ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<?php endif; ?>
 
 			<div class="simple-pos-payment-row">
 				<label for="simple-pos-amount-paid"><?php esc_html_e( 'Amount tendered', 'wp-pos-plugin' ); ?></label>

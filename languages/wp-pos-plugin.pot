@@ -1,1029 +1,2221 @@
-# Copyright (C) 2026 Your Name
-# This file is distributed under the GPL v2 or later.
+# Copyright (C) 2026 Simple POS
+# This file is distributed under the GPL-2.0-or-later license.
+# This file is distributed completely free of charge, for use or modification.
+
 msgid ""
 msgstr ""
-"Project-Id-Version: Simple POS (No WooCommerce) 2.0.0\n"
+"Project-Id-Version: Simple POS 2.0.9\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-pos-plugin\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-05T13:05:06+00:00\n"
+"POT-Creation-Date: 2026-09-14 11:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: wp-pos-plugin\n"
+"Language-Team: \n"
+"X-Generator: Simple POS i18n build\n"
 
-#. Plugin Name of the plugin
-#: wp-pos-plugin.php
-msgid "Simple POS (No WooCommerce)"
-msgstr ""
-
-#. Plugin URI of the plugin
-#: wp-pos-plugin.php
-msgid "https://example.com/simple-pos"
-msgstr ""
-
-#. Description of the plugin
-#: wp-pos-plugin.php
-msgid "A lightweight, standalone Point of Sale system for WordPress. No WooCommerce required. Custom database tables, REST API, barcode-ready terminal, per-country tax, variants, suppliers/POs, barcode labels, USB ESC/POS, inventory, reports and role-based access."
-msgstr ""
-
-#. Author of the plugin
-#: wp-pos-plugin.php
-msgid "Your Name"
-msgstr ""
-
-#. Author URI of the plugin
-#: wp-pos-plugin.php
-msgid "https://example.com"
-msgstr ""
-
-#: admin/class-pos-admin.php:52
-#: admin/class-pos-admin.php:53
-msgid "POS"
-msgstr ""
-
-#: admin/class-pos-admin.php:61
-msgid "Terminal"
-msgstr ""
-
-#: admin/class-pos-admin.php:62
-msgid "Dashboard"
-msgstr ""
-
-#: admin/class-pos-admin.php:63
-#: admin/views/products.php:29
-msgid "Products"
-msgstr ""
-
-#: admin/class-pos-admin.php:64
-#: admin/views/customers.php:22
-msgid "Customers"
-msgstr ""
-
-#: admin/class-pos-admin.php:65
-#: admin/views/sales.php:111
-msgid "Sales History"
-msgstr ""
-
-#: admin/class-pos-admin.php:66
-#: admin/views/reports.php:48
-msgid "Reports"
-msgstr ""
-
-#: admin/class-pos-admin.php:67
-msgid "Taxes"
-msgstr ""
-
-#: admin/class-pos-admin.php:68
-#: admin/views/suppliers.php:8
-msgid "Suppliers"
-msgstr ""
-
-#: admin/class-pos-admin.php:69
-#: admin/views/purchase-orders.php:60
-msgid "Purchase Orders"
-msgstr ""
-
-#: admin/class-pos-admin.php:70
-#: admin/views/barcode.php:7
-#: admin/views/products.php:31
-msgid "Barcode Labels"
-msgstr ""
-
-#: admin/class-pos-admin.php:71
-msgid "Settings"
-msgstr ""
-
-#: admin/class-pos-admin.php:116
-#: admin/views/sales.php:80
-msgid "Void this sale and restore stock? This cannot be undone."
-msgstr ""
-
-#: admin/class-pos-admin.php:117
-msgid "Delete this item? This cannot be undone."
-msgstr ""
-
-#: admin/class-pos-admin.php:118
-#: includes/class-pos-sales.php:34
-msgid "Cart is empty."
-msgstr ""
-
-#: admin/class-pos-admin.php:119
-msgid "Checkout failed. Please try again."
-msgstr ""
-
-#: admin/class-pos-admin.php:120
-msgid "Out of stock"
-msgstr ""
-
-#: admin/class-pos-admin.php:195
-#: admin/class-pos-admin.php:209
-#: admin/class-pos-admin.php:229
-#: admin/class-pos-admin.php:242
-#: admin/class-pos-admin.php:259
-#: admin/class-pos-admin.php:275
-#: admin/class-pos-admin.php:288
-#: admin/class-pos-admin.php:307
-#: admin/class-pos-admin.php:477
-msgid "You do not have permission to do this."
-msgstr ""
-
-#: admin/class-pos-admin.php:201
-msgid "Settings saved."
-msgstr ""
-
-#: admin/class-pos-admin.php:221
-msgid "Product saved."
-msgstr ""
-
-#: admin/class-pos-admin.php:234
-msgid "Product deleted."
-msgstr ""
-
-#: admin/class-pos-admin.php:251
-msgid "Stock updated."
-msgstr ""
-
-#: admin/class-pos-admin.php:267
-msgid "Category added."
-msgstr ""
-
-#: admin/class-pos-admin.php:280
-msgid "Category deleted."
-msgstr ""
-
-#: admin/class-pos-admin.php:299
-msgid "Customer saved."
-msgstr ""
-
-#: admin/class-pos-admin.php:312
-msgid "Customer deleted."
-msgstr ""
-
-#: admin/class-pos-admin.php:316
-#: admin/class-pos-admin.php:324
-#: admin/class-pos-admin.php:330
-#: admin/class-pos-admin.php:348
-#: admin/class-pos-admin.php:354
-#: admin/class-pos-admin.php:384
-#: admin/class-pos-admin.php:390
-#: admin/class-pos-admin.php:398
-#: admin/class-pos-admin.php:404
-#: admin/class-pos-admin.php:423
-#: admin/class-pos-admin.php:436
-#: admin/class-pos-admin.php:442
-#: admin/class-pos-admin.php:454
-#: admin/class-pos-admin.php:462
-msgid "No permission."
-msgstr ""
-
-#: admin/class-pos-admin.php:321
-msgid "Tax class added."
-msgstr ""
-
-#: admin/class-pos-admin.php:327
-msgid "Tax class deleted."
-msgstr ""
-
-#: admin/class-pos-admin.php:345
-msgid "Tax rate saved."
-msgstr ""
-
-#: admin/class-pos-admin.php:351
-msgid "Tax rate deleted."
-msgstr ""
-
-#: admin/class-pos-admin.php:381
-msgid "Variant saved."
-msgstr ""
-
-#: admin/class-pos-admin.php:387
-msgid "Variant deleted."
-msgstr ""
-
-#: admin/class-pos-admin.php:395
-msgid "Supplier saved."
-msgstr ""
-
-#: admin/class-pos-admin.php:401
-msgid "Supplier deleted."
-msgstr ""
-
-#: admin/class-pos-admin.php:420
-msgid "Purchase order created."
-msgstr ""
-
-#: admin/class-pos-admin.php:433
-msgid "PO received, stock updated."
-msgstr ""
-
-#: admin/class-pos-admin.php:439
-msgid "PO deleted."
-msgstr ""
-
-#: admin/class-pos-admin.php:445
-#: includes/class-pos-rest-api.php:379
-msgid "No file uploaded."
-msgstr ""
-
-#: admin/class-pos-admin.php:449
-#, php-format
-msgid "Imported %d products."
-msgstr ""
-
-#: admin/class-pos-admin.php:485
-msgid "Sale voided and stock restored."
-msgstr ""
-
-#: admin/class-pos-admin.php:548
-msgid "Simple POS:"
-msgstr ""
-
-#. translators: %s: comma-separated list of product names
-#: admin/class-pos-admin.php:552
-#, php-format
-msgid "Low stock alert for: %s"
-msgstr ""
-
-#: admin/class-pos-admin.php:556
-msgid "View products"
-msgstr ""
-
-#: admin/views/barcode.php:9
-msgid "Print Labels"
-msgstr ""
-
-#: admin/views/barcode.php:12
-msgid "Select products/variants to print."
-msgstr ""
-
-#: admin/views/barcode.php:12
-msgid "Symbology:"
-msgstr ""
-
-#: admin/views/barcode.php:12
-msgid "Sheet:"
+#: admin/views/taxes.php:82
+msgid "(ISO2 or * for all)"
 msgstr ""
 
 #: admin/views/barcode.php:12
 msgid "(change in Settings)"
 msgstr ""
 
-#: admin/views/barcode.php:18
-msgid "Select all"
+#: admin/views/taxes.php:99
+msgid "(optional)"
 msgstr ""
 
-#: admin/views/barcode.php:24
-msgid "Product / Variant"
+#: admin/views/purchase-orders.php:107
+msgid "(optional, for variant restock)"
 msgstr ""
 
-#: admin/views/barcode.php:24
-#: admin/views/products.php:65
-#: admin/views/products.php:105
-#: admin/views/products.php:170
-#: admin/views/products.php:182
-#: admin/views/sales.php:51
-msgid "SKU"
+#: admin/views/taxes.php:89
+msgid "* — all countries"
 msgstr ""
 
-#: admin/views/barcode.php:24
-#: admin/views/products.php:109
-#: admin/views/products.php:186
-msgid "Barcode"
+#: admin/views/terminal.php:71
+msgid "+ New"
 msgstr ""
 
-#: admin/views/barcode.php:24
-#: admin/views/products.php:65
-#: admin/views/products.php:117
-#: admin/views/products.php:170
-#: admin/views/sales.php:53
-msgid "Price"
+#: admin/views/terminal.php:174
+msgid "0"
 msgstr ""
 
-#: admin/views/barcode.php:26
-msgid "No products."
+#: admin/views/settings.php:56
+msgid "58mm"
 msgstr ""
 
-#: admin/views/barcode.php:45
-msgid "Preview"
+#: admin/views/settings.php:56
+msgid "80mm"
 msgstr ""
 
-#: admin/views/barcode.php:45
-msgid "Uses JsBarcode (CODE128) in print view. For EAN13 ensure 13-digit numeric. QR fallback."
+#: includes/class-pos-products.php:189 includes/class-pos-products.php:233
+msgid "A product with this SKU already exists."
 msgstr ""
 
-#: admin/views/customers.php:32
-#: admin/views/customers.php:36
-#: admin/views/products.php:46
-msgid "Search"
+#: admin/views/settings.php:61
+msgid "A4 30-up (Avery 5160)"
 msgstr ""
 
-#: admin/views/customers.php:33
-msgid "Name, phone, email…"
+#: admin/views/settings.php:61
+msgid "A4 65-up"
 msgstr ""
 
-#: admin/views/customers.php:45
-#: admin/views/customers.php:122
-#: admin/views/products.php:65
-#: admin/views/products.php:101
-#: admin/views/suppliers.php:14
-#: admin/views/suppliers.php:38
+#: addons/simple-pos-multi-currency/simple-pos-multi-currency.php:40
+msgid "Accept foreign-currency tender with editable exchange rates."
+msgstr ""
+
 #: admin/views/taxes.php:17
-#: admin/views/taxes.php:46
-#: admin/views/taxes.php:94
-#: admin/views/terminal.php:127
-msgid "Name"
+msgid "Action"
 msgstr ""
 
-#: admin/views/customers.php:46
-#: admin/views/customers.php:126
-#: admin/views/suppliers.php:14
-#: admin/views/suppliers.php:46
-#: admin/views/terminal.php:131
-msgid "Phone"
-msgstr ""
-
-#: admin/views/customers.php:47
-#: admin/views/customers.php:130
-#: admin/views/suppliers.php:14
-#: admin/views/suppliers.php:50
-#: admin/views/terminal.php:135
-msgid "Email"
-msgstr ""
-
-#: admin/views/customers.php:48
-#: admin/views/products.php:65
-#: admin/views/purchase-orders.php:66
-#: admin/views/sales.php:156
-#: admin/views/suppliers.php:14
-#: admin/views/taxes.php:46
+#: admin/views/customers.php:48 admin/views/products.php:97 admin/views/purchase-orders.php:68 admin/views/sales.php:183 admin/views/suppliers.php:14 admin/views/taxes.php:46 addons/simple-pos-multi-currency/admin/views/rates.php:41 addons/simple-pos-multi-outlet/admin/views/outlets.php:37 addons/simple-pos-online-ordering/admin/views/orders.php:32
 msgid "Actions"
 msgstr ""
 
-#: admin/views/customers.php:53
-msgid "No customers found."
+#: admin/views/products.php:87 admin/views/products.php:188 addons/simple-pos-time-clock/admin/views/shifts.php:81
+msgid "Active"
 msgstr ""
 
-#: admin/views/customers.php:61
-#: admin/views/products.php:83
-#: admin/views/suppliers.php:23
-#: admin/views/taxes.php:59
-msgid "Edit"
+#: admin/views/suppliers.php:58 admin/views/taxes.php:125 addons/simple-pos-gift-cards/admin/views/gift-cards.php:52
+msgid "Add"
 msgstr ""
 
-#: admin/views/customers.php:62
-msgid "Delete this customer?"
+#: admin/views/terminal.php:236
+msgid "Add &amp; select"
 msgstr ""
 
-#: admin/views/customers.php:62
-#: admin/views/products.php:84
-#: admin/views/products.php:172
-#: admin/views/suppliers.php:24
-#: admin/views/taxes.php:22
-msgid "Delete"
+#: admin/views/products.php:269
+msgid "Add Category"
 msgstr ""
 
-#: admin/views/customers.php:86
-msgid "Purchase History"
+#: admin/views/taxes.php:39
+msgid "Add Class"
 msgstr ""
 
-#: admin/views/customers.php:90
-#: admin/views/dashboard.php:54
-#: admin/views/sales.php:150
-msgid "Sale #"
-msgstr ""
-
-#: admin/views/customers.php:91
-#: admin/views/purchase-orders.php:66
-#: admin/views/sales.php:36
-#: admin/views/sales.php:151
-msgid "Date"
-msgstr ""
-
-#: admin/views/customers.php:92
-#: admin/views/dashboard.php:56
-#: admin/views/purchase-orders.php:66
-#: admin/views/sales.php:74
-#: admin/views/sales.php:153
-#: admin/views/terminal.php:87
-msgid "Total"
-msgstr ""
-
-#: admin/views/customers.php:93
-#: admin/views/dashboard.php:57
-#: admin/views/products.php:54
-#: admin/views/products.php:65
-#: admin/views/products.php:151
-#: admin/views/purchase-orders.php:20
-#: admin/views/purchase-orders.php:66
-#: admin/views/sales.php:133
-#: admin/views/sales.php:155
-msgid "Status"
-msgstr ""
-
-#: admin/views/customers.php:114
-msgid "Edit Customer"
-msgstr ""
-
-#: admin/views/customers.php:114
-#: admin/views/customers.php:142
+#: admin/views/customers.php:114 admin/views/customers.php:142
 msgid "Add Customer"
 msgstr ""
 
-#: admin/views/customers.php:134
-#: admin/views/suppliers.php:54
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:60 addons/simple-pos-multi-outlet/admin/views/outlets.php:75
+msgid "Add Outlet"
+msgstr ""
+
+#: admin/views/products.php:128 admin/views/products.php:191
+msgid "Add Product"
+msgstr ""
+
+#: admin/views/taxes.php:70 addons/simple-pos-multi-currency/admin/views/rates.php:65 addons/simple-pos-multi-currency/admin/views/rates.php:84
+msgid "Add Rate"
+msgstr ""
+
+#: admin/views/suppliers.php:34
+msgid "Add Supplier"
+msgstr ""
+
+#: addons/simple-pos-table-service/admin/views/tables.php:59 addons/simple-pos-table-service/admin/views/tables.php:74
+msgid "Add Table"
+msgstr ""
+
+#: admin/views/products.php:259
+msgid "Add Variant"
+msgstr ""
+
+#: includes/class-pos-suppliers.php:129
+msgid "Add at least one item."
+msgstr ""
+
+#: admin/views/purchase-orders.php:116
+msgid "Add line"
+msgstr ""
+
+#: admin/views/terminal.php:71 admin/views/terminal.php:220
+msgid "Add new customer"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/simple-pos-online-ordering.php:124
+msgid "Add to order"
+msgstr ""
+
+#: admin/views/products.php:212
+msgid "Add variant"
+msgstr ""
+
+#: includes/class-pos-addons.php:279
+msgid "Add-on \"%1$s\" requires POS Core version %2$s or higher. You have version %3$s. The add-on has been disabled."
+msgstr ""
+
+#: admin/views/addons.php:16
+msgid "Add-on setting saved."
+msgstr ""
+
+#: admin/class-pos-admin.php:86 admin/class-pos-admin.php:86 admin/views/addons.php:12
+msgid "Add-ons"
+msgstr ""
+
+#: admin/views/customers.php:134 admin/views/settings.php:23 admin/views/suppliers.php:54 addons/simple-pos-multi-outlet/admin/views/outlets.php:37 addons/simple-pos-multi-outlet/admin/views/outlets.php:71
 msgid "Address"
 msgstr ""
 
-#: admin/views/customers.php:138
-msgid "Notes"
+#: admin/views/settings.php:88
+msgid "Advanced"
 msgstr ""
 
-#: admin/views/customers.php:142
-msgid "Update Customer"
+#: addons/simple-pos-advanced-reports/simple-pos-advanced-reports.php:36
+msgid "Advanced Reports"
 msgstr ""
 
-#: admin/views/customers.php:144
-#: admin/views/products.php:156
-#: admin/views/suppliers.php:59
-#: admin/views/taxes.php:109
-#: admin/views/terminal.php:119
-#: admin/views/terminal.php:141
-msgid "Cancel"
+#: admin/views/settings.php:40
+msgid "After (10.00$)"
 msgstr ""
 
-#: admin/views/dashboard.php:17
-msgid "POS Dashboard"
+#: addons/simple-pos-online-ordering/public/views/storefront.php:18
+msgid "All"
 msgstr ""
 
-#: admin/views/dashboard.php:19
-msgid "Open Terminal"
+#: admin/views/addons.php:14
+msgid "All add-ons are free and included with Simple POS — enable or disable them below. Changes apply on the next page load."
 msgstr ""
 
-#: admin/views/dashboard.php:20
-msgid "Full Reports"
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:58
+msgid "All cashiers"
 msgstr ""
 
-#: admin/views/dashboard.php:26
-msgid "Today's Revenue"
+#: admin/views/products.php:83
+msgid "All categories"
 msgstr ""
 
-#: admin/views/dashboard.php:30
-msgid "Sales Today"
-msgstr ""
-
-#: admin/views/dashboard.php:34
-#: admin/views/reports.php:90
-msgid "Items Sold"
-msgstr ""
-
-#: admin/views/dashboard.php:38
-#: admin/views/reports.php:94
-msgid "Avg. Sale"
-msgstr ""
-
-#: admin/views/dashboard.php:42
-#: admin/views/reports.php:98
-msgid "Gross Profit"
-msgstr ""
-
-#: admin/views/dashboard.php:50
-msgid "Recent Sales"
-msgstr ""
-
-#: admin/views/dashboard.php:55
-msgid "Time"
-msgstr ""
-
-#: admin/views/dashboard.php:62
-msgid "No sales yet."
-msgstr ""
-
-#: admin/views/dashboard.php:80
-msgid "Low Stock"
+#: admin/views/sales.php:160
+msgid "All outlets"
 msgstr ""
 
 #: admin/views/dashboard.php:83
 msgid "All products are well stocked."
 msgstr ""
 
-#: admin/views/products.php:32
-#: admin/views/sales.php:116
-msgid "Export CSV"
+#: addons/simple-pos-offline-mode/admin/views/offline.php:36
+msgid "All queued sales (all terminals)"
 msgstr ""
 
-#: admin/views/products.php:36
-msgid "Import CSV"
+#: admin/views/settings.php:48
+msgid "Allow checkout even if stock would go negative"
 msgstr ""
 
-#: admin/views/products.php:47
-msgid "Name, SKU, barcode…"
+#: admin/views/settings.php:48
+msgid "Allow overselling"
 msgstr ""
 
-#: admin/views/products.php:50
-#: admin/views/products.php:65
-#: admin/views/products.php:113
-msgid "Category"
+#: admin/views/terminal.php:115 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:149
+msgid "Amount"
 msgstr ""
 
-#: admin/views/products.php:51
-msgid "All categories"
+#: admin/views/terminal.php:195
+msgid "Amount tendered"
 msgstr ""
 
-#: admin/views/products.php:55
-#: admin/views/sales.php:135
+#: admin/views/products.php:87 admin/views/sales.php:151
 msgid "Any status"
 msgstr ""
 
-#: admin/views/products.php:55
-#: admin/views/products.php:152
-msgid "Active"
-msgstr ""
-
-#: admin/views/products.php:55
-#: admin/views/products.php:152
-msgid "Inactive"
-msgstr ""
-
-#: admin/views/products.php:58
-#: admin/views/sales.php:141
-msgid "Filter"
-msgstr ""
-
-#: admin/views/products.php:59
-msgid "Clear low-stock filter"
-msgstr ""
-
-#: admin/views/products.php:65
-#: admin/views/sales.php:54
-#: admin/views/sales.php:73
-#: admin/views/terminal.php:85
-msgid "Tax"
-msgstr ""
-
-#: admin/views/products.php:65
-#: admin/views/products.php:170
-#: admin/views/products.php:198
-msgid "Stock"
-msgstr ""
-
-#: admin/views/products.php:67
-msgid "No products found."
-msgstr ""
-
-#: admin/views/products.php:75
-#: admin/views/products.php:82
-msgid "variant"
-msgstr ""
-
-#: admin/views/products.php:79
-msgid "not tracked"
-msgstr ""
-
-#: admin/views/products.php:84
-msgid "Delete this product?"
-msgstr ""
-
-#: admin/views/products.php:96
-msgid "Edit Product"
-msgstr ""
-
-#: admin/views/products.php:96
-#: admin/views/products.php:155
-msgid "Add Product"
-msgstr ""
-
-#: admin/views/products.php:114
-#: admin/views/purchase-orders.php:92
-msgid "None"
-msgstr ""
-
-#: admin/views/products.php:121
-msgid "Cost price"
-msgstr ""
-
-#: admin/views/products.php:125
-msgid "Tax class"
-msgstr ""
-
-#: admin/views/products.php:131
-#: admin/views/settings.php:73
-msgid "Legacy tax rate (%)"
-msgstr ""
-
-#: admin/views/products.php:133
-msgid "Fallback if no class rate matches"
-msgstr ""
-
-#: admin/views/products.php:136
-msgid "Track stock for this product"
-msgstr ""
-
-#: admin/views/products.php:139
-msgid "Stock quantity"
-msgstr ""
-
-#: admin/views/products.php:143
-msgid "Low stock threshold"
-msgstr ""
-
-#: admin/views/products.php:147
-#: admin/views/products.php:209
-msgid "Image URL"
-msgstr ""
-
-#: admin/views/products.php:155
-msgid "Update Product"
-msgstr ""
-
-#: admin/views/products.php:159
-msgid "Quick restock"
-msgstr ""
-
-#: admin/views/products.php:162
-msgid "e.g. 10 or -2"
-msgstr ""
-
-#: admin/views/products.php:163
-msgid "Note (optional)"
-msgstr ""
-
-#: admin/views/products.php:164
-#: admin/views/reports.php:74
+#: admin/views/products.php:200 admin/views/reports.php:74 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:65
 msgid "Apply"
 msgstr ""
 
-#: admin/views/products.php:169
-msgid "Variants"
+#: admin/views/settings.php:75
+msgid "Apply discount before tax"
 msgstr ""
 
-#: admin/views/products.php:169
-msgid "free-form attributes"
+#: admin/views/settings.php:95
+msgid "Assign under Users:"
 msgstr ""
 
-#: admin/views/products.php:170
-msgid "Attributes"
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:28
+msgid "At checkout, customers can redeem points for a fixed-amount discount."
 msgstr ""
 
-#: admin/views/products.php:172
-msgid "Delete variant?"
-msgstr ""
-
-#: admin/views/products.php:173
-msgid "No variants yet."
-msgstr ""
-
-#: admin/views/products.php:176
-msgid "Add variant"
-msgstr ""
-
-#: admin/views/products.php:178
-msgid "Attr e.g. Size"
-msgstr ""
-
-#: admin/views/products.php:178
-msgid "Value e.g. M"
-msgstr ""
-
-#: admin/views/products.php:179
+#: admin/views/products.php:215
 msgid "Attr e.g. Color"
 msgstr ""
 
-#: admin/views/products.php:179
-msgid "Value e.g. Red"
-msgstr ""
-
-#: admin/views/products.php:190
-msgid "Price override"
-msgstr ""
-
-#: admin/views/products.php:191
-msgid "empty = parent"
-msgstr ""
-
-#: admin/views/products.php:194
-#: admin/views/purchase-orders.php:30
-msgid "Cost"
-msgstr ""
-
-#: admin/views/products.php:202
-msgid "Low thresh"
+#: admin/views/products.php:214
+msgid "Attr e.g. Size"
 msgstr ""
 
 #: admin/views/products.php:206
-msgid "Track stock"
+msgid "Attributes"
 msgstr ""
 
-#: admin/views/products.php:213
-msgid "Add Variant"
+#: admin/views/settings.php:59
+msgid "Auto kick drawer on sale complete"
 msgstr ""
 
-#: admin/views/products.php:218
-msgid "Categories"
+#: addons/simple-pos-low-stock-auto-po/simple-pos-low-stock-auto-po.php:54 addons/simple-pos-low-stock-auto-po/simple-pos-low-stock-auto-po.php:55
+msgid "Auto-PO"
 msgstr ""
 
-#: admin/views/products.php:219
-msgid "Delete this category? Products stay, just unassigned."
+#: addons/simple-pos-low-stock-auto-po/includes/class-autopo.php:208
+msgid "Auto-PO generated %1$s for %2$d low-stock product(s)."
 msgstr ""
 
-#: admin/views/products.php:219
-msgid "No categories yet."
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:82
+msgid "Automation"
 msgstr ""
 
-#: admin/views/products.php:222
-msgid "New category name"
+#: admin/views/addons.php:59
+msgid "Available add-ons"
 msgstr ""
 
-#: admin/views/products.php:223
-msgid "Add Category"
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:79
+msgid "Avg basket"
 msgstr ""
 
-#: admin/views/purchase-orders.php:11
-#, php-format
-msgid "PO %s"
+#: admin/views/dashboard.php:38 admin/views/reports.php:94
+msgid "Avg. Sale"
 msgstr ""
 
-#: admin/views/purchase-orders.php:13
+#: admin/views/terminal.php:77
+msgid "B2B"
+msgstr ""
+
+#: admin/views/terminal.php:76
+msgid "B2C"
+msgstr ""
+
+#: admin/views/purchase-orders.php:14
 msgid "Back to POs"
 msgstr ""
 
-#: admin/views/purchase-orders.php:21
-#: admin/views/purchase-orders.php:66
-#: admin/views/purchase-orders.php:91
-msgid "Supplier"
+#: admin/views/sales.php:28
+msgid "Back to Sales"
 msgstr ""
 
-#: admin/views/purchase-orders.php:22
-msgid "Total cost"
+#: admin/class-pos-admin.php:85 admin/class-pos-admin.php:85 admin/views/backup.php:6
+msgid "Backup"
 msgstr ""
 
-#: admin/views/purchase-orders.php:23
-#: admin/views/purchase-orders.php:95
-msgid "Note"
+#: admin/views/backup.php:23
+msgid "Backup file"
 msgstr ""
 
-#: admin/views/purchase-orders.php:24
-msgid "Created"
+#: admin/class-pos-admin.php:845
+msgid "Backup file missing version information."
 msgstr ""
 
-#: admin/views/purchase-orders.php:29
-msgid "Items"
+#: admin/class-pos-admin.php:859
+msgid "Backup is from a newer version (%1$s) than current (%2$s). Please upgrade plugin first."
 msgstr ""
 
-#: admin/views/purchase-orders.php:30
-#: admin/views/purchase-orders.php:101
-#: admin/views/reports.php:127
-msgid "Product"
+#: admin/class-pos-admin.php:937
+msgid "Backup restore failed. Data rolled back."
 msgstr ""
 
-#: admin/views/purchase-orders.php:30
-msgid "Variant"
+#: admin/class-pos-admin.php:934
+msgid "Backup restored successfully."
 msgstr ""
 
-#: admin/views/purchase-orders.php:30
-msgid "Ordered"
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:31
+msgid "Balance"
 msgstr ""
 
-#: admin/views/purchase-orders.php:30
-msgid "Received"
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:19
+msgid "Balance topped up."
 msgstr ""
 
-#: admin/views/purchase-orders.php:39
-msgid "Receive"
+#: admin/views/barcode.php:24 admin/views/products.php:33 admin/views/products.php:141 admin/views/products.php:222
+msgid "Barcode"
 msgstr ""
 
-#: admin/views/purchase-orders.php:40
-msgid "Enter quantity received for each item (leave 0 to skip)."
+#: admin/class-pos-admin.php:84 admin/class-pos-admin.php:84 admin/views/barcode.php:7 admin/views/products.php:35
+msgid "Barcode Labels"
 msgstr ""
 
-#: admin/views/purchase-orders.php:43
-#: admin/views/sales.php:50
-msgid "Item"
+#: includes/class-pos-products.php:432
+msgid "Barcode already exists."
 msgstr ""
 
-#: admin/views/purchase-orders.php:43
-#, php-format
-msgid "remaining %d"
+#: includes/class-pos-variants.php:50 includes/class-pos-variants.php:81
+msgid "Barcode already used."
 msgstr ""
 
-#: admin/views/purchase-orders.php:48
-msgid "Receive & Update Stock"
+#: includes/class-pos-rest-api.php:930
+msgid "Barcode image dimensions exceed limits. Use a smaller scale value."
 msgstr ""
 
-#: admin/views/purchase-orders.php:66
-msgid "PO #"
+#: admin/views/settings.php:60
+msgid "Barcode symbology"
 msgstr ""
 
-#: admin/views/purchase-orders.php:68
-msgid "No POs yet."
+#: admin/views/settings.php:32
+msgid "Base currency"
 msgstr ""
 
-#: admin/views/purchase-orders.php:76
-#: admin/views/sales.php:172
-msgid "View"
+#: admin/views/settings.php:40
+msgid "Before ($10.00)"
 msgstr ""
 
-#: admin/views/purchase-orders.php:77
-msgid "Delete PO?"
+#: admin/views/settings.php:57
+msgid "Browser print"
 msgstr ""
 
-#: admin/views/purchase-orders.php:77
-#: admin/views/taxes.php:60
-msgid "Del"
+#: addons/simple-pos-kitchen-display/admin/views/kitchen.php:50
+msgid "Bump to Ready"
 msgstr ""
 
-#: admin/views/purchase-orders.php:87
-msgid "New Purchase Order"
-msgstr ""
-
-#: admin/views/purchase-orders.php:102
-msgid "Select product"
-msgstr ""
-
-#: admin/views/purchase-orders.php:105
-msgid "Variant ID"
-msgstr ""
-
-#: admin/views/purchase-orders.php:105
-msgid "(optional, for variant restock)"
-msgstr ""
-
-#: admin/views/purchase-orders.php:109
-#: admin/views/sales.php:52
-msgid "Qty"
-msgstr ""
-
-#: admin/views/purchase-orders.php:110
-msgid "Cost/unit"
-msgstr ""
-
-#: admin/views/purchase-orders.php:114
-msgid "Add line"
-msgstr ""
-
-#: admin/views/purchase-orders.php:116
-msgid "Create PO"
-msgstr ""
-
-#: admin/views/reports.php:55
-msgid "Range"
-msgstr ""
-
-#: admin/views/reports.php:57
-msgid "Today"
-msgstr ""
-
-#: admin/views/reports.php:58
-msgid "Last 7 days"
-msgstr ""
-
-#: admin/views/reports.php:59
-msgid "Last 30 days"
-msgstr ""
-
-#: admin/views/reports.php:60
-msgid "This month"
-msgstr ""
-
-#: admin/views/reports.php:61
-msgid "Custom range"
-msgstr ""
-
-#: admin/views/reports.php:66
-#: admin/views/sales.php:125
-msgid "From"
-msgstr ""
-
-#: admin/views/reports.php:70
-#: admin/views/sales.php:129
-msgid "To"
-msgstr ""
-
-#: admin/views/reports.php:82
-#: admin/views/reports.php:129
-msgid "Revenue"
-msgstr ""
-
-#: admin/views/reports.php:86
-msgid "Sales"
-msgstr ""
-
-#: admin/views/reports.php:104
-msgid "Revenue by Day"
-msgstr ""
-
-#: admin/views/reports.php:106
-#: admin/views/reports.php:134
-#: admin/views/reports.php:153
-msgid "No sales in this range."
-msgstr ""
-
-#: admin/views/reports.php:123
-msgid "Top Products"
-msgstr ""
-
-#: admin/views/reports.php:128
-msgid "Qty Sold"
+#: includes/class-pos-setup.php:1 includes/class-pos-setup.php:1
+msgid "Business Setup"
 msgstr ""
 
 #: admin/views/reports.php:150
 msgid "By Cashier"
 msgstr ""
 
-#: admin/views/sales.php:15
-#: includes/class-pos-rest-api.php:493
-#: includes/class-pos-sales.php:205
-msgid "Sale not found."
+#: addons/simple-pos-time-clock/admin/views/shifts.php:38
+msgid "By cashier"
 msgstr ""
 
-#: admin/views/sales.php:25
-#, php-format
-msgid "Sale %s"
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:72 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:87 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:107 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:123 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:146
+msgid "CSV"
 msgstr ""
 
-#: admin/views/sales.php:27
-msgid "Back to Sales"
+#: includes/class-pos-csv.php:46 includes/class-pos-csv.php:187 includes/class-pos-csv.php:249 includes/class-pos-csv.php:402
+msgid "CSV file missing."
 msgstr ""
 
-#: admin/views/sales.php:28
-msgid "Print Receipt"
+#: includes/class-pos-rest-api.php:827 includes/class-pos-suppliers.php:194
+msgid "Can only edit draft POs."
 msgstr ""
 
-#: admin/views/sales.php:37
-#: admin/views/sales.php:152
+#: admin/views/customers.php:144 admin/views/products.php:192 admin/views/suppliers.php:59 admin/views/taxes.php:126 admin/views/terminal.php:215 admin/views/terminal.php:237 addons/simple-pos-multi-outlet/admin/views/outlets.php:76 addons/simple-pos-table-service/admin/views/tables.php:75
+msgid "Cancel"
+msgstr ""
+
+#: includes/class-pos-variants.php:38
+msgid "Cannot create variant for inactive product. Activate product first."
+msgstr ""
+
+#: admin/views/terminal.php:158
+msgid "Card"
+msgstr ""
+
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:27
+msgid "Cards"
+msgstr ""
+
+#: admin/class-pos-admin.php:157 admin/class-pos-admin.php:258 includes/class-pos-sales.php:34
+msgid "Cart is empty."
+msgstr ""
+
+#: admin/views/terminal.php:63
+msgid "Cart is empty. Scan or click a product to add it."
+msgstr ""
+
+#: admin/views/terminal.php:157
+msgid "Cash"
+msgstr ""
+
+#: admin/views/settings.php:59
+msgid "Cash drawer"
+msgstr ""
+
+#: admin/views/sales.php:38 admin/views/sales.php:179 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:56 addons/simple-pos-time-clock/admin/views/shifts.php:41 addons/simple-pos-time-clock/admin/views/shifts.php:66
 msgid "Cashier"
 msgstr ""
 
-#: admin/views/sales.php:38
-#: admin/views/terminal.php:62
-msgid "Customer"
+#: addons/simple-pos-time-clock/simple-pos-time-clock.php:40
+msgid "Cashier clock-in/out with shift reports."
 msgstr ""
 
-#: admin/views/sales.php:38
-msgid "Walk-in"
+#: includes/class-pos-addons.php:135
+msgid "Cashier shifts, hours and per-shift cash reconciliation."
 msgstr ""
 
-#: admin/views/sales.php:39
-#: admin/views/terminal.php:91
-msgid "Payment method"
+#: admin/views/products.php:39 admin/views/products.php:264
+msgid "Categories"
 msgstr ""
 
-#: admin/views/sales.php:40
-msgid "Tax country/state"
+#: admin/views/products.php:82 admin/views/products.php:97 admin/views/products.php:145
+msgid "Category"
 msgstr ""
 
-#: admin/views/sales.php:41
-msgid "Tax breakdown"
+#: admin/class-pos-admin.php:437
+msgid "Category added."
 msgstr ""
 
-#: admin/views/sales.php:55
-msgid "Line Total"
+#: admin/class-pos-admin.php:450
+msgid "Category deleted."
 msgstr ""
 
-#: admin/views/sales.php:71
-#: admin/views/terminal.php:83
-msgid "Subtotal"
+#: includes/class-pos-products.php:501
+msgid "Category name is required."
 msgstr ""
 
-#: admin/views/sales.php:72
-#: admin/views/terminal.php:70
-#: admin/views/terminal.php:84
-msgid "Discount"
+#: admin/views/terminal.php:200
+msgid "Change due"
 msgstr ""
 
-#: admin/views/sales.php:85
-msgid "Reason (optional)"
+#: admin/class-pos-admin.php:158 admin/class-pos-admin.php:259
+msgid "Checkout failed. Please try again."
 msgstr ""
 
-#: admin/views/sales.php:86
-msgid "Void Sale"
+#: admin/views/setup.php:1
+msgid "Choose your business type"
 msgstr ""
 
-#: admin/views/sales.php:136
+#: includes/class-pos-setup.php:1
+msgid "Choose your business type to seed starting categories, taxes and sample products."
+msgstr ""
+
+#: admin/views/taxes.php:46 admin/views/taxes.php:76
+msgid "Class"
+msgstr ""
+
+#: admin/views/taxes.php:31
+msgid "Class name"
+msgstr ""
+
+#: admin/views/terminal.php:58
+msgid "Clear"
+msgstr ""
+
+#: admin/views/products.php:91
+msgid "Clear low-stock filter"
+msgstr ""
+
+#: addons/simple-pos-time-clock/admin/views/shifts.php:67
+msgid "Clock in"
+msgstr ""
+
+#: addons/simple-pos-time-clock/admin/views/shifts.php:68
+msgid "Clock out"
+msgstr ""
+
+#: addons/simple-pos-time-clock/includes/class-clock.php:176
+msgid "Clock-out recorded (%d min)."
+msgstr ""
+
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:30 addons/simple-pos-gift-cards/admin/views/gift-cards.php:70
+msgid "Code"
+msgstr ""
+
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:21
+msgid "Code and a positive amount are required."
+msgstr ""
+
+#: admin/views/taxes.php:46
+msgid "Comp"
+msgstr ""
+
+#: admin/views/terminal.php:204
+msgid "Complete Sale"
+msgstr ""
+
+#: admin/views/sales.php:152
 msgid "Completed"
 msgstr ""
 
-#: admin/views/sales.php:137
-msgid "Voided"
+#: admin/views/taxes.php:119
+msgid "Compound (on top of prior taxes)"
 msgstr ""
 
-#: admin/views/sales.php:154
-msgid "Payment"
+#: admin/views/taxes.php:130
+msgid "Compound: e.g. Canada PST 7% compound on top of GST 5% — set GST prio 0, PST prio 1 compound=1."
 msgstr ""
 
-#: admin/views/sales.php:161
+#: admin/views/suppliers.php:14
+msgid "Contact"
+msgstr ""
+
+#: admin/views/suppliers.php:42
+msgid "Contact name"
+msgstr ""
+
+#: admin/views/products.php:230 admin/views/purchase-orders.php:31
+msgid "Cost"
+msgstr ""
+
+#: admin/views/products.php:153
+msgid "Cost price"
+msgstr ""
+
+#: admin/views/purchase-orders.php:112
+msgid "Cost/unit"
+msgstr ""
+
+#: includes/class-pos-suppliers.php:154
+msgid "Could not create PO."
+msgstr ""
+
+#: includes/class-pos-products.php:518
+msgid "Could not create category (name may already exist)."
+msgstr ""
+
+#: includes/class-pos-customers.php:88
+msgid "Could not create customer."
+msgstr ""
+
+#: includes/class-pos-products.php:198
+msgid "Could not create product."
+msgstr ""
+
+#: includes/class-pos-tax.php:113
+msgid "Could not create rate."
+msgstr ""
+
+#: includes/class-pos-tax.php:47
+msgid "Could not create tax class."
+msgstr ""
+
+#: includes/class-pos-variants.php:57
+msgid "Could not create variant."
+msgstr ""
+
+#: includes/class-pos-products.php:284
+msgid "Could not delete product."
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:69
+msgid "Could not generate the purchase order. Please try again."
+msgstr ""
+
+#: includes/class-pos-csv.php:322
+msgid "Could not insert sale."
+msgstr ""
+
+#: includes/class-pos-csv.php:61 includes/class-pos-csv.php:202 includes/class-pos-csv.php:264 includes/class-pos-csv.php:417
+msgid "Could not open CSV."
+msgstr ""
+
+#: addons/simple-pos-online-ordering/simple-pos-online-ordering.php:128
+msgid "Could not place the order. Please try again."
+msgstr ""
+
+#: includes/class-pos-sales.php:252
+msgid "Could not record sale items."
+msgstr ""
+
+#: includes/class-pos-sales.php:219
+msgid "Could not record sale."
+msgstr ""
+
+#: includes/class-pos-products.php:244
+msgid "Could not update product."
+msgstr ""
+
+#: includes/class-pos-sales.php:344
+msgid "Could not void sale."
+msgstr ""
+
+#: includes/class-pos-addons.php:123
+msgid "Counter-facing second screen mirroring the running cart and totals."
+msgstr ""
+
+#: admin/views/taxes.php:46 admin/views/taxes.php:82
+msgid "Country"
+msgstr ""
+
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:78
+msgid "Create"
+msgstr ""
+
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:64
+msgid "Create Card"
+msgstr ""
+
+#: admin/views/purchase-orders.php:118
+msgid "Create PO"
+msgstr ""
+
+#: admin/views/purchase-orders.php:25 addons/simple-pos-gift-cards/admin/views/gift-cards.php:33
+msgid "Created"
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:14 addons/simple-pos-multi-currency/simple-pos-multi-currency.php:57 addons/simple-pos-multi-currency/simple-pos-multi-currency.php:58
+msgid "Currencies"
+msgstr ""
+
+#: admin/views/settings.php:30 admin/views/terminal.php:184 addons/simple-pos-multi-currency/admin/views/rates.php:38
+msgid "Currency"
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:71
+msgid "Currency code"
+msgstr ""
+
+#: admin/views/settings.php:39
+msgid "Currency symbol"
+msgstr ""
+
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:53
+msgid "Currency value per point"
+msgstr ""
+
+#: admin/views/terminal.php:53
+msgid "Current Sale"
+msgstr ""
+
+#: admin/views/reports.php:61
+msgid "Custom range"
+msgstr ""
+
+#: admin/views/sales.php:39 admin/views/terminal.php:67 addons/simple-pos-online-ordering/admin/views/orders.php:26
+msgid "Customer"
+msgstr ""
+
+#: addons/simple-pos-customer-display/simple-pos-customer-display.php:38
+msgid "Customer Display"
+msgstr ""
+
+#: includes/class-pos-addons.php:122
+msgid "Customer Displays"
+msgstr ""
+
+#: admin/class-pos-admin.php:482
+msgid "Customer deleted."
+msgstr ""
+
+#: includes/class-pos-customers.php:73
+msgid "Customer name is required."
+msgstr ""
+
+#: includes/class-pos-customers.php:105
+msgid "Customer not found."
+msgstr ""
+
+#: admin/class-pos-admin.php:469
+msgid "Customer saved."
+msgstr ""
+
+#: admin/views/sales.php:40
+msgid "Customer type"
+msgstr ""
+
+#: admin/class-pos-admin.php:78 admin/class-pos-admin.php:78 admin/views/customers.php:22
+msgid "Customers"
+msgstr ""
+
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:26
+msgid "Customers earn points on every sale based on the points-per-currency rate."
+msgstr ""
+
+#: includes/class-pos-addons.php:95
+msgid "Customers order from a QR link; orders drop straight into the POS queue."
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:85
+msgid "Daily"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/simple-pos-low-stock-auto-po.php:39
+msgid "Daily cron + one-click draft purchase orders for products below their low-stock threshold."
+msgstr ""
+
+#: admin/class-pos-admin.php:76 admin/class-pos-admin.php:76
+msgid "Dashboard"
+msgstr ""
+
+#: admin/views/customers.php:91 admin/views/purchase-orders.php:68 admin/views/sales.php:37 admin/views/sales.php:178
+msgid "Date"
+msgstr ""
+
+#: admin/views/settings.php:41
+msgid "Decimal places"
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:37 addons/simple-pos-multi-outlet/admin/views/outlets.php:46
+msgid "Default"
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:83
+msgid "Default Outlet"
+msgstr ""
+
+#: admin/views/settings.php:47
+msgid "Default low stock threshold"
+msgstr ""
+
+#: admin/views/settings.php:70
+msgid "Default state"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:92 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:165
+msgid "Default supplier"
+msgstr ""
+
+#: admin/views/settings.php:71
+msgid "Default tax class"
+msgstr ""
+
+#: admin/views/settings.php:69
+msgid "Default tax country"
+msgstr ""
+
+#: admin/views/purchase-orders.php:79 admin/views/taxes.php:60
+msgid "Del"
+msgstr ""
+
+#: admin/views/customers.php:62 admin/views/products.php:116 admin/views/products.php:208 admin/views/suppliers.php:24 admin/views/taxes.php:22 addons/simple-pos-multi-currency/admin/views/rates.php:54 addons/simple-pos-multi-outlet/admin/views/outlets.php:49
+msgid "Delete"
+msgstr ""
+
+#: admin/views/purchase-orders.php:79
+msgid "Delete PO?"
+msgstr ""
+
+#: admin/views/settings.php:90
+msgid "Delete all POS data when plugin is deleted"
+msgstr ""
+
+#: admin/views/taxes.php:22
+msgid "Delete tax class?"
+msgstr ""
+
+#: admin/views/products.php:265
+msgid "Delete this category? Products stay, just unassigned."
+msgstr ""
+
+#: admin/views/customers.php:62
+msgid "Delete this customer?"
+msgstr ""
+
+#: admin/class-pos-admin.php:156 admin/class-pos-admin.php:257
+msgid "Delete this item?"
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:49
+msgid "Delete this outlet?"
+msgstr ""
+
+#: admin/views/products.php:116
+msgid "Delete this product?"
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:54
+msgid "Delete this rate?"
+msgstr ""
+
+#: admin/views/products.php:208
+msgid "Delete variant?"
+msgstr ""
+
+#: admin/views/suppliers.php:24 admin/views/taxes.php:60
+msgid "Delete?"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/public/views/storefront.php:46
+msgid "Delivery address"
+msgstr ""
+
+#: admin/views/addons.php:22 admin/views/taxes.php:17 admin/views/taxes.php:35 admin/views/taxes.php:36
+msgid "Description"
+msgstr ""
+
+#: admin/views/addons.php:48
+msgid "Disable"
+msgstr ""
+
+#: admin/views/addons.php:40
+msgid "Disabled"
+msgstr ""
+
+#: admin/views/sales.php:80 admin/views/terminal.php:112 admin/views/terminal.php:148 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:77 addons/simple-pos-customer-display/simple-pos-customer-display.php:118
+msgid "Discount"
+msgstr ""
+
+#: admin/views/settings.php:75
+msgid "Discount before tax"
+msgstr ""
+
+#: admin/views/backup.php:13
+msgid "Download Backup"
+msgstr ""
+
+#: admin/views/backup.php:8
+msgid "Download a complete JSON backup of all POS data, or restore from a previous backup. Keep backup files in a safe place."
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/includes/class-autopo.php:241
+msgid "Draft PO #%1$s was created with %2$s"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:53
+msgid "Draft PO created with %1$d item(s); %2$d product(s) were already on an open PO and skipped."
+msgstr ""
+
+#: addons/simple-pos-time-clock/admin/views/shifts.php:69
+msgid "Duration"
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:28
+msgid "Each sale is tagged with its outlet. Stock stays global across outlets."
+msgstr ""
+
+#: addons/simple-pos-loyalty/simple-pos-loyalty.php:40
+msgid "Earn and redeem loyalty points on purchases."
+msgstr ""
+
+#: admin/views/customers.php:61 admin/views/products.php:115 admin/views/suppliers.php:23 admin/views/taxes.php:59 addons/simple-pos-multi-currency/admin/views/rates.php:53 addons/simple-pos-multi-outlet/admin/views/outlets.php:48
+msgid "Edit"
+msgstr ""
+
+#: admin/views/customers.php:114
+msgid "Edit Customer"
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:60
+msgid "Edit Outlet"
+msgstr ""
+
+#: admin/views/products.php:128
+msgid "Edit Product"
+msgstr ""
+
+#: admin/views/taxes.php:70
+msgid "Edit Rate"
+msgstr ""
+
+#: admin/views/suppliers.php:34
+msgid "Edit Supplier"
+msgstr ""
+
+#: addons/simple-pos-table-service/admin/views/tables.php:59
+msgid "Edit Table"
+msgstr ""
+
+#: admin/views/customers.php:47 admin/views/customers.php:130 admin/views/settings.php:25 admin/views/suppliers.php:14 admin/views/suppliers.php:50 admin/views/terminal.php:231 addons/simple-pos-online-ordering/public/views/storefront.php:42
+msgid "Email"
+msgstr ""
+
+#: includes/class-pos-csv.php:66 includes/class-pos-csv.php:207 includes/class-pos-csv.php:269 includes/class-pos-csv.php:422
+msgid "Empty CSV."
+msgstr ""
+
+#: admin/views/addons.php:48
+msgid "Enable"
+msgstr ""
+
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:45
+msgid "Enable loyalty points"
+msgstr ""
+
+#: addons/simple-pos-offline-mode/admin/views/offline.php:54
+msgid "Enable offline sale queueing"
+msgstr ""
+
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:29
+msgid "Enable the loyalty integration in POS → Add-ons to activate."
+msgstr ""
+
+#: admin/views/addons.php:38
+msgid "Enabled"
+msgstr ""
+
+#: admin/views/purchase-orders.php:41
+msgid "Enter quantity received for each item (leave 0 to skip)."
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:102
+msgid "Everything at or below its low-stock threshold. Generating a PO orders each line up to threshold × multiplier."
+msgstr ""
+
+#: addons/simple-pos-example/simple-pos-example.php:23
+msgid "Example Add-on"
+msgstr ""
+
+#: admin/views/taxes.php:130
+msgid "Examples"
+msgstr ""
+
+#: admin/views/sales.php:127
+msgid "Export CSV"
+msgstr ""
+
+#: admin/views/products.php:41
+msgid "Export Categories CSV"
+msgstr ""
+
+#: admin/views/products.php:52
+msgid "Export Products CSV"
+msgstr ""
+
+#: admin/views/products.php:63
+msgid "Export Variants CSV"
+msgstr ""
+
+#: admin/views/products.php:165
+msgid "Fallback if no class rate matches"
+msgstr ""
+
+#: admin/views/settings.php:77
+msgid "Fallback only; prefer tax classes."
+msgstr ""
+
+#: includes/class-pos-csv.php:50 includes/class-pos-csv.php:191 includes/class-pos-csv.php:253 includes/class-pos-csv.php:406
+msgid "File exceeds 5MB limit."
+msgstr ""
+
+#: admin/views/products.php:90 admin/views/sales.php:168 addons/simple-pos-time-clock/admin/views/shifts.php:30
+msgid "Filter"
+msgstr ""
+
+#: admin/views/terminal.php:40
+msgid "Filter by category"
+msgstr ""
+
+#: addons/simple-pos-table-service/admin/views/tables.php:28
+msgid "Floor"
+msgstr ""
+
+#: admin/views/settings.php:84
+msgid "Footer"
+msgstr ""
+
+#: admin/views/addons.php:76
+msgid "Free"
+msgstr ""
+
+#: admin/views/reports.php:66 admin/views/sales.php:141 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:48 addons/simple-pos-time-clock/admin/views/shifts.php:22
+msgid "From"
+msgstr ""
+
+#: admin/views/dashboard.php:20
+msgid "Full Reports"
+msgstr ""
+
+#: includes/class-pos-rest-api.php:909
+msgid "GD library is required for barcode images."
+msgstr ""
+
+#: admin/views/taxes.php:122
+msgid "GST split (50/50 CGST+SGST for intrastate, IGST for interstate)"
+msgstr ""
+
+#: admin/views/settings.php:26
+msgid "GSTIN"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:153
+msgid "Generate automatically once a day (WP-Cron)"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:40 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:126
+msgid "Generate draft PO now"
+msgstr ""
+
+#: admin/views/terminal.php:160
+msgid "Gift Card"
+msgstr ""
+
+#: includes/class-pos-addons.php:108 addons/simple-pos-gift-cards/admin/views/gift-cards.php:13 addons/simple-pos-gift-cards/simple-pos-gift-cards.php:38 addons/simple-pos-gift-cards/simple-pos-gift-cards.php:102 addons/simple-pos-gift-cards/simple-pos-gift-cards.php:103
+msgid "Gift Cards"
+msgstr ""
+
+#: admin/views/terminal.php:167
+msgid "Gift card code"
+msgstr ""
+
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:17
+msgid "Gift card created."
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:77
+msgid "Gross"
+msgstr ""
+
+#: admin/views/dashboard.php:42 admin/views/reports.php:98
+msgid "Gross Profit"
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:79
+msgid "Gross profit"
+msgstr ""
+
+#: admin/views/products.php:168 admin/views/products.php:255
+msgid "HSN/SAC Code"
+msgstr ""
+
+#: admin/views/settings.php:83
+msgid "Header"
+msgstr ""
+
+#: admin/views/terminal.php:55
+msgid "Hold"
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:90
+msgid "Hour"
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:86
+msgid "Hourly sales"
+msgstr ""
+
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:23 addons/simple-pos-offline-mode/admin/views/offline.php:23
+msgid "How it works"
+msgstr ""
+
+#: admin/views/settings.php:69
+msgid "ISO2 e.g. US, IN"
+msgstr ""
+
+#: admin/views/products.php:183 admin/views/products.php:251
+msgid "Image URL"
+msgstr ""
+
+#: admin/views/sales.php:132
+msgid "Import CSV"
+msgstr ""
+
+#: admin/views/products.php:45
+msgid "Import Categories CSV"
+msgstr ""
+
+#: admin/views/products.php:56
+msgid "Import Products CSV"
+msgstr ""
+
+#: admin/views/products.php:67
+msgid "Import Variants CSV"
+msgstr ""
+
+#: admin/class-pos-admin.php:719
+msgid "Imported %d categories."
+msgstr ""
+
+#: admin/class-pos-admin.php:663
+msgid "Imported %d products."
+msgstr ""
+
+#: admin/class-pos-admin.php:773
+msgid "Imported %d sales."
+msgstr ""
+
+#: admin/class-pos-admin.php:755
+msgid "Imported %d variants."
+msgstr ""
+
+#: admin/views/products.php:87 admin/views/products.php:188
+msgid "Inactive"
+msgstr ""
+
+#: admin/views/taxes.php:46
+msgid "Inc"
+msgstr ""
+
+#: admin/views/addons.php:20
+msgid "Included add-ons"
+msgstr ""
+
+#: admin/views/taxes.php:116
+msgid "Inclusive (price contains tax)"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/admin/views/orders.php:20
+msgid "Incoming orders appear here. Load them at the terminal to process via normal checkout (stock is deducted at that point)."
+msgstr ""
+
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:74
+msgid "Initial balance"
+msgstr ""
+
+#: includes/class-pos-products.php:204
+msgid "Initial stock on product creation"
+msgstr ""
+
+#: admin/class-pos-admin.php:839
+msgid "Invalid backup file."
+msgstr ""
+
+#: includes/class-pos-rest-api.php:754
+msgid "Invalid country code: %s. Must be 2-letter ISO code (e.g., US, GB, IN)."
+msgstr ""
+
+#: includes/class-pos-sales.php:52
+msgid "Invalid item in cart."
+msgstr ""
+
+#: addons/simple-pos-gift-cards/includes/class-gift-cards.php:97
+msgid "Invalid or inactive gift card code."
+msgstr ""
+
+#: includes/class-pos-csv.php:445
+msgid "Invalid parent product ID."
+msgstr ""
+
+#: includes/class-pos-products.php:337
+msgid "Invalid product ID."
+msgstr ""
+
+#: includes/class-pos-suppliers.php:265 addons/simple-pos-online-ordering/includes/class-orders.php:160
+msgid "Invalid status."
+msgstr ""
+
+#: includes/class-pos-tax.php:86 includes/class-pos-tax.php:157
+msgid "Invalid tax class."
+msgstr ""
+
+#: includes/class-pos-variants.php:121
+msgid "Invalid variant ID."
+msgstr ""
+
+#: admin/views/settings.php:45
+msgid "Inventory"
+msgstr ""
+
+#: admin/views/purchase-orders.php:45 admin/views/sales.php:55
+msgid "Item"
+msgstr ""
+
+#: admin/views/purchase-orders.php:30 addons/simple-pos-online-ordering/admin/views/orders.php:29
+msgid "Items"
+msgstr ""
+
+#: admin/views/dashboard.php:34 admin/views/reports.php:90
+msgid "Items Sold"
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:76
+msgid "Items sold"
+msgstr ""
+
+#: admin/views/terminal.php:249
+msgid "Kick Drawer"
+msgstr ""
+
+#: addons/simple-pos-kitchen-display/admin/views/kitchen.php:11 addons/simple-pos-kitchen-display/simple-pos-kitchen-display.php:38 addons/simple-pos-kitchen-display/simple-pos-kitchen-display.php:107 addons/simple-pos-kitchen-display/simple-pos-kitchen-display.php:108
+msgid "Kitchen Display"
+msgstr ""
+
+#: includes/class-pos-addons.php:101
+msgid "Kitchen Display System"
+msgstr ""
+
+#: admin/views/settings.php:61
+msgid "Label sheet"
+msgstr ""
+
+#: admin/views/reports.php:59
+msgid "Last 30 days"
+msgstr ""
+
+#: admin/views/reports.php:58
+msgid "Last 7 days"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:132
+msgid "Last run: %s"
+msgstr ""
+
+#: admin/views/settings.php:39
+msgid "Leave empty to use default."
+msgstr ""
+
+#: admin/views/products.php:163 admin/views/settings.php:77
+msgid "Legacy tax rate (%)"
+msgstr ""
+
+#: admin/views/sales.php:60
+msgid "Line Total"
+msgstr ""
+
+#: admin/views/terminal.php:43
+msgid "Loading products…"
+msgstr ""
+
+#: addons/simple-pos-kitchen-display/admin/views/kitchen.php:97
+msgid "Loading…"
+msgstr ""
+
+#: addons/simple-pos-example/simple-pos-example.php:25
+msgid "Logs every completed sale. Fork me into your own add-on."
+msgstr ""
+
+#: admin/views/dashboard.php:80
+msgid "Low Stock"
+msgstr ""
+
+#: admin/class-pos-admin.php:1030
+msgid "Low stock alert for: %s"
+msgstr ""
+
+#: admin/views/products.php:179
+msgid "Low stock threshold"
+msgstr ""
+
+#: admin/views/products.php:238
+msgid "Low thresh"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:36 addons/simple-pos-low-stock-auto-po/simple-pos-low-stock-auto-po.php:37
+msgid "Low-Stock Auto-PO"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:101
+msgid "Low-stock products"
+msgstr ""
+
+#: addons/simple-pos-loyalty/simple-pos-loyalty.php:102 addons/simple-pos-loyalty/simple-pos-loyalty.php:103
+msgid "Loyalty"
+msgstr ""
+
+#: includes/class-pos-addons.php:82
+msgid "Loyalty & Store Credit"
+msgstr ""
+
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:13 addons/simple-pos-loyalty/simple-pos-loyalty.php:38
+msgid "Loyalty Points"
+msgstr ""
+
+#: includes/class-pos-products.php:248
+msgid "Manual edit"
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:126
+msgid "Margin"
+msgstr ""
+
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:61
+msgid "Max discount (% of subtotal)"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:161
+msgid "Minimum order qty per product"
+msgstr ""
+
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:57
+msgid "Minimum points to redeem"
+msgstr ""
+
+#: includes/class-pos-csv.php:73 includes/class-pos-csv.php:215 includes/class-pos-csv.php:277 includes/class-pos-csv.php:430
+msgid "Missing column: %s"
+msgstr ""
+
+#: addons/simple-pos-multi-currency/simple-pos-multi-currency.php:38
+msgid "Multi-Currency"
+msgstr ""
+
+#: includes/class-pos-addons.php:115
+msgid "Multi-Currency & FX"
+msgstr ""
+
+#: includes/class-pos-addons.php:75 addons/simple-pos-multi-outlet/simple-pos-multi-outlet.php:41
+msgid "Multi-Outlet"
+msgstr ""
+
+#: admin/views/addons.php:22 admin/views/customers.php:45 admin/views/customers.php:122 admin/views/products.php:97 admin/views/products.php:133 admin/views/suppliers.php:14 admin/views/suppliers.php:38 admin/views/taxes.php:17 admin/views/taxes.php:46 admin/views/taxes.php:107 admin/views/terminal.php:223 addons/simple-pos-multi-outlet/admin/views/outlets.php:37 addons/simple-pos-multi-outlet/admin/views/outlets.php:67 addons/simple-pos-online-ordering/public/views/storefront.php:34 addons/simple-pos-table-service/admin/views/tables.php:66
+msgid "Name"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/includes/class-orders.php:71
+msgid "Name is required."
+msgstr ""
+
+#: admin/views/products.php:79
+msgid "Name, SKU, barcode…"
+msgstr ""
+
+#: admin/views/customers.php:33
+msgid "Name, phone, email…"
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:78
+msgid "Net"
+msgstr ""
+
+#: admin/views/settings.php:57
+msgid "Network ESC/POS"
+msgstr ""
+
+#: admin/views/settings.php:58
+msgid "Network printer IP"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:136
+msgid "Never run yet."
+msgstr ""
+
+#: includes/class-pos-addons.php:97 includes/class-pos-addons.php:104 includes/class-pos-addons.php:111 includes/class-pos-addons.php:118
+msgid "New"
+msgstr ""
+
+#: admin/views/purchase-orders.php:89
+msgid "New Purchase Order"
+msgstr ""
+
+#: admin/views/terminal.php:251
+msgid "New Sale"
+msgstr ""
+
+#: admin/views/products.php:268
+msgid "New category name"
+msgstr ""
+
+#: addons/simple-pos-kitchen-display/admin/views/kitchen.php:17
+msgid "New sale items appear here automatically. Tap a card to bump the whole order to Ready."
+msgstr ""
+
+#: admin/views/purchase-orders.php:70
+msgid "No POs yet."
+msgstr ""
+
+#: admin/views/addons.php:25
+msgid "No add-ons bundled yet."
+msgstr ""
+
+#: admin/views/products.php:265
+msgid "No categories yet."
+msgstr ""
+
+#: admin/views/customers.php:53
+msgid "No customers found."
+msgstr ""
+
+#: admin/class-pos-admin.php:658 admin/class-pos-admin.php:714 admin/class-pos-admin.php:750 admin/class-pos-admin.php:768 admin/class-pos-admin.php:830 includes/class-pos-rest-api.php:539 includes/class-pos-rest-api.php:555
+msgid "No file uploaded."
+msgstr ""
+
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:38
+msgid "No gift cards yet."
+msgstr ""
+
+#: addons/simple-pos-online-ordering/admin/views/orders.php:36
+msgid "No online orders yet."
+msgstr ""
+
+#: addons/simple-pos-time-clock/includes/class-clock.php:167
+msgid "No open shift found."
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:40
+msgid "No outlets yet."
+msgstr ""
+
+#: includes/class-pos-rest-api.php:571
+msgid "No product matches that code."
+msgstr ""
+
+#: admin/views/products.php:99
+msgid "No products found."
+msgstr ""
+
+#: admin/views/barcode.php:26
+msgid "No products."
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:45
+msgid "No rates yet."
+msgstr ""
+
+#: admin/views/taxes.php:64
+msgid "No rates. Seeded US/IN/EU defaults exist after activation — if empty, deactivate/reactivate or check DB."
+msgstr ""
+
+#: admin/views/sales.php:188
 msgid "No sales found for this range."
+msgstr ""
+
+#: admin/views/reports.php:106 admin/views/reports.php:134 admin/views/reports.php:153 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:112 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:128
+msgid "No sales in this range."
+msgstr ""
+
+#: admin/views/dashboard.php:62
+msgid "No sales yet."
+msgstr ""
+
+#: addons/simple-pos-time-clock/admin/views/shifts.php:47
+msgid "No shifts in this range."
+msgstr ""
+
+#: addons/simple-pos-time-clock/admin/views/shifts.php:73
+msgid "No shifts recorded."
+msgstr ""
+
+#: admin/views/suppliers.php:16
+msgid "No suppliers."
+msgstr ""
+
+#: addons/simple-pos-table-service/admin/views/tables.php:38
+msgid "No tables."
+msgstr ""
+
+#: admin/views/taxes.php:19
+msgid "No tax classes yet."
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:151
+msgid "No tax collected in this range."
+msgstr ""
+
+#: admin/views/products.php:209
+msgid "No variants yet."
+msgstr ""
+
+#: admin/views/products.php:146 admin/views/purchase-orders.php:94 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:23
+msgid "None"
+msgstr ""
+
+#: includes/class-pos-products.php:355 includes/class-pos-sales.php:181
+msgid "Not enough stock for \"%s\"."
+msgstr ""
+
+#: includes/class-pos-variants.php:135
+msgid "Not enough stock for variant \"%s\"."
+msgstr ""
+
+#: admin/views/purchase-orders.php:24 admin/views/purchase-orders.php:97
+msgid "Note"
+msgstr ""
+
+#: admin/views/products.php:199
+msgid "Note (optional)"
+msgstr ""
+
+#: admin/views/customers.php:138
+msgid "Notes"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:109
+msgid "Nothing below the low-stock threshold. Nice."
+msgstr ""
+
+#: addons/simple-pos-kitchen-display/admin/views/kitchen.php:70
+msgid "Nothing here."
+msgstr ""
+
+#: addons/simple-pos-gift-cards/includes/class-gift-cards.php:104
+msgid "Nothing left to pay with the gift card."
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:60
+msgid "Nothing to order — %d product(s) are already on an open PO."
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:64
+msgid "Nothing to order — no products are below their low-stock threshold."
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:174
+msgid "Notify email (optional)"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:87
+msgid "Off"
+msgstr ""
+
+#: includes/class-pos-addons.php:128 addons/simple-pos-offline-mode/simple-pos-offline-mode.php:38
+msgid "Offline Mode"
+msgstr ""
+
+#: addons/simple-pos-offline-mode/admin/views/offline.php:13 addons/simple-pos-offline-mode/simple-pos-offline-mode.php:55 addons/simple-pos-offline-mode/simple-pos-offline-mode.php:56
+msgid "Offline Queue"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/simple-pos-online-ordering.php:38
+msgid "Online Ordering"
+msgstr ""
+
+#: includes/class-pos-addons.php:94
+msgid "Online Ordering & QR Menu"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/admin/views/orders.php:13 addons/simple-pos-online-ordering/simple-pos-online-ordering.php:59 addons/simple-pos-online-ordering/simple-pos-online-ordering.php:60
+msgid "Online Orders"
+msgstr ""
+
+#: includes/class-pos-csv.php:57 includes/class-pos-csv.php:198 includes/class-pos-csv.php:260 includes/class-pos-csv.php:413
+msgid "Only CSV files are allowed."
+msgstr ""
+
+#: includes/class-pos-sales.php:305
+msgid "Only completed sales can be voided."
+msgstr ""
+
+#: admin/views/dashboard.php:19
+msgid "Open Terminal"
+msgstr ""
+
+#: includes/class-pos-setup.php:1
+msgid "Open setup"
+msgstr ""
+
+#: admin/views/terminal.php:168
+msgid "Optional"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/admin/views/orders.php:25
+msgid "Order #"
+msgstr ""
+
+#: addons/simple-pos-kitchen-display/admin/views/kitchen.php:14
+msgid "Order bumped."
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:158
+msgid "Order enough to reach threshold × this value."
+msgstr ""
+
+#: addons/simple-pos-online-ordering/simple-pos-online-ordering.php:127
+msgid "Order received — we will call you to confirm."
+msgstr ""
+
+#: admin/views/purchase-orders.php:31
+msgid "Ordered"
+msgstr ""
+
+#: admin/views/terminal.php:162
+msgid "Other"
+msgstr ""
+
+#: admin/class-pos-admin.php:159 admin/class-pos-admin.php:260
+msgid "Out of stock"
+msgstr ""
+
+#: admin/views/sales.php:43 admin/views/sales.php:158 admin/views/terminal.php:87
+msgid "Outlet"
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:23
+msgid "Outlet deleted."
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:25
+msgid "Outlet name required."
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:17 addons/simple-pos-multi-outlet/admin/views/outlets.php:34 addons/simple-pos-multi-outlet/simple-pos-multi-outlet.php:61 addons/simple-pos-multi-outlet/simple-pos-multi-outlet.php:62
+msgid "Outlets"
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/simple-pos-multi-outlet.php:43
+msgid "Outlets with per-sale tagging and outlet-filtered sales history."
+msgstr ""
+
+#: admin/views/purchase-orders.php:68
+msgid "PO #"
+msgstr ""
+
+#: admin/views/purchase-orders.php:12
+msgid "PO %s"
+msgstr ""
+
+#: includes/class-pos-suppliers.php:285
+msgid "PO already closed."
+msgstr ""
+
+#: admin/class-pos-admin.php:650
+msgid "PO deleted."
+msgstr ""
+
+#: includes/class-pos-rest-api.php:805 includes/class-pos-rest-api.php:822 includes/class-pos-suppliers.php:189 includes/class-pos-suppliers.php:282
+msgid "PO not found."
+msgstr ""
+
+#: admin/views/settings.php:50
+msgid "PO number prefix"
+msgstr ""
+
+#: admin/class-pos-admin.php:642
+msgid "PO received, stock updated."
+msgstr ""
+
+#: admin/class-pos-admin.php:66 admin/class-pos-admin.php:67
+msgid "POS"
+msgstr ""
+
+#: admin/views/settings.php:97 includes/class-pos-roles.php:42
+msgid "POS Cashier"
+msgstr ""
+
+#: admin/views/dashboard.php:17
+msgid "POS Dashboard"
+msgstr ""
+
+#: admin/views/settings.php:98 includes/class-pos-roles.php:54
+msgid "POS Manager"
 msgstr ""
 
 #: admin/views/settings.php:9
 msgid "POS Settings"
 msgstr ""
 
-#: admin/views/settings.php:11
-#: admin/views/settings.php:100
+#: admin/views/terminal.php:12
+msgid "POS Terminal"
+msgstr ""
+
+#: admin/class-pos-admin.php:160 admin/class-pos-admin.php:261
+msgid "Paid in"
+msgstr ""
+
+#: admin/views/settings.php:56
+msgid "Paper width"
+msgstr ""
+
+#: includes/class-pos-csv.php:451
+msgid "Parent product #%d not found."
+msgstr ""
+
+#: includes/class-pos-variants.php:31
+msgid "Parent product not found."
+msgstr ""
+
+#: admin/views/sales.php:181
+msgid "Payment"
+msgstr ""
+
+#: admin/views/sales.php:41 admin/views/terminal.php:155 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:110
+msgid "Payment method"
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:106
+msgid "Payment mix"
+msgstr ""
+
+#: admin/views/settings.php:76
+msgid "Per line"
+msgstr ""
+
+#: admin/views/settings.php:76
+msgid "Per order"
+msgstr ""
+
+#: admin/views/customers.php:46 admin/views/customers.php:126 admin/views/settings.php:24 admin/views/suppliers.php:14 admin/views/suppliers.php:46 admin/views/terminal.php:227 addons/simple-pos-online-ordering/admin/views/orders.php:27 addons/simple-pos-online-ordering/public/views/storefront.php:38
+msgid "Phone"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/public/views/storefront.php:50
+msgid "Place order"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/admin/views/orders.php:31
+msgid "Placed"
+msgstr ""
+
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:27
+msgid "Points are stored in a per-customer ledger. Voids reverse the earned points."
+msgstr ""
+
+#: addons/simple-pos-loyalty/admin/views/loyalty-settings.php:49
+msgid "Points per currency unit"
+msgstr ""
+
+#: includes/class-pos-addons.php:83
+msgid "Points per purchase, redeem at checkout, gift-card style store credit balances."
+msgstr ""
+
+#: includes/class-pos-addons.php:78
+msgid "Popular"
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:89
+msgid "Preselected on the terminal"
+msgstr ""
+
+#: admin/views/barcode.php:45
+msgid "Preview"
+msgstr ""
+
+#: admin/views/barcode.php:24 admin/views/products.php:97 admin/views/products.php:149 admin/views/products.php:206 admin/views/sales.php:58
+msgid "Price"
+msgstr ""
+
+#: includes/class-pos-products.php:417 includes/class-pos-variants.php:201
+msgid "Price cannot be negative."
+msgstr ""
+
+#: admin/views/products.php:226
+msgid "Price override"
+msgstr ""
+
+#: admin/views/settings.php:74
+msgid "Prices include tax"
+msgstr ""
+
+#: admin/views/terminal.php:248
+msgid "Print"
+msgstr ""
+
+#: admin/views/barcode.php:9
+msgid "Print Labels"
+msgstr ""
+
+#: admin/views/sales.php:29
+msgid "Print Receipt"
+msgstr ""
+
+#: admin/views/settings.php:57
+msgid "Printer"
+msgstr ""
+
+#: admin/views/settings.php:54
+msgid "Printing & Barcode"
+msgstr ""
+
+#: admin/views/taxes.php:46
+msgid "Prio"
+msgstr ""
+
+#: admin/views/taxes.php:111
+msgid "Priority"
+msgstr ""
+
+#: admin/views/purchase-orders.php:31 admin/views/purchase-orders.php:103 admin/views/reports.php:127 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:126 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:105
+msgid "Product"
+msgstr ""
+
+#: includes/class-pos-sales.php:57
+msgid "Product #%d is not available."
+msgstr ""
+
+#: admin/views/barcode.php:24
+msgid "Product / Variant"
+msgstr ""
+
+#: admin/class-pos-admin.php:404
+msgid "Product deleted."
+msgstr ""
+
+#: includes/class-pos-rest-api.php:891
+msgid "Product has no barcode or SKU."
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:122
+msgid "Product mix (top 20)"
+msgstr ""
+
+#: includes/class-pos-products.php:412
+msgid "Product name is required."
+msgstr ""
+
+#: includes/class-pos-products.php:223 includes/class-pos-products.php:346 includes/class-pos-rest-api.php:516 includes/class-pos-rest-api.php:886
+msgid "Product not found."
+msgstr ""
+
+#: admin/class-pos-admin.php:391
+msgid "Product saved."
+msgstr ""
+
+#: admin/class-pos-admin.php:77 admin/class-pos-admin.php:77 admin/views/products.php:29 admin/views/products.php:50
+msgid "Products"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:74
+msgid "Products to order"
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:126
+msgid "Profit"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/simple-pos-online-ordering.php:40
+msgid "Public storefront that captures orders for the terminal."
+msgstr ""
+
+#: admin/views/customers.php:86
+msgid "Purchase History"
+msgstr ""
+
+#: admin/class-pos-admin.php:83 admin/class-pos-admin.php:83 admin/views/purchase-orders.php:62
+msgid "Purchase Orders"
+msgstr ""
+
+#: admin/class-pos-admin.php:624
+msgid "Purchase order created."
+msgstr ""
+
+#: admin/views/purchase-orders.php:111 admin/views/sales.php:57 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:126
+msgid "Qty"
+msgstr ""
+
+#: admin/views/reports.php:128
+msgid "Qty Sold"
+msgstr ""
+
+#: addons/simple-pos-offline-mode/admin/views/offline.php:27
+msgid "Queued sales are stored in the browser&#8217;s localStorage and sync automatically when connectivity returns."
+msgstr ""
+
+#: addons/simple-pos-offline-mode/admin/views/offline.php:39
+msgid "Queued sales live in each browser&#8217;s localStorage. Only that browser can sync or inspect them; server-side visibility is limited until sync completes."
+msgstr ""
+
+#: admin/views/terminal.php:221
+msgid "Quick add. You can edit full details later from the Customers screen."
+msgstr ""
+
+#: admin/views/products.php:195
+msgid "Quick restock"
+msgstr ""
+
+#: admin/views/reports.php:55
+msgid "Range"
+msgstr ""
+
+#: admin/views/taxes.php:125 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:149
+msgid "Rate"
+msgstr ""
+
+#: admin/views/taxes.php:46 admin/views/taxes.php:103
+msgid "Rate %"
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:20
+msgid "Rate deleted."
+msgstr ""
+
+#: includes/class-pos-tax.php:95 includes/class-pos-tax.php:135
+msgid "Rate must be 0-100."
+msgstr ""
+
+#: includes/class-pos-tax.php:123
+msgid "Rate not found."
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:18
+msgid "Rate saved."
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:39
+msgid "Rate to base"
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:35
+msgid "Rates"
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:28
+msgid "Rates are expressed as 1 foreign unit = X %s. The terminal shows the foreign amount and records sales in the base currency."
+msgstr ""
+
+#: addons/simple-pos-kitchen-display/admin/views/kitchen.php:27
+msgid "Ready"
+msgstr ""
+
+#: addons/simple-pos-customer-display/simple-pos-customer-display.php:116
+msgid "Ready for your order"
+msgstr ""
+
+#: admin/views/sales.php:93
+msgid "Reason (optional)"
+msgstr ""
+
+#: admin/views/terminal.php:56
+msgid "Recall"
+msgstr ""
+
+#: admin/views/settings.php:81 admin/views/terminal.php:244
+msgid "Receipt"
+msgstr ""
+
+#: admin/views/purchase-orders.php:40
+msgid "Receive"
+msgstr ""
+
+#: admin/views/purchase-orders.php:50
+msgid "Receive & Update Stock"
+msgstr ""
+
+#: admin/views/purchase-orders.php:31
+msgid "Received"
+msgstr ""
+
+#: admin/views/dashboard.php:50
+msgid "Recent Sales"
+msgstr ""
+
+#: addons/simple-pos-time-clock/admin/views/shifts.php:63
+msgid "Recent shifts"
+msgstr ""
+
+#: admin/views/terminal.php:173
+msgid "Redeem loyalty points"
+msgstr ""
+
+#: admin/class-pos-admin.php:80 admin/class-pos-admin.php:80 admin/views/reports.php:48
+msgid "Reports"
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:42 addons/simple-pos-advanced-reports/simple-pos-advanced-reports.php:53 addons/simple-pos-advanced-reports/simple-pos-advanced-reports.php:54
+msgid "Reports Pro"
+msgstr ""
+
+#: addons/simple-pos-kitchen-display/simple-pos-kitchen-display.php:40
+msgid "Restaurant kitchen order view with item-level prep status."
+msgstr ""
+
+#: includes/class-pos-addons.php:89
+msgid "Restaurant mode: floor plan, open tabs, split bills and kitchen tickets."
+msgstr ""
+
+#: addons/simple-pos-table-service/simple-pos-table-service.php:40
+msgid "Restaurant-style table management with active orders."
+msgstr ""
+
+#: admin/views/backup.php:27
+msgid "Restore Backup"
+msgstr ""
+
+#: admin/views/backup.php:17
+msgid "Restore from Backup"
+msgstr ""
+
+#: admin/views/reports.php:82 admin/views/reports.php:129 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:90 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:110 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:126
+msgid "Revenue"
+msgstr ""
+
+#: admin/views/reports.php:104
+msgid "Revenue by Day"
+msgstr ""
+
+#: admin/views/settings.php:61
+msgid "Roll 58mm"
+msgstr ""
+
+#: admin/views/settings.php:61
+msgid "Roll 80mm"
+msgstr ""
+
+#: includes/class-pos-addons.php:76
+msgid "Run several shops from one install: per-outlet stock, registers and sales reports."
+msgstr ""
+
+#: admin/views/barcode.php:24 admin/views/products.php:97 admin/views/products.php:137 admin/views/products.php:206 admin/views/products.php:218 admin/views/sales.php:56 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:126 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:105
+msgid "SKU"
+msgstr ""
+
+#: includes/class-pos-variants.php:47 includes/class-pos-variants.php:78
+msgid "SKU already used."
+msgstr ""
+
+#: admin/views/customers.php:90 admin/views/dashboard.php:54 admin/views/sales.php:177
+msgid "Sale #"
+msgstr ""
+
+#: admin/views/sales.php:26
+msgid "Sale %s"
+msgstr ""
+
+#: admin/views/sales.php:15 includes/class-pos-rest-api.php:676 includes/class-pos-sales.php:302
+msgid "Sale not found."
+msgstr ""
+
+#: admin/views/settings.php:49
+msgid "Sale number prefix"
+msgstr ""
+
+#: admin/class-pos-admin.php:956
+msgid "Sale voided and stock restored."
+msgstr ""
+
+#: admin/views/reports.php:86 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:76 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:90 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:110
+msgid "Sales"
+msgstr ""
+
+#: admin/class-pos-admin.php:79 admin/class-pos-admin.php:79 admin/views/sales.php:122
+msgid "Sales History"
+msgstr ""
+
+#: admin/views/dashboard.php:30
+msgid "Sales Today"
+msgstr ""
+
+#: admin/views/taxes.php:113
+msgid "Same priority = one rate wins: a state rate replaces the country rate. Stack rates (e.g. federal + state) with different priorities + compound."
+msgstr ""
+
+#: addons/simple-pos-offline-mode/admin/views/offline.php:59
+msgid "Save"
+msgstr ""
+
+#: admin/views/settings.php:11 admin/views/settings.php:104
 msgid "Save Settings"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:178 addons/simple-pos-loyalty/admin/views/loyalty-settings.php:65 addons/simple-pos-multi-outlet/admin/views/outlets.php:98
+msgid "Save settings"
+msgstr ""
+
+#: addons/simple-pos-table-service/admin/views/tables.php:19
+msgid "Saved."
+msgstr ""
+
+#: admin/views/terminal.php:19
+msgid "Scan barcode or SKU"
+msgstr ""
+
+#: admin/views/terminal.php:27
+msgid "Scan barcode or type SKU"
+msgstr ""
+
+#: admin/views/terminal.php:24
+msgid "Scan barcode or type SKU, then press Enter…"
+msgstr ""
+
+#: admin/views/customers.php:32 admin/views/customers.php:36 admin/views/products.php:78
+msgid "Search"
+msgstr ""
+
+#: admin/views/terminal.php:29 admin/views/terminal.php:36
+msgid "Search products"
+msgstr ""
+
+#: admin/views/terminal.php:34
+msgid "Search products…"
+msgstr ""
+
+#: addons/simple-pos-table-service/admin/views/tables.php:70
+msgid "Seats"
+msgstr ""
+
+#: includes/class-pos-addons.php:102
+msgid "Second-screen prep queue with item states and timers for kitchens."
+msgstr ""
+
+#: addons/simple-pos-customer-display/simple-pos-customer-display.php:40
+msgid "Secondary-screen customer view for the POS terminal."
+msgstr ""
+
+#: admin/views/barcode.php:18
+msgid "Select all"
+msgstr ""
+
+#: admin/views/purchase-orders.php:104
+msgid "Select product"
+msgstr ""
+
+#: admin/views/barcode.php:12
+msgid "Select products/variants to print."
+msgstr ""
+
+#: admin/views/terminal.php:215
+msgid "Select variant"
+msgstr ""
+
+#: includes/class-pos-addons.php:109
+msgid "Sell and redeem plastic or digital gift cards as a payment method."
+msgstr ""
+
+#: includes/class-pos-addons.php:116
+msgid "Sell in foreign currencies; pairs with the per-country tax engine."
+msgstr ""
+
+#: addons/simple-pos-gift-cards/simple-pos-gift-cards.php:40
+msgid "Sell, top up and redeem gift card codes at checkout."
+msgstr ""
+
+#: admin/views/taxes.php:11
+msgid "Set ISO country codes (US, IN, DE, FR, GB...) + optional state (CA, MH). Priority low runs first; compound applies on top of prior taxes. Inclusive = price already contains tax."
+msgstr ""
+
+#: admin/class-pos-admin.php:94 admin/class-pos-admin.php:94 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:147 addons/simple-pos-loyalty/admin/views/loyalty-settings.php:37 addons/simple-pos-offline-mode/admin/views/offline.php:46
+msgid "Settings"
+msgstr ""
+
+#: admin/class-pos-admin.php:371 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:46 addons/simple-pos-loyalty/admin/views/loyalty-settings.php:17 addons/simple-pos-multi-outlet/admin/views/outlets.php:21 addons/simple-pos-offline-mode/admin/views/offline.php:17
+msgid "Settings saved."
+msgstr ""
+
+#: admin/views/barcode.php:12
+msgid "Sheet:"
+msgstr ""
+
+#: addons/simple-pos-time-clock/admin/views/shifts.php:15 addons/simple-pos-time-clock/admin/views/shifts.php:42 addons/simple-pos-time-clock/simple-pos-time-clock.php:97 addons/simple-pos-time-clock/simple-pos-time-clock.php:98
+msgid "Shifts"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/includes/class-autopo.php:159
+msgid "Simple POS purchase orders not available."
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/simple-pos-advanced-reports.php:25
+msgid "Simple POS — Advanced Reports requires the free Simple POS plugin to be installed and active."
+msgstr ""
+
+#: addons/simple-pos-customer-display/simple-pos-customer-display.php:24
+msgid "Simple POS — Customer Display requires the free Simple POS plugin."
+msgstr ""
+
+#: addons/simple-pos-gift-cards/simple-pos-gift-cards.php:24
+msgid "Simple POS — Gift Cards requires the free Simple POS plugin."
+msgstr ""
+
+#: addons/simple-pos-kitchen-display/simple-pos-kitchen-display.php:24
+msgid "Simple POS — Kitchen Display requires the free Simple POS plugin."
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/simple-pos-low-stock-auto-po.php:26
+msgid "Simple POS — Low-Stock Auto-PO requires the free Simple POS plugin to be installed and active."
+msgstr ""
+
+#: addons/simple-pos-loyalty/simple-pos-loyalty.php:24
+msgid "Simple POS — Loyalty requires the free Simple POS plugin."
+msgstr ""
+
+#: addons/simple-pos-multi-currency/simple-pos-multi-currency.php:24
+msgid "Simple POS — Multi-Currency requires the free Simple POS plugin."
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/simple-pos-multi-outlet.php:27
+msgid "Simple POS — Multi-Outlet requires the free Simple POS plugin to be installed and active."
+msgstr ""
+
+#: addons/simple-pos-offline-mode/simple-pos-offline-mode.php:24
+msgid "Simple POS — Offline Mode requires the free Simple POS plugin."
+msgstr ""
+
+#: addons/simple-pos-online-ordering/simple-pos-online-ordering.php:24
+msgid "Simple POS — Online Ordering requires the free Simple POS plugin."
+msgstr ""
+
+#: addons/simple-pos-table-service/simple-pos-table-service.php:24
+msgid "Simple POS — Table Service requires the free Simple POS plugin."
+msgstr ""
+
+#: addons/simple-pos-time-clock/simple-pos-time-clock.php:24
+msgid "Simple POS — Time Clock requires the free Simple POS plugin."
+msgstr ""
+
+#: admin/class-pos-admin.php:1026 includes/class-pos-setup.php:1
+msgid "Simple POS:"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/includes/class-autopo.php:238
+msgid "Simple POS: auto-PO drafted"
+msgstr ""
+
+#: admin/views/settings.php:38
+msgid "Single store-wide currency. Symbol can be overridden below."
+msgstr ""
+
+#: admin/views/taxes.php:17
+msgid "Slug"
+msgstr ""
+
+#: admin/views/settings.php:94
+msgid "Staff Roles"
+msgstr ""
+
+#: admin/views/taxes.php:46 admin/views/taxes.php:99 admin/views/terminal.php:142 admin/views/terminal.php:143
+msgid "State"
+msgstr ""
+
+#: admin/views/addons.php:22 admin/views/customers.php:93 admin/views/dashboard.php:57 admin/views/products.php:86 admin/views/products.php:97 admin/views/products.php:187 admin/views/purchase-orders.php:21 admin/views/purchase-orders.php:68 admin/views/sales.php:149 admin/views/sales.php:182 addons/simple-pos-gift-cards/admin/views/gift-cards.php:32 addons/simple-pos-online-ordering/admin/views/orders.php:30
+msgid "Status"
+msgstr ""
+
+#: admin/views/products.php:97 admin/views/products.php:206 admin/views/products.php:234 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:105
+msgid "Stock"
+msgstr ""
+
+#: includes/class-pos-products.php:327 includes/class-pos-variants.php:111
+msgid "Stock adjustment delta must be numeric."
+msgstr ""
+
+#: admin/views/products.php:175
+msgid "Stock quantity"
+msgstr ""
+
+#: admin/class-pos-admin.php:421
+msgid "Stock updated."
 msgstr ""
 
 #: admin/views/settings.php:20
@@ -1034,725 +2226,547 @@ msgstr ""
 msgid "Store name"
 msgstr ""
 
-#: admin/views/settings.php:26
-msgid "Currency"
+#: admin/views/sales.php:79 admin/views/terminal.php:147 addons/simple-pos-customer-display/simple-pos-customer-display.php:117 addons/simple-pos-online-ordering/admin/views/orders.php:28
+msgid "Subtotal"
 msgstr ""
 
-#: admin/views/settings.php:28
-msgid "Base currency"
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:105
+msgid "Suggested order"
 msgstr ""
 
-#: admin/views/settings.php:34
-msgid "Single store-wide currency. Symbol can be overridden below."
+#: admin/views/purchase-orders.php:22 admin/views/purchase-orders.php:68 admin/views/purchase-orders.php:93
+msgid "Supplier"
 msgstr ""
 
-#: admin/views/settings.php:35
-msgid "Currency symbol"
+#: admin/class-pos-admin.php:592
+msgid "Supplier deleted."
 msgstr ""
 
-#: admin/views/settings.php:35
-msgid "Leave empty to use default."
+#: includes/class-pos-suppliers.php:21 includes/class-pos-suppliers.php:52
+msgid "Supplier name required."
 msgstr ""
 
-#: admin/views/settings.php:36
+#: includes/class-pos-suppliers.php:42
+msgid "Supplier not found."
+msgstr ""
+
+#: admin/class-pos-admin.php:584
+msgid "Supplier saved."
+msgstr ""
+
+#: admin/class-pos-admin.php:82 admin/class-pos-admin.php:82 admin/views/suppliers.php:8
+msgid "Suppliers"
+msgstr ""
+
+#: admin/views/settings.php:40
 msgid "Symbol position"
 msgstr ""
 
-#: admin/views/settings.php:36
-msgid "Before ($10.00)"
+#: admin/views/barcode.php:12
+msgid "Symbology:"
 msgstr ""
 
-#: admin/views/settings.php:36
-msgid "After (10.00$)"
+#: admin/class-pos-admin.php:161 admin/class-pos-admin.php:262 admin/views/terminal.php:57
+msgid "Sync"
 msgstr ""
 
-#: admin/views/settings.php:37
-msgid "Decimal places"
+#: admin/views/terminal.php:101
+msgid "Table"
 msgstr ""
 
-#: admin/views/settings.php:41
-msgid "Inventory"
+#: includes/class-pos-addons.php:88 addons/simple-pos-table-service/simple-pos-table-service.php:38
+msgid "Table Service"
 msgstr ""
 
-#: admin/views/settings.php:43
-msgid "Default low stock threshold"
+#: addons/simple-pos-table-service/admin/views/tables.php:21
+msgid "Table deleted."
 msgstr ""
 
-#: admin/views/settings.php:44
-msgid "Allow overselling"
+#: addons/simple-pos-table-service/admin/views/tables.php:15 addons/simple-pos-table-service/simple-pos-table-service.php:57 addons/simple-pos-table-service/simple-pos-table-service.php:58
+msgid "Tables"
 msgstr ""
 
-#: admin/views/settings.php:44
-msgid "Allow checkout even if stock would go negative"
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:156
+msgid "Target multiplier"
 msgstr ""
 
-#: admin/views/settings.php:45
-msgid "Sale number prefix"
-msgstr ""
-
-#: admin/views/settings.php:46
-msgid "PO number prefix"
-msgstr ""
-
-#: admin/views/settings.php:50
-msgid "Printing & Barcode"
-msgstr ""
-
-#: admin/views/settings.php:52
-msgid "Paper width"
-msgstr ""
-
-#: admin/views/settings.php:52
-msgid "58mm"
-msgstr ""
-
-#: admin/views/settings.php:52
-msgid "80mm"
-msgstr ""
-
-#: admin/views/settings.php:53
-msgid "Printer"
-msgstr ""
-
-#: admin/views/settings.php:53
-msgid "Browser print"
-msgstr ""
-
-#: admin/views/settings.php:53
-msgid "USB ESC/POS (WebUSB)"
-msgstr ""
-
-#: admin/views/settings.php:53
-msgid "Network ESC/POS"
-msgstr ""
-
-#: admin/views/settings.php:54
-msgid "Network printer IP"
-msgstr ""
-
-#: admin/views/settings.php:55
-msgid "Cash drawer"
-msgstr ""
-
-#: admin/views/settings.php:55
-msgid "Auto kick drawer on sale complete"
-msgstr ""
-
-#: admin/views/settings.php:56
-msgid "Barcode symbology"
-msgstr ""
-
-#: admin/views/settings.php:57
-msgid "Label sheet"
-msgstr ""
-
-#: admin/views/settings.php:57
-msgid "A4 30-up (Avery 5160)"
-msgstr ""
-
-#: admin/views/settings.php:57
-msgid "A4 65-up"
-msgstr ""
-
-#: admin/views/settings.php:57
-msgid "Roll 58mm"
-msgstr ""
-
-#: admin/views/settings.php:57
-msgid "Roll 80mm"
-msgstr ""
-
-#: admin/views/settings.php:63
-msgid "Tax defaults"
-msgstr ""
-
-#: admin/views/settings.php:65
-msgid "Default tax country"
-msgstr ""
-
-#: admin/views/settings.php:65
-msgid "ISO2 e.g. US, IN"
-msgstr ""
-
-#: admin/views/settings.php:66
-msgid "Default state"
-msgstr ""
-
-#: admin/views/settings.php:66
-msgid "e.g. CA, MH"
-msgstr ""
-
-#: admin/views/settings.php:67
-msgid "Default tax class"
-msgstr ""
-
-#: admin/views/settings.php:70
-msgid "Tax inclusive pricing"
-msgstr ""
-
-#: admin/views/settings.php:70
-msgid "Prices include tax"
-msgstr ""
-
-#: admin/views/settings.php:71
-msgid "Discount before tax"
-msgstr ""
-
-#: admin/views/settings.php:71
-msgid "Apply discount before tax"
-msgstr ""
-
-#: admin/views/settings.php:72
-msgid "Tax rounding"
-msgstr ""
-
-#: admin/views/settings.php:72
-msgid "Per line"
-msgstr ""
-
-#: admin/views/settings.php:72
-msgid "Per order"
-msgstr ""
-
-#: admin/views/settings.php:73
-msgid "Fallback only; prefer tax classes."
-msgstr ""
-
-#: admin/views/settings.php:77
-#: admin/views/terminal.php:148
-msgid "Receipt"
-msgstr ""
-
-#: admin/views/settings.php:79
-msgid "Header"
-msgstr ""
-
-#: admin/views/settings.php:80
-msgid "Footer"
-msgstr ""
-
-#: admin/views/settings.php:84
-msgid "Advanced"
-msgstr ""
-
-#: admin/views/settings.php:86
-msgid "Uninstall"
-msgstr ""
-
-#: admin/views/settings.php:86
-msgid "Delete all POS data when plugin is deleted"
-msgstr ""
-
-#: admin/views/settings.php:90
-msgid "Staff Roles"
-msgstr ""
-
-#: admin/views/settings.php:91
-msgid "Assign under Users:"
-msgstr ""
-
-#: admin/views/settings.php:93
-#: includes/class-pos-roles.php:42
-msgid "POS Cashier"
-msgstr ""
-
-#: admin/views/settings.php:93
-msgid "terminal + view sales"
-msgstr ""
-
-#: admin/views/settings.php:94
-#: includes/class-pos-roles.php:54
-msgid "POS Manager"
-msgstr ""
-
-#: admin/views/settings.php:94
-msgid "full POS + reports, voids, taxes, POs"
-msgstr ""
-
-#: admin/views/suppliers.php:14
-msgid "Contact"
-msgstr ""
-
-#: admin/views/suppliers.php:16
-msgid "No suppliers."
-msgstr ""
-
-#: admin/views/suppliers.php:24
-#: admin/views/taxes.php:60
-msgid "Delete?"
-msgstr ""
-
-#: admin/views/suppliers.php:34
-msgid "Edit Supplier"
-msgstr ""
-
-#: admin/views/suppliers.php:34
-msgid "Add Supplier"
-msgstr ""
-
-#: admin/views/suppliers.php:42
-msgid "Contact name"
-msgstr ""
-
-#: admin/views/suppliers.php:58
-#: admin/views/taxes.php:108
-msgid "Update"
-msgstr ""
-
-#: admin/views/suppliers.php:58
-#: admin/views/taxes.php:108
-msgid "Add"
-msgstr ""
-
-#: admin/views/taxes.php:9
-msgid "Taxes — per-country classes & rates"
-msgstr ""
-
-#: admin/views/taxes.php:11
-msgid "Set IS country codes (US, IN, DE, FR, GB...) + optional state (CA, MH). Priority low runs first; compound applies on top of prior taxes. Inclusive = price already contains tax."
+#: admin/views/products.php:97 admin/views/sales.php:59 admin/views/sales.php:81 admin/views/terminal.php:149 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:78 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:149 addons/simple-pos-customer-display/simple-pos-customer-display.php:119
+msgid "Tax"
 msgstr ""
 
 #: admin/views/taxes.php:15
 msgid "Tax Classes"
 msgstr ""
 
-#: admin/views/taxes.php:17
-msgid "Slug"
-msgstr ""
-
-#: admin/views/taxes.php:17
-#: admin/views/taxes.php:35
-#: admin/views/taxes.php:36
-msgid "Description"
-msgstr ""
-
-#: admin/views/taxes.php:17
-msgid "Action"
-msgstr ""
-
-#: admin/views/taxes.php:19
-msgid "No tax classes yet."
-msgstr ""
-
-#: admin/views/taxes.php:22
-msgid "Delete tax class?"
-msgstr ""
-
-#: admin/views/taxes.php:31
-msgid "Class name"
-msgstr ""
-
-#: admin/views/taxes.php:32
-msgid "e.g. Standard"
-msgstr ""
-
-#: admin/views/taxes.php:39
-msgid "Add Class"
-msgstr ""
-
 #: admin/views/taxes.php:44
 msgid "Tax Rates"
 msgstr ""
 
-#: admin/views/taxes.php:46
-#: admin/views/taxes.php:76
-msgid "Class"
+#: admin/views/sales.php:46
+msgid "Tax breakdown"
 msgstr ""
 
-#: admin/views/taxes.php:46
-#: admin/views/taxes.php:82
-msgid "Country"
+#: admin/views/products.php:157 admin/views/products.php:242
+msgid "Tax class"
 msgstr ""
 
-#: admin/views/taxes.php:46
-#: admin/views/taxes.php:86
-#: admin/views/terminal.php:80
-msgid "State"
+#: admin/class-pos-admin.php:493
+msgid "Tax class added."
 msgstr ""
 
-#: admin/views/taxes.php:46
-#: admin/views/taxes.php:90
-msgid "Rate %"
+#: includes/class-pos-tax.php:35
+msgid "Tax class already exists."
 msgstr ""
 
-#: admin/views/taxes.php:46
-msgid "Inc"
+#: admin/class-pos-admin.php:501
+msgid "Tax class deleted."
 msgstr ""
 
-#: admin/views/taxes.php:46
-msgid "Comp"
+#: includes/class-pos-tax.php:29
+msgid "Tax class name is required."
 msgstr ""
 
-#: admin/views/taxes.php:46
-msgid "Prio"
-msgstr ""
-
-#: admin/views/taxes.php:64
-msgid "No rates. Seeded US/IN/EU defaults exist after activation — if empty, deactivate/reactivate or check DB."
-msgstr ""
-
-#: admin/views/taxes.php:70
-msgid "Edit Rate"
-msgstr ""
-
-#: admin/views/taxes.php:70
-msgid "Add Rate"
-msgstr ""
-
-#: admin/views/taxes.php:82
-msgid "(ISO2 or * for all)"
-msgstr ""
-
-#: admin/views/taxes.php:86
-msgid "(optional)"
-msgstr ""
-
-#: admin/views/taxes.php:98
-msgid "Priority"
-msgstr ""
-
-#: admin/views/taxes.php:102
-msgid "Inclusive (price contains tax)"
-msgstr ""
-
-#: admin/views/taxes.php:105
-msgid "Compound (on top of prior taxes)"
-msgstr ""
-
-#: admin/views/taxes.php:108
-msgid "Rate"
-msgstr ""
-
-#: admin/views/taxes.php:113
-msgid "Examples"
-msgstr ""
-
-#: admin/views/taxes.php:113
-msgid "US-CA 7.25% Standard | IN 18% GST | DE 19% VAT | FR reduced 5.5% | Zero * 0%"
-msgstr ""
-
-#: admin/views/taxes.php:113
-msgid "Compound: e.g. Canada PST 7% compound on top of GST 5% — set GST prio 0, PST prio 1 compound=1."
-msgstr ""
-
-#: admin/views/terminal.php:12
-msgid "POS Terminal"
-msgstr ""
-
-#: admin/views/terminal.php:19
-msgid "Scan barcode or SKU"
-msgstr ""
-
-#: admin/views/terminal.php:24
-msgid "Scan barcode or type SKU, then press Enter…"
-msgstr ""
-
-#: admin/views/terminal.php:27
-msgid "Scan barcode or type SKU"
-msgstr ""
-
-#: admin/views/terminal.php:29
-#: admin/views/terminal.php:36
-msgid "Search products"
-msgstr ""
-
-#: admin/views/terminal.php:34
-msgid "Search products…"
-msgstr ""
-
-#: admin/views/terminal.php:40
-msgid "Filter by category"
-msgstr ""
-
-#: admin/views/terminal.php:43
-msgid "Loading products…"
-msgstr ""
-
-#: admin/views/terminal.php:53
-msgid "Current Sale"
-msgstr ""
-
-#: admin/views/terminal.php:54
-msgid "Clear"
-msgstr ""
-
-#: admin/views/terminal.php:58
-msgid "Cart is empty. Scan or click a product to add it."
-msgstr ""
-
-#: admin/views/terminal.php:64
-msgid "Walk-in customer"
-msgstr ""
-
-#: admin/views/terminal.php:66
-#: admin/views/terminal.php:124
-msgid "Add new customer"
-msgstr ""
-
-#: admin/views/terminal.php:66
-msgid "+ New"
-msgstr ""
-
-#: admin/views/terminal.php:73
-msgid "Amount"
-msgstr ""
-
-#: admin/views/terminal.php:79
+#: admin/views/terminal.php:122 admin/views/terminal.php:132 admin/views/terminal.php:138
 msgid "Tax country"
 msgstr ""
 
-#: admin/views/terminal.php:93
-msgid "Cash"
+#: includes/class-pos-rest-api.php:741
+msgid "Tax country is required for calculation. Configure default tax country in POS Settings."
 msgstr ""
 
-#: admin/views/terminal.php:94
-msgid "Card"
+#: admin/views/sales.php:45
+msgid "Tax country/state"
 msgstr ""
 
-#: admin/views/terminal.php:95
-msgid "Other"
+#: admin/views/settings.php:67
+msgid "Tax defaults"
 msgstr ""
 
-#: admin/views/terminal.php:100
-msgid "Amount tendered"
+#: admin/views/settings.php:74
+msgid "Tax inclusive pricing"
 msgstr ""
 
-#: admin/views/terminal.php:105
-msgid "Change due"
+#: admin/class-pos-admin.php:530
+msgid "Tax rate deleted."
 msgstr ""
 
-#: admin/views/terminal.php:109
-msgid "Complete Sale"
+#: admin/class-pos-admin.php:522
+msgid "Tax rate saved."
 msgstr ""
 
-#: admin/views/terminal.php:119
-msgid "Select variant"
+#: admin/views/settings.php:76
+msgid "Tax rounding"
 msgstr ""
 
-#: admin/views/terminal.php:125
-msgid "Quick add. You can edit full details later from the Customers screen."
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:145
+msgid "Tax summary"
 msgstr ""
 
-#: admin/views/terminal.php:140
-msgid "Add &amp; select"
+#: admin/class-pos-admin.php:81 admin/class-pos-admin.php:81
+msgid "Taxes"
 msgstr ""
 
-#: admin/views/terminal.php:152
-msgid "Print"
+#: admin/views/taxes.php:9
+msgid "Taxes — per-country classes & rates"
 msgstr ""
 
-#: admin/views/terminal.php:153
-msgid "Kick Drawer"
+#: admin/class-pos-admin.php:75 admin/class-pos-admin.php:75
+msgid "Terminal"
 msgstr ""
 
-#: admin/views/terminal.php:154
-msgid "New Sale"
+#: includes/class-pos-addons.php:129
+msgid "Terminal keeps selling without internet and syncs sales when back online."
 msgstr ""
 
-#: includes/class-pos-csv.php:20
-msgid "CSV file missing."
+#: addons/simple-pos-offline-mode/admin/views/offline.php:28
+msgid "The server deduplicates via a client key, so the same sale can never be created twice."
 msgstr ""
 
-#: includes/class-pos-csv.php:22
-msgid "Could not open CSV."
+#: admin/views/reports.php:60
+msgid "This month"
 msgstr ""
 
-#: includes/class-pos-csv.php:24
-msgid "Empty CSV."
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:105
+msgid "Threshold"
 msgstr ""
 
-#: includes/class-pos-csv.php:27
-#, php-format
-msgid "Missing column: %s"
+#: admin/views/dashboard.php:55
+msgid "Time"
 msgstr ""
 
-#: includes/class-pos-customers.php:73
-msgid "Customer name is required."
+#: addons/simple-pos-time-clock/simple-pos-time-clock.php:38
+msgid "Time Clock"
 msgstr ""
 
-#: includes/class-pos-customers.php:88
-msgid "Could not create customer."
+#: includes/class-pos-addons.php:134
+msgid "Time Clock & Shifts"
 msgstr ""
 
-#: includes/class-pos-customers.php:105
-msgid "Customer not found."
+#: admin/views/reports.php:70 admin/views/sales.php:145 addons/simple-pos-advanced-reports/admin/views/reports-pro.php:52 addons/simple-pos-time-clock/admin/views/shifts.php:26
+msgid "To"
 msgstr ""
 
-#: includes/class-pos-products.php:180
-#: includes/class-pos-products.php:224
-msgid "A product with this SKU already exists."
+#: addons/simple-pos-kitchen-display/admin/views/kitchen.php:24
+msgid "To prepare"
 msgstr ""
 
-#: includes/class-pos-products.php:189
-msgid "Could not create product."
+#: admin/views/reports.php:57
+msgid "Today"
 msgstr ""
 
-#: includes/class-pos-products.php:195
-msgid "Initial stock on product creation"
+#: admin/views/dashboard.php:26
+msgid "Today's Revenue"
 msgstr ""
 
-#: includes/class-pos-products.php:214
-#: includes/class-pos-products.php:306
-#: includes/class-pos-rest-api.php:357
-msgid "Product not found."
+#: addons/simple-pos-offline-mode/simple-pos-offline-mode.php:40
+msgid "Toggle offline sale queueing with an admin dashboard."
 msgstr ""
 
-#: includes/class-pos-products.php:235
-msgid "Could not update product."
+#: addons/simple-pos-offline-mode/admin/views/offline.php:57
+msgid "Toggling this flag does not clear already-queued sales in the browser."
 msgstr ""
 
-#: includes/class-pos-products.php:239
-msgid "Manual edit"
+#: admin/views/reports.php:123
+msgid "Top Products"
 msgstr ""
 
-#: includes/class-pos-products.php:268
-msgid "Could not delete product."
+#: addons/simple-pos-gift-cards/admin/views/gift-cards.php:34
+msgid "Top up"
 msgstr ""
 
-#: includes/class-pos-products.php:314
-#: includes/class-pos-sales.php:111
-#, php-format
-msgid "Not enough stock for \"%s\"."
+#: admin/views/customers.php:92 admin/views/dashboard.php:56 admin/views/purchase-orders.php:68 admin/views/sales.php:82 admin/views/sales.php:180 admin/views/terminal.php:151 addons/simple-pos-customer-display/simple-pos-customer-display.php:120 addons/simple-pos-online-ordering/public/views/storefront.php:29
+msgid "Total"
 msgstr ""
 
-#: includes/class-pos-products.php:364
-msgid "Product name is required."
+#: admin/views/purchase-orders.php:23
+msgid "Total cost"
 msgstr ""
 
-#: includes/class-pos-products.php:369
-#: includes/class-pos-variants.php:124
-msgid "Price cannot be negative."
+#: addons/simple-pos-time-clock/admin/views/shifts.php:43
+msgid "Total hours"
 msgstr ""
 
-#: includes/class-pos-products.php:380
-msgid "Barcode already exists."
+#: admin/views/products.php:248
+msgid "Track stock"
 msgstr ""
 
-#: includes/class-pos-products.php:425
-msgid "Category name is required."
+#: admin/views/products.php:172
+msgid "Track stock for this product"
 msgstr ""
 
-#: includes/class-pos-products.php:442
-msgid "Could not create category (name may already exist)."
+#: admin/views/terminal.php:74
+msgid "Type"
+msgstr ""
+
+#: admin/views/taxes.php:130
+msgid "US-CA 7.25% Standard | IN 18% GST | DE 19% VAT | FR reduced 5.5% | Zero * 0%"
+msgstr ""
+
+#: admin/views/settings.php:57
+msgid "USB ESC/POS (WebUSB)"
+msgstr ""
+
+#: admin/views/settings.php:90
+msgid "Uninstall"
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:78
+msgid "Units of base (%s) per 1 unit"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:78
+msgid "Units suggested"
 msgstr ""
 
 #: includes/class-pos-reports.php:191
 msgid "Unknown"
 msgstr ""
 
-#: includes/class-pos-rest-api.php:394
-msgid "No product matches that code."
+#: addons/simple-pos-advanced-reports/includes/class-spar-reports.php:292 addons/simple-pos-advanced-reports/simple-pos-advanced-reports.php:89
+msgid "Unknown report type."
 msgstr ""
 
-#: includes/class-pos-rest-api.php:572
-#: includes/class-pos-suppliers.php:132
-msgid "PO not found."
+#: admin/views/suppliers.php:58 admin/views/taxes.php:125 addons/simple-pos-table-service/admin/views/tables.php:74
+msgid "Update"
 msgstr ""
 
-#: includes/class-pos-sales.php:49
-msgid "Invalid item in cart."
+#: admin/views/customers.php:142
+msgid "Update Customer"
 msgstr ""
 
-#: includes/class-pos-sales.php:53
-#, php-format
-msgid "Product #%d is not available."
+#: addons/simple-pos-multi-outlet/admin/views/outlets.php:75
+msgid "Update Outlet"
 msgstr ""
 
-#: includes/class-pos-sales.php:59
+#: admin/views/products.php:191
+msgid "Update Product"
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:40
+msgid "Updated"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/admin/views/orders.php:17
+msgid "Updated."
+msgstr ""
+
+#: admin/views/backup.php:18
+msgid "Upload a JSON backup file to restore. This will replace existing data with the same IDs."
+msgstr ""
+
+#: addons/simple-pos-multi-currency/admin/views/rates.php:22
+msgid "Use a 3-letter currency code and a positive rate."
+msgstr ""
+
+#: admin/views/setup.php:1
+msgid "Use this"
+msgstr ""
+
+#: admin/views/barcode.php:45
+msgid "Uses JsBarcode (CODE128) in print view. For EAN13 ensure 13-digit numeric. QR fallback."
+msgstr ""
+
+#: admin/views/products.php:214
+msgid "Value e.g. M"
+msgstr ""
+
+#: admin/views/products.php:215
+msgid "Value e.g. Red"
+msgstr ""
+
+#: admin/views/purchase-orders.php:31
+msgid "Variant"
+msgstr ""
+
+#: admin/views/purchase-orders.php:107
+msgid "Variant ID"
+msgstr ""
+
+#: admin/class-pos-admin.php:574
+msgid "Variant deleted."
+msgstr ""
+
+#: includes/class-pos-sales.php:63
 msgid "Variant not available."
 msgstr ""
 
-#: includes/class-pos-sales.php:142
-msgid "Could not record sale."
-msgstr ""
-
-#: includes/class-pos-sales.php:208
-msgid "Only completed sales can be voided."
-msgstr ""
-
-#: includes/class-pos-sales.php:240
-msgid "Could not void sale."
-msgstr ""
-
-#: includes/class-pos-suppliers.php:18
-#: includes/class-pos-suppliers.php:42
-msgid "Supplier name required."
-msgstr ""
-
-#: includes/class-pos-suppliers.php:34
-msgid "Supplier not found."
-msgstr ""
-
-#: includes/class-pos-suppliers.php:95
-msgid "Add at least one item."
-msgstr ""
-
-#: includes/class-pos-suppliers.php:105
-msgid "Could not create PO."
-msgstr ""
-
-#: includes/class-pos-suppliers.php:121
-msgid "Invalid status."
-msgstr ""
-
-#: includes/class-pos-suppliers.php:133
-msgid "PO already closed."
-msgstr ""
-
-#: includes/class-pos-tax.php:33
-msgid "Tax class name is required."
-msgstr ""
-
-#: includes/class-pos-tax.php:39
-msgid "Tax class already exists."
-msgstr ""
-
-#: includes/class-pos-tax.php:43
-msgid "Could not create tax class."
-msgstr ""
-
-#: includes/class-pos-tax.php:83
-#: includes/class-pos-tax.php:124
-msgid "Invalid tax class."
-msgstr ""
-
-#: includes/class-pos-tax.php:89
-#: includes/class-pos-tax.php:115
-msgid "Rate must be 0-100."
-msgstr ""
-
-#: includes/class-pos-tax.php:101
-msgid "Could not create rate."
-msgstr ""
-
-#: includes/class-pos-tax.php:109
-msgid "Rate not found."
-msgstr ""
-
-#: includes/class-pos-variants.php:26
-msgid "Parent product not found."
-msgstr ""
-
-#: includes/class-pos-variants.php:29
-#: includes/class-pos-variants.php:50
-msgid "SKU already used."
-msgstr ""
-
-#: includes/class-pos-variants.php:30
-#: includes/class-pos-variants.php:51
-msgid "Barcode already used."
-msgstr ""
-
-#: includes/class-pos-variants.php:35
-msgid "Could not create variant."
-msgstr ""
-
-#: includes/class-pos-variants.php:47
-#: includes/class-pos-variants.php:78
+#: includes/class-pos-variants.php:71 includes/class-pos-variants.php:126
 msgid "Variant not found."
 msgstr ""
 
-#: includes/class-pos-variants.php:82
-#, php-format
-msgid "Not enough stock for variant \"%s\"."
+#: admin/class-pos-admin.php:566
+msgid "Variant saved."
 msgstr ""
+
+#: admin/views/products.php:61 admin/views/products.php:205
+msgid "Variants"
+msgstr ""
+
+#: admin/views/addons.php:22
+msgid "Version"
+msgstr ""
+
+#: admin/views/purchase-orders.php:78 admin/views/sales.php:199
+msgid "View"
+msgstr ""
+
+#: admin/views/addons.php:77
+msgid "View add-on"
+msgstr ""
+
+#: admin/class-pos-admin.php:1034 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:110
+msgid "View products"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:38
+msgid "View purchase orders"
+msgstr ""
+
+#: admin/views/terminal.php:206
+msgid "Void Last Sale"
+msgstr ""
+
+#: admin/views/sales.php:94
+msgid "Void Sale"
+msgstr ""
+
+#: admin/views/terminal.php:250
+msgid "Void This Sale"
+msgstr ""
+
+#: admin/class-pos-admin.php:155 admin/class-pos-admin.php:256
+msgid "Void this sale and restore stock?"
+msgstr ""
+
+#: admin/views/sales.php:88
+msgid "Void this sale and restore stock? This cannot be undone."
+msgstr ""
+
+#: admin/views/sales.php:153
+msgid "Voided"
+msgstr ""
+
+#: admin/views/sales.php:39
+msgid "Walk-in"
+msgstr ""
+
+#: admin/views/terminal.php:69
+msgid "Walk-in customer"
+msgstr ""
+
+#: admin/views/setup.php:1
+msgid "We will seed sensible starting categories, taxes and sample products for your business. You can change everything later in Settings."
+msgstr ""
+
+#: addons/simple-pos-offline-mode/admin/views/offline.php:26
+msgid "When enabled, the terminal queues sales if the browser loses its network connection."
+msgstr ""
+
+#: addons/simple-pos-offline-mode/admin/views/offline.php:29
+msgid "While offline, stock is NOT decremented server-side. Expect stock drift until sync completes."
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/admin/views/reports-pro.php:71
+msgid "X / Z summary"
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/simple-pos-advanced-reports.php:38
+msgid "X/Z summaries, hourly heatmap, payment mix, product mix, tax summary and CSV exports."
+msgstr ""
+
+#: addons/simple-pos-time-clock/includes/class-clock.php:157
+msgid "You are clocked in."
+msgstr ""
+
+#: addons/simple-pos-kitchen-display/simple-pos-kitchen-display.php:121
+msgid "You are not allowed to access the kitchen display."
+msgstr ""
+
+#: addons/simple-pos-kitchen-display/simple-pos-kitchen-display.php:128
+msgid "You are not allowed to bump orders."
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/simple-pos-advanced-reports.php:79
+msgid "You are not allowed to export reports."
+msgstr ""
+
+#: admin/class-pos-admin.php:338
+msgid "You are not allowed to manage add-ons."
+msgstr ""
+
+#: addons/simple-pos-multi-currency/simple-pos-multi-currency.php:72 addons/simple-pos-multi-currency/simple-pos-multi-currency.php:79 addons/simple-pos-multi-currency/simple-pos-multi-currency.php:99
+msgid "You are not allowed to manage currencies."
+msgstr ""
+
+#: addons/simple-pos-gift-cards/simple-pos-gift-cards.php:117 addons/simple-pos-gift-cards/simple-pos-gift-cards.php:124 addons/simple-pos-gift-cards/simple-pos-gift-cards.php:144
+msgid "You are not allowed to manage gift cards."
+msgstr ""
+
+#: addons/simple-pos-loyalty/simple-pos-loyalty.php:116 addons/simple-pos-loyalty/simple-pos-loyalty.php:123
+msgid "You are not allowed to manage loyalty settings."
+msgstr ""
+
+#: addons/simple-pos-offline-mode/simple-pos-offline-mode.php:69 addons/simple-pos-offline-mode/simple-pos-offline-mode.php:76
+msgid "You are not allowed to manage offline settings."
+msgstr ""
+
+#: addons/simple-pos-multi-outlet/simple-pos-multi-outlet.php:80 addons/simple-pos-multi-outlet/simple-pos-multi-outlet.php:91 addons/simple-pos-multi-outlet/simple-pos-multi-outlet.php:119 addons/simple-pos-multi-outlet/simple-pos-multi-outlet.php:137
+msgid "You are not allowed to manage outlets."
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/simple-pos-low-stock-auto-po.php:83 addons/simple-pos-low-stock-auto-po/simple-pos-low-stock-auto-po.php:93 addons/simple-pos-low-stock-auto-po/simple-pos-low-stock-auto-po.php:117
+msgid "You are not allowed to manage purchase orders."
+msgstr ""
+
+#: addons/simple-pos-table-service/simple-pos-table-service.php:73 addons/simple-pos-table-service/simple-pos-table-service.php:80 addons/simple-pos-table-service/simple-pos-table-service.php:105 addons/simple-pos-table-service/simple-pos-table-service.php:120
+msgid "You are not allowed to manage tables."
+msgstr ""
+
+#: addons/simple-pos-online-ordering/simple-pos-online-ordering.php:184
+msgid "You are not allowed to update orders."
+msgstr ""
+
+#: addons/simple-pos-online-ordering/simple-pos-online-ordering.php:177
+msgid "You are not allowed to view online orders."
+msgstr ""
+
+#: addons/simple-pos-advanced-reports/simple-pos-advanced-reports.php:69
+msgid "You are not allowed to view reports."
+msgstr ""
+
+#: addons/simple-pos-time-clock/simple-pos-time-clock.php:109
+msgid "You are not allowed to view shifts."
+msgstr ""
+
+#: admin/class-pos-admin.php:365 admin/class-pos-admin.php:379 admin/class-pos-admin.php:399 admin/class-pos-admin.php:412 admin/class-pos-admin.php:429 admin/class-pos-admin.php:445 admin/class-pos-admin.php:458 admin/class-pos-admin.php:477 admin/class-pos-admin.php:948 includes/class-pos-setup.php:1 includes/class-pos-setup.php:1
+msgid "You do not have permission to do this."
+msgstr ""
+
+#: admin/class-pos-admin.php:487 admin/class-pos-admin.php:497 admin/class-pos-admin.php:505 admin/class-pos-admin.php:526 admin/class-pos-admin.php:534 admin/class-pos-admin.php:570 admin/class-pos-admin.php:578 admin/class-pos-admin.php:588 admin/class-pos-admin.php:596 admin/class-pos-admin.php:628 admin/class-pos-admin.php:646 admin/class-pos-admin.php:654 admin/class-pos-admin.php:671 admin/class-pos-admin.php:682 admin/class-pos-admin.php:699 admin/class-pos-admin.php:710 admin/class-pos-admin.php:731 admin/class-pos-admin.php:746 admin/class-pos-admin.php:764 admin/class-pos-admin.php:785 admin/class-pos-admin.php:825
+msgid "You do not have permission to perform this action."
+msgstr ""
+
+#: admin/class-pos-admin.php:278
+msgid "You do not have permission to use the POS terminal."
+msgstr ""
+
+#: addons/simple-pos-online-ordering/public/views/storefront.php:26 addons/simple-pos-online-ordering/simple-pos-online-ordering.php:125
+msgid "Your order"
+msgstr ""
+
+#: addons/simple-pos-online-ordering/includes/class-orders.php:94 addons/simple-pos-online-ordering/simple-pos-online-ordering.php:126
+msgid "Your order is empty."
+msgstr ""
+
+#: admin/views/products.php:198
+msgid "e.g. 10 or -2"
+msgstr ""
+
+#: admin/views/settings.php:26
+msgid "e.g. 27AABCT1234R1ZX"
+msgstr ""
+
+#: admin/views/settings.php:70
+msgid "e.g. CA, MH"
+msgstr ""
+
+#: admin/views/taxes.php:32
+msgid "e.g. Standard"
+msgstr ""
+
+#: admin/views/products.php:227
+msgid "empty = parent"
+msgstr ""
+
+#: admin/views/products.php:205
+msgid "free-form attributes"
+msgstr ""
+
+#: admin/views/settings.php:98
+msgid "full POS + reports, voids, taxes, POs"
+msgstr ""
+
+#: admin/views/products.php:111
+msgid "not tracked"
+msgstr ""
+
+#: admin/views/purchase-orders.php:45
+msgid "remaining %d"
+msgstr ""
+
+#: admin/views/settings.php:97
+msgid "terminal + view sales"
+msgstr ""
+
+#: admin/views/dashboard.php:89 admin/views/products.php:107 admin/views/products.php:114 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:115
+msgid "variant"
+msgstr ""
+
+#: addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:175
+msgid "you@store.com"
+msgstr ""
+
+#: admin/views/terminal.php:103 addons/simple-pos-low-stock-auto-po/admin/views/auto-po.php:167 addons/simple-pos-multi-outlet/admin/views/outlets.php:91
+msgid "— none —"
+msgstr ""
+

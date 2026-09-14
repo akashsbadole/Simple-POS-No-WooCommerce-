@@ -1,7 +1,6 @@
 <?php
 /**
- * Add-ons screen: what's installed (self-reported by add-on plugins) and
- * what's available to buy.
+ * Add-ons screen: toggle the bundled add-ons included with the plugin.
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -56,6 +55,7 @@ $addon_catalog  = Simple_POS_Addons::get_catalog();
 		</table>
 	</div>
 
+	<?php if ( ! empty( $addon_catalog ) ) : ?>
 	<h2 class="simple-pos-section-title" style="margin-top:16px"><?php esc_html_e( 'Available add-ons', 'wp-pos-plugin' ); ?></h2>
 	<?php
 	$badge_colors = array(
@@ -78,4 +78,5 @@ $addon_catalog  = Simple_POS_Addons::get_catalog();
 			</div>
 		<?php endforeach; ?>
 	</div>
+<?php endif; ?>
 </div>

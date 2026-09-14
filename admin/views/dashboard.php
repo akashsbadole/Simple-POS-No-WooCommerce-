@@ -83,12 +83,13 @@ $recent  = Simple_POS_Sales::get_sales( array( 'per_page' => 8, 'page' => 1 ) );
 						<p class="simple-pos-muted"><?php esc_html_e( 'All products are well stocked.', 'wp-pos-plugin' ); ?></p>
 					<?php else : ?>
 						<ul class="simple-pos-category-list">
-							<?php foreach ( $low_stock as $product ) : ?>
-								<li>
-									<a href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-products&edit=' . $product->id ) ); ?>"><?php echo esc_html( $product->name ); ?></a>
-									<span class="simple-pos-low-stock"><?php echo esc_html( $product->stock_qty ); ?></span>
-								</li>
-							<?php endforeach; ?>
+						<?php foreach ( $low_stock as $product ) : ?>
+							<?php $low_edit_id = ! empty( $product->is_variant ) ? (int) $product->parent_product_id : (int) $product->id; ?>
+							<li>
+								<a href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-products&edit=' . $low_edit_id ) ); ?>"><?php echo esc_html( $product->name ); ?></a><?php if ( ! empty( $product->is_variant ) ) : ?> <em class="simple-pos-pill"><?php esc_html_e( 'variant', 'wp-pos-plugin' ); ?></em><?php endif; ?>
+								<span class="simple-pos-low-stock"><?php echo esc_html( $product->stock_qty ); ?></span>
+							</li>
+						<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
 				</div>

@@ -1,8 +1,8 @@
 <?php
 /**
- * Paid add-on registry and catalog.
+ * Add-on registry and catalog.
  *
- * Add-ons are separate WordPress plugins that plug into the core seams:
+ * Add-ons are separate packages that plug into the core seams:
  *
  *   simple_pos_init          (action, plugins_loaded:20) — register everything
  *   simple_pos_cart_data     (filter) — modify the cart before totals
@@ -61,76 +61,100 @@ class Simple_POS_Addons {
 	}
 
 	/**
-	 * Catalog of available (free) add-ons shown on the Add-ons screen.
-	 * ponytail: external buy URLs are placeholders — point them at your site;
-	 * filter 'simple_pos_addons_catalog' to change them without touching core.
-	 * Add-ons that ship in addons/ link straight to their built .zip.
+	 * Catalog of additional add-ons shown on the Add-ons screen. Add-ons
+	 * that ship in addons/ are bundled and excluded here (they are toggled
+	 * from the "Included add-ons" table). Filter 'simple_pos_addons_catalog'
+	 * to advertise external add-ons without touching core.
 	 *
-	 * @return array[] Each: name, description, url [, badge ].
+	 * @return array[] Each: slug, name, description, url [, badge ].
 	 */
 	public static function get_catalog() {
 		$catalog = array(
 			array(
+				'slug'        => 'simple-pos-multi-outlet',
 				'name'        => __( 'Multi-Outlet', 'wp-pos-plugin' ),
 				'description' => __( 'Run several shops from one install: per-outlet stock, registers and sales reports.', 'wp-pos-plugin' ),
 				'url'         => '#',
 				'badge'       => __( 'Popular', 'wp-pos-plugin' ),
 			),
 			array(
+				'slug'        => 'simple-pos-loyalty',
 				'name'        => __( 'Loyalty & Store Credit', 'wp-pos-plugin' ),
 				'description' => __( 'Points per purchase, redeem at checkout, gift-card style store credit balances.', 'wp-pos-plugin' ),
 				'url'         => '#',
 			),
 			array(
+				'slug'        => 'simple-pos-table-service',
 				'name'        => __( 'Table Service', 'wp-pos-plugin' ),
 				'description' => __( 'Restaurant mode: floor plan, open tabs, split bills and kitchen tickets.', 'wp-pos-plugin' ),
 				'url'         => '#',
 			),
 			array(
+				'slug'        => 'simple-pos-online-ordering',
 				'name'        => __( 'Online Ordering & QR Menu', 'wp-pos-plugin' ),
 				'description' => __( 'Customers order from a QR link; orders drop straight into the POS queue.', 'wp-pos-plugin' ),
 				'url'         => '#',
 				'badge'       => __( 'New', 'wp-pos-plugin' ),
 			),
 			array(
+				'slug'        => 'simple-pos-kitchen-display',
 				'name'        => __( 'Kitchen Display System', 'wp-pos-plugin' ),
 				'description' => __( 'Second-screen prep queue with item states and timers for kitchens.', 'wp-pos-plugin' ),
 				'url'         => '#',
 				'badge'       => __( 'New', 'wp-pos-plugin' ),
 			),
 			array(
+				'slug'        => 'simple-pos-gift-cards',
 				'name'        => __( 'Gift Cards', 'wp-pos-plugin' ),
 				'description' => __( 'Sell and redeem plastic or digital gift cards as a payment method.', 'wp-pos-plugin' ),
 				'url'         => '#',
 				'badge'       => __( 'New', 'wp-pos-plugin' ),
 			),
 			array(
+				'slug'        => 'simple-pos-multi-currency',
 				'name'        => __( 'Multi-Currency & FX', 'wp-pos-plugin' ),
 				'description' => __( 'Sell in foreign currencies; pairs with the per-country tax engine.', 'wp-pos-plugin' ),
 				'url'         => '#',
 				'badge'       => __( 'New', 'wp-pos-plugin' ),
 			),
 			array(
+				'slug'        => 'simple-pos-customer-display',
 				'name'        => __( 'Customer Displays', 'wp-pos-plugin' ),
 				'description' => __( 'Counter-facing second screen mirroring the running cart and totals.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'Coming soon', 'wp-pos-plugin' ),
 			),
 			array(
+				'slug'        => 'simple-pos-offline-mode',
 				'name'        => __( 'Offline Mode', 'wp-pos-plugin' ),
 				'description' => __( 'Terminal keeps selling without internet and syncs sales when back online.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'Coming soon', 'wp-pos-plugin' ),
 			),
 			array(
+				'slug'        => 'simple-pos-time-clock',
 				'name'        => __( 'Time Clock & Shifts', 'wp-pos-plugin' ),
 				'description' => __( 'Cashier shifts, hours and per-shift cash reconciliation.', 'wp-pos-plugin' ),
 				'url'         => '#',
-				'badge'       => __( 'Coming soon', 'wp-pos-plugin' ),
 			),
 		);
 		$catalog = apply_filters( 'simple_pos_addons_catalog', $catalog );
-		return is_array( $catalog ) ? $catalog : array();
+		$catalog = is_array( $catalog ) ? $catalog : array();
+
+		// Drop anything already bundled and toggleable on the Add-ons screen.
+		$bundled = array();
+		foreach ( self::get_bundled() as $addon ) {
+			$bundled[] = isset( $addon['slug'] ) ? $addon['slug'] : '';
+		}
+		if ( $bundled ) {
+			$catalog = array_values(
+				array_filter(
+					$catalog,
+					function ( $item ) use ( $bundled ) {
+						return empty( $item['slug'] ) || ! in_array( $item['slug'], $bundled, true );
+					}
+				)
+			);
+		}
+		return $catalog;
 	}
 
 	/**
@@ -147,6 +171,9 @@ class Simple_POS_Addons {
 		$out = array();
 		foreach ( glob( SIMPLE_POS_PLUGIN_DIR . 'addons/simple-pos-*', GLOB_ONLYDIR ) as $addon_dir ) {
 			$slug = basename( $addon_dir );
+			if ( 'simple-pos-example' === $slug ) {
+				continue; // Reference skeleton, not a real add-on.
+			}
 			$file = $addon_dir . '/' . $slug . '.php';
 			if ( ! file_exists( $file ) ) {
 				continue;
