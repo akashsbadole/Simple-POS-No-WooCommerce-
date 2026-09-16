@@ -898,6 +898,7 @@ class Simple_POS_REST_API {
 		$code_upper = strtoupper( $code );
 		if ( $code_upper !== $code ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( 'POS: Barcode contains lowercase/unsupported characters, converting to uppercase for basic rendering' );
 			}
 		}

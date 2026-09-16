@@ -21,7 +21,7 @@ if ( empty( $settings['delete_data_on_uninstall'] ) ) {
 global $wpdb;
 
 // Multisite: loop over all sites when network-deleting.
-if ( is_multisite() && function_exists( 'get_sites' ) && isset( $_GET['networkwide'] ) ) {
+if ( is_multisite() && function_exists( 'get_sites' ) && isset( $_GET['networkwide'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$sites = get_sites( array( 'number' => 0 ) );
 	foreach ( $sites as $site ) {
 		switch_to_blog( (int) $site->blog_id );

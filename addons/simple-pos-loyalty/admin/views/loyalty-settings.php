@@ -6,7 +6,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $settings = SLOY_Loyalty::get_settings();
-$msg = isset( $_GET['loyalty_msg'] ) ? sanitize_key( $_GET['loyalty_msg'] ) : '';
+$msg = isset( $_GET['loyalty_msg'] ) ? sanitize_key( $_GET['loyalty_msg'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">

@@ -34,7 +34,7 @@ Simple POS turns an ordinary WordPress site into a full retail checkout system �
 WordPress 5.8+ (tested to 7.1), PHP 7.4+ (tested to 8.x).
 
 == Installation ==
-1. Upload the zip via **Plugins → Add New → Upload Plugin** (zip contains a single `wp-pos-plugin` folder), or unzip into `wp-content/plugins/` and Activate.
+1. Upload the zip via **Plugins → Add New → Upload Plugin** (zip contains a single `simple-pos` folder), or unzip into `wp-content/plugins/` and Activate.
 2. Follow **POS → Settings** to set store name, currency, tax country/state and printer type.
 3. Add products under **POS → Products**, then start selling from **POS → Terminal**.
 

@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded',function(){
 		var win=window.open('','_blank');
 		var html='<!doctype html><html><head><title>Labels</title><style>'+
 			'@media print{ @page{ size:A4; margin:10mm } } body{font-family:sans-serif} .sheet{display:flex;flex-wrap:wrap;gap:6px} .label{border:1px solid #000; width:62mm; height:32mm; padding:4mm; text-align:center; box-sizing:border-box; display:flex; flex-direction:column; justify-content:center} .label svg{width:100%;height:18mm} .label .name{font-size:9px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .label .price{font-size:10px}</style>'+
-			'<script src="'+vendorUrl.replace(/"/g,'&quot;')+'"><\/script></head><body><div class="sheet">';
+			'<script src="'+vendorUrl.replace(/"/g,'&quot;')+'"><\/script></head><body><div class="sheet">'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
 		sel.forEach(function(s,i){
 			// repeat each 2 copies for sheet demo? single
 			html+='<div class="label"><div class="name">'+s.name.replace(/</g,'&lt;')+'</div><svg id="bc'+i+'"></svg><div class="price">'+s.price+'</div></div>';

@@ -22,7 +22,7 @@ class SKD_Kitchen {
 		$done    = true;
 		$prefix  = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		$charset = $wpdb->get_charset_collate();
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}" . self::ITEMS_TABLE . "` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, sale_id BIGINT UNSIGNED NOT NULL, sale_number VARCHAR(50) NULL, product_name VARCHAR(191) NOT NULL, qty INT UNSIGNED NOT NULL DEFAULT 1, status VARCHAR(20) NOT NULL DEFAULT 'pending', bumped_at DATETIME NULL, created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id), KEY idx_sale (sale_id) ) {$charset}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}" . self::ITEMS_TABLE . "` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, sale_id BIGINT UNSIGNED NOT NULL, sale_number VARCHAR(50) NULL, product_name VARCHAR(191) NOT NULL, qty INT UNSIGNED NOT NULL DEFAULT 1, status VARCHAR(20) NOT NULL DEFAULT 'pending', bumped_at DATETIME NULL, created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id), KEY idx_sale (sale_id) ) {$charset}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 	}
 
 	/**

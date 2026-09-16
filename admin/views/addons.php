@@ -12,7 +12,7 @@ $addon_catalog  = Simple_POS_Addons::get_catalog();
 		<h1><?php esc_html_e( 'Add-ons', 'wp-pos-plugin' ); ?></h1>
 	</div>
 	<p class="description"><?php esc_html_e( 'All add-ons are free and included with Simple POS — enable or disable them below. Changes apply on the next page load.', 'wp-pos-plugin' ); ?></p>
-	<?php if ( isset( $_GET['simple_pos_addons_msg'] ) && 'updated' === sanitize_key( wp_unslash( $_GET['simple_pos_addons_msg'] ) ) ) : ?>
+	<?php if ( isset( $_GET['simple_pos_addons_msg'] ) && 'updated' === sanitize_key( wp_unslash( $_GET['simple_pos_addons_msg'] ) ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Add-on setting saved.', 'wp-pos-plugin' ); ?></p></div>
 	<?php endif; ?>
 

@@ -1,5 +1,5 @@
 <?php if(!defined('ABSPATH')) exit;
-$view_id = isset($_GET['view'])? (int)$_GET['view']:0;
+$view_id = isset($_GET['view'])? (int)$_GET['view']:0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 if($view_id){
 	$po=Simple_POS_Purchase_Orders::get_order($view_id);
 	if(!$po){ echo '<div class="wrap"><p>PO not found.</p></div>'; return; }
@@ -53,7 +53,7 @@ if($view_id){
 		<?php endif;?>
 	</div>
 	<?php return; }
-$orders=Simple_POS_Purchase_Orders::get_orders(array('per_page'=>20,'page'=> isset($_GET['paged'])? (int)$_GET['paged']:1));
+$orders=Simple_POS_Purchase_Orders::get_orders(array('per_page'=>20,'page'=> isset($_GET['paged'])? (int)$_GET['paged']:1)); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $suppliers=Simple_POS_Suppliers::get_suppliers();
 $all_products=Simple_POS_Products::get_products(array('per_page'=>Simple_POS_DB::MAX_PER_PAGE,'page'=>1,'status'=>'active'));
 ?>

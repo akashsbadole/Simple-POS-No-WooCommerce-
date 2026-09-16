@@ -5,9 +5,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-$date_from = isset( $_GET['date_from'] ) ? sanitize_text_field( wp_unslash( $_GET['date_from'] ) ) : gmdate( 'Y-m-01' );
-$date_to   = isset( $_GET['date_to'] ) ? sanitize_text_field( wp_unslash( $_GET['date_to'] ) ) : gmdate( 'Y-m-d' );
-$cashier   = isset( $_GET['cashier_id'] ) ? (int) $_GET['cashier_id'] : 0;
+$date_from = isset( $_GET['date_from'] ) ? sanitize_text_field( wp_unslash( $_GET['date_from'] ) ) : gmdate( 'Y-m-01' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$date_to   = isset( $_GET['date_to'] ) ? sanitize_text_field( wp_unslash( $_GET['date_to'] ) ) : gmdate( 'Y-m-d' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$cashier   = isset( $_GET['cashier_id'] ) ? (int) $_GET['cashier_id'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 $xz       = SPAR_Reports::xz( $date_from, $date_to, $cashier );
 $hourly   = SPAR_Reports::hourly( $date_from, $date_to );

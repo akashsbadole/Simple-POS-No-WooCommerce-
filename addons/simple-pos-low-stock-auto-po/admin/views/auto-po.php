@@ -9,10 +9,10 @@ $settings  = SAPO_AutoPO::get_settings();
 $low       = SAPO_AutoPO::find_low_stock();
 $suppliers = class_exists( 'Simple_POS_Suppliers' ) ? Simple_POS_Suppliers::get_suppliers() : array();
 
-$msg     = isset( $_GET['sapo_msg'] ) ? sanitize_key( $_GET['sapo_msg'] ) : '';
-$created = isset( $_GET['sapo_created'] ) ? (int) $_GET['sapo_created'] : 0;
-$items_n = isset( $_GET['sapo_items'] ) ? (int) $_GET['sapo_items'] : 0;
-$skipped = isset( $_GET['sapo_skipped'] ) ? (int) $_GET['sapo_skipped'] : 0;
+$msg     = isset( $_GET['sapo_msg'] ) ? sanitize_key( $_GET['sapo_msg'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$created = isset( $_GET['sapo_created'] ) ? (int) $_GET['sapo_created'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$items_n = isset( $_GET['sapo_items'] ) ? (int) $_GET['sapo_items'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$skipped = isset( $_GET['sapo_skipped'] ) ? (int) $_GET['sapo_skipped'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 // Totals for the overview cards.
 $total_units = 0;

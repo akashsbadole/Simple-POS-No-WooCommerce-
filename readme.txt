@@ -1,4 +1,4 @@
-=== Simple POS – No WooCommerce ===
+=== Simple POS — Standalone Point of Sale ===
 Contributors: badoleakash
 Tags: pos, point of sale, retail, inventory, cash register
 Requires at least: 5.8
@@ -8,7 +8,7 @@ Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A lightweight, standalone Point of Sale system for WordPress. No WooCommerce required. Custom tables, REST API, per-country VAT/GST, variants, suppliers & purchase orders, barcode labels and ESC/POS printing.
+A lightweight, standalone Point of Sale for WordPress. Custom tables, REST API, per-country tax, variants, suppliers, barcode labels and ESC/POS printing.
 
 == Description ==
 
@@ -114,11 +114,11 @@ Maintenance release. Fixes an empty error screen when a user without permission 
 
 = 2.0.9 =
 
-Maintenance release. Fixes terminal CSS never loading on POS admin screens, checkout failing with "Could not record sale." on installs missing the sale-number sequence table (schema upgraded to DB 2.1.1 automatically on next admin load — no data loss), and frontend shortcode assets/markup. Just update; no settings changes needed.
+Fixes terminal CSS on POS screens, checkout "Could not record sale" on missing sequence table (auto-upgrades schema to DB 2.1.1, no data loss), and frontend shortcode assets. Just update.
 
 = 2.0.0 =
 
-Major update: adds tax classes/rates (US/IN/EU presets), product variants, suppliers/purchase orders, barcode label sheets, store-wide currency and USB ESC/POS (WebUSB + browser fallback). On upgrade the activator seeds `pos_tax_classes`/`pos_tax_rates` and migrates legacy `tax_rate` → `tax_class_id`. No data loss. Flush rewrite rules and visit POS → Settings to review tax country/state.
+Adds tax classes/rates (US/IN/EU presets), product variants, suppliers/purchase orders, barcode labels, store-wide currency, and USB ESC/POS. Migrates legacy tax_rate to tax_class_id. No data loss. Flush rewrite rules and review tax settings.
 
 == Changelog ==
 

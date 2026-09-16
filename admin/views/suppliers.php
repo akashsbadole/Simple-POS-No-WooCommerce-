@@ -1,5 +1,5 @@
 <?php if(!defined('ABSPATH')) exit;
-$editing_id = isset($_GET['edit'])? (int)$_GET['edit']:0;
+$editing_id = isset($_GET['edit'])? (int)$_GET['edit']:0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $editing = $editing_id? Simple_POS_Suppliers::get_supplier($editing_id):null;
 $suppliers = Simple_POS_Suppliers::get_suppliers();
 ?>

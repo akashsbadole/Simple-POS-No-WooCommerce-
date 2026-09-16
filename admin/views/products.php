@@ -1,12 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-$editing_id      = isset( $_GET['edit'] ) ? (int) $_GET['edit'] : 0;
+$editing_id      = isset( $_GET['edit'] ) ? (int) $_GET['edit'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $editing_product = $editing_id ? Simple_POS_Products::get_product( $editing_id ) : null;
-$search      = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
-$category_id = isset( $_GET['category_id'] ) ? (int) $_GET['category_id'] : 0;
-$status      = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : 'any';
-$low_stock_filter = isset( $_GET['filter'] ) && 'low_stock' === $_GET['filter'];
-$paged       = isset( $_GET['paged'] ) ? max( 1, (int) $_GET['paged'] ) : 1;
+$search      = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$category_id = isset( $_GET['category_id'] ) ? (int) $_GET['category_id'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$status      = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : 'any'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$low_stock_filter = isset( $_GET['filter'] ) && 'low_stock' === $_GET['filter']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+$paged       = isset( $_GET['paged'] ) ? max( 1, (int) $_GET['paged'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $categories = Simple_POS_Products::get_categories();
 $tax_classes = class_exists('Simple_POS_Tax')? Simple_POS_Tax::get_classes(): array();
 if ( $low_stock_filter ) {

@@ -6,9 +6,9 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $grouped = STS_Tables::get_by_status();
-$editing_id = isset( $_GET['edit'] ) ? (int) $_GET['edit'] : 0;
+$editing_id = isset( $_GET['edit'] ) ? (int) $_GET['edit'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $editing    = $editing_id ? STS_Tables::get_table( $editing_id ) : null;
-$msg        = isset( $_GET['sts_msg'] ) ? sanitize_key( $_GET['sts_msg'] ) : '';
+$msg        = isset( $_GET['sts_msg'] ) ? sanitize_key( $_GET['sts_msg'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">

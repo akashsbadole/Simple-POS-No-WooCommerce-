@@ -1,7 +1,7 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit;
 $classes = Simple_POS_Tax::get_classes();
 $rates = Simple_POS_Tax::get_rates();
-$edit_rate_id = isset($_GET['edit_rate']) ? (int)$_GET['edit_rate'] : 0;
+$edit_rate_id = isset($_GET['edit_rate']) ? (int)$_GET['edit_rate'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $edit_rate = $edit_rate_id ? Simple_POS_Tax::get_rate($edit_rate_id) : null;
 ?>
 <div class="wrap simple-pos-wrap">

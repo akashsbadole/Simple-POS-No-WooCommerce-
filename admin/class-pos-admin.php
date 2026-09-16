@@ -400,7 +400,12 @@ class Simple_POS_Admin {
 		}
 		check_admin_referer( 'simple_pos_delete_product' );
 
-		$result = Simple_POS_Products::delete_product( (int) $_GET['id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$id = isset( $_GET['id'] ) ? (int) $_GET['id'] : 0;
+		if ( ! $id ) {
+			wp_die( esc_html__( 'Invalid ID.', 'simple-pos' ) );
+		}
+
+		$result = Simple_POS_Products::delete_product( $id );
 		self::redirect_with_result( 'simple-pos-products', $result, __( 'Product deleted.', 'wp-pos-plugin' ) );
 	}
 
@@ -446,7 +451,12 @@ class Simple_POS_Admin {
 		}
 		check_admin_referer( 'simple_pos_delete_category' );
 
-		Simple_POS_Products::delete_category( (int) $_GET['id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$id = isset( $_GET['id'] ) ? (int) $_GET['id'] : 0;
+		if ( ! $id ) {
+			wp_die( esc_html__( 'Invalid ID.', 'simple-pos' ) );
+		}
+
+		Simple_POS_Products::delete_category( $id );
 		self::redirect_with_result( 'simple-pos-products', true, __( 'Category deleted.', 'wp-pos-plugin' ) );
 	}
 
@@ -478,7 +488,12 @@ class Simple_POS_Admin {
 		}
 		check_admin_referer( 'simple_pos_delete_customer' );
 
-		Simple_POS_Customers::delete_customer( (int) $_GET['id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$id = isset( $_GET['id'] ) ? (int) $_GET['id'] : 0;
+		if ( ! $id ) {
+			wp_die( esc_html__( 'Invalid ID.', 'simple-pos' ) );
+		}
+
+		Simple_POS_Customers::delete_customer( $id );
 		self::redirect_with_result( 'simple-pos-customers', true, __( 'Customer deleted.', 'wp-pos-plugin' ) );
 	}
 
@@ -710,11 +725,12 @@ class Simple_POS_Admin {
 			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_import_categories' );
-		if ( empty( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( empty( $_FILES['csv_file']['tmp_name'] ) || ! is_uploaded_file( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			self::redirect_with_result( 'simple-pos-products', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
-		$res = Simple_POS_CSV::import_categories( $_FILES['csv_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$tmp_name = sanitize_text_field( wp_unslash( $_FILES['csv_file']['tmp_name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$res = Simple_POS_CSV::import_categories( $tmp_name ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		/* translators: %d: number of imported categories. */
 		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d categories.', 'wp-pos-plugin' ), $res['imported'] );
 		if ( ! empty( $res['errors'] ) ) {
@@ -746,11 +762,12 @@ class Simple_POS_Admin {
 			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_import_variants' );
-		if ( empty( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( empty( $_FILES['csv_file']['tmp_name'] ) || ! is_uploaded_file( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			self::redirect_with_result( 'simple-pos-products', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
-		$res = Simple_POS_CSV::import_variants( $_FILES['csv_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$tmp_name = sanitize_text_field( wp_unslash( $_FILES['csv_file']['tmp_name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$res = Simple_POS_CSV::import_variants( $tmp_name ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		/* translators: %d: number of imported variants. */
 		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d variants.', 'wp-pos-plugin' ), $res['imported'] );
 		if ( ! empty( $res['errors'] ) ) {
@@ -764,11 +781,12 @@ class Simple_POS_Admin {
 			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-pos-plugin' ) );
 		}
 		check_admin_referer( 'simple_pos_import_sales' );
-		if ( empty( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( empty( $_FILES['csv_file']['tmp_name'] ) || ! is_uploaded_file( $_FILES['csv_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			self::redirect_with_result( 'simple-pos-sales', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
-		$res = Simple_POS_CSV::import_sales( $_FILES['csv_file']['tmp_name'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$tmp_name = sanitize_text_field( wp_unslash( $_FILES['csv_file']['tmp_name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$res = Simple_POS_CSV::import_sales( $tmp_name ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		/* translators: %d: number of imported sales. */
 		$msg = is_wp_error( $res ) ? '' : sprintf( __( 'Imported %d sales.', 'wp-pos-plugin' ), $res['imported'] );
 		if ( ! empty( $res['errors'] ) ) {
@@ -826,12 +844,12 @@ class Simple_POS_Admin {
 		}
 		check_admin_referer( 'simple_pos_backup_import' );
 
-		if ( empty( $_FILES['backup_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( empty( $_FILES['backup_file']['tmp_name'] ) || ! is_uploaded_file( $_FILES['backup_file']['tmp_name'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			self::redirect_with_result( 'simple-pos-backup', new WP_Error( 'pos_file_missing', __( 'No file uploaded.', 'wp-pos-plugin' ) ), '' );
 			return;
 		}
 
-		$file_path = $_FILES['backup_file']['tmp_name']; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$file_path = sanitize_text_field( wp_unslash( $_FILES['backup_file']['tmp_name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$content   = file_get_contents( $file_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_get_contents
 		$data      = json_decode( $content, true );
 
@@ -904,15 +922,16 @@ class Simple_POS_Admin {
 
 				// Validate row has expected columns.
 				$columns = $wpdb->get_col( "DESCRIBE {$table}", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				foreach ( array_keys( $row ) as $col ) {
-					if ( ! in_array( $col, $columns, true ) ) {
-						if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-							error_log( 'POS Backup: Invalid column \'' . $col . '\' in table ' . $table_name );
-						}
-						$success = false;
-						break 3;
+			foreach ( array_keys( $row ) as $col ) {
+				if ( ! in_array( $col, $columns, true ) ) {
+					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+						error_log( 'POS Backup: Invalid column \'' . $col . '\' in table ' . $table_name );
 					}
+					$success = false;
+					break 3;
 				}
+			}
 
 				if ( 'settings' === $table_name ) {
 					Simple_POS_Settings::update( $row );

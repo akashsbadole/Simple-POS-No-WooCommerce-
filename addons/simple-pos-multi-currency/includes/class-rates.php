@@ -23,7 +23,7 @@ class SFX_Rates {
 		$done    = true;
 		$prefix  = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		$charset = $wpdb->get_charset_collate();
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}" . self::TABLE_SUFFIX . "` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, currency_code CHAR(3) NOT NULL, rate_to_base DECIMAL(14,6) NOT NULL, updated_at DATETIME NULL, PRIMARY KEY (id), UNIQUE KEY uniq_code (currency_code) ) {$charset}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}" . self::TABLE_SUFFIX . "` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, currency_code CHAR(3) NOT NULL, rate_to_base DECIMAL(14,6) NOT NULL, updated_at DATETIME NULL, PRIMARY KEY (id), UNIQUE KEY uniq_code (currency_code) ) {$charset}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 	}
 
 	/**

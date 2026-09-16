@@ -248,7 +248,7 @@ class SPAR_Reports {
 	 * @return string
 	 */
 	public static function to_csv( $headers, $rows ) {
-		$out = fopen( 'php://temp', 'r+' );
+		$out = fopen( 'php://temp', 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		if ( false === $out ) {
 			return '';
 		}
@@ -258,7 +258,7 @@ class SPAR_Reports {
 		}
 		rewind( $out );
 		$csv = stream_get_contents( $out );
-		fclose( $out );
+		fclose( $out ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		return (string) $csv;
 	}
 

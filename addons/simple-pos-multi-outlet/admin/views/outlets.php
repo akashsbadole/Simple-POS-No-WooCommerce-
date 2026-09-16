@@ -8,9 +8,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 $outlets  = SMO_Outlets::get_outlets();
 $settings = SMO_Outlets::get_settings();
 
-$editing_id = isset( $_GET['edit'] ) ? (int) $_GET['edit'] : 0;
+$editing_id = isset( $_GET['edit'] ) ? (int) $_GET['edit'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $editing    = $editing_id ? SMO_Outlets::get_outlet( $editing_id ) : null;
-$msg        = isset( $_GET['smo_msg'] ) ? sanitize_key( $_GET['smo_msg'] ) : '';
+$msg        = isset( $_GET['smo_msg'] ) ? sanitize_key( $_GET['smo_msg'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">

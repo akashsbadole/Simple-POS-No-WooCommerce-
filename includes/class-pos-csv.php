@@ -30,14 +30,14 @@ class Simple_POS_CSV {
 				'status'   => 'any',
 			)
 		);
-		$out = fopen( 'php://temp', 'r+' );
+		$out = fopen( 'php://temp', 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		fputcsv( $out, array( 'id', 'name', 'sku', 'barcode', 'category_id', 'price', 'cost_price', 'tax_class_id', 'tax_rate', 'stock_qty', 'low_stock_threshold', 'track_stock', 'image_url', 'hsn_sac_code', 'status' ) );
 		foreach ( $all['items'] as $p ) {
 			fputcsv( $out, array( $p->id, self::escape_csv_formula( $p->name ), self::escape_csv_formula( $p->sku ), self::escape_csv_formula( $p->barcode ), $p->category_id, $p->price, $p->cost_price, $p->tax_class_id ?? '', $p->tax_rate ?? '', $p->stock_qty, $p->low_stock_threshold, $p->track_stock, self::escape_csv_formula( $p->image_url ), self::escape_csv_formula( $p->hsn_sac_code ?? '' ), $p->status ) );
 		}
 		rewind( $out );
 		$csv = stream_get_contents( $out );
-		fclose( $out );
+		fclose( $out ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		return $csv;
 	}
 
@@ -56,19 +56,19 @@ class Simple_POS_CSV {
 		if ( ! in_array( $mime, array( 'text/csv', 'text/plain', 'application/csv' ), true ) ) {
 			return new WP_Error( 'pos_invalid_file', __( 'Only CSV files are allowed.', 'wp-pos-plugin' ) );
 		}
-		$handle = fopen( $file_path, 'r' );
+		$handle = fopen( $file_path, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		if ( ! $handle ) {
 			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'wp-pos-plugin' ) );
 		}
 		$header = fgetcsv( $handle );
 		if ( ! $header ) {
-			fclose( $handle );
+			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'wp-pos-plugin' ) );}
 		$header   = array_map( 'strtolower', array_map( 'trim', $header ) );
 		$required = array( 'name', 'price' );
 		foreach ( $required as $r ) {
 			if ( ! in_array( $r, $header, true ) ) {
-				fclose( $handle );
+				fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 				/* translators: %s: missing CSV column name. */
 				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'wp-pos-plugin' ), $r ) ); }
 		}
@@ -139,7 +139,7 @@ class Simple_POS_CSV {
 				}
 			}
 		}
-		fclose( $handle );
+		fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		return array(
 			'imported' => $imported,
 			'errors'   => $errors,
@@ -158,7 +158,7 @@ class Simple_POS_CSV {
 			$args['date_to'] = $date_to;
 		}
 		$res = Simple_POS_Sales::get_sales( $args );
-		$out = fopen( 'php://temp', 'r+' );
+		$out = fopen( 'php://temp', 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		fputcsv( $out, array( 'sale_number', 'created_at', 'customer_id', 'cashier_id', 'subtotal', 'discount_amount', 'tax_amount', 'total', 'payment_method', 'status', 'tax_country', 'tax_state' ) );
 		foreach ( $res['items'] as $s ) {
 			fputcsv( $out, array( self::escape_csv_formula( $s->sale_number ), $s->created_at, $s->customer_id, $s->cashier_id, $s->subtotal, $s->discount_amount, $s->tax_amount, $s->total, self::escape_csv_formula( $s->payment_method ), $s->status, self::escape_csv_formula( $s->tax_country ?? '' ), self::escape_csv_formula( $s->tax_state ?? '' ) ) );
@@ -171,7 +171,7 @@ class Simple_POS_CSV {
 
 	public static function export_categories() {
 		$cats = Simple_POS_Products::get_categories();
-		$out  = fopen( 'php://temp', 'r+' );
+		$out  = fopen( 'php://temp', 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		fputcsv( $out, array( 'id', 'name', 'description' ) );
 		foreach ( $cats as $c ) {
 			fputcsv( $out, array( $c->id, self::escape_csv_formula( $c->name ), self::escape_csv_formula( $c->description ?? '' ) ) );
@@ -365,7 +365,7 @@ class Simple_POS_CSV {
 		$all = $wpdb->get_results(
 			"SELECT v.*, p.name as parent_name FROM {$vt} v INNER JOIN {$pt} p ON p.id = v.parent_product_id ORDER BY p.name, v.id" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		);
-		$out = fopen( 'php://temp', 'r+' );
+		$out = fopen( 'php://temp', 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		fputcsv( $out, array( 'parent_product_id', 'parent_name', 'sku', 'barcode', 'price', 'cost_price', 'stock_qty', 'low_stock_threshold', 'track_stock', 'tax_class_id', 'image_url', 'hsn_sac_code', 'attributes', 'status' ) );
 		foreach ( $all as $v ) {
 			$attrs = '';

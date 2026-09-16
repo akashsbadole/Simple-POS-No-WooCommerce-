@@ -20,7 +20,7 @@ class SGC_Gift_Cards {
 		$done    = true;
 		$prefix  = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		$charset = $wpdb->get_charset_collate();
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}" . self::TABLE_SUFFIX . "` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, code VARCHAR(64) NOT NULL, balance DECIMAL(12,2) NOT NULL DEFAULT 0, status VARCHAR(20) NOT NULL DEFAULT 'active', created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME NULL, PRIMARY KEY (id), UNIQUE KEY uniq_code (code) ) {$charset}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}" . self::TABLE_SUFFIX . "` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, code VARCHAR(64) NOT NULL, balance DECIMAL(12,2) NOT NULL DEFAULT 0, status VARCHAR(20) NOT NULL DEFAULT 'active', created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at DATETIME NULL, PRIMARY KEY (id), UNIQUE KEY uniq_code (code) ) {$charset}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 	}
 
 	/**
@@ -71,7 +71,7 @@ class SGC_Gift_Cards {
 		}
 		$wpdb->query(
 			$wpdb->prepare(
-				"UPDATE %i SET balance = balance + %f, updated_at = %s WHERE id = %d",
+				'UPDATE %s SET balance = balance - %f, updated_at = %s WHERE id = %d',
 				Simple_POS_DB::table( self::TABLE_SUFFIX ),
 				$amount,
 				current_time( 'mysql' ),
@@ -139,7 +139,7 @@ class SGC_Gift_Cards {
 		self::ensure_schema();
 		$wpdb->query(
 			$wpdb->prepare(
-				"UPDATE %i SET balance = balance - %f, updated_at = %s WHERE id = %d",
+				'UPDATE %s SET balance = balance - %f, updated_at = %s WHERE id = %d',
 				Simple_POS_DB::table( self::TABLE_SUFFIX ),
 				$amount,
 				current_time( 'mysql' ),

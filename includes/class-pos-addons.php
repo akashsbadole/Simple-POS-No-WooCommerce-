@@ -216,27 +216,29 @@ class Simple_POS_Addons {
 
 			$addon_file = SIMPLE_POS_PLUGIN_DIR . 'addons/' . $addon['slug'] . '/' . $addon['slug'] . '.php';
 
-			// Check if file exists.
-			if ( ! file_exists( $addon_file ) ) {
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( 'POS: Addon ' . $addon['slug'] . ' file missing, skipping' );
-				}
-				continue;
+		// Check if file exists.
+		if ( ! file_exists( $addon_file ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( 'POS: Addon ' . $addon['slug'] . ' file missing, skipping' );
 			}
+			continue;
+		}
 
-			// Check version compatibility.
-			$headers = get_file_data(
-				$addon_file,
-				array(
-					'requires_core' => 'Requires POS Core',
-					'tested_up_to'  => 'Tested up to',
-				)
-			);
+		// Check version compatibility.
+		$headers = get_file_data(
+			$addon_file,
+			array(
+				'requires_core' => 'Requires POS Core',
+				'tested_up_to'  => 'Tested up to',
+			)
+		);
 
-			if ( ! empty( $headers['requires_core'] ) && version_compare( $core_version, $headers['requires_core'], '<' ) ) {
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( 'POS: Addon ' . $addon['slug'] . ' requires core ' . $headers['requires_core'] . ', have ' . $core_version . '. Skipping.' );
-				}
+		if ( ! empty( $headers['requires_core'] ) && version_compare( $core_version, $headers['requires_core'], '<' ) ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( 'POS: Addon ' . $addon['slug'] . ' requires core ' . $headers['requires_core'] . ', have ' . $core_version . '. Skipping.' );
+			}
 				set_transient(
 					'simple_pos_addon_compat_error_' . $addon['slug'],
 					array(

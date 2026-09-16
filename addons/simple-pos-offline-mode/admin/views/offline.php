@@ -6,7 +6,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $enabled  = SOM_Offline::is_enabled();
-$msg      = isset( $_GET['som_msg'] ) ? sanitize_key( $_GET['som_msg'] ) : '';
+$msg      = isset( $_GET['som_msg'] ) ? sanitize_key( $_GET['som_msg'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">

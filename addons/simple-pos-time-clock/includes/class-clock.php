@@ -21,7 +21,7 @@ class STC_Clock {
 		$done    = true;
 		$prefix  = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		$charset = $wpdb->get_charset_collate();
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}" . self::TABLE_SUFFIX . "` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, cashier_id BIGINT UNSIGNED NOT NULL, clock_in DATETIME NOT NULL, clock_out DATETIME NULL, duration_minutes INT UNSIGNED NULL, created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id), KEY idx_cashier (cashier_id) ) {$charset}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}" . self::TABLE_SUFFIX . "` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, cashier_id BIGINT UNSIGNED NOT NULL, clock_in DATETIME NOT NULL, clock_out DATETIME NULL, duration_minutes INT UNSIGNED NULL, created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id), KEY idx_cashier (cashier_id) ) {$charset}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 	}
 
 	/**
@@ -113,7 +113,7 @@ class STC_Clock {
 		} else {
 			$sql = $wpdb->prepare( "SELECT * FROM {$table} ORDER BY created_at DESC LIMIT %d", $limit ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
-		return $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		return $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 	}
 
 	/**
@@ -140,8 +140,8 @@ class STC_Clock {
 		}
 
 		$where_sql = implode( ' AND ', $where );
-		$sql       = "SELECT cashier_id, COUNT(*) as shift_count, COALESCE(SUM(duration_minutes),0) as total_minutes FROM {$table} WHERE {$where_sql} GROUP BY cashier_id ORDER BY total_minutes DESC";
-		return $wpdb->get_results( $params ? $wpdb->prepare( $sql, $params ) : $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$prepared  = $wpdb->prepare( "SELECT cashier_id, COUNT(*) as shift_count, COALESCE(SUM(duration_minutes),0) as total_minutes FROM {$table} WHERE {$where_sql} GROUP BY cashier_id ORDER BY total_minutes DESC", ...$params ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $wpdb->get_results( $prepared ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 	}
 
 	// --- REST ---

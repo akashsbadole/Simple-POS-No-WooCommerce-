@@ -4,7 +4,7 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-$msg = isset( $_GET['skd_msg'] ) ? sanitize_key( $_GET['skd_msg'] ) : '';
+$msg = isset( $_GET['skd_msg'] ) ? sanitize_key( $_GET['skd_msg'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">

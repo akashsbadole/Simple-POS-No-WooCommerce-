@@ -7,11 +7,11 @@
 	<exclude-pattern>*/.opencode/*</exclude-pattern>
 	<exclude-pattern>*/admin/js/vendor/*</exclude-pattern>
 	<exclude-pattern>*/benchmarks/*</exclude-pattern>
-	<rule ref="WordPress">
-		<exclude name="WordPress.DB.DirectDatabaseQuery.DirectQuery"/>
-		<exclude name="WordPress.DB.DirectDatabaseQuery.NoCaching"/>
-		<exclude name="WordPress.DB.PreparedSQL.InterpolatedNotPrepared"/>
-	</rule>
+	<exclude-pattern>**/.kilo/**</exclude-pattern>
+	<exclude-pattern>**/.git/**</exclude-pattern>
+	<exclude-pattern>**/.github/**</exclude-pattern>
+	<rule ref="WordPress"/>
+	<rule ref="PluginCheck"/>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array" value="wp-pos-plugin"/>

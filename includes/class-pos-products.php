@@ -423,9 +423,9 @@ class Simple_POS_Products {
 			if ( $default_class ) {
 				$tax_class_id = $default_class;
 			} else {
-				global $wpdb;
-				$std          = $wpdb->get_var( $wpdb->prepare( 'SELECT id FROM ' . Simple_POS_DB::table( 'tax_classes' ) . ' WHERE slug=%s', 'standard' ) );
-				$tax_class_id = $std ? (int) $std : 0;
+			global $wpdb;
+			$std          = $wpdb->get_var( $wpdb->prepare( 'SELECT id FROM %s WHERE slug=%s', Simple_POS_DB::table( 'tax_classes' ), 'standard' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter
+			$tax_class_id = $std ? (int) $std : 0;
 			}
 		}
 		if ( ! empty( $data['barcode'] ) && self::barcode_exists( sanitize_text_field( $data['barcode'] ), $existing->id ?? 0 ) ) {

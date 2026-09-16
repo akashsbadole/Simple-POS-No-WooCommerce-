@@ -6,7 +6,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $cards = SGC_Gift_Cards::get_cards();
-$msg   = isset( $_GET['sgc_msg'] ) ? sanitize_key( $_GET['sgc_msg'] ) : '';
+$msg   = isset( $_GET['sgc_msg'] ) ? sanitize_key( $_GET['sgc_msg'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">

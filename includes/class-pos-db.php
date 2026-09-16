@@ -85,7 +85,7 @@ class Simple_POS_DB {
 		// Optionally clean up old sequence entries (every 1000 inserts).
 		if ( $next_id % 1000 === 0 && $next_id > 100 ) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-			$wpdb->query( "DELETE FROM {$seq_table} WHERE id < " . ( $next_id - 100 ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( $wpdb->prepare( "DELETE FROM {$seq_table} WHERE id < %d", $next_id - 100 ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
 		return $prefix . str_pad( $next_id, 6, '0', STR_PAD_LEFT );
@@ -175,7 +175,7 @@ class Simple_POS_DB {
 		if ( 'InnoDB' !== $engine ) {
 			// Table does not support transactions — run callback directly.
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PWP.DevelopmentFunctions.error_log_error_log
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( 'POS: Table engine is ' . ( $engine ?: 'unknown' ) . ', running transaction callback without transaction wrapping.' );
 			}
 			return call_user_func( $callback );
@@ -188,11 +188,11 @@ class Simple_POS_DB {
 
 		if ( is_wp_error( $result ) ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PWP.DevelopmentFunctions.error_log_error_log
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( 'POS Transaction failed: ' . $result->get_error_message() );
 				$error_data = $result->get_error_data();
 				if ( $error_data ) {
-					// phpcs:ignore WordPress.PWP.DevelopmentFunctions.error_log_error_log
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 					error_log( 'POS Error context: ' . wp_json_encode( $error_data ) );
 				}
 			}

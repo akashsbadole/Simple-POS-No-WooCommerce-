@@ -1,6 +1,6 @@
 # Simple POS — User Guide
 
-**Plugin:** Simple POS (No WooCommerce)
+**Plugin:** Simple POS — Standalone Point of Sale
 **Version:** 2.1.0
 **License:** GPL v2 or later
 
@@ -18,7 +18,7 @@ Simple POS is a lightweight, standalone Point of Sale system for WordPress. It d
 
 ## 2. Installation
 
-1. Upload the `wp-pos-plugin` folder to `/wp-content/plugins/`, or upload the zip via **Plugins → Add New → Upload Plugin**.
+1. Upload the `simple-pos` folder to `/wp-content/plugins/`, or upload the zip via **Plugins → Add New → Upload Plugin**.
 2. Activate the plugin from the **Plugins** screen. Activation creates the required custom tables (`wp_pos_*`), the `POS Cashier` / `POS Manager` roles, and seeds default per-country tax rates.
 3. Go to **POS → Settings** and set your store name, base currency, default tax country/state, and receipt details.
 4. On a fresh install the **Business Setup** notice appears — choose your business type to seed sample categories, taxes and products (optional).

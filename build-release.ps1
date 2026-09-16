@@ -4,7 +4,7 @@
 .DESCRIPTION
     Creates a clean zip containing only runtime plugin files — no .git,
     vendor (test-only), README.md (GitHub), build artifacts, or test caches.
-    Output: release\wp-pos-plugin-{version}.zip
+    Output: release\simple-pos-{version}.zip
 .EXAMPLE
     .\build-release.ps1
     .\build-release.ps1 -Version "2.1.1" -OutputDir ".\dist"
@@ -31,12 +31,12 @@ if (-not $Version) {
     $Version = $tag
 }
 
-Write-Host "Building wp-pos-plugin $Version ..." -ForegroundColor Cyan
+Write-Host "Building simple-pos $Version ..." -ForegroundColor Cyan
 
 # ── Prepare staging area ─────────────────────────────────────────────
 $OutputDir  = Join-Path $PluginRoot $OutputDir
 $StageRoot  = Join-Path $env:TEMP  "pos-release-build-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
-$StagePlugin = Join-Path $StageRoot 'wp-pos-plugin'
+$StagePlugin = Join-Path $StageRoot 'simple-pos'
 
 if (-not (Test-Path $OutputDir)) { New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null }
 if (-not (Test-Path $StagePlugin)) { New-Item -ItemType Directory -Path $StagePlugin -Force | Out-Null }
@@ -98,7 +98,7 @@ foreach ($f in $required) {
 }
 
 # ── Create zip ───────────────────────────────────────────────────────
-$zipName = "wp-pos-plugin-$Version.zip"
+$zipName = "simple-pos-$Version.zip"
 $zipPath = Join-Path $OutputDir $zipName
 
 if (Test-Path $zipPath) { Remove-Item $zipPath -Force }

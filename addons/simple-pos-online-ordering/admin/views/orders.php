@@ -6,7 +6,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 $orders = SOO_Orders::get_orders( 'any' );
-$msg    = isset( $_GET['soo_msg'] ) ? sanitize_key( $_GET['soo_msg'] ) : '';
+$msg    = isset( $_GET['soo_msg'] ) ? sanitize_key( $_GET['soo_msg'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">
