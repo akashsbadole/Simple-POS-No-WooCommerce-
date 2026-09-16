@@ -60,10 +60,17 @@ function simple_pos_sgc_boot() {
 	add_action(
 		'simple_pos_sale_created',
 		function ( $sale_id, $calc, $line_items, $cart_data ) {
+			// Idempotency: boots must tolerate running twice (e.g. the
+			// bootstrap file loading via two paths); a sale redeems once.
+			static $redeemed = array();
+			if ( isset( $redeemed[ (int) $sale_id ] ) ) {
+				return;
+			}
 			$code = isset( $cart_data['gift_card_code'] ) ? $cart_data['gift_card_code'] : '';
 			$used = isset( $cart_data['gift_card_applied'] ) ? (float) $cart_data['gift_card_applied'] : 0;
 			if ( '' !== trim( (string) $code ) && $used > 0 ) {
 				Simple_POS_Sgc_Gift_Cards::redeem( $code, $used );
+				$redeemed[ (int) $sale_id ] = true;
 			}
 		},
 		20,
@@ -87,7 +94,7 @@ function simple_pos_sgc_boot() {
 					'methods'             => 'GET',
 					'callback'            => array( 'Simple_POS_Sgc_Gift_Cards', 'rest_lookup' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);

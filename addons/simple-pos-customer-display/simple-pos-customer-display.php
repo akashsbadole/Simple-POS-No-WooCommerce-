@@ -57,7 +57,7 @@ function simple_pos_scd_boot() {
 					'methods'             => 'POST',
 					'callback'            => array( 'Simple_POS_Scd_Display', 'rest_update' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);
@@ -77,7 +77,7 @@ function simple_pos_scd_boot() {
 					'methods'             => 'POST',
 					'callback'            => array( 'Simple_POS_Scd_Display', 'rest_clear' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);

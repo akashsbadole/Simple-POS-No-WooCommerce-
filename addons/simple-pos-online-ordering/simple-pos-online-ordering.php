@@ -81,7 +81,7 @@ function simple_pos_soo_boot() {
 						'methods'             => 'GET',
 						'callback'            => array( 'Simple_POS_Soo_Orders', 'rest_list' ),
 						'permission_callback' => function () {
-							return current_user_can( 'simple_pos_use_terminal' );
+							return current_user_can( 'operate_pos' );
 						},
 					),
 				)
@@ -93,7 +93,7 @@ function simple_pos_soo_boot() {
 					'methods'             => 'POST',
 					'callback'            => array( 'Simple_POS_Soo_Orders', 'rest_set_status' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);

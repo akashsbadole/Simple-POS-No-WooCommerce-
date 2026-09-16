@@ -92,6 +92,12 @@ class Simple_POS_Sgc_Gift_Cards {
 			return $cart_data;
 		}
 
+		// Already applied (e.g. second cart pass after totals). Never
+		// double-deduct amount_paid.
+		if ( isset( $cart_data['gift_card_applied'] ) ) {
+			return $cart_data;
+		}
+
 		$card = self::get_by_code( $code );
 		if ( ! $card ) {
 			$cart_data['gift_card_error'] = __( 'Invalid or inactive gift card code.', 'simple-pos' );
@@ -101,7 +107,9 @@ class Simple_POS_Sgc_Gift_Cards {
 		$remaining = isset( $cart_data['total_after_payment'] ) ? (float) $cart_data['total_after_payment'] : ( isset( $cart_data['total'] ) ? (float) $cart_data['total'] : 0 );
 		$remaining = max( 0, $remaining );
 		if ( $remaining <= 0 ) {
-			$cart_data['gift_card_error'] = __( 'Nothing left to pay with the gift card.', 'simple-pos' );
+			// No total known yet (first cart pass runs before totals are
+			// computed). Pass through untouched; the post-totals pass in
+			// Simple_POS_Sales::create_sale() carries the total.
 			return $cart_data;
 		}
 

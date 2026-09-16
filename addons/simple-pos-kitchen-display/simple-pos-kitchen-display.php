@@ -70,7 +70,7 @@ function simple_pos_skd_boot() {
 					'methods'             => 'GET',
 					'callback'            => array( 'Simple_POS_Skd_Kitchen', 'rest_list' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);
@@ -81,7 +81,7 @@ function simple_pos_skd_boot() {
 					'methods'             => 'POST',
 					'callback'            => array( 'Simple_POS_Skd_Kitchen', 'rest_set_item_status' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);
@@ -92,7 +92,7 @@ function simple_pos_skd_boot() {
 					'methods'             => 'POST',
 					'callback'            => array( 'Simple_POS_Skd_Kitchen', 'rest_bump_order' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);

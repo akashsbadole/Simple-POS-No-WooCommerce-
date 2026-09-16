@@ -60,7 +60,7 @@ function simple_pos_stc_boot() {
 					'methods'             => 'POST',
 					'callback'            => array( 'Simple_POS_Stc_Clock', 'rest_clock_in' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);
@@ -71,7 +71,7 @@ function simple_pos_stc_boot() {
 					'methods'             => 'POST',
 					'callback'            => array( 'Simple_POS_Stc_Clock', 'rest_clock_out' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);
@@ -82,7 +82,7 @@ function simple_pos_stc_boot() {
 					'methods'             => 'GET',
 					'callback'            => array( 'Simple_POS_Stc_Clock', 'rest_status' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);

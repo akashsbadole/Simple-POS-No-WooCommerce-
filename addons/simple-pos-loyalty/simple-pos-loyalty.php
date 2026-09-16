@@ -86,7 +86,7 @@ function simple_pos_sloy_boot() {
 					'methods'             => 'GET',
 					'callback'            => array( 'Simple_POS_Sloy_Loyalty', 'rest_balance' ),
 					'permission_callback' => function () {
-						return current_user_can( 'simple_pos_use_terminal' );
+						return current_user_can( 'operate_pos' );
 					},
 				)
 			);

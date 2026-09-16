@@ -110,6 +110,14 @@ class Simple_POS_Sales {
 		$tax_total       = $calc['tax'];
 		$total           = $calc['total'];
 		$tax_breakdown   = $calc['breakdown'];
+		/**
+		 * Second cart pass now that the total is known, so tender add-ons
+		 * (e.g. gift cards) that price against the total can apply. The
+		 * first pass ran before totals existed; cart filters must be
+		 * idempotent (pure functions of cart inputs) to tolerate re-runs.
+		 */
+		$cart_data['total'] = $total;
+		$cart_data          = apply_filters( 'simple_pos_cart_data', $cart_data );
 
 		$payment_method = isset( $cart_data['payment_method'] ) ? sanitize_text_field( $cart_data['payment_method'] ) : 'cash';
 		$amount_paid    = isset( $cart_data['amount_paid'] ) ? max( 0, (float) $cart_data['amount_paid'] ) : $total;

@@ -95,9 +95,11 @@ final class Simple_POS_Plugin {
 		require_once SIMPLE_POS_PLUGIN_DIR . 'includes/class-pos-addons.php';
 		Simple_POS_Addons::load_enabled();
 
-		if ( is_admin() ) {
-			require_once SIMPLE_POS_PLUGIN_DIR . 'admin/class-pos-admin.php';
-		}
+		// Loaded everywhere (not just wp-admin): the frontend terminal
+		// shortcode, frontend assets and admin-post handlers need it too.
+		// All hooks inside are context-appropriate (admin_menu etc. only
+		// fire inside wp-admin).
+		require_once SIMPLE_POS_PLUGIN_DIR . 'admin/class-pos-admin.php';
 	}
 
 	/**
@@ -113,10 +115,9 @@ final class Simple_POS_Plugin {
 		// REST API.
 		add_action( 'rest_api_init', array( 'Simple_POS_REST_API', 'register_routes' ) );
 
-		// Admin UI.
-		if ( is_admin() ) {
-			Simple_POS_Admin::init();
-		}
+		// Admin UI + frontend terminal shortcode. init() only registers
+		// hooks/shortcodes; each callback is gated for its own context.
+		Simple_POS_Admin::init();
 	}
 
 	/**
