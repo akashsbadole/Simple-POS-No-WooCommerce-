@@ -69,15 +69,15 @@ class Simple_POS_Sgc_Gift_Cards {
 		if ( $amount <= 0 ) {
 			return;
 		}
+		$table = Simple_POS_DB::table( self::TABLE_SUFFIX );
 		$wpdb->query(
 			$wpdb->prepare(
-				'UPDATE %s SET balance = balance - %f, updated_at = %s WHERE id = %d',
-				Simple_POS_DB::table( self::TABLE_SUFFIX ),
+				"UPDATE {$table} SET balance = balance + %f, updated_at = %s WHERE id = %d",
 				$amount,
 				current_time( 'mysql' ),
 				(int) $card_id
 			)
-		); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Table name from Simple_POS_DB::table().
 	}
 
 	/**
@@ -137,15 +137,15 @@ class Simple_POS_Sgc_Gift_Cards {
 			return;
 		}
 		self::ensure_schema();
+		$table = Simple_POS_DB::table( self::TABLE_SUFFIX );
 		$wpdb->query(
 			$wpdb->prepare(
-				'UPDATE %s SET balance = balance - %f, updated_at = %s WHERE id = %d',
-				Simple_POS_DB::table( self::TABLE_SUFFIX ),
+				"UPDATE {$table} SET balance = balance - %f, updated_at = %s WHERE id = %d",
 				$amount,
 				current_time( 'mysql' ),
 				(int) $card->id
 			)
-		); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Table name from Simple_POS_DB::table().
 	}
 
 	/**

@@ -13,8 +13,8 @@ class Simple_POS_Variants {
 		if ( 'any' !== $status ) {
 			$where   .= ' AND status=%s';
 			$params[] = $status; }
-		$sql = "SELECT * FROM %s WHERE {$where} ORDER BY id ASC";
-		return $wpdb->get_results( $wpdb->prepare( $sql, $table, ...$params ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter
+		$sql = "SELECT * FROM {$table} WHERE {$where} ORDER BY id ASC";
+		return $wpdb->get_results( $wpdb->prepare( $sql, ...$params ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name from Simple_POS_DB::table(); values spread as prepared params.
 	}
 
 	public static function get_variant( $id ) {

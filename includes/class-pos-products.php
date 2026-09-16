@@ -424,7 +424,8 @@ class Simple_POS_Products {
 				$tax_class_id = $default_class;
 			} else {
 			global $wpdb;
-			$std          = $wpdb->get_var( $wpdb->prepare( 'SELECT id FROM %s WHERE slug=%s', Simple_POS_DB::table( 'tax_classes' ), 'standard' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter
+			$tax_table    = Simple_POS_DB::table( 'tax_classes' );
+			$std          = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$tax_table} WHERE slug = %s", 'standard' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name from Simple_POS_DB::table().
 			$tax_class_id = $std ? (int) $std : 0;
 			}
 		}

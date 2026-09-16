@@ -69,7 +69,8 @@ class Simple_POS_Tax {
 		if ( $class_id ) {
 			return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} WHERE class_id = %d ORDER BY priority ASC, country_code ASC", $class_id ) );
 		}
-		return $wpdb->get_results( $wpdb->prepare( "SELECT r.*, c.name as class_name, c.slug as class_slug FROM %s r LEFT JOIN %s c ON c.id=r.class_id ORDER BY r.class_id, r.priority, r.country_code", $table, Simple_POS_DB::table( 'tax_classes' ) ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$ct = Simple_POS_DB::table( 'tax_classes' );
+		return $wpdb->get_results( "SELECT r.*, c.name as class_name, c.slug as class_slug FROM {$table} r LEFT JOIN {$ct} c ON c.id=r.class_id ORDER BY r.class_id, r.priority, r.country_code" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Table names from Simple_POS_DB::table(); static query, no user input.
 	}
 
 	public static function get_rate( $id ) {
