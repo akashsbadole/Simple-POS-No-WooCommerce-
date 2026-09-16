@@ -93,7 +93,7 @@ class Simple_POS_Products {
 	public static function get_product( $id ) {
 		global $wpdb;
 		$table = Simple_POS_DB::table( 'products' );
-		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**
@@ -186,7 +186,7 @@ class Simple_POS_Products {
 		}
 
 		if ( ! empty( $clean['sku'] ) && self::sku_exists( $clean['sku'] ) ) {
-			return new WP_Error( 'pos_duplicate_sku', __( 'A product with this SKU already exists.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_duplicate_sku', __( 'A product with this SKU already exists.', 'simple-pos' ) );
 		}
 
 		$clean['created_at'] = current_time( 'mysql' );
@@ -195,13 +195,13 @@ class Simple_POS_Products {
 		$inserted = $wpdb->insert( $table, $clean ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		if ( false === $inserted ) {
-			return new WP_Error( 'pos_db_error', __( 'Could not create product.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_db_error', __( 'Could not create product.', 'simple-pos' ) );
 		}
 
 		$product_id = (int) $wpdb->insert_id;
 
 		if ( (int) $clean['stock_qty'] > 0 ) {
-			self::log_stock_change( $product_id, (int) $clean['stock_qty'], (int) $clean['stock_qty'], 'initial', null, get_current_user_id(), __( 'Initial stock on product creation', 'wp-pos-plugin' ) );
+			self::log_stock_change( $product_id, (int) $clean['stock_qty'], (int) $clean['stock_qty'], 'initial', null, get_current_user_id(), __( 'Initial stock on product creation', 'simple-pos' ) );
 		}
 
 		return $product_id;
@@ -220,7 +220,7 @@ class Simple_POS_Products {
 
 		$existing = self::get_product( $id );
 		if ( ! $existing ) {
-			return new WP_Error( 'pos_not_found', __( 'Product not found.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_not_found', __( 'Product not found.', 'simple-pos' ) );
 		}
 
 		$clean = self::sanitize_product_input( $data, $existing );
@@ -230,7 +230,7 @@ class Simple_POS_Products {
 		}
 
 		if ( ! empty( $clean['sku'] ) && self::sku_exists( $clean['sku'], $id ) ) {
-			return new WP_Error( 'pos_duplicate_sku', __( 'A product with this SKU already exists.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_duplicate_sku', __( 'A product with this SKU already exists.', 'simple-pos' ) );
 		}
 
 		$old_qty = (int) $existing->stock_qty;
@@ -241,11 +241,11 @@ class Simple_POS_Products {
 		$updated = $wpdb->update( $table, $clean, array( 'id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		if ( false === $updated ) {
-			return new WP_Error( 'pos_db_error', __( 'Could not update product.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_db_error', __( 'Could not update product.', 'simple-pos' ) );
 		}
 
 		if ( $new_qty !== $old_qty ) {
-			self::log_stock_change( $id, $new_qty - $old_qty, $new_qty, 'adjustment', null, get_current_user_id(), __( 'Manual edit', 'wp-pos-plugin' ) );
+			self::log_stock_change( $id, $new_qty - $old_qty, $new_qty, 'adjustment', null, get_current_user_id(), __( 'Manual edit', 'simple-pos' ) );
 		}
 
 		return true;
@@ -266,7 +266,7 @@ class Simple_POS_Products {
 		$products_table = Simple_POS_DB::table( 'products' );
 		$variants_table = Simple_POS_DB::table( 'product_variants' );
 
-		$used_in_sales = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$items_table} WHERE product_id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$used_in_sales = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$items_table} WHERE product_id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 		if ( $used_in_sales > 0 ) {
 			$wpdb->update( $products_table, array( 'status' => 'inactive' ), array( 'id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
@@ -281,7 +281,7 @@ class Simple_POS_Products {
 		$deleted = $wpdb->delete( $products_table, array( 'id' => $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
 		if ( false === $deleted ) {
-			return new WP_Error( 'pos_db_error', __( 'Could not delete product.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_db_error', __( 'Could not delete product.', 'simple-pos' ) );
 		}
 
 		return true;
@@ -295,8 +295,8 @@ class Simple_POS_Products {
 		global $wpdb;
 		$pt       = Simple_POS_DB::table( 'products' );
 		$vt       = Simple_POS_DB::table( 'product_variants' );
-		$products = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$pt} WHERE track_stock=1 AND status='active' AND stock_qty <= low_stock_threshold ORDER BY stock_qty ASC LIMIT %d", $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$variants = $wpdb->get_results( $wpdb->prepare( "SELECT v.*, p.name as parent_name, p.category_id as parent_category_id, p.stock_qty as parent_stock_qty, p.low_stock_threshold as parent_low_stock_threshold, p.track_stock as parent_track_stock FROM {$vt} v INNER JOIN {$pt} p ON p.id=v.parent_product_id WHERE v.status='active' AND ((v.track_stock=1 AND v.stock_qty <= v.low_stock_threshold) OR (v.track_stock=0 AND p.track_stock=1 AND p.stock_qty <= p.low_stock_threshold)) ORDER BY v.stock_qty ASC LIMIT %d", $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$products = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$pt} WHERE track_stock=1 AND status='active' AND stock_qty <= low_stock_threshold ORDER BY stock_qty ASC LIMIT %d", $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$variants = $wpdb->get_results( $wpdb->prepare( "SELECT v.*, p.name as parent_name, p.category_id as parent_category_id, p.stock_qty as parent_stock_qty, p.low_stock_threshold as parent_low_stock_threshold, p.track_stock as parent_track_stock FROM {$vt} v INNER JOIN {$pt} p ON p.id=v.parent_product_id WHERE v.status='active' AND ((v.track_stock=1 AND v.stock_qty <= v.low_stock_threshold) OR (v.track_stock=0 AND p.track_stock=1 AND p.stock_qty <= p.low_stock_threshold)) ORDER BY v.stock_qty ASC LIMIT %d", $limit ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		// Merge and label variants.
 		foreach ( $variants as $v ) {
 			$v->name        = $v->parent_name . ' — ' . Simple_POS_Variants::variant_label( $v );
@@ -324,7 +324,7 @@ class Simple_POS_Products {
 		
 		// Validate inputs.
 		if ( ! is_numeric( $delta ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Stock adjustment delta must be numeric.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Stock adjustment delta must be numeric.', 'simple-pos' ) );
 		}
 		
 		$delta = (int) $delta;
@@ -334,7 +334,7 @@ class Simple_POS_Products {
 		
 		$product_id = (int) $product_id;
 		if ( $product_id <= 0 ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Invalid product ID.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Invalid product ID.', 'simple-pos' ) );
 		}
 		
 		if ( $variant_id && class_exists( 'Simple_POS_Variants' ) ) {
@@ -343,7 +343,7 @@ class Simple_POS_Products {
 		$table   = Simple_POS_DB::table( 'products' );
 		$product = self::get_product( $product_id );
 		if ( ! $product ) {
-			return new WP_Error( 'pos_not_found', __( 'Product not found.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_not_found', __( 'Product not found.', 'simple-pos' ) );
 		}
 		if ( ! $product->track_stock ) {
 			return true;
@@ -352,7 +352,7 @@ class Simple_POS_Products {
 		$new_qty  = (int) $product->stock_qty + (int) $delta;
 		if ( $new_qty < 0 && empty( $settings['allow_negative_stock'] ) ) {
 			/* translators: %s: product name. */
-			return new WP_Error( 'pos_insufficient_stock', sprintf( __( 'Not enough stock for "%s".', 'wp-pos-plugin' ), $product->name ) );
+			return new WP_Error( 'pos_insufficient_stock', sprintf( __( 'Not enough stock for "%s".', 'simple-pos' ), $product->name ) );
 		}
 		$wpdb->update(
 			$table,
@@ -409,12 +409,12 @@ class Simple_POS_Products {
 	private static function sanitize_product_input( $data, $existing = null ) {
 		$name = isset( $data['name'] ) ? sanitize_text_field( $data['name'] ) : ( $existing->name ?? '' );
 		if ( empty( $name ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Product name is required.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Product name is required.', 'simple-pos' ) );
 		}
 
 		$price = isset( $data['price'] ) ? (float) $data['price'] : ( $existing->price ?? 0 );
 		if ( $price < 0 ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Price cannot be negative.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Price cannot be negative.', 'simple-pos' ) );
 		}
 
 		$tax_class_id = isset( $data['tax_class_id'] ) ? (int) $data['tax_class_id'] : ( $existing->tax_class_id ?? 0 );
@@ -429,7 +429,7 @@ class Simple_POS_Products {
 			}
 		}
 		if ( ! empty( $data['barcode'] ) && self::barcode_exists( sanitize_text_field( $data['barcode'] ), $existing->id ?? 0 ) ) {
-			return new WP_Error( 'pos_duplicate_barcode', __( 'Barcode already exists.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_duplicate_barcode', __( 'Barcode already exists.', 'simple-pos' ) );
 		}
 		$clean = array(
 			'name'                => $name,
@@ -484,7 +484,7 @@ class Simple_POS_Products {
 	public static function get_categories() {
 		global $wpdb;
 		$table = Simple_POS_DB::table( 'categories' );
-		return $wpdb->get_results( "SELECT * FROM {$table} ORDER BY name ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return $wpdb->get_results( "SELECT * FROM {$table} ORDER BY name ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**
@@ -498,7 +498,7 @@ class Simple_POS_Products {
 		global $wpdb;
 		$name = sanitize_text_field( $name );
 		if ( empty( $name ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Category name is required.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Category name is required.', 'simple-pos' ) );
 		}
 
 		$table = Simple_POS_DB::table( 'categories' );
@@ -515,7 +515,7 @@ class Simple_POS_Products {
 		);
 
 		if ( false === $inserted ) {
-			return new WP_Error( 'pos_db_error', __( 'Could not create category (name may already exist).', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_db_error', __( 'Could not create category (name may already exist).', 'simple-pos' ) );
 		}
 
 		return (int) $wpdb->insert_id;

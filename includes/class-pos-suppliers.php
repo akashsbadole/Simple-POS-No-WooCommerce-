@@ -18,7 +18,7 @@ class Simple_POS_Suppliers {
 		global $wpdb;
 		$name = isset( $data['name'] ) ? sanitize_text_field( $data['name'] ) : '';
 		if ( empty( $name ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Supplier name required.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Supplier name required.', 'simple-pos' ) );
 		}
 		$table = Simple_POS_DB::table( 'suppliers' );
 		$wpdb->insert(
@@ -39,7 +39,7 @@ class Simple_POS_Suppliers {
 		$table    = Simple_POS_DB::table( 'suppliers' );
 		$existing = self::get_supplier( $id );
 		if ( ! $existing ) {
-			return new WP_Error( 'pos_not_found', __( 'Supplier not found.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_not_found', __( 'Supplier not found.', 'simple-pos' ) );
 		}
 		$upd = array(
 			'name'         => isset( $data['name'] ) ? sanitize_text_field( $data['name'] ) : $existing->name,
@@ -49,7 +49,7 @@ class Simple_POS_Suppliers {
 			'address'      => isset( $data['address'] ) ? sanitize_textarea_field( $data['address'] ) : $existing->address,
 		);
 		if ( empty( $upd['name'] ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Supplier name required.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Supplier name required.', 'simple-pos' ) );
 		}
 		$wpdb->update( $table, $upd, array( 'id' => $id ) );
 		return true;
@@ -74,7 +74,7 @@ class Simple_POS_Purchase_Orders {
 		// UNIQUE(po_number) insert below cannot fail on a duplicate.
 		for ( $attempt = 0; $attempt < 20; $attempt++ ) {
 			$candidate = $prefix . str_pad( $next, 6, '0', STR_PAD_LEFT );
-			$exists    = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$table} WHERE po_number = %s", $candidate ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$exists    = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$table} WHERE po_number = %s", $candidate ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			if ( 0 === $exists ) {
 				return $candidate;
 			}
@@ -126,7 +126,7 @@ class Simple_POS_Purchase_Orders {
 		$note        = isset( $data['note'] ) ? sanitize_textarea_field( $data['note'] ) : '';
 		$items       = isset( $data['items'] ) && is_array( $data['items'] ) ? $data['items'] : array();
 		if ( empty( $items ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Add at least one item.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Add at least one item.', 'simple-pos' ) );
 		}
 		$po_table   = Simple_POS_DB::table( 'purchase_orders' );
 		$item_table = Simple_POS_DB::table( 'po_items' );
@@ -151,7 +151,7 @@ class Simple_POS_Purchase_Orders {
 				);
 				$po_id = (int) $wpdb->insert_id;
 				if ( ! $po_id ) {
-					return new WP_Error( 'pos_db_error', __( 'Could not create PO.', 'wp-pos-plugin' ) );
+					return new WP_Error( 'pos_db_error', __( 'Could not create PO.', 'simple-pos' ) );
 				}
 				foreach ( $items as $it ) {
 					$product_id = ! empty( $it['product_id'] ) ? (int) $it['product_id'] : null;
@@ -186,12 +186,12 @@ class Simple_POS_Purchase_Orders {
 		global $wpdb;
 		$order = self::get_order( $id );
 		if ( ! $order ) {
-			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'simple-pos' ) );
 		}
 		
 		// Only allow editing draft POs.
 		if ( $order->status !== 'draft' ) {
-			return new WP_Error( 'pos_invalid_state', __( 'Can only edit draft POs.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_state', __( 'Can only edit draft POs.', 'simple-pos' ) );
 		}
 		
 		$supplier_id = isset( $data['supplier_id'] ) ? (int) $data['supplier_id'] : $order->supplier_id;
@@ -262,7 +262,7 @@ class Simple_POS_Purchase_Orders {
 		global $wpdb;
 		$allowed = array( 'draft', 'ordered', 'partial', 'received', 'cancelled' );
 		if ( ! in_array( $status, $allowed, true ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Invalid status.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Invalid status.', 'simple-pos' ) );
 		}
 		$table = Simple_POS_DB::table( 'purchase_orders' );
 		$upd   = array( 'status' => $status );
@@ -279,10 +279,10 @@ class Simple_POS_Purchase_Orders {
 		global $wpdb;
 		$order = self::get_order( $id );
 		if ( ! $order ) {
-			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'simple-pos' ) );
 		}
 		if ( in_array( $order->status, array( 'cancelled', 'received' ), true ) ) {
-			return new WP_Error( 'pos_invalid_state', __( 'PO already closed.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_state', __( 'PO already closed.', 'simple-pos' ) );
 		}
 		$items = self::get_items( $id );
 		$map   = array();

@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SOM_Offline {
+class Simple_POS_Som_Offline {
 
 	const OPTION_KEY = 'simple_pos_offline';
 

@@ -1,4 +1,5 @@
-<?php
+<?php
+// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View template included inside a render method; locals are function-scoped, not globals.
 /**
  * Kitchen display screen: polls the REST API and shows pending orders.
  */
@@ -8,23 +9,23 @@ $msg = isset( $_GET['skd_msg'] ) ? sanitize_key( $_GET['skd_msg'] ) : ''; // php
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'Kitchen Display', 'wp-pos-plugin' ); ?></h1>
+		<h1 class="wp-heading-inline"><?php esc_html_e( 'Kitchen Display', 'simple-pos' ); ?></h1>
 	</div>
 	<?php if ( 'bumped' === $msg ) : ?>
-		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Order bumped.', 'wp-pos-plugin' ); ?></p></div>
+		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Order bumped.', 'simple-pos' ); ?></p></div>
 	<?php endif; ?>
 
-	<p class="simple-pos-muted" style="margin:0 0 16px"><?php esc_html_e( 'New sale items appear here automatically. Tap a card to bump the whole order to Ready.', 'wp-pos-plugin' ); ?></p>
+	<p class="simple-pos-muted" style="margin:0 0 16px"><?php esc_html_e( 'New sale items appear here automatically. Tap a card to bump the whole order to Ready.', 'simple-pos' ); ?></p>
 
 	<div id="simple-pos-kitchen" class="simple-pos-kitchen"
 		data-rest="<?php echo esc_url_raw( rest_url( 'simple-pos/v1' ) ); ?>"
 		data-nonce="<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ); ?>">
 		<div class="simple-pos-kitchen-grid">
 			<div id="simple-pos-kitchen-pending" class="simple-pos-kitchen-panel">
-				<h2><?php esc_html_e( 'To prepare', 'wp-pos-plugin' ); ?></h2>
+				<h2><?php esc_html_e( 'To prepare', 'simple-pos' ); ?></h2>
 			</div>
 			<div id="simple-pos-kitchen-ready" class="simple-pos-kitchen-panel">
-				<h2><?php esc_html_e( 'Ready', 'wp-pos-plugin' ); ?></h2>
+				<h2><?php esc_html_e( 'Ready', 'simple-pos' ); ?></h2>
 			</div>
 		</div>
 	</div>
@@ -47,7 +48,7 @@ $msg = isset( $_GET['skd_msg'] ) ? sanitize_key( $_GET['skd_msg'] ) : ''; // php
 			});
 			html += '</div>';
 			if(!ready){
-				html += '<button type="button" class="simple-pos-kitchen-bump">'+'<?php echo esc_js( __( 'Bump to Ready', 'wp-pos-plugin' ) ); ?>'+'</button>';
+				html += '<button type="button" class="simple-pos-kitchen-bump">'+'<?php echo esc_js( __( 'Bump to Ready', 'simple-pos' ) ); ?>'+'</button>';
 			}
 			box.innerHTML = html;
 			var bump = box.querySelector('.simple-pos-kitchen-bump');
@@ -67,7 +68,7 @@ $msg = isset( $_GET['skd_msg'] ) ? sanitize_key( $_GET['skd_msg'] ) : ''; // php
 			var msg = el.querySelector('.simple-pos-kitchen-empty');
 			var wrap = document.createElement('div');
 			if(!orders.length){
-				wrap.innerHTML = '<p class="simple-pos-kitchen-empty">'+'<?php echo esc_js( __( 'Nothing here.', 'wp-pos-plugin' ) ); ?>'+'</p>';
+				wrap.innerHTML = '<p class="simple-pos-kitchen-empty">'+'<?php echo esc_js( __( 'Nothing here.', 'simple-pos' ) ); ?>'+'</p>';
 			} else {
 				orders.forEach(function(o){ wrap.appendChild(card(o, ready)); });
 			}
@@ -94,7 +95,7 @@ $msg = isset( $_GET['skd_msg'] ) ? sanitize_key( $_GET['skd_msg'] ) : ''; // php
 			var el = document.getElementById(id);
 			var box = document.createElement('div');
 			box.className = 'simple-pos-kitchen-card is-loading';
-			box.innerHTML = '<p class="simple-pos-kitchen-empty">'+'<?php echo esc_js( __( 'Loading…', 'wp-pos-plugin' ) ); ?>'+'</p>';
+			box.innerHTML = '<p class="simple-pos-kitchen-empty">'+'<?php echo esc_js( __( 'Loading…', 'simple-pos' ) ); ?>'+'</p>';
 			el.appendChild(box);
 		});
 

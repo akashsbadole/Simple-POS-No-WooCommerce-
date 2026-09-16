@@ -1,4 +1,5 @@
-<?php
+<?php
+// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View template included inside a render method; locals are function-scoped, not globals.
 /**
  * Customers admin screen.
  */
@@ -19,7 +20,7 @@ $history = $editing_customer ? Simple_POS_Customers::get_purchase_history( $edit
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'Customers', 'wp-pos-plugin' ); ?></h1>
+		<h1 class="wp-heading-inline"><?php esc_html_e( 'Customers', 'simple-pos' ); ?></h1>
 	</div>
 
 	<div class="simple-pos-columns">
@@ -29,11 +30,11 @@ $history = $editing_customer ? Simple_POS_Customers::get_purchase_history( $edit
 				<form method="get" class="simple-pos-filters">
 					<input type="hidden" name="page" value="simple-pos-customers" />
 					<div class="simple-pos-filter-field simple-pos-filter-grow">
-						<label for="cust-s"><?php esc_html_e( 'Search', 'wp-pos-plugin' ); ?></label>
-						<input id="cust-s" type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="<?php esc_attr_e( 'Name, phone, email…', 'wp-pos-plugin' ); ?>" />
+						<label for="cust-s"><?php esc_html_e( 'Search', 'simple-pos' ); ?></label>
+						<input id="cust-s" type="search" name="s" value="<?php echo esc_attr( $search ); ?>" placeholder="<?php esc_attr_e( 'Name, phone, email…', 'simple-pos' ); ?>" />
 					</div>
 					<div class="simple-pos-filter-actions">
-						<button type="submit" class="button button-primary"><?php esc_html_e( 'Search', 'wp-pos-plugin' ); ?></button>
+						<button type="submit" class="button button-primary"><?php esc_html_e( 'Search', 'simple-pos' ); ?></button>
 					</div>
 				</form>
 			</div>
@@ -42,15 +43,15 @@ $history = $editing_customer ? Simple_POS_Customers::get_purchase_history( $edit
 				<table class="wp-list-table widefat striped simple-pos-table">
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'Name', 'wp-pos-plugin' ); ?></th>
-							<th><?php esc_html_e( 'Phone', 'wp-pos-plugin' ); ?></th>
-							<th><?php esc_html_e( 'Email', 'wp-pos-plugin' ); ?></th>
-							<th><?php esc_html_e( 'Actions', 'wp-pos-plugin' ); ?></th>
+							<th><?php esc_html_e( 'Name', 'simple-pos' ); ?></th>
+							<th><?php esc_html_e( 'Phone', 'simple-pos' ); ?></th>
+							<th><?php esc_html_e( 'Email', 'simple-pos' ); ?></th>
+							<th><?php esc_html_e( 'Actions', 'simple-pos' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php if ( empty( $result['items'] ) ) : ?>
-							<tr><td colspan="4" class="simple-pos-empty"><?php esc_html_e( 'No customers found.', 'wp-pos-plugin' ); ?></td></tr>
+							<tr><td colspan="4" class="simple-pos-empty"><?php esc_html_e( 'No customers found.', 'simple-pos' ); ?></td></tr>
 						<?php else : ?>
 							<?php foreach ( $result['items'] as $customer ) : ?>
 								<tr>
@@ -58,8 +59,8 @@ $history = $editing_customer ? Simple_POS_Customers::get_purchase_history( $edit
 									<td><?php echo esc_html( $customer->phone ); ?></td>
 									<td><?php echo esc_html( $customer->email ); ?></td>
 									<td class="simple-pos-row-actions">
-										<a href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-customers&edit=' . $customer->id ) ); ?>"><?php esc_html_e( 'Edit', 'wp-pos-plugin' ); ?></a>
-										<a class="delete" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=simple_pos_delete_customer&id=' . $customer->id ), 'simple_pos_delete_customer' ) ); ?>" onclick="return confirm('<?php echo esc_js( __( 'Delete this customer?', 'wp-pos-plugin' ) ); ?>');"><?php esc_html_e( 'Delete', 'wp-pos-plugin' ); ?></a>
+										<a href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-customers&edit=' . $customer->id ) ); ?>"><?php esc_html_e( 'Edit', 'simple-pos' ); ?></a>
+										<a class="delete" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=simple_pos_delete_customer&id=' . $customer->id ), 'simple_pos_delete_customer' ) ); ?>" onclick="return confirm('<?php echo esc_js( __( 'Delete this customer?', 'simple-pos' ) ); ?>');"><?php esc_html_e( 'Delete', 'simple-pos' ); ?></a>
 									</td>
 								</tr>
 							<?php endforeach; ?>
@@ -83,14 +84,14 @@ $history = $editing_customer ? Simple_POS_Customers::get_purchase_history( $edit
 
 			<?php if ( $editing_customer && $history ) : ?>
 				<div class="simple-pos-card simple-pos-table-card">
-					<h2 class="simple-pos-section-title" style="margin:0;padding:14px 14px 0"><?php esc_html_e( 'Purchase History', 'wp-pos-plugin' ); ?></h2>
+					<h2 class="simple-pos-section-title" style="margin:0;padding:14px 14px 0"><?php esc_html_e( 'Purchase History', 'simple-pos' ); ?></h2>
 					<table class="wp-list-table widefat striped simple-pos-table" style="margin-top:10px">
 						<thead>
 							<tr>
-								<th><?php esc_html_e( 'Sale #', 'wp-pos-plugin' ); ?></th>
-								<th><?php esc_html_e( 'Date', 'wp-pos-plugin' ); ?></th>
-								<th class="num"><?php esc_html_e( 'Total', 'wp-pos-plugin' ); ?></th>
-								<th><?php esc_html_e( 'Status', 'wp-pos-plugin' ); ?></th>
+								<th><?php esc_html_e( 'Sale #', 'simple-pos' ); ?></th>
+								<th><?php esc_html_e( 'Date', 'simple-pos' ); ?></th>
+								<th class="num"><?php esc_html_e( 'Total', 'simple-pos' ); ?></th>
+								<th><?php esc_html_e( 'Status', 'simple-pos' ); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -111,7 +112,7 @@ $history = $editing_customer ? Simple_POS_Customers::get_purchase_history( $edit
 
 		<div class="simple-pos-col-side">
 			<div class="postbox simple-pos-form-card">
-				<h2 class="hndle"><span><?php echo $editing_customer ? esc_html__( 'Edit Customer', 'wp-pos-plugin' ) : esc_html__( 'Add Customer', 'wp-pos-plugin' ); ?></span></h2>
+				<h2 class="hndle"><span><?php echo $editing_customer ? esc_html__( 'Edit Customer', 'simple-pos' ) : esc_html__( 'Add Customer', 'simple-pos' ); ?></span></h2>
 				<div class="inside">
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<?php wp_nonce_field( 'simple_pos_save_customer' ); ?>
@@ -119,29 +120,29 @@ $history = $editing_customer ? Simple_POS_Customers::get_purchase_history( $edit
 						<input type="hidden" name="customer_id" value="<?php echo esc_attr( $editing_customer ? $editing_customer->id : 0 ); ?>" />
 
 						<div class="simple-pos-form-row">
-							<label><?php esc_html_e( 'Name', 'wp-pos-plugin' ); ?> <span class="required" aria-hidden="true">*</span></label>
+							<label><?php esc_html_e( 'Name', 'simple-pos' ); ?> <span class="required" aria-hidden="true">*</span></label>
 							<input type="text" name="name" required value="<?php echo esc_attr( $editing_customer->name ?? '' ); ?>" class="widefat" />
 						</div>
 						<div class="simple-pos-form-row" style="margin-top:8px">
-							<label><?php esc_html_e( 'Phone', 'wp-pos-plugin' ); ?></label>
+							<label><?php esc_html_e( 'Phone', 'simple-pos' ); ?></label>
 							<input type="text" name="phone" value="<?php echo esc_attr( $editing_customer->phone ?? '' ); ?>" class="widefat" />
 						</div>
 						<div class="simple-pos-form-row" style="margin-top:8px">
-							<label><?php esc_html_e( 'Email', 'wp-pos-plugin' ); ?></label>
+							<label><?php esc_html_e( 'Email', 'simple-pos' ); ?></label>
 							<input type="email" name="email" value="<?php echo esc_attr( $editing_customer->email ?? '' ); ?>" class="widefat" />
 						</div>
 						<div class="simple-pos-form-row" style="margin-top:8px">
-							<label><?php esc_html_e( 'Address', 'wp-pos-plugin' ); ?></label>
+							<label><?php esc_html_e( 'Address', 'simple-pos' ); ?></label>
 							<textarea name="address" class="widefat" rows="3"><?php echo esc_textarea( $editing_customer->address ?? '' ); ?></textarea>
 						</div>
 						<div class="simple-pos-form-row" style="margin-top:8px">
-							<label><?php esc_html_e( 'Notes', 'wp-pos-plugin' ); ?></label>
+							<label><?php esc_html_e( 'Notes', 'simple-pos' ); ?></label>
 							<textarea name="notes" class="widefat" rows="3"><?php echo esc_textarea( $editing_customer->notes ?? '' ); ?></textarea>
 						</div>
 						<div class="simple-pos-form-actions" style="margin-top:10px">
-							<button type="submit" class="button button-primary"><?php echo $editing_customer ? esc_html__( 'Update Customer', 'wp-pos-plugin' ) : esc_html__( 'Add Customer', 'wp-pos-plugin' ); ?></button>
+							<button type="submit" class="button button-primary"><?php echo $editing_customer ? esc_html__( 'Update Customer', 'simple-pos' ) : esc_html__( 'Add Customer', 'simple-pos' ); ?></button>
 							<?php if ( $editing_customer ) : ?>
-								<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-customers' ) ); ?>"><?php esc_html_e( 'Cancel', 'wp-pos-plugin' ); ?></a>
+								<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-customers' ) ); ?>"><?php esc_html_e( 'Cancel', 'simple-pos' ); ?></a>
 							<?php endif; ?>
 						</div>
 					</form>

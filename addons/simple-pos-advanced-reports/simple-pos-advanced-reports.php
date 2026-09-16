@@ -4,25 +4,25 @@
  * Description: X/Z shift summaries, hourly heatmap, payment mix, product mix and tax summaries for Simple POS. Requires the free Simple POS plugin.
  * Version:     1.0.0
  * Author:      Simple POS
- * Text Domain: wp-pos-plugin
+ * Text Domain: simple-pos
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SPAR_VERSION', '1.0.0' );
+define( 'SIMPLE_POS_SPAR_VERSION', '1.0.0' );
 
-add_action( 'simple_pos_init', 'spar_boot' );
+add_action( 'simple_pos_init', 'simple_pos_spar_boot' );
 
 /**
  * Boot once the Simple POS core is available.
  */
-function spar_boot() {
+function simple_pos_spar_boot() {
 	if ( ! class_exists( 'Simple_POS_Addons' ) ) {
 		add_action( 'admin_notices', function () {
 			echo '<div class="notice notice-error"><p>';
-			esc_html_e( 'Simple POS — Advanced Reports requires the free Simple POS plugin to be installed and active.', 'wp-pos-plugin' );
+			esc_html_e( 'Simple POS — Advanced Reports requires the free Simple POS plugin to be installed and active.', 'simple-pos' );
 			echo '</p></div>';
 		} );
 		return;
@@ -33,9 +33,9 @@ function spar_boot() {
 	add_filter( 'simple_pos_registered_addons', function ( $addons ) {
 		$addons[] = array(
 			'slug'        => 'advanced-reports',
-			'name'        => __( 'Advanced Reports', 'wp-pos-plugin' ),
-			'version'     => SPAR_VERSION,
-			'description' => __( 'X/Z summaries, hourly heatmap, payment mix, product mix, tax summary and CSV exports.', 'wp-pos-plugin' ),
+			'name'        => __( 'Advanced Reports', 'simple-pos' ),
+			'version'     => SIMPLE_POS_SPAR_VERSION,
+			'description' => __( 'X/Z summaries, hourly heatmap, payment mix, product mix, tax summary and CSV exports.', 'simple-pos' ),
 		);
 		return $addons;
 	} );
@@ -50,23 +50,23 @@ function spar_boot() {
 	add_action( 'admin_menu', function () {
 		add_submenu_page(
 			'simple-pos-terminal',
-			__( 'Reports Pro', 'wp-pos-plugin' ),
-			__( 'Reports Pro', 'wp-pos-plugin' ),
+			__( 'Reports Pro', 'simple-pos' ),
+			__( 'Reports Pro', 'simple-pos' ),
 			'view_pos_reports',
 			'simple-pos-adv-reports',
-			'spar_render_page'
+			'simple_pos_spar_render_page'
 		);
 	} );
 
-	add_action( 'admin_post_simple_pos_adv_reports_export', 'spar_handle_export' );
+	add_action( 'admin_post_simple_pos_adv_reports_export', 'simple_pos_spar_handle_export' );
 }
 
 /**
  * Render the Reports Pro screen.
  */
-function spar_render_page() {
+function simple_pos_spar_render_page() {
 	if ( ! current_user_can( 'view_pos_reports' ) ) {
-		wp_die( esc_html__( 'You are not allowed to view reports.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to view reports.', 'simple-pos' ) );
 	}
 	include __DIR__ . '/admin/views/reports-pro.php';
 }
@@ -74,9 +74,9 @@ function spar_render_page() {
 /**
  * CSV export handler: ?type=xz|hourly|payments|products|taxes plus date range.
  */
-function spar_handle_export() {
+function simple_pos_spar_handle_export() {
 	if ( ! current_user_can( 'view_pos_reports' ) ) {
-		wp_die( esc_html__( 'You are not allowed to export reports.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to export reports.', 'simple-pos' ) );
 	}
 	check_admin_referer( 'simple_pos_adv_reports_export' );
 
@@ -84,9 +84,9 @@ function spar_handle_export() {
 	$date_from = isset( $_GET['date_from'] ) ? sanitize_text_field( wp_unslash( $_GET['date_from'] ) ) : gmdate( 'Y-m-01' );
 	$date_to   = isset( $_GET['date_to'] ) ? sanitize_text_field( wp_unslash( $_GET['date_to'] ) ) : gmdate( 'Y-m-d' );
 
-	$data = SPAR_Reports::export( $type, $date_from, $date_to );
+	$data = Simple_POS_Spar_Reports::export( $type, $date_from, $date_to );
 	if ( is_wp_error( $data ) || null === $data ) {
-		wp_die( esc_html__( 'Unknown report type.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'Unknown report type.', 'simple-pos' ) );
 	}
 
 	$filename = 'simple-pos-' . $type . '-' . $date_from . '-to-' . $date_to . '.csv';

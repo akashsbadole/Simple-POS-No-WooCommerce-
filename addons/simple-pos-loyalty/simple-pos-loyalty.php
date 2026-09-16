@@ -4,24 +4,24 @@
  * Description: Customer loyalty points on purchases with redemption at checkout. Requires the free Simple POS plugin.
  * Version:     1.0.0
  * Author:      Simple POS
- * Text Domain: wp-pos-plugin
+ * Text Domain: simple-pos
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SLOY_VERSION', '1.0.0' );
+define( 'SIMPLE_POS_SLOY_VERSION', '1.0.0' );
 
-add_action( 'simple_pos_init', 'sloy_boot' );
+add_action( 'simple_pos_init', 'simple_pos_sloy_boot' );
 
-function sloy_boot() {
+function simple_pos_sloy_boot() {
 	if ( ! class_exists( 'Simple_POS_Addons' ) ) {
 		add_action(
 			'admin_notices',
 			function () {
 				echo '<div class="notice notice-error"><p>';
-				esc_html_e( 'Simple POS — Loyalty requires the free Simple POS plugin.', 'wp-pos-plugin' );
+				esc_html_e( 'Simple POS — Loyalty requires the free Simple POS plugin.', 'simple-pos' );
 				echo '</p></div>';
 			}
 		);
@@ -35,9 +35,9 @@ function sloy_boot() {
 		function ( $addons ) {
 			$addons[] = array(
 				'slug'        => 'loyalty',
-				'name'        => __( 'Loyalty Points', 'wp-pos-plugin' ),
-				'version'     => SLOY_VERSION,
-				'description' => __( 'Earn and redeem loyalty points on purchases.', 'wp-pos-plugin' ),
+				'name'        => __( 'Loyalty Points', 'simple-pos' ),
+				'version'     => SIMPLE_POS_SLOY_VERSION,
+				'description' => __( 'Earn and redeem loyalty points on purchases.', 'simple-pos' ),
 			);
 			return $addons;
 		}
@@ -47,13 +47,13 @@ function sloy_boot() {
 		return;
 	}
 
-	SLOY_Loyalty::ensure_schema();
+	Simple_POS_Sloy_Loyalty::ensure_schema();
 
 	// Award points on sale.
 	add_action(
 		'simple_pos_sale_created',
 		function ( $sale_id, $calc, $line_items, $cart_data ) {
-			SLOY_Loyalty::award_points_for_sale( $sale_id, $calc, $line_items, $cart_data );
+			Simple_POS_Sloy_Loyalty::award_points_for_sale( $sale_id, $calc, $line_items, $cart_data );
 		},
 		10,
 		4
@@ -63,7 +63,7 @@ function sloy_boot() {
 	add_action(
 		'simple_pos_sale_voided',
 		function ( $sale_id ) {
-			SLOY_Loyalty::revoke_points_for_sale( $sale_id );
+			Simple_POS_Sloy_Loyalty::revoke_points_for_sale( $sale_id );
 		}
 	);
 
@@ -71,7 +71,7 @@ function sloy_boot() {
 	add_filter(
 		'simple_pos_cart_data',
 		function ( $cart_data ) {
-			return SLOY_Loyalty::apply_cart_discount( $cart_data );
+			return Simple_POS_Sloy_Loyalty::apply_cart_discount( $cart_data );
 		}
 	);
 
@@ -84,7 +84,7 @@ function sloy_boot() {
 				'/loyalty/balance',
 				array(
 					'methods'             => 'GET',
-					'callback'            => array( 'SLOY_Loyalty', 'rest_balance' ),
+					'callback'            => array( 'Simple_POS_Sloy_Loyalty', 'rest_balance' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -99,28 +99,28 @@ function sloy_boot() {
 		function () {
 			add_submenu_page(
 				'simple-pos-terminal',
-				__( 'Loyalty', 'wp-pos-plugin' ),
-				__( 'Loyalty', 'wp-pos-plugin' ),
+				__( 'Loyalty', 'simple-pos' ),
+				__( 'Loyalty', 'simple-pos' ),
 				'manage_pos_products',
 				'simple-pos-loyalty',
-				'sloy_render_page'
+				'simple_pos_sloy_render_page'
 			);
 		}
 	);
 
-	add_action( 'admin_post_simple_pos_loyalty_save', 'sloy_handle_save' );
+	add_action( 'admin_post_simple_pos_loyalty_save', 'simple_pos_sloy_handle_save' );
 }
 
-function sloy_render_page() {
+function simple_pos_sloy_render_page() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to manage loyalty settings.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to manage loyalty settings.', 'simple-pos' ) );
 	}
 	include __DIR__ . '/admin/views/loyalty-settings.php';
 }
 
-function sloy_handle_save() {
+function simple_pos_sloy_handle_save() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to manage loyalty settings.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to manage loyalty settings.', 'simple-pos' ) );
 	}
 	check_admin_referer( 'simple_pos_loyalty_save' );
 

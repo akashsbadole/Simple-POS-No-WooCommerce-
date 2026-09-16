@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SFX_Rates {
+class Simple_POS_Sfx_Rates {
 
 	const TABLE_SUFFIX = 'fx_rates';
 

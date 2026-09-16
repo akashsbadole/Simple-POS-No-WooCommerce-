@@ -188,7 +188,7 @@ class Simple_POS_Reports {
 
 		foreach ( $rows as $row ) {
 			$user              = get_userdata( $row->cashier_id );
-			$row->cashier_name = $user ? $user->display_name : __( 'Unknown', 'wp-pos-plugin' );
+			$row->cashier_name = $user ? $user->display_name : __( 'Unknown', 'simple-pos' );
 		}
 
 		return $rows;
@@ -201,6 +201,6 @@ class Simple_POS_Reports {
 	 */
 	public static function flush_cache() {
 		global $wpdb;
-		$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_simple_pos_%' OR option_name LIKE '_transient_timeout_simple_pos_%'" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_simple_pos_%' OR option_name LIKE '_transient_timeout_simple_pos_%'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 }

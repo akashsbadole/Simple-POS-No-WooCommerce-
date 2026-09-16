@@ -39,7 +39,7 @@ class Simple_POS_Roles {
 		// Cashier: can operate the terminal and view products, nothing else.
 		add_role(
 			'pos_cashier',
-			__( 'POS Cashier', 'wp-pos-plugin' ),
+			__( 'POS Cashier', 'simple-pos' ),
 			array(
 				'read'              => true,
 				'operate_pos'       => true,
@@ -51,7 +51,7 @@ class Simple_POS_Roles {
 		// Manager: everything except core WP administration.
 		add_role(
 			'pos_manager',
-			__( 'POS Manager', 'wp-pos-plugin' ),
+			__( 'POS Manager', 'simple-pos' ),
 			array(
 				'read'                 => true,
 				'operate_pos'          => true,

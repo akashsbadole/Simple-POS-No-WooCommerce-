@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SKD_Kitchen {
+class Simple_POS_Skd_Kitchen {
 
 	const ITEMS_TABLE = 'kitchen_items';
 

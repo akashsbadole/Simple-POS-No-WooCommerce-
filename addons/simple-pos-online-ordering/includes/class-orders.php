@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SOO_Orders {
+class Simple_POS_Soo_Orders {
 
 	const TABLE_SUFFIX = 'online_orders';
 
@@ -68,7 +68,7 @@ class SOO_Orders {
 		$addr  = sanitize_textarea_field( $request->get_param( 'delivery_address' ) );
 
 		if ( '' === $name ) {
-			return new WP_Error( 'soo_missing_name', __( 'Name is required.', 'wp-pos-plugin' ), array( 'status' => 400 ) );
+			return new WP_Error( 'soo_missing_name', __( 'Name is required.', 'simple-pos' ), array( 'status' => 400 ) );
 		}
 
 		$items      = $request->get_param( 'items' );
@@ -91,7 +91,7 @@ class SOO_Orders {
 		}
 
 		if ( empty( $clean ) ) {
-			return new WP_Error( 'soo_empty_order', __( 'Your order is empty.', 'wp-pos-plugin' ), array( 'status' => 400 ) );
+			return new WP_Error( 'soo_empty_order', __( 'Your order is empty.', 'simple-pos' ), array( 'status' => 400 ) );
 		}
 
 		global $wpdb;
@@ -157,7 +157,7 @@ class SOO_Orders {
 		$id     = (int) $request['id'];
 		$status = sanitize_key( $request->get_param( 'status' ) );
 		if ( ! in_array( $status, array( self::STATUS_PENDING, self::STATUS_FULFILLED, self::STATUS_CANCELLED ), true ) ) {
-			return new WP_Error( 'soo_bad_status', __( 'Invalid status.', 'wp-pos-plugin' ), array( 'status' => 400 ) );
+			return new WP_Error( 'soo_bad_status', __( 'Invalid status.', 'simple-pos' ), array( 'status' => 400 ) );
 		}
 		self::set_status( $id, $status );
 		return new WP_REST_Response( array( 'id' => $id, 'status' => $status ), 200 );

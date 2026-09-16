@@ -4,24 +4,24 @@
  * Description: Sell and redeem gift card codes. Requires the free Simple POS plugin.
  * Version:     1.0.0
  * Author:      Simple POS
- * Text Domain: wp-pos-plugin
+ * Text Domain: simple-pos
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SGC_VERSION', '1.0.0' );
+define( 'SIMPLE_POS_SGC_VERSION', '1.0.0' );
 
-add_action( 'simple_pos_init', 'sgc_boot' );
+add_action( 'simple_pos_init', 'simple_pos_sgc_boot' );
 
-function sgc_boot() {
+function simple_pos_sgc_boot() {
 	if ( ! class_exists( 'Simple_POS_Addons' ) ) {
 		add_action(
 			'admin_notices',
 			function () {
 				echo '<div class="notice notice-error"><p>';
-				esc_html_e( 'Simple POS — Gift Cards requires the free Simple POS plugin.', 'wp-pos-plugin' );
+				esc_html_e( 'Simple POS — Gift Cards requires the free Simple POS plugin.', 'simple-pos' );
 				echo '</p></div>';
 			}
 		);
@@ -35,9 +35,9 @@ function sgc_boot() {
 		function ( $addons ) {
 			$addons[] = array(
 				'slug'        => 'gift-cards',
-				'name'        => __( 'Gift Cards', 'wp-pos-plugin' ),
-				'version'     => SGC_VERSION,
-				'description' => __( 'Sell, top up and redeem gift card codes at checkout.', 'wp-pos-plugin' ),
+				'name'        => __( 'Gift Cards', 'simple-pos' ),
+				'version'     => SIMPLE_POS_SGC_VERSION,
+				'description' => __( 'Sell, top up and redeem gift card codes at checkout.', 'simple-pos' ),
 			);
 			return $addons;
 		}
@@ -47,12 +47,12 @@ function sgc_boot() {
 		return;
 	}
 
-	SGC_Gift_Cards::ensure_schema();
+	Simple_POS_Sgc_Gift_Cards::ensure_schema();
 
 	add_filter(
 		'simple_pos_cart_data',
 		function ( $cart_data ) {
-			return SGC_Gift_Cards::apply_gift_card( $cart_data );
+			return Simple_POS_Sgc_Gift_Cards::apply_gift_card( $cart_data );
 		}
 	);
 
@@ -63,7 +63,7 @@ function sgc_boot() {
 			$code = isset( $cart_data['gift_card_code'] ) ? $cart_data['gift_card_code'] : '';
 			$used = isset( $cart_data['gift_card_applied'] ) ? (float) $cart_data['gift_card_applied'] : 0;
 			if ( '' !== trim( (string) $code ) && $used > 0 ) {
-				SGC_Gift_Cards::redeem( $code, $used );
+				Simple_POS_Sgc_Gift_Cards::redeem( $code, $used );
 			}
 		},
 		20,
@@ -73,7 +73,7 @@ function sgc_boot() {
 	add_filter(
 		'simple_pos_rest_product_args',
 		function ( $args ) {
-			return SGC_Gift_Cards::register_gift_card_product_arg( $args );
+			return Simple_POS_Sgc_Gift_Cards::register_gift_card_product_arg( $args );
 		}
 	);
 
@@ -85,7 +85,7 @@ function sgc_boot() {
 				'/giftcards/lookup',
 				array(
 					'methods'             => 'GET',
-					'callback'            => array( 'SGC_Gift_Cards', 'rest_lookup' ),
+					'callback'            => array( 'Simple_POS_Sgc_Gift_Cards', 'rest_lookup' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -99,29 +99,29 @@ function sgc_boot() {
 		function () {
 			add_submenu_page(
 				'simple-pos-terminal',
-				__( 'Gift Cards', 'wp-pos-plugin' ),
-				__( 'Gift Cards', 'wp-pos-plugin' ),
+				__( 'Gift Cards', 'simple-pos' ),
+				__( 'Gift Cards', 'simple-pos' ),
 				'manage_pos_products',
 				'simple-pos-gift-cards',
-				'sgc_render_page'
+				'simple_pos_sgc_render_page'
 			);
 		}
 	);
 
-	add_action( 'admin_post_simple_pos_giftcard_save', 'sgc_handle_save' );
-	add_action( 'admin_post_simple_pos_giftcard_topup', 'sgc_handle_topup' );
+	add_action( 'admin_post_simple_pos_giftcard_save', 'simple_pos_sgc_handle_save' );
+	add_action( 'admin_post_simple_pos_giftcard_topup', 'simple_pos_sgc_handle_topup' );
 }
 
-function sgc_render_page() {
+function simple_pos_sgc_render_page() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to manage gift cards.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to manage gift cards.', 'simple-pos' ) );
 	}
 	include __DIR__ . '/admin/views/gift-cards.php';
 }
 
-function sgc_handle_save() {
+function simple_pos_sgc_handle_save() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to manage gift cards.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to manage gift cards.', 'simple-pos' ) );
 	}
 	check_admin_referer( 'simple_pos_giftcard_save' );
 
@@ -133,15 +133,15 @@ function sgc_handle_save() {
 		exit;
 	}
 
-	SGC_Gift_Cards::create_card( $code, $amount );
+	Simple_POS_Sgc_Gift_Cards::create_card( $code, $amount );
 
 	wp_safe_redirect( add_query_arg( 'sgc_msg', 'created', admin_url( 'admin.php?page=simple-pos-gift-cards' ) ) );
 	exit;
 }
 
-function sgc_handle_topup() {
+function simple_pos_sgc_handle_topup() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to manage gift cards.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to manage gift cards.', 'simple-pos' ) );
 	}
 	check_admin_referer( 'simple_pos_giftcard_topup' );
 
@@ -149,7 +149,7 @@ function sgc_handle_topup() {
 	$amount = isset( $_POST['amount'] ) ? (float) $_POST['amount'] : 0;
 
 	if ( $id > 0 && $amount > 0 ) {
-		SGC_Gift_Cards::top_up( $id, $amount );
+		Simple_POS_Sgc_Gift_Cards::top_up( $id, $amount );
 	}
 
 	wp_safe_redirect( add_query_arg( 'sgc_msg', 'topup', admin_url( 'admin.php?page=simple-pos-gift-cards' ) ) );

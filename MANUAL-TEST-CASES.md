@@ -37,7 +37,7 @@
 | Step | Action | Expected Result |
 |------|--------|-----------------|
 | 1 | Navigate to Plugins > Add New > Upload Plugin | Upload form appears |
-| 2 | Click "Choose File" and select wp-pos-plugin.zip | File selected |
+| 2 | Click "Choose File" and select simple-pos.zip | File selected |
 | 3 | Click "Install Now" | Installation completes successfully |
 | 4 | Click "Activate Plugin" | Plugin activates, no errors |
 | 5 | Check for admin menu "Simple POS" | Menu appears in sidebar |

@@ -319,7 +319,7 @@ class Simple_POS_Activator {
 		global $wpdb;
 		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		// Only seed once.
-		$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$prefix}tax_classes" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$prefix}tax_classes" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( $count > 0 ) {
 			return;
 		}
@@ -332,7 +332,7 @@ class Simple_POS_Activator {
 		);
 		$class_ids = array();
 		foreach ( $classes as $c ) {
-			$wpdb->insert(
+			$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- One-time activation seed insert.
 				$prefix . 'tax_classes',
 				array(
 					'name'        => $c[0],
@@ -371,7 +371,7 @@ class Simple_POS_Activator {
 			array( $class_ids['exempt'], '*', null, 0, 0, 0, 0, 'Exempt', 0 ),
 		);
 		foreach ( $seed_rates as $r ) {
-			$wpdb->insert(
+			$wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- One-time activation seed insert.
 				$prefix . 'tax_rates',
 				array(
 				'class_id'     => $r[0],
@@ -395,36 +395,36 @@ class Simple_POS_Activator {
 		// The legacy column may have been dropped on some installs — the
 		// queries below reference it, so bail early when it is absent
 		// (migrate_ensure_sales_columns() re-adds it further below).
-		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$prefix}products` WHERE Field = 'tax_rate'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$prefix}products` WHERE Field = 'tax_rate'", 0 ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( empty( $col ) ) {
 			return;
 		}
 		// If products still use legacy tax_rate and tax_class_id is all NULL, create mapping.
-		$has_class = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$prefix}products WHERE tax_class_id IS NOT NULL" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$has_class = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$prefix}products WHERE tax_class_id IS NOT NULL" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( $has_class > 0 ) {
 			return;
 		}
-		$std_id  = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$prefix}tax_classes WHERE slug = %s", 'standard' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$zero_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$prefix}tax_classes WHERE slug = %s", 'zero' ) );
+		$std_id  = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$prefix}tax_classes WHERE slug = %s", 'standard' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$zero_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$prefix}tax_classes WHERE slug = %s", 'zero' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Activation/migration routine; runs once via dbDelta/upgrades, no caching applicable.
 		if ( ! $std_id ) {
 			return;
 		}
 		// Assign all products with tax_rate>0 to standard, 0 to zero.
-		$wpdb->query( $wpdb->prepare( "UPDATE {$prefix}products SET tax_class_id = %d WHERE tax_rate > 0 AND tax_class_id IS NULL", $std_id ) );
-		$wpdb->query( $wpdb->prepare( "UPDATE {$prefix}products SET tax_class_id = %d WHERE (tax_rate = 0 OR tax_rate IS NULL) AND tax_class_id IS NULL", $zero_id ?: $std_id ) );
+		$wpdb->query( $wpdb->prepare( "UPDATE {$prefix}products SET tax_class_id = %d WHERE tax_rate > 0 AND tax_class_id IS NULL", $std_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Activation/migration routine; runs once via dbDelta/upgrades, no caching applicable.
+		$wpdb->query( $wpdb->prepare( "UPDATE {$prefix}products SET tax_class_id = %d WHERE (tax_rate = 0 OR tax_rate IS NULL) AND tax_class_id IS NULL", $zero_id ?: $std_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Activation/migration routine; runs once via dbDelta/upgrades, no caching applicable.
 		// For any remaining NULL assign standard.
-		$wpdb->query( $wpdb->prepare( "UPDATE {$prefix}products SET tax_class_id = %d WHERE tax_class_id IS NULL", $std_id ) );
+		$wpdb->query( $wpdb->prepare( "UPDATE {$prefix}products SET tax_class_id = %d WHERE tax_class_id IS NULL", $std_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Activation/migration routine; runs once via dbDelta/upgrades, no caching applicable.
 	}
 
 	private static function migrate_add_variant_tax_class() {
 		global $wpdb;
 		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		$table  = $prefix . 'product_variants';
-		$col    = $wpdb->get_col( "SHOW COLUMNS FROM `{$table}` WHERE Field = 'tax_class_id'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$col    = $wpdb->get_col( "SHOW COLUMNS FROM `{$table}` WHERE Field = 'tax_class_id'", 0 ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( ! empty( $col ) ) {
 			return;
 		}
-		$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN tax_class_id BIGINT UNSIGNED NULL AFTER track_stock, ADD KEY tax_class_id (tax_class_id)" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN tax_class_id BIGINT UNSIGNED NULL AFTER track_stock, ADD KEY tax_class_id (tax_class_id)" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	private static function migrate_add_hsn_sac_columns() {
@@ -432,13 +432,13 @@ class Simple_POS_Activator {
 		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		$products = $prefix . 'products';
 		$variants = $prefix . 'product_variants';
-		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$products}` WHERE Field = 'hsn_sac_code'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$products}` WHERE Field = 'hsn_sac_code'", 0 ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( empty( $col ) ) {
-			$wpdb->query( "ALTER TABLE `{$products}` ADD COLUMN hsn_sac_code VARCHAR(50) NULL AFTER image_url" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "ALTER TABLE `{$products}` ADD COLUMN hsn_sac_code VARCHAR(50) NULL AFTER image_url" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
-		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$variants}` WHERE Field = 'hsn_sac_code'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$variants}` WHERE Field = 'hsn_sac_code'", 0 ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( empty( $col ) ) {
-			$wpdb->query( "ALTER TABLE `{$variants}` ADD COLUMN hsn_sac_code VARCHAR(50) NULL AFTER image_url" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "ALTER TABLE `{$variants}` ADD COLUMN hsn_sac_code VARCHAR(50) NULL AFTER image_url" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}
 
@@ -446,11 +446,11 @@ class Simple_POS_Activator {
 		global $wpdb;
 		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		$table  = $prefix . 'tax_rates';
-		$col    = $wpdb->get_col( "SHOW COLUMNS FROM `{$table}` WHERE Field = 'gst_split'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$col    = $wpdb->get_col( "SHOW COLUMNS FROM `{$table}` WHERE Field = 'gst_split'", 0 ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( ! empty( $col ) ) {
 			return;
 		}
-		$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN gst_split TINYINT(1) NOT NULL DEFAULT 0 AFTER name" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN gst_split TINYINT(1) NOT NULL DEFAULT 0 AFTER name" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	private static function migrate_add_customer_type_columns() {
@@ -458,13 +458,13 @@ class Simple_POS_Activator {
 		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		$sales = $prefix . 'sales';
 		$items = $prefix . 'sale_items';
-		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$sales}` WHERE Field = 'customer_type'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$sales}` WHERE Field = 'customer_type'", 0 ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( empty( $col ) ) {
-			$wpdb->query( "ALTER TABLE `{$sales}` ADD COLUMN customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c' AFTER status" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "ALTER TABLE `{$sales}` ADD COLUMN customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c' AFTER status" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
-		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$items}` WHERE Field = 'customer_type'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$col = $wpdb->get_col( "SHOW COLUMNS FROM `{$items}` WHERE Field = 'customer_type'", 0 ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( empty( $col ) ) {
-			$wpdb->query( "ALTER TABLE `{$items}` ADD COLUMN customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c' AFTER tax_rate_applied" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "ALTER TABLE `{$items}` ADD COLUMN customer_type VARCHAR(10) NOT NULL DEFAULT 'b2c' AFTER tax_rate_applied" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}
 
@@ -479,7 +479,7 @@ class Simple_POS_Activator {
 		global $wpdb;
 		$prefix   = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 		$charset  = $wpdb->get_charset_collate();
-		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}sale_sequences` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) ) {$charset}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "CREATE TABLE IF NOT EXISTS `{$prefix}sale_sequences` ( id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, PRIMARY KEY (id) ) {$charset}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**
@@ -499,7 +499,7 @@ class Simple_POS_Activator {
 		$settings = get_option( 'simple_pos_settings', array() );
 		$number_prefix = isset( $settings['sale_number_prefix'] ) ? (string) $settings['sale_number_prefix'] : 'POS-';
 
-		$numbers = $wpdb->get_col( "SELECT sale_number FROM `{$sales}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$numbers = $wpdb->get_col( "SELECT sale_number FROM `{$sales}`" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( empty( $numbers ) ) {
 			return;
 		}
@@ -516,14 +516,14 @@ class Simple_POS_Activator {
 		if ( $max <= 0 ) {
 			return;
 		}
-		$seq_max = (int) $wpdb->get_var( "SELECT COALESCE(MAX(id),0) FROM `{$seq}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$seq_max = (int) $wpdb->get_var( "SELECT COALESCE(MAX(id),0) FROM `{$seq}`" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( $seq_max >= $max ) {
 			return;
 		}
 		// Explicit-id insert advances AUTO_INCREMENT to $max + 1. If the
 		// id already exists the counter is already past it — ignore.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		$wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO `{$seq}` (id) VALUES (%d)", $max ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO `{$seq}` (id) VALUES (%d)", $max ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**
@@ -555,23 +555,23 @@ class Simple_POS_Activator {
 			'line_total'       => 'ADD COLUMN line_total DECIMAL(12,2) NOT NULL DEFAULT 0',
 		);
 		foreach ( $want_sales as $col => $ddl ) {
-			$exists = $wpdb->get_col( "SHOW COLUMNS FROM `{$sales}` WHERE Field = '{$col}'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$exists = $wpdb->get_col( "SHOW COLUMNS FROM `{$sales}` WHERE Field = '{$col}'", 0 ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			if ( empty( $exists ) ) {
-				$wpdb->query( "ALTER TABLE `{$sales}` {$ddl}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$wpdb->query( "ALTER TABLE `{$sales}` {$ddl}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			}
 		}
 		foreach ( $want_items as $col => $ddl ) {
-			$exists = $wpdb->get_col( "SHOW COLUMNS FROM `{$items}` WHERE Field = '{$col}'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$exists = $wpdb->get_col( "SHOW COLUMNS FROM `{$items}` WHERE Field = '{$col}'", 0 ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			if ( empty( $exists ) ) {
-				$wpdb->query( "ALTER TABLE `{$items}` {$ddl}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$wpdb->query( "ALTER TABLE `{$items}` {$ddl}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			}
 		}
 		// Keep legacy products.tax_rate (see note above) — re-add if a
 		// previous version dropped it, so product SELECTs keep working.
 		$products = $prefix . 'products';
-		$exists   = $wpdb->get_col( "SHOW COLUMNS FROM `{$products}` WHERE Field = 'tax_rate'", 0 ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$exists   = $wpdb->get_col( "SHOW COLUMNS FROM `{$products}` WHERE Field = 'tax_rate'", 0 ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( empty( $exists ) ) {
-			$wpdb->query( "ALTER TABLE `{$products}` ADD COLUMN tax_rate DECIMAL(5,2) NOT NULL DEFAULT 0 AFTER cost_price" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "ALTER TABLE `{$products}` ADD COLUMN tax_rate DECIMAL(5,2) NOT NULL DEFAULT 0 AFTER cost_price" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}
 
@@ -627,23 +627,23 @@ class Simple_POS_Activator {
 		$prefix = $wpdb->prefix . SIMPLE_POS_TABLE_PREFIX;
 
 		// Check if foreign keys already exist.
-		$existing = $wpdb->get_var( "SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND TABLE_NAME = '{$prefix}sale_items'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$existing = $wpdb->get_var( "SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS WHERE CONSTRAINT_SCHEMA = DATABASE() AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND TABLE_NAME = '{$prefix}sale_items'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( (int) $existing > 0 ) {
 			return;
 		}
 
 		// Verify InnoDB engine before adding FKs.
-		$engine = $wpdb->get_var( "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$prefix}sales'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$engine = $wpdb->get_var( "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$prefix}sales'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		if ( 'InnoDB' !== $engine ) {
 			return;
 		}
 
 		// Add foreign keys (use separate queries to handle partial failures).
-		$wpdb->query( "ALTER TABLE `{$prefix}sale_items` ADD CONSTRAINT fk_sale_items_sale FOREIGN KEY (sale_id) REFERENCES `{$prefix}sales`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$wpdb->query( "ALTER TABLE `{$prefix}sale_items` ADD CONSTRAINT fk_sale_items_product FOREIGN KEY (product_id) REFERENCES `{$prefix}products`(id) ON DELETE SET NULL" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$wpdb->query( "ALTER TABLE `{$prefix}product_variants` ADD CONSTRAINT fk_variants_product FOREIGN KEY (parent_product_id) REFERENCES `{$prefix}products`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$wpdb->query( "ALTER TABLE `{$prefix}stock_log` ADD CONSTRAINT fk_stock_log_product FOREIGN KEY (product_id) REFERENCES `{$prefix}products`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$wpdb->query( "ALTER TABLE `{$prefix}po_items` ADD CONSTRAINT fk_po_items_po FOREIGN KEY (po_id) REFERENCES `{$prefix}purchase_orders`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$prefix}sale_items` ADD CONSTRAINT fk_sale_items_sale FOREIGN KEY (sale_id) REFERENCES `{$prefix}sales`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$prefix}sale_items` ADD CONSTRAINT fk_sale_items_product FOREIGN KEY (product_id) REFERENCES `{$prefix}products`(id) ON DELETE SET NULL" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$prefix}product_variants` ADD CONSTRAINT fk_variants_product FOREIGN KEY (parent_product_id) REFERENCES `{$prefix}products`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$prefix}stock_log` ADD CONSTRAINT fk_stock_log_product FOREIGN KEY (product_id) REFERENCES `{$prefix}products`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query( "ALTER TABLE `{$prefix}po_items` ADD CONSTRAINT fk_po_items_po FOREIGN KEY (po_id) REFERENCES `{$prefix}purchase_orders`(id) ON DELETE CASCADE" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	// NOTE: the legacy products.tax_rate column is intentionally never

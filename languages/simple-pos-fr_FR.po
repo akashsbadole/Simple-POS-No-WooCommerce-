@@ -1,12 +1,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple POS 2.0.9\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-pos-plugin\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/simple-pos\n"
 "POT-Creation-Date: 2026-09-14 11:56+0000\n"
 "PO-Revision-Date: 2026-09-14 11:56+0000\n"
 "Last-Translator: Simple POS\n"
 "Language-Team: Simple POS\n"
-"Language: de_DE\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,22 +14,22 @@ msgstr ""
 "X-Generator: Simple POS i18n build\n"
 
 msgid "(ISO2 or * for all)"
-msgstr "(ISO2 oder * für alle)"
+msgstr "(ISO2 ou * pour tous)"
 
 msgid "(change in Settings)"
-msgstr "(in Einstellungen ändern)"
+msgstr "(à changer dans Réglages)"
 
 msgid "(optional)"
-msgstr "(optional)"
+msgstr "(facultatif)"
 
 msgid "(optional, for variant restock)"
-msgstr "(optional, für Varianten-Nachschub)"
+msgstr "(facultatif, pour réassort variante)"
 
 msgid "* — all countries"
-msgstr "* — alle Länder"
+msgstr "* — tous pays"
 
 msgid "+ New"
-msgstr "+ Neu"
+msgstr "+ Nouveau"
 
 msgid "58mm"
 msgstr "58mm"
@@ -38,148 +38,148 @@ msgid "80mm"
 msgstr "80mm"
 
 msgid "A product with this SKU already exists."
-msgstr "Ein Produkt mit dieser SKU existiert bereits."
+msgstr "Un produit avec ce SKU existe déjà."
 
 msgid "A4 30-up (Avery 5160)"
-msgstr "A4 30-fach (Avery 5160)"
+msgstr "A4 30 par page (Avery 5160)"
 
 msgid "A4 65-up"
-msgstr "A4 65-fach"
+msgstr "A4 65 par page"
 
 msgid "Action"
-msgstr "Aktion"
+msgstr "Action"
 
 msgid "Actions"
-msgstr "Aktionen"
+msgstr "Actions"
 
 msgid "Active"
-msgstr "Aktiv"
+msgstr "Actif"
 
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "Ajouter"
 
 msgid "Add &amp; select"
-msgstr "Hinzufügen &amp; auswählen"
+msgstr "Ajouter &amp; sélectionner"
 
 msgid "Add Category"
-msgstr "Kategorie hinzufügen"
+msgstr "Ajouter une catégorie"
 
 msgid "Add Class"
-msgstr "Klasse hinzufügen"
+msgstr "Ajouter une classe"
 
 msgid "Add Customer"
-msgstr "Kunde hinzufügen"
+msgstr "Ajouter un client"
 
 msgid "Add Product"
-msgstr "Produkt hinzufügen"
+msgstr "Ajouter un produit"
 
 msgid "Add Rate"
-msgstr "Satz hinzufügen"
+msgstr "Ajouter un taux"
 
 msgid "Add Supplier"
-msgstr "Lieferant hinzufügen"
+msgstr "Ajouter un fournisseur"
 
 msgid "Add Variant"
-msgstr "Variante hinzufügen"
+msgstr "Ajouter une variante"
 
 msgid "Add at least one item."
-msgstr "Mindestens einen Artikel hinzufügen."
+msgstr "Ajoutez au moins un article."
 
 msgid "Add line"
-msgstr "Zeile hinzufügen"
+msgstr "Ajouter une ligne"
 
 msgid "Add new customer"
-msgstr "Neuen Kunden hinzufügen"
+msgstr "Ajouter un nouveau client"
 
 msgid "Add variant"
-msgstr "Variante hinzufügen"
+msgstr "Ajouter une variante"
 
 msgid "Add-on \"%1$s\" requires POS Core version %2$s or higher. You have version %3$s. The add-on has been disabled."
-msgstr "Add-on „%1$s“ erfordert POS-Core-Version %2$s oder höher. Du hast Version %3$s. Das Add-on wurde deaktiviert."
+msgstr "L’extension « %1$s » exige POS Core %2$s ou plus. Vous avez %3$s. Extension désactivée."
 
 msgid "Add-on setting saved."
-msgstr "Add-on-Einstellung gespeichert."
+msgstr "Réglage d’extension enregistré."
 
 msgid "Add-ons"
-msgstr "Add-ons"
+msgstr "Extensions"
 
 msgid "Address"
 msgstr "Adresse"
 
 msgid "Advanced"
-msgstr "Erweitert"
+msgstr "Avancé"
 
 msgid "Advanced Reports"
-msgstr "Erweiterte Berichte"
+msgstr "Rapports avancés"
 
 msgid "After (10.00$)"
-msgstr "Nachher (10,00 $)"
+msgstr "Après (10,00 $)"
 
 msgid "All add-ons are free and included with Simple POS — enable or disable them below. Changes apply on the next page load."
-msgstr "Alle Add-ons sind kostenlos in Simple POS enthalten — unten aktivieren oder deaktivieren. Änderungen gelten ab dem nächsten Seitenaufruf."
+msgstr "Toutes les extensions sont gratuites avec Simple POS — activez-les ci-dessous. Changements au prochain chargement."
 
 msgid "All cashiers"
-msgstr "Alle Kassierer"
+msgstr "Tous caissiers"
 
 msgid "All categories"
-msgstr "Alle Kategorien"
+msgstr "Toutes catégories"
 
 msgid "All products are well stocked."
-msgstr "Alle Produkte sind gut bevorratet."
+msgstr "Tous les produits sont bien stockés."
 
 msgid "Allow checkout even if stock would go negative"
-msgstr "Verkauf auch bei negativem Bestand erlauben"
+msgstr "Permettre la vente même en stock négatif"
 
 msgid "Allow overselling"
-msgstr "Überverkauf erlauben"
+msgstr "Permettre la survente"
 
 msgid "Amount"
-msgstr "Betrag"
+msgstr "Montant"
 
 msgid "Amount tendered"
-msgstr "Gegebener Betrag"
+msgstr "Montant reçu"
 
 msgid "Any status"
-msgstr "Jeder Status"
+msgstr "Tout statut"
 
 msgid "Apply"
-msgstr "Anwenden"
+msgstr "Appliquer"
 
 msgid "Apply discount before tax"
-msgstr "Rabatt vor Steuer anwenden"
+msgstr "Remise avant taxe"
 
 msgid "Assign under Users:"
-msgstr "Unter Benutzer zuweisen:"
+msgstr "Assigner sous Utilisateurs :"
 
 msgid "Attr e.g. Color"
-msgstr "Attr. z. B. Farbe"
+msgstr "Attr. ex. Couleur"
 
 msgid "Attr e.g. Size"
-msgstr "Attr. z. B. Größe"
+msgstr "Attr. ex. Taille"
 
 msgid "Attributes"
-msgstr "Attribute"
+msgstr "Attributs"
 
 msgid "Auto kick drawer on sale complete"
-msgstr "Kassenlade bei Abschluss automatisch öffnen"
+msgstr "Ouvrir le tiroir à la vente"
 
 msgid "Auto-PO"
-msgstr "Auto-Bestellung"
+msgstr "Commande auto"
 
 msgid "Auto-PO generated %1$s for %2$d low-stock product(s)."
-msgstr "Auto-Bestellung %1$s für %2$d Niedrigbestand-Produkte erstellt."
+msgstr "Commande auto %1$s pour %2$d produit(s) en bas stock."
 
 msgid "Automation"
-msgstr "Automatisierung"
+msgstr "Automatisation"
 
 msgid "Available add-ons"
-msgstr "Verfügbare Add-ons"
+msgstr "Extensions dispo."
 
 msgid "Avg basket"
-msgstr "Ø Warenkorb"
+msgstr "Panier moy."
 
 msgid "Avg. Sale"
-msgstr "Ø Verkauf"
+msgstr "Vente moy."
 
 msgid "B2B"
 msgstr "B2B"
@@ -188,1453 +188,1453 @@ msgid "B2C"
 msgstr "B2C"
 
 msgid "Back to POs"
-msgstr "Zurück zu Bestellungen"
+msgstr "Retour commandes"
 
 msgid "Back to Sales"
-msgstr "Zurück zu Verkäufen"
+msgstr "Retour ventes"
 
 msgid "Backup"
-msgstr "Sicherung"
+msgstr "Sauvegarde"
 
 msgid "Backup file"
-msgstr "Sicherungsdatei"
+msgstr "Fichier sauvegarde"
 
 msgid "Backup file missing version information."
-msgstr "Sicherungsdatei ohne Versionsinfo."
+msgstr "Fichier sans info de version."
 
 msgid "Backup is from a newer version (%1$s) than current (%2$s). Please upgrade plugin first."
-msgstr "Sicherung ist aus neuerer Version (%1$s) als aktuell (%2$s). Bitte zuerst Plugin aktualisieren."
+msgstr "Sauvegarde plus récente (%1$s) que version (%2$s). Mettez l’extension à jour."
 
 msgid "Backup restore failed. Data rolled back."
-msgstr "Wiederherstellung fehlgeschlagen. Daten zurückgesetzt."
+msgstr "Restauration échouée. Données rétablies."
 
 msgid "Backup restored successfully."
-msgstr "Sicherung erfolgreich wiederhergestellt."
+msgstr "Sauvegarde restaurée."
 
 msgid "Barcode"
-msgstr "Barcode"
+msgstr "Code-barres"
 
 msgid "Barcode Labels"
-msgstr "Barcode-Etiketten"
+msgstr "Étiquettes code-barres"
 
 msgid "Barcode already exists."
-msgstr "Barcode existiert bereits."
+msgstr "Code-barres déjà existant."
 
 msgid "Barcode already used."
-msgstr "Barcode bereits verwendet."
+msgstr "Code-barres déjà utilisé."
 
 msgid "Barcode image dimensions exceed limits. Use a smaller scale value."
-msgstr "Barcode-Bild zu groß. Kleineren Skalierungswert nehmen."
+msgstr "Image code-barres trop grande. Réduisez l’échelle."
 
 msgid "Barcode symbology"
-msgstr "Barcode-Typ"
+msgstr "Symbologie"
 
 msgid "Base currency"
-msgstr "Basiswährung"
+msgstr "Devise de base"
 
 msgid "Before ($10.00)"
-msgstr "Vorher ($10.00)"
+msgstr "Avant ($10.00)"
 
 msgid "Browser print"
-msgstr "Browser-Druck"
+msgstr "Impression navigateur"
 
 msgid "Business Setup"
-msgstr "Geschäft einrichten"
+msgstr "Assistant commerce"
 
 msgid "By Cashier"
-msgstr "Nach Kassierer"
+msgstr "Par caissier"
 
 msgid "CSV"
 msgstr "CSV"
 
 msgid "CSV file missing."
-msgstr "CSV-Datei fehlt."
+msgstr "Fichier CSV manquant."
 
 msgid "Can only edit draft POs."
-msgstr "Nur Entwürfe bearbeitbar."
+msgstr "Brouillons seuls modifiables."
 
 msgid "Cancel"
-msgstr "Abbrechen"
+msgstr "Annuler"
 
 msgid "Cannot create variant for inactive product. Activate product first."
-msgstr "Keine Variante für inaktives Produkt. Erst Produkt aktivieren."
+msgstr "Variante impossible sur produit inactif. Activez-le d’abord."
 
 msgid "Card"
-msgstr "Karte"
+msgstr "Carte"
 
 msgid "Cart is empty."
-msgstr "Warenkorb ist leer."
+msgstr "Panier vide."
 
 msgid "Cart is empty. Scan or click a product to add it."
-msgstr "Warenkorb ist leer. Produkt scannen oder anklicken."
+msgstr "Panier vide. Scannez ou cliquez un produit."
 
 msgid "Cash"
-msgstr "Bar"
+msgstr "Espèces"
 
 msgid "Cash drawer"
-msgstr "Kassenlade"
+msgstr "Tiroir-caisse"
 
 msgid "Cashier"
-msgstr "Kassierer"
+msgstr "Caissier"
 
 msgid "Cashier shifts, hours and per-shift cash reconciliation."
-msgstr "Kassierer-Schichten, Stunden und Kassenabgleich pro Schicht."
+msgstr "Équipes, heures et rapprochement caisse par équipe."
 
 msgid "Categories"
-msgstr "Kategorien"
+msgstr "Catégories"
 
 msgid "Category"
-msgstr "Kategorie"
+msgstr "Catégorie"
 
 msgid "Category added."
-msgstr "Kategorie hinzugefügt."
+msgstr "Catégorie ajoutée."
 
 msgid "Category deleted."
-msgstr "Kategorie gelöscht."
+msgstr "Catégorie supprimée."
 
 msgid "Category name is required."
-msgstr "Kategoriename erforderlich."
+msgstr "Nom de catégorie requis."
 
 msgid "Change due"
-msgstr "Rückgeld"
+msgstr "Monnaie à rendre"
 
 msgid "Checkout failed. Please try again."
-msgstr "Verkauf fehlgeschlagen. Bitte erneut versuchen."
+msgstr "Vente échouée. Réessayez."
 
 msgid "Choose your business type"
-msgstr "Geschäftstyp wählen"
+msgstr "Choisissez votre commerce"
 
 msgid "Choose your business type to seed starting categories, taxes and sample products."
-msgstr "Geschäftstyp wählen, um Start-Kategorien, Steuern und Beispielprodukte anzulegen."
+msgstr "Choisissez pour créer catégories, taxes et produits d’exemple."
 
 msgid "Class"
-msgstr "Klasse"
+msgstr "Classe"
 
 msgid "Class name"
-msgstr "Klassenname"
+msgstr "Nom de classe"
 
 msgid "Clear"
-msgstr "Leeren"
+msgstr "Effacer"
 
 msgid "Clear low-stock filter"
-msgstr "Niedrigbestand-Filter entfernen"
+msgstr "Retirer filtre bas stock"
 
 msgid "Coming soon"
-msgstr "Demnächst"
+msgstr "Bientôt"
 
 msgid "Comp"
-msgstr "Zusges."
+msgstr "Composé"
 
 msgid "Complete Sale"
-msgstr "Verkauf abschließen"
+msgstr "Valider la vente"
 
 msgid "Completed"
-msgstr "Abgeschlossen"
+msgstr "Terminée"
 
 msgid "Compound (on top of prior taxes)"
-msgstr "Zusammengesetzt (auf vorherige Steuern)"
+msgstr "Composé (sur taxes précédentes)"
 
 msgid "Compound: e.g. Canada PST 7% compound on top of GST 5% — set GST prio 0, PST prio 1 compound=1."
-msgstr "Zusammengesetzt: z. B. 7 % PST auf 5 % GST — GST Prio 0, PST Prio 1 zusammengesetzt=1."
+msgstr "Composé : ex. PST 7 % sur GST 5 % — GST prio 0, PST prio 1 composé=1."
 
 msgid "Contact"
-msgstr "Kontakt"
+msgstr "Contact"
 
 msgid "Contact name"
-msgstr "Kontaktname"
+msgstr "Nom du contact"
 
 msgid "Cost"
-msgstr "Kosten"
+msgstr "Coût"
 
 msgid "Cost price"
-msgstr "Einkaufspreis"
+msgstr "Prix d’achat"
 
 msgid "Cost/unit"
-msgstr "Kosten/Einheit"
+msgstr "Coût/unité"
 
 msgid "Could not create PO."
-msgstr "Bestellung nicht erstellbar."
+msgstr "Commande non créée."
 
 msgid "Could not create category (name may already exist)."
-msgstr "Kategorie nicht erstellbar (Name evtl. vorhanden)."
+msgstr "Catégorie non créée (nom peut-être existant)."
 
 msgid "Could not create customer."
-msgstr "Kunde nicht erstellbar."
+msgstr "Client non créé."
 
 msgid "Could not create product."
-msgstr "Produkt nicht erstellbar."
+msgstr "Produit non créé."
 
 msgid "Could not create rate."
-msgstr "Satz nicht erstellbar."
+msgstr "Taux non créé."
 
 msgid "Could not create tax class."
-msgstr "Steuerklasse nicht erstellbar."
+msgstr "Classe de taxe non créée."
 
 msgid "Could not create variant."
-msgstr "Variante nicht erstellbar."
+msgstr "Variante non créée."
 
 msgid "Could not delete product."
-msgstr "Produkt nicht löschbar."
+msgstr "Produit non supprimé."
 
 msgid "Could not generate the purchase order. Please try again."
-msgstr "Bestellung nicht erstellbar. Bitte erneut versuchen."
+msgstr "Commande non créée. Réessayez."
 
 msgid "Could not insert sale."
-msgstr "Verkauf nicht speicherbar."
+msgstr "Vente non enregistrée."
 
 msgid "Could not open CSV."
-msgstr "CSV nicht lesbar."
+msgstr "CSV illisible."
 
 msgid "Could not record sale items."
-msgstr "Verkaufspositionen nicht speicherbar."
+msgstr "Articles non enregistrés."
 
 msgid "Could not record sale."
-msgstr "Verkauf nicht speicherbar."
+msgstr "Vente non enregistrée."
 
 msgid "Could not update product."
-msgstr "Produkt nicht aktualisierbar."
+msgstr "Produit non mis à jour."
 
 msgid "Could not void sale."
-msgstr "Verkauf nicht stornierbar."
+msgstr "Vente non annulée."
 
 msgid "Counter-facing second screen mirroring the running cart and totals."
-msgstr "Kundendisplay als Zweitbildschirm mit Warenkorb und Summen."
+msgstr "Second écran client reflétant panier et totaux."
 
 msgid "Country"
-msgstr "Land"
+msgstr "Pays"
 
 msgid "Create PO"
-msgstr "Bestellung erstellen"
+msgstr "Créer commande"
 
 msgid "Created"
-msgstr "Erstellt"
+msgstr "Créé"
 
 msgid "Currency"
-msgstr "Währung"
+msgstr "Devise"
 
 msgid "Currency symbol"
-msgstr "Währungssymbol"
+msgstr "Symbole monétaire"
 
 msgid "Current Sale"
-msgstr "Aktueller Verkauf"
+msgstr "Vente en cours"
 
 msgid "Custom range"
-msgstr "Eigener Zeitraum"
+msgstr "Période perso"
 
 msgid "Customer"
-msgstr "Kunde"
+msgstr "Client"
 
 msgid "Customer Displays"
-msgstr "Kundendisplays"
+msgstr "Écrans clients"
 
 msgid "Customer deleted."
-msgstr "Kunde gelöscht."
+msgstr "Client supprimé."
 
 msgid "Customer name is required."
-msgstr "Kundenname erforderlich."
+msgstr "Nom du client requis."
 
 msgid "Customer not found."
-msgstr "Kunde nicht gefunden."
+msgstr "Client introuvable."
 
 msgid "Customer saved."
-msgstr "Kunde gespeichert."
+msgstr "Client enregistré."
 
 msgid "Customer type"
-msgstr "Kundentyp"
+msgstr "Type de client"
 
 msgid "Customers"
-msgstr "Kunden"
+msgstr "Clients"
 
 msgid "Customers order from a QR link; orders drop straight into the POS queue."
-msgstr "Kunden bestellen per QR-Link; Bestellungen landen direkt in der POS-Schlange."
+msgstr "Clients commandent par QR ; commandes direct en file POS."
 
 msgid "Daily"
-msgstr "Täglich"
+msgstr "Quotidien"
 
 msgid "Daily cron + one-click draft purchase orders for products below their low-stock threshold."
-msgstr "Täglicher Cron + Ein-Klick-Bestellentwürfe für Niedrigbestand-Produkte."
+msgstr "Cron quotidien + brouillons en 1 clic pour bas stocks."
 
 msgid "Dashboard"
-msgstr "Dashboard"
+msgstr "Tableau de bord"
 
 msgid "Date"
-msgstr "Datum"
+msgstr "Date"
 
 msgid "Decimal places"
-msgstr "Dezimalstellen"
+msgstr "Décimales"
 
 msgid "Default low stock threshold"
-msgstr "Standard-Niedrigbestandsschwelle"
+msgstr "Seuil bas stock défaut"
 
 msgid "Default state"
-msgstr "Standard-Bundesland"
+msgstr "État par défaut"
 
 msgid "Default supplier"
-msgstr "Standardlieferant"
+msgstr "Fournisseur défaut"
 
 msgid "Default tax class"
-msgstr "Standard-Steuerklasse"
+msgstr "Classe de taxe défaut"
 
 msgid "Default tax country"
-msgstr "Standard-Steuerland"
+msgstr "Pays de taxe défaut"
 
 msgid "Del"
-msgstr "Lösch."
+msgstr "Suppr."
 
 msgid "Delete"
-msgstr "Löschen"
+msgstr "Supprimer"
 
 msgid "Delete PO?"
-msgstr "Bestellung löschen?"
+msgstr "Supprimer commande ?"
 
 msgid "Delete all POS data when plugin is deleted"
-msgstr "Alle POS-Daten beim Löschen des Plugins entfernen"
+msgstr "Supprimer données POS à la désinstallation"
 
 msgid "Delete tax class?"
-msgstr "Steuerklasse löschen?"
+msgstr "Supprimer classe de taxe ?"
 
 msgid "Delete this category? Products stay, just unassigned."
-msgstr "Kategorie löschen? Produkte bleiben, nur ohne Zuordnung."
+msgstr "Supprimer catégorie ? Produits gardés, non assignés."
 
 msgid "Delete this customer?"
-msgstr "Diesen Kunden löschen?"
+msgstr "Supprimer ce client ?"
 
 msgid "Delete this item? This cannot be undone."
-msgstr "Position löschen? Nicht rückgängig machbar."
+msgstr "Supprimer l’article ? Irréversible."
 
 msgid "Delete this product?"
-msgstr "Dieses Produkt löschen?"
+msgstr "Supprimer ce produit ?"
 
 msgid "Delete variant?"
-msgstr "Variante löschen?"
+msgstr "Supprimer variante ?"
 
 msgid "Delete?"
-msgstr "Löschen?"
+msgstr "Supprimer ?"
 
 msgid "Description"
-msgstr "Beschreibung"
+msgstr "Description"
 
 msgid "Disable"
-msgstr "Deaktivieren"
+msgstr "Désactiver"
 
 msgid "Disabled"
-msgstr "Deaktiviert"
+msgstr "Désactivé"
 
 msgid "Discount"
-msgstr "Rabatt"
+msgstr "Remise"
 
 msgid "Discount before tax"
-msgstr "Rabatt vor Steuer"
+msgstr "Remise avant taxe"
 
 msgid "Download Backup"
-msgstr "Sicherung laden"
+msgstr "Télécharger sauvegarde"
 
 msgid "Download a complete JSON backup of all POS data, or restore from a previous backup. Keep backup files in a safe place."
-msgstr "Komplette JSON-Sicherung aller POS-Daten laden oder aus älterer Sicherung wiederherstellen. Sicherungen gut aufbewahren."
+msgstr "Téléchargez sauvegarde JSON complète, ou restaurez. Gardez-les en lieu sûr."
 
 msgid "Draft PO #%1$s was created with %2$s"
-msgstr "Bestellentwurf #%1$s erstellt mit %2$s"
+msgstr "Brouillon #%1$s créé avec %2$s"
 
 msgid "Draft PO created with %1$d item(s); %2$d product(s) were already on an open PO and skipped."
-msgstr "Entwurf mit %1$d Position(en); %2$d Produkte waren schon auf offener Bestellung und wurden übersprungen."
+msgstr "Brouillon à %1$d article(s) ; %2$d produit(s) déjà sur commande ouverte, ignorés."
 
 msgid "Edit"
-msgstr "Bearbeiten"
+msgstr "Modifier"
 
 msgid "Edit Customer"
-msgstr "Kunde bearbeiten"
+msgstr "Modifier client"
 
 msgid "Edit Product"
-msgstr "Produkt bearbeiten"
+msgstr "Modifier produit"
 
 msgid "Edit Rate"
-msgstr "Satz bearbeiten"
+msgstr "Modifier taux"
 
 msgid "Edit Supplier"
-msgstr "Lieferant bearbeiten"
+msgstr "Modifier fournisseur"
 
 msgid "Email"
-msgstr "E-Mail"
+msgstr "E-mail"
 
 msgid "Empty CSV."
-msgstr "CSV ist leer."
+msgstr "CSV vide."
 
 msgid "Enable"
-msgstr "Aktivieren"
+msgstr "Activer"
 
 msgid "Enabled"
-msgstr "Aktiviert"
+msgstr "Activé"
 
 msgid "Enter quantity received for each item (leave 0 to skip)."
-msgstr "Erhaltene Menge je Position eingeben (0 zum Überspringen)."
+msgstr "Quantité reçue par article (0 pour passer)."
 
 msgid "Everything at or below its low-stock threshold. Generating a PO orders each line up to threshold × multiplier."
-msgstr "Alles auf/unter der Niedrigbestandsschwelle. Eine Bestellung füllt jede Zeile bis Schwelle × Multiplikator auf."
+msgstr "Tout au/niveau seuil bas stock. La commande remplit chaque ligne jusqu’à seuil × multiplicateur."
 
 msgid "Example Add-on"
-msgstr "Beispiel-Add-on"
+msgstr "Extension d’exemple"
 
 msgid "Examples"
-msgstr "Beispiele"
+msgstr "Exemples"
 
 msgid "Export CSV"
-msgstr "CSV exportieren"
+msgstr "Exporter CSV"
 
 msgid "Export Categories CSV"
-msgstr "Kategorien-CSV exportieren"
+msgstr "Exporter catégories CSV"
 
 msgid "Export Products CSV"
-msgstr "Produkte-CSV exportieren"
+msgstr "Exporter produits CSV"
 
 msgid "Export Variants CSV"
-msgstr "Varianten-CSV exportieren"
+msgstr "Exporter variantes CSV"
 
 msgid "Fallback if no class rate matches"
-msgstr "Ersatz wenn kein Klassensatz passt"
+msgstr "Repli si aucun taux de classe"
 
 msgid "Fallback only; prefer tax classes."
-msgstr "Nur Ersatz; Steuerklassen bevorzugen."
+msgstr "Repli seul ; préférez classes de taxe."
 
 msgid "File exceeds 5MB limit."
-msgstr "Datei über 5 MB."
+msgstr "Fichier > 5 Mo."
 
 msgid "Filter"
-msgstr "Filter"
+msgstr "Filtrer"
 
 msgid "Filter by category"
-msgstr "Nach Kategorie filtern"
+msgstr "Filtrer par catégorie"
 
 msgid "Footer"
-msgstr "Fußzeile"
+msgstr "Pied de page"
 
 msgid "Free"
-msgstr "Kostenlos"
+msgstr "Gratuit"
 
 msgid "From"
-msgstr "Von"
+msgstr "De"
 
 msgid "Full Reports"
-msgstr "Alle Berichte"
+msgstr "Tous rapports"
 
 msgid "GD library is required for barcode images."
-msgstr "GD-Bibliothek für Barcode-Bilder nötig."
+msgstr "Librairie GD requise pour codes-barres."
 
 msgid "GST split (50/50 CGST+SGST for intrastate, IGST for interstate)"
-msgstr "GST-Teilung (50/50 CGST+SGST im Bundesstaat, IGST zwischen Staaten)"
+msgstr "GST 50/50 CGST+SGST intra-État, IGST inter-États"
 
 msgid "GSTIN"
 msgstr "GSTIN"
 
 msgid "Generate automatically once a day (WP-Cron)"
-msgstr "Täglich automatisch erstellen (WP-Cron)"
+msgstr "Générer auto 1×/jour (WP-Cron)"
 
 msgid "Generate draft PO now"
-msgstr "Jetzt Entwurf erstellen"
+msgstr "Créer brouillon"
 
 msgid "Gift Cards"
-msgstr "Geschenkkarten"
+msgstr "Cartes cadeaux"
 
 msgid "Gross"
-msgstr "Brutto"
+msgstr "Brut"
 
 msgid "Gross Profit"
-msgstr "Bruttogewinn"
+msgstr "Marge brute"
 
 msgid "Gross profit"
-msgstr "Bruttogewinn"
+msgstr "Marge brute"
 
 msgid "HSN/SAC Code"
-msgstr "HSN/SAC-Code"
+msgstr "Code HSN/SAC"
 
 msgid "Header"
-msgstr "Kopfzeile"
+msgstr "En-tête"
 
 msgid "Hold"
-msgstr "Parken"
+msgstr "Suspendre"
 
 msgid "Hour"
-msgstr "Stunde"
+msgstr "Heure"
 
 msgid "Hourly sales"
-msgstr "Stündliche Verkäufe"
+msgstr "Ventes horaires"
 
 msgid "ISO2 e.g. US, IN"
-msgstr "ISO2 z. B. US, IN"
+msgstr "ISO2 ex. US, IN"
 
 msgid "Image URL"
-msgstr "Bild-URL"
+msgstr "URL image"
 
 msgid "Import CSV"
-msgstr "CSV importieren"
+msgstr "Importer CSV"
 
 msgid "Import Categories CSV"
-msgstr "Kategorien-CSV importieren"
+msgstr "Importer catégories CSV"
 
 msgid "Import Products CSV"
-msgstr "Produkte-CSV importieren"
+msgstr "Importer produits CSV"
 
 msgid "Import Variants CSV"
-msgstr "Varianten-CSV importieren"
+msgstr "Importer variantes CSV"
 
 msgid "Imported %d categories."
-msgstr "%d Kategorien importiert."
+msgstr "%d catégories importées."
 
 msgid "Imported %d products."
-msgstr "%d Produkte importiert."
+msgstr "%d produits importés."
 
 msgid "Imported %d sales."
-msgstr "%d Verkäufe importiert."
+msgstr "%d ventes importées."
 
 msgid "Imported %d variants."
-msgstr "%d Varianten importiert."
+msgstr "%d variantes importées."
 
 msgid "Inactive"
-msgstr "Inaktiv"
+msgstr "Inactif"
 
 msgid "Inc"
-msgstr "Inkl."
+msgstr "Incl."
 
 msgid "Included add-ons"
-msgstr "Enthaltene Add-ons"
+msgstr "Extensions incluses"
 
 msgid "Inclusive (price contains tax)"
-msgstr "Inklusive (Preis enthält Steuer)"
+msgstr "Incluse (prix TTC)"
 
 msgid "Initial stock on product creation"
-msgstr "Anfangsbestand bei Anlage"
+msgstr "Stock initial à la création"
 
 msgid "Invalid backup file."
-msgstr "Ungültige Sicherungsdatei."
+msgstr "Fichier invalide."
 
 msgid "Invalid country code: %s. Must be 2-letter ISO code (e.g., US, GB, IN)."
-msgstr "Ungültiger Ländercode: %s. 2-stelliger ISO-Code nötig (z. B. US, GB, IN)."
+msgstr "Code pays invalide : %s. Code ISO 2 lettres (ex. US, GB, IN)."
 
 msgid "Invalid item in cart."
-msgstr "Ungültiger Warenkorbartikel."
+msgstr "Article panier invalide."
 
 msgid "Invalid parent product ID."
-msgstr "Ungültige Stammprodukt-ID."
+msgstr "ID produit parent invalide."
 
 msgid "Invalid product ID."
-msgstr "Ungültige Produkt-ID."
+msgstr "ID produit invalide."
 
 msgid "Invalid status."
-msgstr "Ungültiger Status."
+msgstr "Statut invalide."
 
 msgid "Invalid tax class."
-msgstr "Ungültige Steuerklasse."
+msgstr "Classe de taxe invalide."
 
 msgid "Invalid variant ID."
-msgstr "Ungültige Varianten-ID."
+msgstr "ID variante invalide."
 
 msgid "Inventory"
-msgstr "Inventar"
+msgstr "Inventaire"
 
 msgid "Item"
-msgstr "Artikel"
+msgstr "Article"
 
 msgid "Items"
-msgstr "Artikel"
+msgstr "Articles"
 
 msgid "Items Sold"
-msgstr "Verkaufte Artikel"
+msgstr "Articles vendus"
 
 msgid "Items sold"
-msgstr "Verkaufte Artikel"
+msgstr "Articles vendus"
 
 msgid "Kick Drawer"
-msgstr "Lade öffnen"
+msgstr "Ouvrir tiroir"
 
 msgid "Kitchen Display System"
-msgstr "Küchenanzeige"
+msgstr "Écran cuisine"
 
 msgid "Label sheet"
-msgstr "Etikettenbogen"
+msgstr "Planche étiquettes"
 
 msgid "Last 30 days"
-msgstr "Letzte 30 Tage"
+msgstr "30 derniers jours"
 
 msgid "Last 7 days"
-msgstr "Letzte 7 Tage"
+msgstr "7 derniers jours"
 
 msgid "Last run: %s"
-msgstr "Letzter Lauf: %s"
+msgstr "Dernier : %s"
 
 msgid "Leave empty to use default."
-msgstr "Leer lassen für Standard."
+msgstr "Vide pour défaut."
 
 msgid "Legacy tax rate (%)"
-msgstr "Alter Steuersatz (%)"
+msgstr "Ancien taux (%)"
 
 msgid "Line Total"
-msgstr "Zeilensumme"
+msgstr "Total ligne"
 
 msgid "Loading products…"
-msgstr "Produkte laden …"
+msgstr "Chargement produits…"
 
 msgid "Logs every completed sale. Fork me into a paid add-on."
-msgstr "Protokolliert jeden Verkauf. Als kostenpflichtiges Add-on forken."
+msgstr "Journalise chaque vente. Déclinez-moi en payant."
 
 msgid "Low Stock"
-msgstr "Niedriger Bestand"
+msgstr "Bas stock"
 
 msgid "Low stock alert for: %s"
-msgstr "Bestandswarnung für: %s"
+msgstr "Alerte bas stock : %s"
 
 msgid "Low stock threshold"
-msgstr "Niedrigbestandsschwelle"
+msgstr "Seuil bas stock"
 
 msgid "Low thresh"
-msgstr "Min.-Schwelle"
+msgstr "Seuil bas"
 
 msgid "Low-Stock Auto-PO"
-msgstr "Niedrigbestand-Auto-Bestellung"
+msgstr "Commande auto bas stock"
 
 msgid "Low-stock products"
-msgstr "Niedrigbestand-Produkte"
+msgstr "Produits bas stock"
 
 msgid "Loyalty & Store Credit"
-msgstr "Treue & Guthaben"
+msgstr "Fidélité & avoir"
 
 msgid "Manual edit"
-msgstr "Manuell ändern"
+msgstr "Modif manuelle"
 
 msgid "Margin"
 msgstr "Marge"
 
 msgid "Minimum order qty per product"
-msgstr "Mindestmenge je Produkt"
+msgstr "Qté mini par produit"
 
 msgid "Missing column: %s"
-msgstr "Spalte fehlt: %s"
+msgstr "Colonne manquante : %s"
 
 msgid "Multi-Currency & FX"
-msgstr "Multi-Währung & FX"
+msgstr "Multi-devises & FX"
 
 msgid "Multi-Outlet"
-msgstr "Multi-Filiale"
+msgstr "Multi-magasins"
 
 msgid "Name"
-msgstr "Name"
+msgstr "Nom"
 
 msgid "Name, SKU, barcode…"
-msgstr "Name, SKU, Barcode …"
+msgstr "Nom, SKU, code-barres…"
 
 msgid "Name, phone, email…"
-msgstr "Name, Telefon, E-Mail …"
+msgstr "Nom, tél., e-mail…"
 
 msgid "Net"
-msgstr "Netto"
+msgstr "Net"
 
 msgid "Network ESC/POS"
-msgstr "Netzwerk-ESC/POS"
+msgstr "Réseau ESC/POS"
 
 msgid "Network printer IP"
-msgstr "Netzwerkdrucker-IP"
+msgstr "IP imprimante réseau"
 
 msgid "Never run yet."
-msgstr "Noch nie gelaufen."
+msgstr "Jamais exécuté."
 
 msgid "New"
-msgstr "Neu"
+msgstr "Nouveau"
 
 msgid "New Purchase Order"
-msgstr "Neue Bestellung"
+msgstr "Nouvelle commande"
 
 msgid "New Sale"
-msgstr "Neuer Verkauf"
+msgstr "Nouvelle vente"
 
 msgid "New category name"
-msgstr "Neuer Kategoriename"
+msgstr "Nom nouvelle catégorie"
 
 msgid "No POs yet."
-msgstr "Noch keine Bestellungen."
+msgstr "Aucune commande."
 
 msgid "No add-ons bundled yet."
-msgstr "Noch keine Add-ons."
+msgstr "Aucune extension."
 
 msgid "No categories yet."
-msgstr "Noch keine Kategorien."
+msgstr "Aucune catégorie."
 
 msgid "No customers found."
-msgstr "Keine Kunden gefunden."
+msgstr "Aucun client."
 
 msgid "No file uploaded."
-msgstr "Keine Datei hochgeladen."
+msgstr "Aucun fichier."
 
 msgid "No product matches that code."
-msgstr "Kein Produkt zu diesem Code."
+msgstr "Aucun produit pour ce code."
 
 msgid "No products found."
-msgstr "Keine Produkte gefunden."
+msgstr "Aucun produit."
 
 msgid "No products."
-msgstr "Keine Produkte."
+msgstr "Aucun produit."
 
 msgid "No rates. Seeded US/IN/EU defaults exist after activation — if empty, deactivate/reactivate or check DB."
-msgstr "Keine Sätze. US/IN/EU-Standard nach Aktivierung — falls leer, de-/reaktivieren oder DB prüfen."
+msgstr "Aucun taux. Défauts US/IN/EU après activation — si vide, réactiver ou voir BDD."
 
 msgid "No sales found for this range."
-msgstr "Keine Verkäufe im Zeitraum."
+msgstr "Aucune vente sur période."
 
 msgid "No sales in this range."
-msgstr "Keine Verkäufe im Zeitraum."
+msgstr "Aucune vente sur période."
 
 msgid "No sales yet."
-msgstr "Noch keine Verkäufe."
+msgstr "Aucune vente."
 
 msgid "No suppliers."
-msgstr "Keine Lieferanten."
+msgstr "Aucun fournisseur."
 
 msgid "No tax classes yet."
-msgstr "Noch keine Steuerklassen."
+msgstr "Aucune classe de taxe."
 
 msgid "No tax collected in this range."
-msgstr "Keine Steuer im Zeitraum."
+msgstr "Aucune taxe sur période."
 
 msgid "No variants yet."
-msgstr "Noch keine Varianten."
+msgstr "Aucune variante."
 
 msgid "None"
-msgstr "Keine"
+msgstr "Aucun"
 
 msgid "Not enough stock for \"%s\"."
-msgstr "Nicht genug Bestand für „%s“."
+msgstr "Stock insuffisant pour « %s »."
 
 msgid "Not enough stock for variant \"%s\"."
-msgstr "Nicht genug Bestand für Variante „%s“."
+msgstr "Stock insuffisant pour variante « %s »."
 
 msgid "Note"
-msgstr "Notiz"
+msgstr "Note"
 
 msgid "Note (optional)"
-msgstr "Notiz (optional)"
+msgstr "Note (facultatif)"
 
 msgid "Notes"
-msgstr "Notizen"
+msgstr "Notes"
 
 msgid "Nothing below the low-stock threshold. Nice."
-msgstr "Nichts unter der Schwelle. Schön."
+msgstr "Rien sous le seuil. Parfait."
 
 msgid "Nothing to order — %d product(s) are already on an open PO."
-msgstr "Nichts zu bestellen — %d Produkte schon auf offener Bestellung."
+msgstr "Rien à commander — %d produit(s) déjà sur commande ouverte."
 
 msgid "Nothing to order — no products are below their low-stock threshold."
-msgstr "Nichts zu bestellen — kein Produkt unter der Schwelle."
+msgstr "Rien à commander — aucun produit sous seuil."
 
 msgid "Notify email (optional)"
-msgstr "Benachrichtigungs-E-Mail (optional)"
+msgstr "E-mail notif (facultatif)"
 
 msgid "Off"
-msgstr "Aus"
+msgstr "Off"
 
 msgid "Offline Mode"
-msgstr "Offline-Modus"
+msgstr "Mode hors-ligne"
 
 msgid "Online Ordering & QR Menu"
-msgstr "Online-Bestellung & QR-Menü"
+msgstr "Commande en ligne & menu QR"
 
 msgid "Only CSV files are allowed."
-msgstr "Nur CSV-Dateien erlaubt."
+msgstr "CSV uniquement."
 
 msgid "Only completed sales can be voided."
-msgstr "Nur abgeschlossene Verkäufe stornierbar."
+msgstr "Seules ventes terminées annulables."
 
 msgid "Open Terminal"
-msgstr "Kasse öffnen"
+msgstr "Ouvrir caisse"
 
 msgid "Open setup"
-msgstr "Einrichtung öffnen"
+msgstr "Ouvrir assistant"
 
 msgid "Order enough to reach threshold × this value."
-msgstr "Bis Schwelle × Wert auffüllen."
+msgstr "Commander jusqu’à seuil × valeur."
 
 msgid "Ordered"
-msgstr "Bestellt"
+msgstr "Commandé"
 
 msgid "Other"
-msgstr "Sonstige"
+msgstr "Autre"
 
 msgid "Out of stock"
-msgstr "Ausverkauft"
+msgstr "Rupture"
 
 msgid "PO #"
-msgstr "Bestellnr."
+msgstr "Cde #"
 
 msgid "PO %s"
-msgstr "Bestellung %s"
+msgstr "Cde %s"
 
 msgid "PO already closed."
-msgstr "Bestellung schon geschlossen."
+msgstr "Commande déjà clôturée."
 
 msgid "PO deleted."
-msgstr "Bestellung gelöscht."
+msgstr "Commande supprimée."
 
 msgid "PO not found."
-msgstr "Bestellung nicht gefunden."
+msgstr "Commande introuvable."
 
 msgid "PO number prefix"
-msgstr "Bestellnummern-Präfix"
+msgstr "Préfixe n° commande"
 
 msgid "PO received, stock updated."
-msgstr "Bestellung erhalten, Bestand aktualisiert."
+msgstr "Commande reçue, stock à jour."
 
 msgid "POS"
 msgstr "POS"
 
 msgid "POS Cashier"
-msgstr "POS-Kassierer"
+msgstr "Caissier POS"
 
 msgid "POS Dashboard"
-msgstr "POS-Dashboard"
+msgstr "Tableau POS"
 
 msgid "POS Manager"
-msgstr "POS-Manager"
+msgstr "Manager POS"
 
 msgid "POS Settings"
-msgstr "POS-Einstellungen"
+msgstr "Réglages POS"
 
 msgid "POS Terminal"
-msgstr "POS-Kasse"
+msgstr "Caisse POS"
 
 msgid "Paper width"
-msgstr "Papierbreite"
+msgstr "Largeur papier"
 
 msgid "Parent product #%d not found."
-msgstr "Stammprodukt #%d nicht gefunden."
+msgstr "Produit parent #%d introuvable."
 
 msgid "Parent product not found."
-msgstr "Stammprodukt nicht gefunden."
+msgstr "Produit parent introuvable."
 
 msgid "Payment"
-msgstr "Zahlung"
+msgstr "Paiement"
 
 msgid "Payment method"
-msgstr "Zahlungsart"
+msgstr "Moyen de paiement"
 
 msgid "Payment mix"
-msgstr "Zahlungsmix"
+msgstr "Mix paiements"
 
 msgid "Per line"
-msgstr "Pro Zeile"
+msgstr "Par ligne"
 
 msgid "Per order"
-msgstr "Pro Bestellung"
+msgstr "Par commande"
 
 msgid "Phone"
-msgstr "Telefon"
+msgstr "Tél."
 
 msgid "Points per purchase, redeem at checkout, gift-card style store credit balances."
-msgstr "Punkte pro Kauf, an Kasse einlösen, Guthaben wie Geschenkkarten."
+msgstr "Points par achat, à utiliser en caisse, avoirs façon cartes cadeaux."
 
 msgid "Popular"
-msgstr "Beliebt"
+msgstr "Populaire"
 
 msgid "Preview"
-msgstr "Vorschau"
+msgstr "Aperçu"
 
 msgid "Price"
-msgstr "Preis"
+msgstr "Prix"
 
 msgid "Price cannot be negative."
-msgstr "Preis nicht negativ."
+msgstr "Prix non négatif."
 
 msgid "Price override"
-msgstr "Preis-Override"
+msgstr "Prix forcé"
 
 msgid "Prices include tax"
-msgstr "Preise inkl. Steuer"
+msgstr "Prix TTC"
 
 msgid "Print"
-msgstr "Drucken"
+msgstr "Imprimer"
 
 msgid "Print Labels"
-msgstr "Etiketten drucken"
+msgstr "Imprimer étiquettes"
 
 msgid "Print Receipt"
-msgstr "Bon drucken"
+msgstr "Imprimer ticket"
 
 msgid "Printer"
-msgstr "Drucker"
+msgstr "Imprimante"
 
 msgid "Printing & Barcode"
-msgstr "Druck & Barcode"
+msgstr "Impression & code-barres"
 
 msgid "Prio"
 msgstr "Prio"
 
 msgid "Priority"
-msgstr "Priorität"
+msgstr "Priorité"
 
 msgid "Product"
-msgstr "Produkt"
+msgstr "Produit"
 
 msgid "Product #%d is not available."
-msgstr "Produkt #%d nicht verfügbar."
+msgstr "Produit #%d indisponible."
 
 msgid "Product / Variant"
-msgstr "Produkt / Variante"
+msgstr "Produit / Variante"
 
 msgid "Product deleted."
-msgstr "Produkt gelöscht."
+msgstr "Produit supprimé."
 
 msgid "Product has no barcode or SKU."
-msgstr "Produkt ohne Barcode/SKU."
+msgstr "Produit sans code-barres ni SKU."
 
 msgid "Product mix (top 20)"
-msgstr "Produktmix (Top 20)"
+msgstr "Mix produits (top 20)"
 
 msgid "Product name is required."
-msgstr "Produktname erforderlich."
+msgstr "Nom produit requis."
 
 msgid "Product not found."
-msgstr "Produkt nicht gefunden."
+msgstr "Produit introuvable."
 
 msgid "Product saved."
-msgstr "Produkt gespeichert."
+msgstr "Produit enregistré."
 
 msgid "Products"
-msgstr "Produkte"
+msgstr "Produits"
 
 msgid "Products to order"
-msgstr "Zu bestellende Produkte"
+msgstr "Produits à commander"
 
 msgid "Profit"
-msgstr "Gewinn"
+msgstr "Profit"
 
 msgid "Purchase History"
-msgstr "Einkaufshistorie"
+msgstr "Historique achats"
 
 msgid "Purchase Orders"
-msgstr "Bestellungen"
+msgstr "Commandes"
 
 msgid "Purchase order created."
-msgstr "Bestellung erstellt."
+msgstr "Commande créée."
 
 msgid "Qty"
-msgstr "Menge"
+msgstr "Qté"
 
 msgid "Qty Sold"
-msgstr "Verkaufte Menge"
+msgstr "Qté vendue"
 
 msgid "Quick add. You can edit full details later from the Customers screen."
-msgstr "Schnell anlegen. Details später unter Kunden ändern."
+msgstr "Ajout rapide. Détails modifiables plus tard (Clients)."
 
 msgid "Quick restock"
-msgstr "Schnell nachfüllen"
+msgstr "Réassort rapide"
 
 msgid "Range"
-msgstr "Zeitraum"
+msgstr "Période"
 
 msgid "Rate"
-msgstr "Satz"
+msgstr "Taux"
 
 msgid "Rate %"
-msgstr "Satz %"
+msgstr "Taux %"
 
 msgid "Rate must be 0-100."
-msgstr "Satz 0–100."
+msgstr "Taux 0-100."
 
 msgid "Rate not found."
-msgstr "Satz nicht gefunden."
+msgstr "Taux introuvable."
 
 msgid "Reason (optional)"
-msgstr "Grund (optional)"
+msgstr "Motif (facultatif)"
 
 msgid "Recall"
-msgstr "Wiederholen"
+msgstr "Rappeler"
 
 msgid "Receipt"
-msgstr "Bon"
+msgstr "Ticket"
 
 msgid "Receive"
-msgstr "Einlagern"
+msgstr "Réceptionner"
 
 msgid "Receive & Update Stock"
-msgstr "Einlagern & Bestand updaten"
+msgstr "Réceptionner & stock"
 
 msgid "Received"
-msgstr "Erhalten"
+msgstr "Reçu"
 
 msgid "Recent Sales"
-msgstr "Letzte Verkäufe"
+msgstr "Ventes récentes"
 
 msgid "Reports"
-msgstr "Berichte"
+msgstr "Rapports"
 
 msgid "Reports Pro"
-msgstr "Berichte Pro"
+msgstr "Rapports Pro"
 
 msgid "Restaurant mode: floor plan, open tabs, split bills and kitchen tickets."
-msgstr "Restaurantmodus: Tischplan, offene Tische, geteilte Rechnungen, Küchenbons."
+msgstr "Mode resto : plan, additions ouvertes, notes partagées, tickets cuisine."
 
 msgid "Restore Backup"
-msgstr "Sicherung wiederherstellen"
+msgstr "Restaurer sauvegarde"
 
 msgid "Restore from Backup"
-msgstr "Aus Sicherung wiederherstellen"
+msgstr "Restaurer depuis sauvegarde"
 
 msgid "Revenue"
-msgstr "Umsatz"
+msgstr "Chiffre d’affaires"
 
 msgid "Revenue by Day"
-msgstr "Umsatz pro Tag"
+msgstr "CA par jour"
 
 msgid "Roll 58mm"
-msgstr "Rolle 58 mm"
+msgstr "Rouleau 58mm"
 
 msgid "Roll 80mm"
-msgstr "Rolle 80 mm"
+msgstr "Rouleau 80mm"
 
 msgid "Run several shops from one install: per-outlet stock, registers and sales reports."
-msgstr "Mehrere Läden aus einer Installation: Bestand, Kassen, Berichte je Filiale."
+msgstr "Plusieurs magasins, une install : stocks, caisses, rapports par point."
 
 msgid "SKU"
 msgstr "SKU"
 
 msgid "SKU already used."
-msgstr "SKU schon vergeben."
+msgstr "SKU déjà utilisé."
 
 msgid "Sale #"
-msgstr "Verkauf #"
+msgstr "Vente #"
 
 msgid "Sale %s"
-msgstr "Verkauf %s"
+msgstr "Vente %s"
 
 msgid "Sale not found."
-msgstr "Verkauf nicht gefunden."
+msgstr "Vente introuvable."
 
 msgid "Sale number prefix"
-msgstr "Verkaufsnummern-Präfix"
+msgstr "Préfixe n° vente"
 
 msgid "Sale voided and stock restored."
-msgstr "Verkauf storniert, Bestand zurück."
+msgstr "Vente annulée, stock rétabli."
 
 msgid "Sales"
-msgstr "Verkäufe"
+msgstr "Ventes"
 
 msgid "Sales History"
-msgstr "Verkaufshistorie"
+msgstr "Historique ventes"
 
 msgid "Sales Today"
-msgstr "Verkäufe heute"
+msgstr "Ventes du jour"
 
 msgid "Same priority = one rate wins: a state rate replaces the country rate. Stack rates (e.g. federal + state) with different priorities + compound."
-msgstr "Gleiche Priorität = ein Satz gewinnt: Landessatz ersetzt Ländersatz. Staffeln (z. B. Bund + Land) mit Prio + zusammengesetzt."
+msgstr "Même priorité = un taux gagne : taux État remplace pays. Cumulez (ex. fédéral + État) avec prios + composé."
 
 msgid "Save Settings"
-msgstr "Einstellungen speichern"
+msgstr "Enregistrer réglages"
 
 msgid "Save settings"
-msgstr "Einstellungen speichern"
+msgstr "Enregistrer réglages"
 
 msgid "Scan barcode or SKU"
-msgstr "Barcode/SKU scannen"
+msgstr "Scannez code-barres/SKU"
 
 msgid "Scan barcode or type SKU"
-msgstr "Barcode scannen oder SKU tippen"
+msgstr "Scannez ou saisissez SKU"
 
 msgid "Scan barcode or type SKU, then press Enter…"
-msgstr "Barcode scannen/SKU tippen, dann Enter …"
+msgstr "Scannez/saisissez, puis Entrée…"
 
 msgid "Search"
-msgstr "Suchen"
+msgstr "Chercher"
 
 msgid "Search products"
-msgstr "Produkte suchen"
+msgstr "Chercher produits"
 
 msgid "Search products…"
-msgstr "Produkte suchen …"
+msgstr "Chercher produits…"
 
 msgid "Second-screen prep queue with item states and timers for kitchens."
-msgstr "Zweitbildschirm-Vorbereitungsliste mit Status und Timern für Küchen."
+msgstr "File prépa 2e écran : états, minuteurs cuisine."
 
 msgid "Select all"
-msgstr "Alle wählen"
+msgstr "Tout choisir"
 
 msgid "Select product"
-msgstr "Produkt wählen"
+msgstr "Choisir produit"
 
 msgid "Select products/variants to print."
-msgstr "Zu druckende Produkte/Varianten wählen."
+msgstr "Choisir produits/variantes à imprimer."
 
 msgid "Select variant"
-msgstr "Variante wählen"
+msgstr "Choisir variante"
 
 msgid "Sell and redeem plastic or digital gift cards as a payment method."
-msgstr "Plastik-/digitale Geschenkkarten als Zahlungsart verkaufen/einlösen."
+msgstr "Vendez et encaissez cartes cadeaux plastiques/numériques."
 
 msgid "Sell in foreign currencies; pairs with the per-country tax engine."
-msgstr "In Fremdwährungen verkaufen; passt zur Länder-Steuerlogik."
+msgstr "Vendez en devises ; avec moteur de taxe par pays."
 
 msgid "Set ISO country codes (US, IN, DE, FR, GB...) + optional state (CA, MH). Priority low runs first; compound applies on top of prior taxes. Inclusive = price already contains tax."
-msgstr "ISO-Ländercodes (US, IN, DE, FR, GB …) + optional Staat (CA, MH). Niedrige Prio zuerst; zusammengesetzt auf vorherige Steuern. Inklusive = Preis enthält Steuer."
+msgstr "Codes ISO (US, IN, DE, FR, GB…) + État facultatif (CA, MH). Prio basse d’abord ; composé sur taxes précédentes. Inclus = prix TTC."
 
 msgid "Settings"
-msgstr "Einstellungen"
+msgstr "Réglages"
 
 msgid "Settings saved."
-msgstr "Einstellungen gespeichert."
+msgstr "Réglages enregistrés."
 
 msgid "Sheet:"
-msgstr "Bogen:"
+msgstr "Feuille :"
 
 msgid "Simple POS purchase orders not available."
-msgstr "Simple-POS-Bestellungen nicht verfügbar."
+msgstr "Commandes Simple POS indisponibles."
 
 msgid "Simple POS — Advanced Reports requires the free Simple POS plugin to be installed and active."
-msgstr "Simple POS — Erweiterte Berichte braucht das kostenlose Simple-POS-Plugin, installiert und aktiv."
+msgstr "Simple POS — Rapports avancés exige Simple POS gratuit, installé et actif."
 
 msgid "Simple POS — Low-Stock Auto-PO requires the free Simple POS plugin to be installed and active."
-msgstr "Simple POS — Auto-Bestellung braucht das kostenlose Simple-POS-Plugin, installiert und aktiv."
+msgstr "Simple POS — Commande auto exige Simple POS gratuit, installé et actif."
 
 msgid "Simple POS:"
-msgstr "Simple POS:"
+msgstr "Simple POS :"
 
 msgid "Simple POS: auto-PO drafted"
-msgstr "Simple POS: Auto-Bestellung entworfen"
+msgstr "Simple POS : brouillon auto-créé"
 
 msgid "Single store-wide currency. Symbol can be overridden below."
-msgstr "Eine Währung für den Laden. Symbol unten änderbar."
+msgstr "Une devise pour la boutique. Symbole modifiable ci-dessous."
 
 msgid "Slug"
 msgstr "Slug"
 
 msgid "Staff Roles"
-msgstr "Mitarbeiterrollen"
+msgstr "Rôles équipe"
 
 msgid "State"
-msgstr "Bundesland"
+msgstr "État"
 
 msgid "Status"
-msgstr "Status"
+msgstr "Statut"
 
 msgid "Stock"
-msgstr "Bestand"
+msgstr "Stock"
 
 msgid "Stock adjustment delta must be numeric."
-msgstr "Bestandsänderung muss Zahl sein."
+msgstr "Ajustement stock numérique requis."
 
 msgid "Stock quantity"
-msgstr "Bestandsmenge"
+msgstr "Quantité stock"
 
 msgid "Stock updated."
-msgstr "Bestand aktualisiert."
+msgstr "Stock à jour."
 
 msgid "Store"
-msgstr "Laden"
+msgstr "Boutique"
 
 msgid "Store name"
-msgstr "Ladenname"
+msgstr "Nom boutique"
 
 msgid "Subtotal"
-msgstr "Zwischensumme"
+msgstr "Sous-total"
 
 msgid "Suggested order"
-msgstr "Vorgeschlagene Menge"
+msgstr "Qté suggérée"
 
 msgid "Supplier"
-msgstr "Lieferant"
+msgstr "Fournisseur"
 
 msgid "Supplier deleted."
-msgstr "Lieferant gelöscht."
+msgstr "Fournisseur supprimé."
 
 msgid "Supplier name required."
-msgstr "Lieferantenname erforderlich."
+msgstr "Nom fournisseur requis."
 
 msgid "Supplier not found."
-msgstr "Lieferant nicht gefunden."
+msgstr "Fournisseur introuvable."
 
 msgid "Supplier saved."
-msgstr "Lieferant gespeichert."
+msgstr "Fournisseur enregistré."
 
 msgid "Suppliers"
-msgstr "Lieferanten"
+msgstr "Fournisseurs"
 
 msgid "Symbol position"
-msgstr "Symbolposition"
+msgstr "Position symbole"
 
 msgid "Symbology:"
-msgstr "Typ:"
+msgstr "Symbologie :"
 
 msgid "Table Service"
-msgstr "Tischservice"
+msgstr "Service à table"
 
 msgid "Target multiplier"
-msgstr "Zielmultiplikator"
+msgstr "Multiplicateur cible"
 
 msgid "Tax"
-msgstr "Steuer"
+msgstr "Taxe"
 
 msgid "Tax Classes"
-msgstr "Steuerklassen"
+msgstr "Classes de taxe"
 
 msgid "Tax Rates"
-msgstr "Steuersätze"
+msgstr "Taux de taxe"
 
 msgid "Tax breakdown"
-msgstr "Steuerdetails"
+msgstr "Détail taxe"
 
 msgid "Tax class"
-msgstr "Steuerklasse"
+msgstr "Classe de taxe"
 
 msgid "Tax class added."
-msgstr "Steuerklasse hinzugefügt."
+msgstr "Classe ajoutée."
 
 msgid "Tax class already exists."
-msgstr "Steuerklasse existiert bereits."
+msgstr "Classe déjà existante."
 
 msgid "Tax class deleted."
-msgstr "Steuerklasse gelöscht."
+msgstr "Classe supprimée."
 
 msgid "Tax class name is required."
-msgstr "Steuerklassenname erforderlich."
+msgstr "Nom de classe requis."
 
 msgid "Tax country"
-msgstr "Steuerland"
+msgstr "Pays de taxe"
 
 msgid "Tax country is required for calculation. Configure default tax country in POS Settings."
-msgstr "Steuerland für Berechnung nötig. Standard in POS-Einstellungen setzen."
+msgstr "Pays requis pour calcul. Réglez pays défaut (Réglages POS)."
 
 msgid "Tax country/state"
-msgstr "Steuerland/-staat"
+msgstr "Pays/État de taxe"
 
 msgid "Tax defaults"
-msgstr "Steuer-Standards"
+msgstr "Taxes par défaut"
 
 msgid "Tax inclusive pricing"
-msgstr "Preise inkl. Steuer"
+msgstr "Prix TTC"
 
 msgid "Tax rate deleted."
-msgstr "Steuersatz gelöscht."
+msgstr "Taux supprimé."
 
 msgid "Tax rate saved."
-msgstr "Steuersatz gespeichert."
+msgstr "Taux enregistré."
 
 msgid "Tax rounding"
-msgstr "Steuerrundung"
+msgstr "Arrondi taxe"
 
 msgid "Tax summary"
-msgstr "Steuerübersicht"
+msgstr "Résumé taxe"
 
 msgid "Taxes"
-msgstr "Steuern"
+msgstr "Taxes"
 
 msgid "Taxes — per-country classes & rates"
-msgstr "Steuern — Klassen & Sätze pro Land"
+msgstr "Taxes — classes & taux par pays"
 
 msgid "Terminal"
-msgstr "Kasse"
+msgstr "Caisse"
 
 msgid "Terminal keeps selling without internet and syncs sales when back online."
-msgstr "Kasse verkauft offline weiter und synct bei Verbindung."
+msgstr "La caisse vend hors-ligne et synchro au retour."
 
 msgid "This month"
-msgstr "Dieser Monat"
+msgstr "Ce mois"
 
 msgid "Threshold"
-msgstr "Schwelle"
+msgstr "Seuil"
 
 msgid "Time"
-msgstr "Zeit"
+msgstr "Heure"
 
 msgid "Time Clock & Shifts"
-msgstr "Stechuhr & Schichten"
+msgstr "Pointeuse & équipes"
 
 msgid "To"
-msgstr "Bis"
+msgstr "À"
 
 msgid "Today"
-msgstr "Heute"
+msgstr "Aujourd’hui"
 
 msgid "Today's Revenue"
-msgstr "Umsatz heute"
+msgstr "CA du jour"
 
 msgid "Top Products"
-msgstr "Top-Produkte"
+msgstr "Top produits"
 
 msgid "Total"
-msgstr "Gesamt"
+msgstr "Total"
 
 msgid "Total cost"
-msgstr "Gesamtkosten"
+msgstr "Coût total"
 
 msgid "Track stock"
-msgstr "Bestand führen"
+msgstr "Suivre stock"
 
 msgid "Track stock for this product"
-msgstr "Bestand für Produkt führen"
+msgstr "Suivre stock produit"
 
 msgid "Type"
-msgstr "Typ"
+msgstr "Type"
 
 msgid "US-CA 7.25% Standard | IN 18% GST | DE 19% VAT | FR reduced 5.5% | Zero * 0%"
-msgstr "US-CA 7,25 % Standard | IN 18 % GST | DE 19 % MwSt. | FR ermäßigt 5,5 % | Null * 0 %"
+msgstr "US-CA 7,25 % Standard | IN 18 % GST | DE 19 % TVA | FR réduit 5,5 % | Zéro * 0 %"
 
 msgid "USB ESC/POS (WebUSB)"
 msgstr "USB ESC/POS (WebUSB)"
 
 msgid "Uninstall"
-msgstr "Deinstallieren"
+msgstr "Désinstaller"
 
 msgid "Units suggested"
-msgstr "Vorgeschlagene Einheiten"
+msgstr "Unités suggérées"
 
 msgid "Unknown"
-msgstr "Unbekannt"
+msgstr "Inconnu"
 
 msgid "Unknown report type."
-msgstr "Unbekannter Berichtstyp."
+msgstr "Type rapport inconnu."
 
 msgid "Update"
-msgstr "Aktualisieren"
+msgstr "Mettre à jour"
 
 msgid "Update Customer"
-msgstr "Kunde aktualisieren"
+msgstr "Maj client"
 
 msgid "Update Product"
-msgstr "Produkt aktualisieren"
+msgstr "Maj produit"
 
 msgid "Upload a JSON backup file to restore. This will replace existing data with the same IDs."
-msgstr "JSON-Sicherung hochladen. Ersetzt Daten mit gleichen IDs."
+msgstr "Envoyez sauvegarde JSON. Remplacera données mêmes ID."
 
 msgid "Use this"
-msgstr "Dies nehmen"
+msgstr "Utiliser ceci"
 
 msgid "Uses JsBarcode (CODE128) in print view. For EAN13 ensure 13-digit numeric. QR fallback."
-msgstr "Druckansicht nutzt JsBarcode (CODE128). Für EAN13 13-stellig numerisch. QR-Ersatz."
+msgstr "Vue impression : JsBarcode (CODE128). EAN13 : 13 chiffres. QR repli."
 
 msgid "Value e.g. M"
-msgstr "Wert z. B. M"
+msgstr "Valeur ex. M"
 
 msgid "Value e.g. Red"
-msgstr "Wert z. B. Rot"
+msgstr "Valeur ex. Rouge"
 
 msgid "Variant"
 msgstr "Variante"
 
 msgid "Variant ID"
-msgstr "Varianten-ID"
+msgstr "ID variante"
 
 msgid "Variant deleted."
-msgstr "Variante gelöscht."
+msgstr "Variante supprimée."
 
 msgid "Variant not available."
-msgstr "Variante nicht verfügbar."
+msgstr "Variante indisponible."
 
 msgid "Variant not found."
-msgstr "Variante nicht gefunden."
+msgstr "Variante introuvable."
 
 msgid "Variant saved."
-msgstr "Variante gespeichert."
+msgstr "Variante enregistrée."
 
 msgid "Variants"
-msgstr "Varianten"
+msgstr "Variantes"
 
 msgid "Version"
 msgstr "Version"
 
 msgid "View"
-msgstr "Ansehen"
+msgstr "Voir"
 
 msgid "View add-on"
-msgstr "Add-on ansehen"
+msgstr "Voir extension"
 
 msgid "View products"
-msgstr "Produkte ansehen"
+msgstr "Voir produits"
 
 msgid "View purchase orders"
-msgstr "Bestellungen ansehen"
+msgstr "Voir commandes"
 
 msgid "Void Last Sale"
-msgstr "Letzten Verkauf stornieren"
+msgstr "Annuler dernière vente"
 
 msgid "Void Sale"
-msgstr "Verkauf stornieren"
+msgstr "Annuler vente"
 
 msgid "Void This Sale"
-msgstr "Diesen Verkauf stornieren"
+msgstr "Annuler cette vente"
 
 msgid "Void this sale and restore stock? This cannot be undone."
-msgstr "Verkauf stornieren und Bestand zurück? Nicht rückgängig machbar."
+msgstr "Annuler vente et rétablir stock ? Irréversible."
 
 msgid "Voided"
-msgstr "Storniert"
+msgstr "Annulée"
 
 msgid "Walk-in"
-msgstr "Laufkundschaft"
+msgstr "Passage"
 
 msgid "Walk-in customer"
-msgstr "Laufkunde"
+msgstr "Client de passage"
 
 msgid "We will seed sensible starting categories, taxes and sample products for your business. You can change everything later in Settings."
-msgstr "Wir legen passende Start-Kategorien, Steuern und Beispielprodukte an. Später alles änderbar."
+msgstr "Nous créons catégories, taxes et exemples. Tout modifiable ensuite."
 
 msgid "X / Z summary"
-msgstr "X-/Z-Bericht"
+msgstr "Rapport X / Z"
 
 msgid "X/Z summaries, hourly heatmap, payment mix, product mix, tax summary and CSV exports."
-msgstr "X-/Z-Berichte, Stunden-Heatmap, Zahlungs-/Produktmix, Steuerübersicht, CSV-Exporte."
+msgstr "Rapports X/Z, heatmap horaire, mix paiements/produits, résumé taxe, exports CSV."
 
 msgid "You are not allowed to export reports."
-msgstr "Keine Rechte für Berichtsexport."
+msgstr "Export rapports interdit."
 
 msgid "You are not allowed to manage add-ons."
-msgstr "Keine Rechte für Add-ons."
+msgstr "Gestion extensions interdite."
 
 msgid "You are not allowed to manage purchase orders."
-msgstr "Keine Rechte für Bestellungen."
+msgstr "Gestion commandes interdite."
 
 msgid "You are not allowed to view reports."
-msgstr "Keine Rechte für Berichte."
+msgstr "Rapports interdits."
 
 msgid "You do not have permission to do this."
-msgstr "Keine Berechtigung dafür."
+msgstr "Action non permise."
 
 msgid "You do not have permission to perform this action."
-msgstr "Keine Berechtigung für diese Aktion."
+msgstr "Action non permise."
 
 msgid "You do not have permission to use the POS terminal."
-msgstr "Keine Berechtigung für die POS-Kasse."
+msgstr "Caisse non permise."
 
 msgid "e.g. 10 or -2"
-msgstr "z. B. 10 oder -2"
+msgstr "ex. 10 ou -2"
 
 msgid "e.g. 27AABCT1234R1ZX"
-msgstr "z. B. 27AABCT1234R1ZX"
+msgstr "ex. 27AABCT1234R1ZX"
 
 msgid "e.g. CA, MH"
-msgstr "z. B. CA, MH"
+msgstr "ex. CA, MH"
 
 msgid "e.g. Standard"
-msgstr "z. B. Standard"
+msgstr "ex. Standard"
 
 msgid "empty = parent"
-msgstr "leer = Stamm"
+msgstr "vide = parent"
 
 msgid "free-form attributes"
-msgstr "freie Attribute"
+msgstr "attributs libres"
 
 msgid "full POS + reports, voids, taxes, POs"
-msgstr "Voll-POS + Berichte, Stornos, Steuern, Bestellungen"
+msgstr "POS complet + rapports, annulations, taxes, commandes"
 
 msgid "not tracked"
-msgstr "nicht geführt"
+msgstr "non suivi"
 
 msgid "remaining %d"
-msgstr "restlich %d"
+msgstr "restant %d"
 
 msgid "terminal + view sales"
-msgstr "Kasse + Verkäufe ansehen"
+msgstr "caisse + voir ventes"
 
 msgid "variant"
-msgstr "Variante"
+msgstr "variante"
 
 msgid "you@store.com"
 msgstr "you@store.com"
 
 msgid "— none —"
-msgstr "— keine —"
+msgstr "— aucun —"
 
 msgid "0"
 msgstr ""

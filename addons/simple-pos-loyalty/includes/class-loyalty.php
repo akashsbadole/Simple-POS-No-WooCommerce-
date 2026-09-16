@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SLOY_Loyalty {
+class Simple_POS_Sloy_Loyalty {
 
 	const TABLE_SUFFIX = 'loyalty_points';
 

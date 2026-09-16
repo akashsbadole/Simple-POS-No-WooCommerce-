@@ -1,29 +1,35 @@
-<?php if(!defined('ABSPATH')) exit;
-$products = Simple_POS_Products::get_products(array('per_page'=>100,'page'=>1,'status'=>'active'));
+<?php
+// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View template included inside a render method; locals are function-scoped, not globals.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+$products = Simple_POS_Products::get_products( array( 'per_page' => 100, 'page' => 1, 'status' => 'active' ) );
+$settings = Simple_POS_Settings::get_all();
+?>
 $settings = Simple_POS_Settings::get_all();
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">
-		<h1><?php esc_html_e('Barcode Labels','wp-pos-plugin');?></h1>
+		<h1><?php esc_html_e('Barcode Labels','simple-pos');?></h1>
 		<div class="simple-pos-page-actions">
-			<button id="pos-print-labels" class="button button-primary"><?php esc_html_e('Print Labels','wp-pos-plugin');?></button>
+			<button id="pos-print-labels" class="button button-primary"><?php esc_html_e('Print Labels','simple-pos');?></button>
 		</div>
 	</div>
-	<p class="description"><?php esc_html_e('Select products/variants to print.','wp-pos-plugin');?> <?php esc_html_e('Symbology:','wp-pos-plugin');?> <strong><?php echo esc_html($settings['barcode_symbology']);?></strong> | <?php esc_html_e('Sheet:','wp-pos-plugin');?> <strong><?php echo esc_html($settings['barcode_label_format']);?></strong> <?php esc_html_e('(change in Settings)','wp-pos-plugin');?>.</p>
+	<p class="description"><?php esc_html_e('Select products/variants to print.','simple-pos');?> <?php esc_html_e('Symbology:','simple-pos');?> <strong><?php echo esc_html($settings['barcode_symbology']);?></strong> | <?php esc_html_e('Sheet:','simple-pos');?> <strong><?php echo esc_html($settings['barcode_label_format']);?></strong> <?php esc_html_e('(change in Settings)','simple-pos');?>.</p>
 	<div class="simple-pos-columns">
 		<div class="simple-pos-col-main">
 			<div class="simple-pos-card simple-pos-filter-bar">
 				<div class="simple-pos-filters">
 					<div class="simple-pos-filter-actions">
-						<label class="simple-pos-checkbox"><input type="checkbox" id="pos-select-all"/> <?php esc_html_e('Select all','wp-pos-plugin');?></label>
+						<label class="simple-pos-checkbox"><input type="checkbox" id="pos-select-all"/> <?php esc_html_e('Select all','simple-pos');?></label>
 					</div>
 				</div>
 			</div>
 			<div class="simple-pos-card simple-pos-table-card">
 				<table class="wp-list-table widefat striped simple-pos-table">
-					<thead><tr><th><input type="checkbox" disabled/></th><th><?php esc_html_e('Product / Variant','wp-pos-plugin');?></th><th><?php esc_html_e('SKU','wp-pos-plugin');?></th><th><?php esc_html_e('Barcode','wp-pos-plugin');?></th><th class="num"><?php esc_html_e('Price','wp-pos-plugin');?></th></tr></thead>
+					<thead><tr><th><input type="checkbox" disabled/></th><th><?php esc_html_e('Product / Variant','simple-pos');?></th><th><?php esc_html_e('SKU','simple-pos');?></th><th><?php esc_html_e('Barcode','simple-pos');?></th><th class="num"><?php esc_html_e('Price','simple-pos');?></th></tr></thead>
 					<tbody>
-					<?php if(empty($products['items'])):?><tr><td colspan="5" class="simple-pos-empty"><?php esc_html_e('No products.','wp-pos-plugin');?></td></tr><?php endif;?>
+					<?php if(empty($products['items'])):?><tr><td colspan="5" class="simple-pos-empty"><?php esc_html_e('No products.','simple-pos');?></td></tr><?php endif;?>
 					<?php foreach($products['items'] as $p):
 						$vars = Simple_POS_Variants::get_variants($p->id);
 						$rows = array_merge(array(array('is_variant'=>0,'name'=>$p->name,'sku'=>$p->sku,'barcode'=>$p->barcode,'price'=>$p->price,'id'=>$p->id)), array_map(function($v) use($p){ return array('is_variant'=>1,'name'=>$p->name.' — '.Simple_POS_Variants::variant_label($v),'sku'=>$v->sku,'barcode'=>$v->barcode,'price'=>$v->price ?? $p->price,'id'=>$v->id,'parent'=>$p->id); }, $vars));
@@ -42,54 +48,9 @@ $settings = Simple_POS_Settings::get_all();
 			</div>
 		</div>
 		<div class="simple-pos-col-side">
-			<div class="postbox simple-pos-form-card"><h2 class="hndle"><span><?php esc_html_e('Preview','wp-pos-plugin');?></span></h2><div class="inside"><div id="pos-label-preview" class="pos-label-sheet" style="border:1px solid #ccc;padding:8px;min-height:120px"></div><p class="description"><?php esc_html_e('Uses JsBarcode (CODE128) in print view. For EAN13 ensure 13-digit numeric. QR fallback.','wp-pos-plugin');?></p></div></div>
+			<div class="postbox simple-pos-form-card"><h2 class="hndle"><span><?php esc_html_e('Preview','simple-pos');?></span></h2><div class="inside"><div id="pos-label-preview" class="pos-label-sheet" style="border:1px solid #ccc;padding:8px;min-height:120px"></div><p class="description"><?php esc_html_e('Uses JsBarcode (CODE128) in print view. For EAN13 ensure 13-digit numeric. QR fallback.','simple-pos');?></p></div></div>
 		</div>
 	</div>
-	<!-- print container -->
-	<div id="pos-label-print" style="display:none"></div>
+	<!-- print container: vendor URL provided via wp_add_inline_script (window.SimplePOSVendorUrl); data attribute is a no-JS fallback. Logic lives in admin/js/barcode-labels.js (enqueued). -->
+	<div id="pos-label-print" style="display:none" data-vendor-url="<?php echo esc_attr( SIMPLE_POS_PLUGIN_URL . 'admin/js/vendor/jsbarcode.min.js' ); ?>"></div>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded',function(){
-	var checks=document.querySelectorAll('.pos-label-check');
-	var selAll=document.getElementById('pos-select-all');
-	var btn=document.getElementById('pos-print-labels');
-	if(selAll) selAll.addEventListener('change',function(){ checks.forEach(function(c){ c.checked=selAll.checked; }); renderPreview(); });
-	checks.forEach(function(c){ c.addEventListener('change',renderPreview); });
-	function renderPreview(){
-		var container=document.getElementById('pos-label-preview'); if(!container) return; container.innerHTML='';
-		var selected=[]; checks.forEach(function(c){ if(c.checked) selected.push(c); });
-		if(!selected.length){ container.innerHTML='<em>No labels selected</em>'; return; }
-		selected.forEach(function(c){
-			var div=document.createElement('div'); div.className='pos-label'; div.style.cssText='border:1px dashed #999; padding:8px; margin:6px; text-align:center; display:inline-block; width:180px';
-			var name=document.createElement('div'); name.textContent=c.dataset.name; name.style.fontSize='11px'; name.style.fontWeight='600';
-			var svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.style.width='100%'; svg.style.height='50px';
-			var price=document.createElement('div'); price.textContent=c.dataset.price; price.style.fontSize='10px';
-			div.appendChild(name); div.appendChild(svg); div.appendChild(price); container.appendChild(div);
-			try{
-				var code=c.dataset.barcode||'000000';
-				if(window.JsBarcode) JsBarcode(svg, code, {format: "CODE128", displayValue:true, fontSize:10, height:40});
-			}catch(e){}
-		});
-	}
-	btn.addEventListener('click',function(){
-		var sel=[]; checks.forEach(function(c){ if(c.checked) sel.push({name:c.dataset.name, code:c.dataset.barcode||c.dataset.sku, price:c.dataset.price}); });
-		if(!sel.length) return alert('Select at least one');
-		var vendorUrl = (window.SimplePOSVendorUrl || (window.SimplePOS && window.SimplePOS.vendorJsBarcodeUrl) || '');
-		// Fallback to local vendor if not localized (plugins_url).
-		if(!vendorUrl) vendorUrl = '<?php echo esc_js( SIMPLE_POS_PLUGIN_URL . 'admin/js/vendor/jsbarcode.min.js' ); ?>';
-		var win=window.open('','_blank');
-		var html='<!doctype html><html><head><title>Labels</title><style>'+
-			'@media print{ @page{ size:A4; margin:10mm } } body{font-family:sans-serif} .sheet{display:flex;flex-wrap:wrap;gap:6px} .label{border:1px solid #000; width:62mm; height:32mm; padding:4mm; text-align:center; box-sizing:border-box; display:flex; flex-direction:column; justify-content:center} .label svg{width:100%;height:18mm} .label .name{font-size:9px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .label .price{font-size:10px}</style>'+
-			'<script src="'+vendorUrl.replace(/"/g,'&quot;')+'"><\/script></head><body><div class="sheet">'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
-		sel.forEach(function(s,i){
-			// repeat each 2 copies for sheet demo? single
-			html+='<div class="label"><div class="name">'+s.name.replace(/</g,'&lt;')+'</div><svg id="bc'+i+'"></svg><div class="price">'+s.price+'</div></div>';
-		});
-		html+='</div><script>window.onload=function(){';
-		sel.forEach(function(s,i){ html+='try{JsBarcode(document.getElementById("bc'+i+'"),"'+s.code.replace(/"/g,'\\"')+'",{format:"CODE128",displayValue:true,fontSize:9,height:36});}catch(e){}'; });
-		html+=' setTimeout(function(){window.print();},400);} <\/script></body></html>';
-		win.document.write(html); win.document.close();
-	});
-});
-</script>
-<style>.pos-label-sheet .pos-label{page-break-inside:avoid}</style>

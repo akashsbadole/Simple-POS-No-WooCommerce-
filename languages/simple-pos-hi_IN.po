@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simple POS 2.0.9\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-pos-plugin\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/simple-pos\n"
 "POT-Creation-Date: 2026-09-14 11:56+0000\n"
 "PO-Revision-Date: 2026-09-14 11:56+0000\n"
 "Last-Translator: Simple POS\n"

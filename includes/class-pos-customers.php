@@ -56,7 +56,7 @@ class Simple_POS_Customers {
 	public static function get_customer( $id ) {
 		global $wpdb;
 		$table = Simple_POS_DB::table( 'customers' );
-		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	}
 
 	/**
@@ -70,7 +70,7 @@ class Simple_POS_Customers {
 
 		$name = isset( $data['name'] ) ? sanitize_text_field( $data['name'] ) : '';
 		if ( empty( $name ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'Customer name is required.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_input', __( 'Customer name is required.', 'simple-pos' ) );
 		}
 
 		$table  = Simple_POS_DB::table( 'customers' );
@@ -85,7 +85,7 @@ class Simple_POS_Customers {
 
 		$inserted = $wpdb->insert( $table, $insert ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		if ( false === $inserted ) {
-			return new WP_Error( 'pos_db_error', __( 'Could not create customer.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_db_error', __( 'Could not create customer.', 'simple-pos' ) );
 		}
 
 		return (int) $wpdb->insert_id;
@@ -102,7 +102,7 @@ class Simple_POS_Customers {
 		global $wpdb;
 		$existing = self::get_customer( $id );
 		if ( ! $existing ) {
-			return new WP_Error( 'pos_not_found', __( 'Customer not found.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_not_found', __( 'Customer not found.', 'simple-pos' ) );
 		}
 
 		$table  = Simple_POS_DB::table( 'customers' );
@@ -148,7 +148,7 @@ class Simple_POS_Customers {
 		$table = Simple_POS_DB::table( 'sales' );
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$table} WHERE customer_id = %d ORDER BY created_at DESC LIMIT %d", // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				"SELECT * FROM {$table} WHERE customer_id = %d ORDER BY created_at DESC LIMIT %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$id,
 				$limit
 			)

@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SCD_Display {
+class Simple_POS_Scd_Display {
 
 	const OPTION_KEY = 'simple_pos_customer_display';
 

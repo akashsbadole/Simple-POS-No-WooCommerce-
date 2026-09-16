@@ -686,6 +686,9 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+.pos-label-sheet .pos-label {
+  page-break-inside: avoid;
+}
 .pos-label {
   border: 1px dashed #999;
   padding: 8px;

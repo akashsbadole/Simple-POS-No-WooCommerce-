@@ -8,7 +8,7 @@ Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A lightweight, standalone Point of Sale for WordPress. Custom tables, REST API, per-country tax, variants, suppliers, barcode labels and ESC/POS printing.
+A lightweight, standalone Point of Sale for WordPress. Custom tables, REST API, tax, variants, suppliers and barcode labels.
 
 == Description ==
 

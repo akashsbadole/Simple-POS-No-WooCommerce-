@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Dev-only CLI test runner; never shipped in the release zip.
 /**
  * Simple POS — Test Runner
  *

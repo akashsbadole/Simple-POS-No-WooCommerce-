@@ -1,31 +1,32 @@
-<?php
+<?php
+// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View template included inside a render method; locals are function-scoped, not globals.
 /**
  * Tables admin screen: floor plan with status colors.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-$grouped = STS_Tables::get_by_status();
+$grouped = Simple_POS_Sts_Tables::get_by_status();
 $editing_id = isset( $_GET['edit'] ) ? (int) $_GET['edit'] : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-$editing    = $editing_id ? STS_Tables::get_table( $editing_id ) : null;
+$editing    = $editing_id ? Simple_POS_Sts_Tables::get_table( $editing_id ) : null;
 $msg        = isset( $_GET['sts_msg'] ) ? sanitize_key( $_GET['sts_msg'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'Tables', 'wp-pos-plugin' ); ?></h1>
+		<h1 class="wp-heading-inline"><?php esc_html_e( 'Tables', 'simple-pos' ); ?></h1>
 	</div>
 
 	<?php if ( 'saved' === $msg ) : ?>
-		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Saved.', 'wp-pos-plugin' ); ?></p></div>
+		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Saved.', 'simple-pos' ); ?></p></div>
 	<?php elseif ( 'deleted' === $msg ) : ?>
-		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Table deleted.', 'wp-pos-plugin' ); ?></p></div>
+		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Table deleted.', 'simple-pos' ); ?></p></div>
 	<?php endif; ?>
 
 	<div class="simple-pos-columns">
 		<div class="simple-pos-col-main">
 			<div class="simple-pos-card simple-pos-table-card">
 				<div class="simple-pos-card-head">
-					<h2 class="simple-pos-section-title"><?php esc_html_e( 'Floor', 'wp-pos-plugin' ); ?></h2>
+					<h2 class="simple-pos-section-title"><?php esc_html_e( 'Floor', 'simple-pos' ); ?></h2>
 				</div>
 				<div style="padding:16px">
 					<?php foreach ( $grouped as $status => $tables ) : ?>
@@ -35,7 +36,7 @@ $msg        = isset( $_GET['sts_msg'] ) ? sanitize_key( $_GET['sts_msg'] ) : '';
 						</h3>
 						<div class="simple-pos-floor" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px">
 							<?php if ( empty( $tables ) ) : ?>
-								<p class="simple-pos-muted"><?php esc_html_e( 'No tables.', 'wp-pos-plugin' ); ?></p>
+								<p class="simple-pos-muted"><?php esc_html_e( 'No tables.', 'simple-pos' ); ?></p>
 							<?php endif; ?>
 							<?php foreach ( $tables as $t ) : ?>
 								<a href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-tables&edit=' . $t->id ) ); ?>"
@@ -56,23 +57,23 @@ $msg        = isset( $_GET['sts_msg'] ) ? sanitize_key( $_GET['sts_msg'] ) : '';
 
 		<div class="simple-pos-col-side">
 			<div class="postbox simple-pos-form-card">
-				<h2 class="hndle"><span><?php echo $editing ? esc_html__( 'Edit Table', 'wp-pos-plugin' ) : esc_html__( 'Add Table', 'wp-pos-plugin' ); ?></span></h2>
+				<h2 class="hndle"><span><?php echo $editing ? esc_html__( 'Edit Table', 'simple-pos' ) : esc_html__( 'Add Table', 'simple-pos' ); ?></span></h2>
 				<div class="inside">
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="simple-pos-stack">
 						<?php wp_nonce_field( 'simple_pos_table_save' ); ?>
 						<input type="hidden" name="action" value="simple_pos_table_save" />
 						<input type="hidden" name="table_id" value="<?php echo esc_attr( $editing ? $editing->id : 0 ); ?>" />
 						<div class="simple-pos-form-row">
-							<label for="sts-name"><?php esc_html_e( 'Name', 'wp-pos-plugin' ); ?> <span class="required" aria-hidden="true">*</span></label>
+							<label for="sts-name"><?php esc_html_e( 'Name', 'simple-pos' ); ?> <span class="required" aria-hidden="true">*</span></label>
 							<input id="sts-name" type="text" name="name" required value="<?php echo esc_attr( $editing->name ?? '' ); ?>" class="widefat" />
 						</div>
 						<div class="simple-pos-form-row">
-							<label for="sts-seats"><?php esc_html_e( 'Seats', 'wp-pos-plugin' ); ?></label>
+							<label for="sts-seats"><?php esc_html_e( 'Seats', 'simple-pos' ); ?></label>
 							<input id="sts-seats" type="number" name="seats" min="1" value="<?php echo esc_attr( $editing->seats ?? 4 ); ?>" class="widefat" />
 						</div>
 						<div class="simple-pos-form-actions">
-							<button class="button button-primary" type="submit"><?php echo $editing ? esc_html__( 'Update', 'wp-pos-plugin' ) : esc_html__( 'Add Table', 'wp-pos-plugin' ); ?></button>
-							<?php if ( $editing ) : ?><a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-tables' ) ); ?>"><?php esc_html_e( 'Cancel', 'wp-pos-plugin' ); ?></a><?php endif; ?>
+							<button class="button button-primary" type="submit"><?php echo $editing ? esc_html__( 'Update', 'simple-pos' ) : esc_html__( 'Add Table', 'simple-pos' ); ?></button>
+							<?php if ( $editing ) : ?><a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=simple-pos-tables' ) ); ?>"><?php esc_html_e( 'Cancel', 'simple-pos' ); ?></a><?php endif; ?>
 						</div>
 					</form>
 				</div>

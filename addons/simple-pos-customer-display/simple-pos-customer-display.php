@@ -4,24 +4,24 @@
  * Description: Secondary-screen customer view. Terminal pushes cart updates; a public shortcode polls and renders them. Requires the free Simple POS plugin.
  * Version:     1.0.0
  * Author:      Simple POS
- * Text Domain: wp-pos-plugin
+ * Text Domain: simple-pos
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SCD_VERSION', '1.0.0' );
+define( 'SIMPLE_POS_SCD_VERSION', '1.0.0' );
 
-add_action( 'simple_pos_init', 'scd_boot' );
+add_action( 'simple_pos_init', 'simple_pos_scd_boot' );
 
-function scd_boot() {
+function simple_pos_scd_boot() {
 	if ( ! class_exists( 'Simple_POS_Addons' ) ) {
 		add_action(
 			'admin_notices',
 			function () {
 				echo '<div class="notice notice-error"><p>';
-				esc_html_e( 'Simple POS — Customer Display requires the free Simple POS plugin.', 'wp-pos-plugin' );
+				esc_html_e( 'Simple POS — Customer Display requires the free Simple POS plugin.', 'simple-pos' );
 				echo '</p></div>';
 			}
 		);
@@ -35,9 +35,9 @@ function scd_boot() {
 		function ( $addons ) {
 			$addons[] = array(
 				'slug'        => 'customer-display',
-				'name'        => __( 'Customer Display', 'wp-pos-plugin' ),
-				'version'     => SCD_VERSION,
-				'description' => __( 'Secondary-screen customer view for the POS terminal.', 'wp-pos-plugin' ),
+				'name'        => __( 'Customer Display', 'simple-pos' ),
+				'version'     => SIMPLE_POS_SCD_VERSION,
+				'description' => __( 'Secondary-screen customer view for the POS terminal.', 'simple-pos' ),
 			);
 			return $addons;
 		}
@@ -55,7 +55,7 @@ function scd_boot() {
 				'/display/update',
 				array(
 					'methods'             => 'POST',
-					'callback'            => array( 'SCD_Display', 'rest_update' ),
+					'callback'            => array( 'Simple_POS_Scd_Display', 'rest_update' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -66,7 +66,7 @@ function scd_boot() {
 				'/display/current',
 				array(
 					'methods'             => 'GET',
-					'callback'            => array( 'SCD_Display', 'rest_current' ),
+					'callback'            => array( 'Simple_POS_Scd_Display', 'rest_current' ),
 					'permission_callback' => '__return_true',
 				)
 			);
@@ -75,7 +75,7 @@ function scd_boot() {
 				'/display/clear',
 				array(
 					'methods'             => 'POST',
-					'callback'            => array( 'SCD_Display', 'rest_clear' ),
+					'callback'            => array( 'Simple_POS_Scd_Display', 'rest_clear' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -84,14 +84,14 @@ function scd_boot() {
 		}
 	);
 
-	add_shortcode( 'simple_pos_customer_display', 'scd_render_shortcode' );
+	add_shortcode( 'simple_pos_customer_display', 'simple_pos_scd_render_shortcode' );
 }
 
 /**
  * Render the customer display page.
  * [simple_pos_customer_display refresh="1000"]
  */
-function scd_render_shortcode( $atts ) {
+function simple_pos_scd_render_shortcode( $atts ) {
 	$atts = shortcode_atts(
 		array(
 			'refresh' => 1000,
@@ -99,7 +99,7 @@ function scd_render_shortcode( $atts ) {
 		$atts
 	);
 
-	wp_enqueue_script( 'simple-pos-customer-display', plugins_url( 'assets/js/customer-display.js', __FILE__ ), array(), SCD_VERSION, true );
+	wp_enqueue_script( 'simple-pos-customer-display', plugins_url( 'assets/js/customer-display.js', __FILE__ ), array(), SIMPLE_POS_SCD_VERSION, true );
 	wp_localize_script(
 		'simple-pos-customer-display',
 		'SimplePOSDisplay',
@@ -113,11 +113,11 @@ function scd_render_shortcode( $atts ) {
 				'position' => Simple_POS_Settings::get( 'currency_position', 'before' ),
 			),
 			'i18n'     => array(
-				'empty'      => __( 'Ready for your order', 'wp-pos-plugin' ),
-				'subtotal'   => __( 'Subtotal', 'wp-pos-plugin' ),
-				'discount'   => __( 'Discount', 'wp-pos-plugin' ),
-				'tax'        => __( 'Tax', 'wp-pos-plugin' ),
-				'total'      => __( 'Total', 'wp-pos-plugin' ),
+				'empty'      => __( 'Ready for your order', 'simple-pos' ),
+				'subtotal'   => __( 'Subtotal', 'simple-pos' ),
+				'discount'   => __( 'Discount', 'simple-pos' ),
+				'tax'        => __( 'Tax', 'simple-pos' ),
+				'total'      => __( 'Total', 'simple-pos' ),
 			),
 		)
 	);

@@ -12,9 +12,9 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-$settings = get_option( 'simple_pos_settings', array() );
+$simple_pos_settings = get_option( 'simple_pos_settings', array() );
 
-if ( empty( $settings['delete_data_on_uninstall'] ) ) {
+if ( empty( $simple_pos_settings['delete_data_on_uninstall'] ) ) {
 	return; // Leave everything in place.
 }
 
@@ -22,9 +22,9 @@ global $wpdb;
 
 // Multisite: loop over all sites when network-deleting.
 if ( is_multisite() && function_exists( 'get_sites' ) && isset( $_GET['networkwide'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$sites = get_sites( array( 'number' => 0 ) );
-	foreach ( $sites as $site ) {
-		switch_to_blog( (int) $site->blog_id );
+	$simple_pos_sites = get_sites( array( 'number' => 0 ) );
+	foreach ( $simple_pos_sites as $simple_pos_site ) {
+		switch_to_blog( (int) $simple_pos_site->blog_id );
 		simple_pos_uninstall_drop_tables();
 		restore_current_blog();
 	}
@@ -67,10 +67,10 @@ function simple_pos_uninstall_drop_tables() {
 if ( function_exists( 'remove_role' ) ) {
 	remove_role( 'pos_cashier' );
 	remove_role( 'pos_manager' );
-	$admin = get_role( 'administrator' );
-	if ( $admin ) {
-		foreach ( array( 'operate_pos','view_pos_products','manage_pos_products','manage_pos_customers','view_pos_sales','void_pos_sales','view_pos_reports','manage_pos_settings' ) as $cap ) {
-			$admin->remove_cap( $cap );
+	$simple_pos_admin = get_role( 'administrator' );
+	if ( $simple_pos_admin ) {
+		foreach ( array( 'operate_pos','view_pos_products','manage_pos_products','manage_pos_customers','view_pos_sales','void_pos_sales','view_pos_reports','manage_pos_settings' ) as $simple_pos_cap ) {
+			$simple_pos_admin->remove_cap( $simple_pos_cap );
 		}
 	}
 }

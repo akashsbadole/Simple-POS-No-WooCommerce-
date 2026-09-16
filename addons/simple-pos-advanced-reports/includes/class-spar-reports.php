@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SPAR_Reports {
+class Simple_POS_Spar_Reports {
 
 	/**
 	 * Normalise a Y-m-d range into SQL bounds (same convention as core reports).
@@ -43,7 +43,7 @@ class SPAR_Reports {
 		$where_cash = self::cashier_sql( $cashier_id );
 		$params     = self::cashier_params( $from, $to, $cashier_id );
 
-		$row = $wpdb->get_row( $wpdb->prepare(
+		$row = $wpdb->get_row( $wpdb->prepare( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Custom sales tables; optional cashier placeholder appended safely with int param.
 			"SELECT COUNT(*) AS sale_count,
 				COALESCE(SUM(subtotal),0) AS gross,
 				COALESCE(SUM(discount_amount),0) AS discount,
@@ -51,21 +51,21 @@ class SPAR_Reports {
 				COALESCE(SUM(total),0) AS net,
 				COALESCE(AVG(total),0) AS avg_basket
 			 FROM {$sales}
-			 WHERE status = 'completed' AND created_at BETWEEN %s AND %s{$where_cash}", // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			 WHERE status = 'completed' AND created_at BETWEEN %s AND %s{$where_cash}", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$params
 		) );
 
-		$items_sold = (int) $wpdb->get_var( $wpdb->prepare(
+		$items_sold = (int) $wpdb->get_var( $wpdb->prepare( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Custom tables; see above.
 			"SELECT COALESCE(SUM(si.qty),0)
 			 FROM {$items} si INNER JOIN {$sales} s ON s.id = si.sale_id
-			 WHERE s.status = 'completed' AND s.created_at BETWEEN %s AND %s{$where_cash}", // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			 WHERE s.status = 'completed' AND s.created_at BETWEEN %s AND %s{$where_cash}", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			self::cashier_params( $from, $to, $cashier_id )
 		) );
 
-		$profit = (float) $wpdb->get_var( $wpdb->prepare(
+		$profit = (float) $wpdb->get_var( $wpdb->prepare( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Custom tables; see above.
 			"SELECT COALESCE(SUM((si.price - si.cost_price) * si.qty),0)
 			 FROM {$items} si INNER JOIN {$sales} s ON s.id = si.sale_id
-			 WHERE s.status = 'completed' AND s.created_at BETWEEN %s AND %s{$where_cash}", // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			 WHERE s.status = 'completed' AND s.created_at BETWEEN %s AND %s{$where_cash}", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			self::cashier_params( $from, $to, $cashier_id )
 		) );
 
@@ -198,7 +198,7 @@ class SPAR_Reports {
 
 		$rows = $wpdb->get_results( $wpdb->prepare(
 			"SELECT tax_breakdown FROM {$sales}
-			 WHERE status = 'completed' AND created_at BETWEEN %s AND %s{$where_cash}", // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			 WHERE status = 'completed' AND created_at BETWEEN %s AND %s{$where_cash}", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			self::cashier_params( $from, $to, $cashier_id )
 		), ARRAY_A );
 
@@ -289,6 +289,6 @@ class SPAR_Reports {
 				$headers = array( 'Tax', 'Rate %', 'Amount' );
 				return array( 'csv' => self::to_csv( $headers, self::tax_summary( $date_from, $date_to ) ) );
 		}
-		return new WP_Error( 'spar_unknown_type', __( 'Unknown report type.', 'wp-pos-plugin' ) );
+		return new WP_Error( 'spar_unknown_type', __( 'Unknown report type.', 'simple-pos' ) );
 	}
 }

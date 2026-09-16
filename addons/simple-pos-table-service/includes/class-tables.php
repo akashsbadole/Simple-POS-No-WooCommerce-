@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class STS_Tables {
+class Simple_POS_Sts_Tables {
 
 	const TABLE_SUFFIX = 'tables';
 

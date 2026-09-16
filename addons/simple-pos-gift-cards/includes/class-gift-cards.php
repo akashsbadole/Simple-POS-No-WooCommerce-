@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SGC_Gift_Cards {
+class Simple_POS_Sgc_Gift_Cards {
 
 	const TABLE_SUFFIX = 'gift_cards';
 
@@ -94,14 +94,14 @@ class SGC_Gift_Cards {
 
 		$card = self::get_by_code( $code );
 		if ( ! $card ) {
-			$cart_data['gift_card_error'] = __( 'Invalid or inactive gift card code.', 'wp-pos-plugin' );
+			$cart_data['gift_card_error'] = __( 'Invalid or inactive gift card code.', 'simple-pos' );
 			return $cart_data;
 		}
 
 		$remaining = isset( $cart_data['total_after_payment'] ) ? (float) $cart_data['total_after_payment'] : ( isset( $cart_data['total'] ) ? (float) $cart_data['total'] : 0 );
 		$remaining = max( 0, $remaining );
 		if ( $remaining <= 0 ) {
-			$cart_data['gift_card_error'] = __( 'Nothing left to pay with the gift card.', 'wp-pos-plugin' );
+			$cart_data['gift_card_error'] = __( 'Nothing left to pay with the gift card.', 'simple-pos' );
 			return $cart_data;
 		}
 

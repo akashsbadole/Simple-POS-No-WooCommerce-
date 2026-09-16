@@ -4,24 +4,24 @@
  * Description: Public storefront (shortcode) that captures orders for the POS. Requires the free Simple POS plugin.
  * Version:     1.0.0
  * Author:      Simple POS
- * Text Domain: wp-pos-plugin
+ * Text Domain: simple-pos
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SOO_VERSION', '1.0.0' );
+define( 'SIMPLE_POS_SOO_VERSION', '1.0.0' );
 
-add_action( 'simple_pos_init', 'soo_boot' );
+add_action( 'simple_pos_init', 'simple_pos_soo_boot' );
 
-function soo_boot() {
+function simple_pos_soo_boot() {
 	if ( ! class_exists( 'Simple_POS_Addons' ) ) {
 		add_action(
 			'admin_notices',
 			function () {
 				echo '<div class="notice notice-error"><p>';
-				esc_html_e( 'Simple POS — Online Ordering requires the free Simple POS plugin.', 'wp-pos-plugin' );
+				esc_html_e( 'Simple POS — Online Ordering requires the free Simple POS plugin.', 'simple-pos' );
 				echo '</p></div>';
 			}
 		);
@@ -35,9 +35,9 @@ function soo_boot() {
 		function ( $addons ) {
 			$addons[] = array(
 				'slug'        => 'online-ordering',
-				'name'        => __( 'Online Ordering', 'wp-pos-plugin' ),
-				'version'     => SOO_VERSION,
-				'description' => __( 'Public storefront that captures orders for the terminal.', 'wp-pos-plugin' ),
+				'name'        => __( 'Online Ordering', 'simple-pos' ),
+				'version'     => SIMPLE_POS_SOO_VERSION,
+				'description' => __( 'Public storefront that captures orders for the terminal.', 'simple-pos' ),
 			);
 			return $addons;
 		}
@@ -47,20 +47,20 @@ function soo_boot() {
 		return;
 	}
 
-	SOO_Orders::ensure_schema();
+	Simple_POS_Soo_Orders::ensure_schema();
 
-	add_shortcode( 'simple_pos_online_order', 'soo_render_storefront' );
+	add_shortcode( 'simple_pos_online_order', 'simple_pos_soo_render_storefront' );
 
 	add_action(
 		'admin_menu',
 		function () {
 			add_submenu_page(
 				'simple-pos-terminal',
-				__( 'Online Orders', 'wp-pos-plugin' ),
-				__( 'Online Orders', 'wp-pos-plugin' ),
+				__( 'Online Orders', 'simple-pos' ),
+				__( 'Online Orders', 'simple-pos' ),
 				'manage_pos_products',
 				'simple-pos-online-orders',
-				'soo_render_page'
+				'simple_pos_soo_render_page'
 			);
 		}
 	);
@@ -74,12 +74,12 @@ function soo_boot() {
 				array(
 					array(
 						'methods'             => 'POST',
-						'callback'            => array( 'SOO_Orders', 'rest_create' ),
+						'callback'            => array( 'Simple_POS_Soo_Orders', 'rest_create' ),
 						'permission_callback' => '__return_true',
 					),
 					array(
 						'methods'             => 'GET',
-						'callback'            => array( 'SOO_Orders', 'rest_list' ),
+						'callback'            => array( 'Simple_POS_Soo_Orders', 'rest_list' ),
 						'permission_callback' => function () {
 							return current_user_can( 'simple_pos_use_terminal' );
 						},
@@ -91,7 +91,7 @@ function soo_boot() {
 				'/online-orders/(?P<id>\d+)/status',
 				array(
 					'methods'             => 'POST',
-					'callback'            => array( 'SOO_Orders', 'rest_set_status' ),
+					'callback'            => array( 'Simple_POS_Soo_Orders', 'rest_set_status' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -100,14 +100,14 @@ function soo_boot() {
 		}
 	);
 
-	add_action( 'admin_post_simple_pos_online_order_status', 'soo_handle_status' );
+	add_action( 'admin_post_simple_pos_online_order_status', 'simple_pos_soo_handle_status' );
 }
 
 /**
  * Storefront shortcode: [simple_pos_online_order]
  */
-function soo_render_storefront() {
-	wp_enqueue_script( 'simple-pos-online', plugins_url( 'assets/js/online-order.js', __FILE__ ), array(), SOO_VERSION, true );
+function simple_pos_soo_render_storefront() {
+	wp_enqueue_script( 'simple-pos-online', plugins_url( 'assets/js/online-order.js', __FILE__ ), array(), SIMPLE_POS_SOO_VERSION, true );
 	wp_localize_script(
 		'simple-pos-online',
 		'SimplePOSOnline',
@@ -119,13 +119,13 @@ function soo_render_storefront() {
 				'decimals' => (int) Simple_POS_Settings::get( 'currency_decimals', 2 ),
 				'position' => Simple_POS_Settings::get( 'currency_position', 'before' ),
 			),
-			'catalog'  => soo_online_catalog(),
+			'catalog'  => simple_pos_soo_online_catalog(),
 			'i18n'     => array(
-				'add'    => __( 'Add to order', 'wp-pos-plugin' ),
-				'cart'   => __( 'Your order', 'wp-pos-plugin' ),
-				'empty'  => __( 'Your order is empty.', 'wp-pos-plugin' ),
-				'placed' => __( 'Order received — we will call you to confirm.', 'wp-pos-plugin' ),
-				'failed' => __( 'Could not place the order. Please try again.', 'wp-pos-plugin' ),
+				'add'    => __( 'Add to order', 'simple-pos' ),
+				'cart'   => __( 'Your order', 'simple-pos' ),
+				'empty'  => __( 'Your order is empty.', 'simple-pos' ),
+				'placed' => __( 'Order received — we will call you to confirm.', 'simple-pos' ),
+				'failed' => __( 'Could not place the order. Please try again.', 'simple-pos' ),
 			),
 		)
 	);
@@ -141,7 +141,7 @@ function soo_render_storefront() {
  *
  * @return array
  */
-function soo_online_catalog() {
+function simple_pos_soo_online_catalog() {
 	$products = Simple_POS_Products::get_products(
 		array(
 			'status' => 'active',
@@ -172,23 +172,23 @@ function soo_online_catalog() {
 	return array( 'products' => $items, 'categories' => $cats );
 }
 
-function soo_render_page() {
+function simple_pos_soo_render_page() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to view online orders.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to view online orders.', 'simple-pos' ) );
 	}
 	include __DIR__ . '/admin/views/orders.php';
 }
 
-function soo_handle_status() {
+function simple_pos_soo_handle_status() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to update orders.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to update orders.', 'simple-pos' ) );
 	}
 	check_admin_referer( 'simple_pos_online_order_status' );
 
 	$id     = isset( $_POST['order_id'] ) ? (int) $_POST['order_id'] : 0;
 	$status = isset( $_POST['order_status'] ) ? sanitize_key( $_POST['order_status'] ) : 'pending';
 	if ( $id > 0 ) {
-		SOO_Orders::set_status( $id, $status );
+		Simple_POS_Soo_Orders::set_status( $id, $status );
 	}
 
 	wp_safe_redirect( add_query_arg( 'soo_msg', 'saved', admin_url( 'admin.php?page=simple-pos-online-orders' ) ) );

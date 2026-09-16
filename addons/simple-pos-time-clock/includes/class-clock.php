@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class STC_Clock {
+class Simple_POS_Stc_Clock {
 
 	const TABLE_SUFFIX = 'clock_shifts';
 
@@ -140,8 +140,13 @@ class STC_Clock {
 		}
 
 		$where_sql = implode( ' AND ', $where );
-		$prepared  = $wpdb->prepare( "SELECT cashier_id, COUNT(*) as shift_count, COALESCE(SUM(duration_minutes),0) as total_minutes FROM {$table} WHERE {$where_sql} GROUP BY cashier_id ORDER BY total_minutes DESC", ...$params ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		return $wpdb->get_results( $prepared ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		// Table name comes from Simple_POS_DB::table() (prefix-sanitized); $where_sql is built
+		// only from hardcoded fragments plus %s placeholders, never from user input.
+		if ( empty( $params ) ) {
+			return $wpdb->get_results( "SELECT cashier_id, COUNT(*) as shift_count, COALESCE(SUM(duration_minutes),0) as total_minutes FROM {$table} GROUP BY cashier_id ORDER BY total_minutes DESC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- No user input; static query over custom table.
+		}
+		$prepared  = $wpdb->prepare( "SELECT cashier_id, COUNT(*) as shift_count, COALESCE(SUM(duration_minutes),0) as total_minutes FROM {$table} WHERE {$where_sql} GROUP BY cashier_id ORDER BY total_minutes DESC", ...$params ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Table/where fragments are hardcoded; values spread as prepared params.
+		return $wpdb->get_results( $prepared ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- $prepared is fully prepared above; custom table.
 	}
 
 	// --- REST ---
@@ -154,7 +159,7 @@ class STC_Clock {
 			array(
 				'ok'      => true,
 				'shift'   => $shift,
-				'message' => __( 'You are clocked in.', 'wp-pos-plugin' ),
+				'message' => __( 'You are clocked in.', 'simple-pos' ),
 			),
 			200
 		);
@@ -164,7 +169,7 @@ class STC_Clock {
 		$user_id = get_current_user_id();
 		$shift   = self::open_shift( $user_id );
 		if ( ! $shift ) {
-			return new WP_REST_Response( array( 'ok' => false, 'message' => __( 'No open shift found.', 'wp-pos-plugin' ) ), 200 );
+			return new WP_REST_Response( array( 'ok' => false, 'message' => __( 'No open shift found.', 'simple-pos' ) ), 200 );
 		}
 		self::clock_out( (int) $shift->id );
 		$minutes = (int) $shift->duration_minutes;
@@ -173,7 +178,7 @@ class STC_Clock {
 				'ok'      => true,
 				'message' => sprintf(
 					/* translators: %d: minutes worked. */
-					__( 'Clock-out recorded (%d min).', 'wp-pos-plugin' ),
+					__( 'Clock-out recorded (%d min).', 'simple-pos' ),
 					$minutes
 				),
 			),

@@ -43,34 +43,34 @@ class Simple_POS_CSV {
 
 	public static function import_products( $file_path ) {
 		if ( ! file_exists( $file_path ) ) {
-			return new WP_Error( 'pos_file_missing', __( 'CSV file missing.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_missing', __( 'CSV file missing.', 'simple-pos' ) );
 		}
 		// Validate file size (5MB limit).
 		if ( filesize( $file_path ) > 5 * 1024 * 1024 ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_filesize
-			return new WP_Error( 'pos_file_too_large', __( 'File exceeds 5MB limit.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_too_large', __( 'File exceeds 5MB limit.', 'simple-pos' ) );
 		}
 		// Validate MIME type.
 		$finfo = finfo_open( FILEINFO_MIME_TYPE );
 		$mime  = finfo_file( $finfo, $file_path );
 		finfo_close( $finfo );
 		if ( ! in_array( $mime, array( 'text/csv', 'text/plain', 'application/csv' ), true ) ) {
-			return new WP_Error( 'pos_invalid_file', __( 'Only CSV files are allowed.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_file', __( 'Only CSV files are allowed.', 'simple-pos' ) );
 		}
 		$handle = fopen( $file_path, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		if ( ! $handle ) {
-			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'simple-pos' ) );
 		}
 		$header = fgetcsv( $handle );
 		if ( ! $header ) {
 			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
-			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'wp-pos-plugin' ) );}
+			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'simple-pos' ) );}
 		$header   = array_map( 'strtolower', array_map( 'trim', $header ) );
 		$required = array( 'name', 'price' );
 		foreach ( $required as $r ) {
 			if ( ! in_array( $r, $header, true ) ) {
 				fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 				/* translators: %s: missing CSV column name. */
-				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'wp-pos-plugin' ), $r ) ); }
+				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'simple-pos' ), $r ) ); }
 		}
 		$imported = 0;
 		$errors   = array();
@@ -184,27 +184,27 @@ class Simple_POS_CSV {
 
 	public static function import_categories( $file_path ) {
 		if ( ! file_exists( $file_path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_exists
-			return new WP_Error( 'pos_file_missing', __( 'CSV file missing.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_missing', __( 'CSV file missing.', 'simple-pos' ) );
 		}
 		// Validate file size (5MB limit).
 		if ( filesize( $file_path ) > 5 * 1024 * 1024 ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_filesize
-			return new WP_Error( 'pos_file_too_large', __( 'File exceeds 5MB limit.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_too_large', __( 'File exceeds 5MB limit.', 'simple-pos' ) );
 		}
 		// Validate MIME type.
 		$finfo = finfo_open( FILEINFO_MIME_TYPE );
 		$mime  = finfo_file( $finfo, $file_path );
 		finfo_close( $finfo );
 		if ( ! in_array( $mime, array( 'text/csv', 'text/plain', 'application/csv' ), true ) ) {
-			return new WP_Error( 'pos_invalid_file', __( 'Only CSV files are allowed.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_file', __( 'Only CSV files are allowed.', 'simple-pos' ) );
 		}
 		$handle = fopen( $file_path, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		if ( ! $handle ) {
-			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'simple-pos' ) );
 		}
 		$header = fgetcsv( $handle );
 		if ( ! $header ) {
 			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
-			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'simple-pos' ) );
 		}
 		$header   = array_map( 'strtolower', array_map( 'trim', $header ) );
 		$required = array( 'name' );
@@ -212,7 +212,7 @@ class Simple_POS_CSV {
 			if ( ! in_array( $r, $header, true ) ) {
 				fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 				/* translators: %s: missing column name */
-				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'wp-pos-plugin' ), $r ) );
+				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'simple-pos' ), $r ) );
 			}
 		}
 		$imported = 0;
@@ -246,27 +246,27 @@ class Simple_POS_CSV {
 
 	public static function import_sales( $file_path ) {
 		if ( ! file_exists( $file_path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_exists
-			return new WP_Error( 'pos_file_missing', __( 'CSV file missing.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_missing', __( 'CSV file missing.', 'simple-pos' ) );
 		}
 		// Validate file size (5MB limit).
 		if ( filesize( $file_path ) > 5 * 1024 * 1024 ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_filesize
-			return new WP_Error( 'pos_file_too_large', __( 'File exceeds 5MB limit.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_too_large', __( 'File exceeds 5MB limit.', 'simple-pos' ) );
 		}
 		// Validate MIME type.
 		$finfo = finfo_open( FILEINFO_MIME_TYPE );
 		$mime  = finfo_file( $finfo, $file_path );
 		finfo_close( $finfo );
 		if ( ! in_array( $mime, array( 'text/csv', 'text/plain', 'application/csv' ), true ) ) {
-			return new WP_Error( 'pos_invalid_file', __( 'Only CSV files are allowed.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_file', __( 'Only CSV files are allowed.', 'simple-pos' ) );
 		}
 		$handle = fopen( $file_path, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		if ( ! $handle ) {
-			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'simple-pos' ) );
 		}
 		$header = fgetcsv( $handle );
 		if ( ! $header ) {
 			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
-			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'simple-pos' ) );
 		}
 		$header = array_map( 'strtolower', array_map( 'trim', $header ) );
 		$required = array( 'sale_number', 'total', 'payment_method' );
@@ -274,7 +274,7 @@ class Simple_POS_CSV {
 			if ( ! in_array( $r, $header, true ) ) {
 				fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 				/* translators: %s: missing column name */
-				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'wp-pos-plugin' ), $r ) );
+				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'simple-pos' ), $r ) );
 			}
 		}
 		$imported = 0;
@@ -319,7 +319,7 @@ class Simple_POS_CSV {
 				)
 			);
 			if ( false === $inserted ) {
-				$errors[] = "Row $rownum: " . __( 'Could not insert sale.', 'wp-pos-plugin' );
+				$errors[] = "Row $rownum: " . __( 'Could not insert sale.', 'simple-pos' );
 				continue;
 			}
 			$sale_id = (int) $wpdb->insert_id;
@@ -399,27 +399,27 @@ class Simple_POS_CSV {
 	 */
 	public static function import_variants( $file_path ) {
 		if ( ! file_exists( $file_path ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_exists
-			return new WP_Error( 'pos_file_missing', __( 'CSV file missing.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_missing', __( 'CSV file missing.', 'simple-pos' ) );
 		}
 		// Validate file size (5MB limit).
 		if ( filesize( $file_path ) > 5 * 1024 * 1024 ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_filesize
-			return new WP_Error( 'pos_file_too_large', __( 'File exceeds 5MB limit.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_too_large', __( 'File exceeds 5MB limit.', 'simple-pos' ) );
 		}
 		// Validate MIME type.
 		$finfo = finfo_open( FILEINFO_MIME_TYPE );
 		$mime  = finfo_file( $finfo, $file_path );
 		finfo_close( $finfo );
 		if ( ! in_array( $mime, array( 'text/csv', 'text/plain', 'application/csv' ), true ) ) {
-			return new WP_Error( 'pos_invalid_file', __( 'Only CSV files are allowed.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_file', __( 'Only CSV files are allowed.', 'simple-pos' ) );
 		}
 		$handle = fopen( $file_path, 'r' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		if ( ! $handle ) {
-			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_file_error', __( 'Could not open CSV.', 'simple-pos' ) );
 		}
 		$header = fgetcsv( $handle );
 		if ( ! $header ) {
 			fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
-			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'wp-pos-plugin' ) );
+			return new WP_Error( 'pos_invalid_csv', __( 'Empty CSV.', 'simple-pos' ) );
 		}
 		$header   = array_map( 'strtolower', array_map( 'trim', $header ) );
 		$required = array( 'parent_product_id' );
@@ -427,7 +427,7 @@ class Simple_POS_CSV {
 			if ( ! in_array( $r, $header, true ) ) {
 				fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 				/* translators: %s: missing column name */
-				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'wp-pos-plugin' ), $r ) );
+				return new WP_Error( 'pos_invalid_csv', sprintf( __( 'Missing column: %s', 'simple-pos' ), $r ) );
 			}
 		}
 		$imported = 0;
@@ -442,13 +442,13 @@ class Simple_POS_CSV {
 			$data = array_map( 'trim', $data );
 			$parent_id = isset( $data['parent_product_id'] ) ? (int) $data['parent_product_id'] : 0;
 			if ( $parent_id <= 0 ) {
-				$errors[] = "Row $rownum: " . __( 'Invalid parent product ID.', 'wp-pos-plugin' );
+				$errors[] = "Row $rownum: " . __( 'Invalid parent product ID.', 'simple-pos' );
 				continue;
 			}
 			$parent = Simple_POS_Products::get_product( $parent_id );
 			if ( ! $parent ) {
 				/* translators: %d: parent product id. */
-				$errors[] = "Row $rownum: " . sprintf( __( 'Parent product #%d not found.', 'wp-pos-plugin' ), $parent_id );
+				$errors[] = "Row $rownum: " . sprintf( __( 'Parent product #%d not found.', 'simple-pos' ), $parent_id );
 				continue;
 			}
 			// Parse attributes from "Key:Value; Key2:Value2" format.

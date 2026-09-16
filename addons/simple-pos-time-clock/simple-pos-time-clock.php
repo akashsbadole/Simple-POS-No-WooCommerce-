@@ -4,24 +4,24 @@
  * Description: Cashier clock-in/out with shift reports. Requires the free Simple POS plugin.
  * Version:     1.0.0
  * Author:      Simple POS
- * Text Domain: wp-pos-plugin
+ * Text Domain: simple-pos
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'STC_VERSION', '1.0.0' );
+define( 'SIMPLE_POS_STC_VERSION', '1.0.0' );
 
-add_action( 'simple_pos_init', 'stc_boot' );
+add_action( 'simple_pos_init', 'simple_pos_stc_boot' );
 
-function stc_boot() {
+function simple_pos_stc_boot() {
 	if ( ! class_exists( 'Simple_POS_Addons' ) ) {
 		add_action(
 			'admin_notices',
 			function () {
 				echo '<div class="notice notice-error"><p>';
-				esc_html_e( 'Simple POS — Time Clock requires the free Simple POS plugin.', 'wp-pos-plugin' );
+				esc_html_e( 'Simple POS — Time Clock requires the free Simple POS plugin.', 'simple-pos' );
 				echo '</p></div>';
 			}
 		);
@@ -35,9 +35,9 @@ function stc_boot() {
 		function ( $addons ) {
 			$addons[] = array(
 				'slug'        => 'time-clock',
-				'name'        => __( 'Time Clock', 'wp-pos-plugin' ),
-				'version'     => STC_VERSION,
-				'description' => __( 'Cashier clock-in/out with shift reports.', 'wp-pos-plugin' ),
+				'name'        => __( 'Time Clock', 'simple-pos' ),
+				'version'     => SIMPLE_POS_STC_VERSION,
+				'description' => __( 'Cashier clock-in/out with shift reports.', 'simple-pos' ),
 			);
 			return $addons;
 		}
@@ -47,7 +47,7 @@ function stc_boot() {
 		return;
 	}
 
-	STC_Clock::ensure_schema();
+	Simple_POS_Stc_Clock::ensure_schema();
 
 	// REST API.
 	add_action(
@@ -58,7 +58,7 @@ function stc_boot() {
 				'/clock/in',
 				array(
 					'methods'             => 'POST',
-					'callback'            => array( 'STC_Clock', 'rest_clock_in' ),
+					'callback'            => array( 'Simple_POS_Stc_Clock', 'rest_clock_in' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -69,7 +69,7 @@ function stc_boot() {
 				'/clock/out',
 				array(
 					'methods'             => 'POST',
-					'callback'            => array( 'STC_Clock', 'rest_clock_out' ),
+					'callback'            => array( 'Simple_POS_Stc_Clock', 'rest_clock_out' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -80,7 +80,7 @@ function stc_boot() {
 				'/clock/status',
 				array(
 					'methods'             => 'GET',
-					'callback'            => array( 'STC_Clock', 'rest_status' ),
+					'callback'            => array( 'Simple_POS_Stc_Clock', 'rest_status' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -94,19 +94,19 @@ function stc_boot() {
 		function () {
 			add_submenu_page(
 				'simple-pos-terminal',
-				__( 'Shifts', 'wp-pos-plugin' ),
-				__( 'Shifts', 'wp-pos-plugin' ),
+				__( 'Shifts', 'simple-pos' ),
+				__( 'Shifts', 'simple-pos' ),
 				'manage_pos_products',
 				'simple-pos-shifts',
-				'stc_render_page'
+				'simple_pos_stc_render_page'
 			);
 		}
 	);
 }
 
-function stc_render_page() {
+function simple_pos_stc_render_page() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to view shifts.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to view shifts.', 'simple-pos' ) );
 	}
 	include __DIR__ . '/admin/views/shifts.php';
 }

@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SMO_Outlets {
+class Simple_POS_Smo_Outlets {
 
 	const OPTION_KEY = 'simple_pos_outlets';
 

@@ -1,4 +1,5 @@
-<?php
+<?php
+// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View template included inside a render method; locals are function-scoped, not globals.
 /**
  * Add-ons screen: toggle the bundled add-ons included with the plugin.
  */
@@ -9,20 +10,21 @@ $addon_catalog  = Simple_POS_Addons::get_catalog();
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">
-		<h1><?php esc_html_e( 'Add-ons', 'wp-pos-plugin' ); ?></h1>
+		<h1><?php esc_html_e( 'Add-ons', 'simple-pos' ); ?></h1>
 	</div>
-	<p class="description"><?php esc_html_e( 'All add-ons are free and included with Simple POS — enable or disable them below. Changes apply on the next page load.', 'wp-pos-plugin' ); ?></p>
+	<p class="description"><?php esc_html_e( 'All add-ons are free and included with Simple POS — enable or disable them below. Changes apply on the next page load.', 'simple-pos' ); ?></p>
 	<?php if ( isset( $_GET['simple_pos_addons_msg'] ) && 'updated' === sanitize_key( wp_unslash( $_GET['simple_pos_addons_msg'] ) ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Add-on setting saved.', 'wp-pos-plugin' ); ?></p></div>
+?>
+		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Add-on setting saved.', 'simple-pos' ); ?></p></div>
 	<?php endif; ?>
 
 	<div class="simple-pos-card simple-pos-table-card">
-		<h2 class="simple-pos-section-title" style="margin:0;padding:14px 14px 0"><?php esc_html_e( 'Included add-ons', 'wp-pos-plugin' ); ?></h2>
+		<h2 class="simple-pos-section-title" style="margin:0;padding:14px 14px 0"><?php esc_html_e( 'Included add-ons', 'simple-pos' ); ?></h2>
 		<table class="wp-list-table widefat striped simple-pos-table" style="margin-top:10px">
-			<thead><tr><th><?php esc_html_e( 'Name', 'wp-pos-plugin' ); ?></th><th><?php esc_html_e( 'Version', 'wp-pos-plugin' ); ?></th><th><?php esc_html_e( 'Description', 'wp-pos-plugin' ); ?></th><th style="width:170px"><?php esc_html_e( 'Status', 'wp-pos-plugin' ); ?></th></tr></thead>
+			<thead><tr><th><?php esc_html_e( 'Name', 'simple-pos' ); ?></th><th><?php esc_html_e( 'Version', 'simple-pos' ); ?></th><th><?php esc_html_e( 'Description', 'simple-pos' ); ?></th><th style="width:170px"><?php esc_html_e( 'Status', 'simple-pos' ); ?></th></tr></thead>
 			<tbody>
 				<?php if ( empty( $bundled_addons ) ) : ?>
-					<tr><td colspan="4" class="simple-pos-empty"><?php esc_html_e( 'No add-ons bundled yet.', 'wp-pos-plugin' ); ?></td></tr>
+					<tr><td colspan="4" class="simple-pos-empty"><?php esc_html_e( 'No add-ons bundled yet.', 'simple-pos' ); ?></td></tr>
 				<?php endif; ?>
 				<?php foreach ( $bundled_addons as $addon ) : ?>
 					<?php
@@ -35,9 +37,9 @@ $addon_catalog  = Simple_POS_Addons::get_catalog();
 						<td><?php echo esc_html( $addon['description'] ?? '' ); ?></td>
 						<td>
 							<?php if ( $addon_on ) : ?>
-								<span style="color:#00a32a;font-weight:600"><?php esc_html_e( 'Enabled', 'wp-pos-plugin' ); ?></span>
+								<span style="color:#00a32a;font-weight:600"><?php esc_html_e( 'Enabled', 'simple-pos' ); ?></span>
 							<?php else : ?>
-								<span style="color:#787c82;font-weight:600"><?php esc_html_e( 'Disabled', 'wp-pos-plugin' ); ?></span>
+								<span style="color:#787c82;font-weight:600"><?php esc_html_e( 'Disabled', 'simple-pos' ); ?></span>
 							<?php endif; ?>
 							<?php if ( $addon_slug ) : ?>
 								<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline;margin-left:6px">
@@ -45,7 +47,7 @@ $addon_catalog  = Simple_POS_Addons::get_catalog();
 									<input type="hidden" name="action" value="simple_pos_addon_toggle" />
 									<input type="hidden" name="addon" value="<?php echo esc_attr( $addon_slug ); ?>" />
 									<input type="hidden" name="enable" value="<?php echo $addon_on ? '0' : '1'; ?>" />
-									<button type="submit" class="button button-small"><?php echo esc_html( $addon_on ? __( 'Disable', 'wp-pos-plugin' ) : __( 'Enable', 'wp-pos-plugin' ) ); ?></button>
+									<button type="submit" class="button button-small"><?php echo esc_html( $addon_on ? __( 'Disable', 'simple-pos' ) : __( 'Enable', 'simple-pos' ) ); ?></button>
 								</form>
 							<?php endif; ?>
 						</td>
@@ -56,7 +58,7 @@ $addon_catalog  = Simple_POS_Addons::get_catalog();
 	</div>
 
 	<?php if ( ! empty( $addon_catalog ) ) : ?>
-	<h2 class="simple-pos-section-title" style="margin-top:16px"><?php esc_html_e( 'Available add-ons', 'wp-pos-plugin' ); ?></h2>
+	<h2 class="simple-pos-section-title" style="margin-top:16px"><?php esc_html_e( 'Available add-ons', 'simple-pos' ); ?></h2>
 	<?php
 	$badge_colors = array(
 		'New'         => '#00a32a',
@@ -73,8 +75,8 @@ $addon_catalog  = Simple_POS_Addons::get_catalog();
 					<?php endif; ?>
 				</h3>
 				<p class="simple-pos-muted" style="margin:0 0 6px"><?php echo esc_html( $item['description'] ?? '' ); ?></p>
-				<p style="margin:0 0 10px;font-weight:600;color:#00a32a"><?php esc_html_e( 'Free', 'wp-pos-plugin' ); ?></p>
-				<a class="button button-primary" href="<?php echo esc_url( $item['url'] ?? '#' ); ?>" <?php echo ( isset( $item['url'] ) && '#' !== $item['url'] ) ? 'target="_blank" rel="noopener"' : ''; ?>><?php esc_html_e( 'View add-on', 'wp-pos-plugin' ); ?></a>
+				<p style="margin:0 0 10px;font-weight:600;color:#00a32a"><?php esc_html_e( 'Free', 'simple-pos' ); ?></p>
+				<a class="button button-primary" href="<?php echo esc_url( $item['url'] ?? '#' ); ?>" <?php echo ( isset( $item['url'] ) && '#' !== $item['url'] ) ? 'target="_blank" rel="noopener"' : ''; ?>><?php esc_html_e( 'View add-on', 'simple-pos' ); ?></a>
 			</div>
 		<?php endforeach; ?>
 	</div>

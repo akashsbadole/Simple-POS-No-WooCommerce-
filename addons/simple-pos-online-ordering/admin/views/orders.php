@@ -1,39 +1,40 @@
-<?php
+<?php
+// phpcs:ignoreFile WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View template included inside a render method; locals are function-scoped, not globals.
 /**
  * Online orders admin: view and manage incoming orders.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-$orders = SOO_Orders::get_orders( 'any' );
+$orders = Simple_POS_Soo_Orders::get_orders( 'any' );
 $msg    = isset( $_GET['soo_msg'] ) ? sanitize_key( $_GET['soo_msg'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 ?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'Online Orders', 'wp-pos-plugin' ); ?></h1>
+		<h1 class="wp-heading-inline"><?php esc_html_e( 'Online Orders', 'simple-pos' ); ?></h1>
 	</div>
 
 	<?php if ( 'saved' === $msg ) : ?>
-		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Updated.', 'wp-pos-plugin' ); ?></p></div>
+		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Updated.', 'simple-pos' ); ?></p></div>
 	<?php endif; ?>
 
-	<p class="simple-pos-muted" style="margin:0 0 16px"><?php esc_html_e( 'Incoming orders appear here. Load them at the terminal to process via normal checkout (stock is deducted at that point).', 'wp-pos-plugin' ); ?></p>
+	<p class="simple-pos-muted" style="margin:0 0 16px"><?php esc_html_e( 'Incoming orders appear here. Load them at the terminal to process via normal checkout (stock is deducted at that point).', 'simple-pos' ); ?></p>
 
 	<div class="simple-pos-card simple-pos-table-card">
 		<table class="wp-list-table widefat striped simple-pos-table">
 			<thead><tr>
-				<th><?php esc_html_e( 'Order #', 'wp-pos-plugin' ); ?></th>
-				<th><?php esc_html_e( 'Customer', 'wp-pos-plugin' ); ?></th>
-				<th><?php esc_html_e( 'Phone', 'wp-pos-plugin' ); ?></th>
-				<th class="num"><?php esc_html_e( 'Subtotal', 'wp-pos-plugin' ); ?></th>
-				<th><?php esc_html_e( 'Items', 'wp-pos-plugin' ); ?></th>
-				<th><?php esc_html_e( 'Status', 'wp-pos-plugin' ); ?></th>
-				<th><?php esc_html_e( 'Placed', 'wp-pos-plugin' ); ?></th>
-				<th><?php esc_html_e( 'Actions', 'wp-pos-plugin' ); ?></th>
+				<th><?php esc_html_e( 'Order #', 'simple-pos' ); ?></th>
+				<th><?php esc_html_e( 'Customer', 'simple-pos' ); ?></th>
+				<th><?php esc_html_e( 'Phone', 'simple-pos' ); ?></th>
+				<th class="num"><?php esc_html_e( 'Subtotal', 'simple-pos' ); ?></th>
+				<th><?php esc_html_e( 'Items', 'simple-pos' ); ?></th>
+				<th><?php esc_html_e( 'Status', 'simple-pos' ); ?></th>
+				<th><?php esc_html_e( 'Placed', 'simple-pos' ); ?></th>
+				<th><?php esc_html_e( 'Actions', 'simple-pos' ); ?></th>
 			</tr></thead>
 			<tbody>
 				<?php if ( empty( $orders ) ) : ?>
-					<tr><td colspan="8" class="simple-pos-empty"><?php esc_html_e( 'No online orders yet.', 'wp-pos-plugin' ); ?></td></tr>
+					<tr><td colspan="8" class="simple-pos-empty"><?php esc_html_e( 'No online orders yet.', 'simple-pos' ); ?></td></tr>
 				<?php endif; ?>
 				<?php foreach ( $orders as $o ) : ?>
 					<?php

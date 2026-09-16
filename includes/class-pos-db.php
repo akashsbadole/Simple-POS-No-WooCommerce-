@@ -170,7 +170,7 @@ class Simple_POS_DB {
 		// Check if the sales table supports transactions (InnoDB).
 		$sample_table = self::table( 'sales' );
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		$engine = $wpdb->get_var( "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$sample_table}'" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$engine = $wpdb->get_var( $wpdb->prepare( "SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = %s", $sample_table ) );
 
 		if ( 'InnoDB' !== $engine ) {
 			// Table does not support transactions — run callback directly.

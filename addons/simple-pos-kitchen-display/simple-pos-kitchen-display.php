@@ -4,24 +4,24 @@
  * Description: Kitchen order view with item-level prep status for restaurant POS. Requires the free Simple POS plugin.
  * Version:     1.0.0
  * Author:      Simple POS
- * Text Domain: wp-pos-plugin
+ * Text Domain: simple-pos
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SKD_VERSION', '1.0.0' );
+define( 'SIMPLE_POS_SKD_VERSION', '1.0.0' );
 
-add_action( 'simple_pos_init', 'skd_boot' );
+add_action( 'simple_pos_init', 'simple_pos_skd_boot' );
 
-function skd_boot() {
+function simple_pos_skd_boot() {
 	if ( ! class_exists( 'Simple_POS_Addons' ) ) {
 		add_action(
 			'admin_notices',
 			function () {
 				echo '<div class="notice notice-error"><p>';
-				esc_html_e( 'Simple POS — Kitchen Display requires the free Simple POS plugin.', 'wp-pos-plugin' );
+				esc_html_e( 'Simple POS — Kitchen Display requires the free Simple POS plugin.', 'simple-pos' );
 				echo '</p></div>';
 			}
 		);
@@ -35,9 +35,9 @@ function skd_boot() {
 		function ( $addons ) {
 			$addons[] = array(
 				'slug'        => 'kitchen-display',
-				'name'        => __( 'Kitchen Display', 'wp-pos-plugin' ),
-				'version'     => SKD_VERSION,
-				'description' => __( 'Restaurant kitchen order view with item-level prep status.', 'wp-pos-plugin' ),
+				'name'        => __( 'Kitchen Display', 'simple-pos' ),
+				'version'     => SIMPLE_POS_SKD_VERSION,
+				'description' => __( 'Restaurant kitchen order view with item-level prep status.', 'simple-pos' ),
 			);
 			return $addons;
 		}
@@ -47,13 +47,13 @@ function skd_boot() {
 		return;
 	}
 
-	SKD_Kitchen::ensure_schema();
+	Simple_POS_Skd_Kitchen::ensure_schema();
 
 	// Tag new sale items for kitchen when a sale is created.
 	add_action(
 		'simple_pos_sale_created',
 		function ( $sale_id, $calc, $line_items, $cart_data ) {
-			SKD_Kitchen::queue_sale_items( $sale_id, $line_items );
+			Simple_POS_Skd_Kitchen::queue_sale_items( $sale_id, $line_items );
 		},
 		10,
 		4
@@ -68,7 +68,7 @@ function skd_boot() {
 				'/kitchen/orders',
 				array(
 					'methods'             => 'GET',
-					'callback'            => array( 'SKD_Kitchen', 'rest_list' ),
+					'callback'            => array( 'Simple_POS_Skd_Kitchen', 'rest_list' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -79,7 +79,7 @@ function skd_boot() {
 				'/kitchen/items/(?P<id>\d+)/status',
 				array(
 					'methods'             => 'POST',
-					'callback'            => array( 'SKD_Kitchen', 'rest_set_item_status' ),
+					'callback'            => array( 'Simple_POS_Skd_Kitchen', 'rest_set_item_status' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -90,7 +90,7 @@ function skd_boot() {
 				'/kitchen/orders/(?P<id>\d+)/bump',
 				array(
 					'methods'             => 'POST',
-					'callback'            => array( 'SKD_Kitchen', 'rest_bump_order' ),
+					'callback'            => array( 'Simple_POS_Skd_Kitchen', 'rest_bump_order' ),
 					'permission_callback' => function () {
 						return current_user_can( 'simple_pos_use_terminal' );
 					},
@@ -104,34 +104,34 @@ function skd_boot() {
 		function () {
 			add_submenu_page(
 				'simple-pos-terminal',
-				__( 'Kitchen Display', 'wp-pos-plugin' ),
-				__( 'Kitchen Display', 'wp-pos-plugin' ),
+				__( 'Kitchen Display', 'simple-pos' ),
+				__( 'Kitchen Display', 'simple-pos' ),
 				'manage_pos_products',
 				'simple-pos-kitchen',
-				'skd_render_page'
+				'simple_pos_skd_render_page'
 			);
 		}
 	);
 
-	add_action( 'admin_post_simple_pos_kitchen_bump', 'skd_handle_bump' );
+	add_action( 'admin_post_simple_pos_kitchen_bump', 'simple_pos_skd_handle_bump' );
 }
 
-function skd_render_page() {
+function simple_pos_skd_render_page() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to access the kitchen display.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to access the kitchen display.', 'simple-pos' ) );
 	}
 	include __DIR__ . '/admin/views/kitchen.php';
 }
 
-function skd_handle_bump() {
+function simple_pos_skd_handle_bump() {
 	if ( ! current_user_can( 'manage_pos_products' ) ) {
-		wp_die( esc_html__( 'You are not allowed to bump orders.', 'wp-pos-plugin' ) );
+		wp_die( esc_html__( 'You are not allowed to bump orders.', 'simple-pos' ) );
 	}
 	check_admin_referer( 'simple_pos_kitchen_bump' );
 
 	$order_id = isset( $_POST['order_id'] ) ? (int) $_POST['order_id'] : 0;
 	if ( $order_id > 0 ) {
-		SKD_Kitchen::bump_order( $order_id );
+		Simple_POS_Skd_Kitchen::bump_order( $order_id );
 	}
 
 	wp_safe_redirect( add_query_arg( 'skd_msg', 'bumped', admin_url( 'admin.php?page=simple-pos-kitchen' ) ) );

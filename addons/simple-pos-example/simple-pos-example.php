@@ -3,7 +3,7 @@
  * Plugin Name: Simple POS — Example Add-on
  * Description: Reference skeleton for Simple POS add-ons. Fork this folder into your own plugin to build one.
  * Version:     1.0.0
- * Text Domain: wp-pos-plugin
+ * Text Domain: simple-pos
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,9 +20,9 @@ add_action( 'simple_pos_init', function () {
 	add_filter( 'simple_pos_registered_addons', function ( $addons ) {
 		$addons[] = array(
 			'slug'        => 'example',
-			'name'        => __( 'Example Add-on', 'wp-pos-plugin' ),
+			'name'        => __( 'Example Add-on', 'simple-pos' ),
 			'version'     => '1.0.0',
-			'description' => __( 'Logs every completed sale. Fork me into your own add-on.', 'wp-pos-plugin' ),
+			'description' => __( 'Logs every completed sale. Fork me into your own add-on.', 'simple-pos' ),
 		);
 		return $addons;
 	} );

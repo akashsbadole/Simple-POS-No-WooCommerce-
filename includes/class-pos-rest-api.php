@@ -513,7 +513,7 @@ class Simple_POS_REST_API {
 	public static function get_product( WP_REST_Request $request ) {
 		$product = Simple_POS_Products::get_product_with_variants( (int) $request['id'] );
 		if ( ! $product ) {
-			return new WP_Error( 'pos_not_found', __( 'Product not found.', 'wp-pos-plugin' ), array( 'status' => 404 ) );
+			return new WP_Error( 'pos_not_found', __( 'Product not found.', 'simple-pos' ), array( 'status' => 404 ) );
 		}
 		return rest_ensure_response( $product );
 	}
@@ -536,7 +536,7 @@ class Simple_POS_REST_API {
 	public static function import_products( WP_REST_Request $request ) {
 		$files = $request->get_file_params();
 		if ( empty( $files['file']['tmp_name'] ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'No file uploaded.', 'wp-pos-plugin' ), array( 'status' => 400 ) );
+			return new WP_Error( 'pos_invalid_input', __( 'No file uploaded.', 'simple-pos' ), array( 'status' => 400 ) );
 		}
 		$result = Simple_POS_CSV::import_products( $files['file']['tmp_name'] );
 		return self::respond_or_error( $result, $result );
@@ -552,7 +552,7 @@ class Simple_POS_REST_API {
 	public static function import_variants( WP_REST_Request $request ) {
 		$files = $request->get_file_params();
 		if ( empty( $files['file']['tmp_name'] ) ) {
-			return new WP_Error( 'pos_invalid_input', __( 'No file uploaded.', 'wp-pos-plugin' ), array( 'status' => 400 ) );
+			return new WP_Error( 'pos_invalid_input', __( 'No file uploaded.', 'simple-pos' ), array( 'status' => 400 ) );
 		}
 		$result = Simple_POS_CSV::import_variants( $files['file']['tmp_name'] );
 		return self::respond_or_error( $result, $result );
@@ -568,7 +568,7 @@ class Simple_POS_REST_API {
 	public static function lookup_product( WP_REST_Request $request ) {
 		$product = Simple_POS_Products::find_by_code( $request['code'] );
 		if ( ! $product ) {
-			return new WP_Error( 'pos_not_found', __( 'No product matches that code.', 'wp-pos-plugin' ), array( 'status' => 404 ) );
+			return new WP_Error( 'pos_not_found', __( 'No product matches that code.', 'simple-pos' ), array( 'status' => 404 ) );
 		}
 		return rest_ensure_response( $product );
 	}
@@ -673,7 +673,7 @@ class Simple_POS_REST_API {
 	public static function get_sale( WP_REST_Request $request ) {
 		$sale = Simple_POS_Sales::get_sale( (int) $request['id'] );
 		if ( ! $sale ) {
-			return new WP_Error( 'pos_not_found', __( 'Sale not found.', 'wp-pos-plugin' ), array( 'status' => 404 ) );
+			return new WP_Error( 'pos_not_found', __( 'Sale not found.', 'simple-pos' ), array( 'status' => 404 ) );
 		}
 		$sale->items = Simple_POS_Sales::get_sale_items( $sale->id );
 		return rest_ensure_response( $sale );
@@ -738,7 +738,7 @@ class Simple_POS_REST_API {
 			if ( '' === $country ) {
 				return new WP_Error(
 					'pos_missing_country',
-					__( 'Tax country is required for calculation. Configure default tax country in POS Settings.', 'wp-pos-plugin' ),
+					__( 'Tax country is required for calculation. Configure default tax country in POS Settings.', 'simple-pos' ),
 					array( 'status' => 400 )
 				);
 			}
@@ -751,7 +751,7 @@ class Simple_POS_REST_API {
 			return new WP_Error(
 				'pos_invalid_country',
 				/* translators: %s: the invalid country code provided. */
-				sprintf( __( 'Invalid country code: %s. Must be 2-letter ISO code (e.g., US, GB, IN).', 'wp-pos-plugin' ), $country ),
+				sprintf( __( 'Invalid country code: %s. Must be 2-letter ISO code (e.g., US, GB, IN).', 'simple-pos' ), $country ),
 				array( 'status' => 400 )
 			);
 		}
@@ -802,7 +802,7 @@ class Simple_POS_REST_API {
 	public static function get_purchase_order( WP_REST_Request $r ) {
 		$po = Simple_POS_Purchase_Orders::get_order( (int) $r['id'] );
 		if ( ! $po ) {
-			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'wp-pos-plugin' ), array( 'status' => 404 ) );
+			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'simple-pos' ), array( 'status' => 404 ) );
 		}
 		$po->items = Simple_POS_Purchase_Orders::get_items( $po->id );
 		return rest_ensure_response( $po );
@@ -819,12 +819,12 @@ class Simple_POS_REST_API {
 		$order = Simple_POS_Purchase_Orders::get_order( $id );
 		
 		if ( ! $order ) {
-			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'wp-pos-plugin' ), array( 'status' => 404 ) );
+			return new WP_Error( 'pos_not_found', __( 'PO not found.', 'simple-pos' ), array( 'status' => 404 ) );
 		}
 		
 		// Only allow editing draft POs.
 		if ( ! in_array( $order->status, array( 'draft' ), true ) ) {
-			return new WP_Error( 'pos_invalid_state', __( 'Can only edit draft POs.', 'wp-pos-plugin' ), array( 'status' => 400 ) );
+			return new WP_Error( 'pos_invalid_state', __( 'Can only edit draft POs.', 'simple-pos' ), array( 'status' => 400 ) );
 		}
 		
 		$result = Simple_POS_Purchase_Orders::update_order( $id, $r->get_json_params() );
@@ -883,12 +883,12 @@ class Simple_POS_REST_API {
 	public static function get_barcode_image( WP_REST_Request $request ) {
 		$product = Simple_POS_Products::get_product( (int) $request['id'] );
 		if ( ! $product ) {
-			return new WP_Error( 'pos_not_found', __( 'Product not found.', 'wp-pos-plugin' ), array( 'status' => 404 ) );
+			return new WP_Error( 'pos_not_found', __( 'Product not found.', 'simple-pos' ), array( 'status' => 404 ) );
 		}
 
 		$code = $product->barcode ?: $product->sku;
 		if ( empty( $code ) ) {
-			return new WP_Error( 'pos_no_barcode', __( 'Product has no barcode or SKU.', 'wp-pos-plugin' ), array( 'status' => 400 ) );
+			return new WP_Error( 'pos_no_barcode', __( 'Product has no barcode or SKU.', 'simple-pos' ), array( 'status' => 400 ) );
 		}
 
 		// Validate and normalize barcode for basic rendering.
@@ -907,7 +907,7 @@ class Simple_POS_REST_API {
 
 		// Check GD extension.
 		if ( ! function_exists( 'imagecreate' ) ) {
-			return new WP_Error( 'pos_no_gd', __( 'GD library is required for barcode images.', 'wp-pos-plugin' ), array( 'status' => 500 ) );
+			return new WP_Error( 'pos_no_gd', __( 'GD library is required for barcode images.', 'simple-pos' ), array( 'status' => 500 ) );
 		}
 
 		// Limit scale to prevent memory exhaustion attacks (max 10x).
@@ -928,7 +928,7 @@ class Simple_POS_REST_API {
 		if ( $total_width > $max_width || $img_height > $max_height ) {
 			return new WP_Error(
 				'pos_image_too_large',
-				__( 'Barcode image dimensions exceed limits. Use a smaller scale value.', 'wp-pos-plugin' ),
+				__( 'Barcode image dimensions exceed limits. Use a smaller scale value.', 'simple-pos' ),
 				array( 'status' => 400 )
 			);
 		}
