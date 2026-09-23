@@ -6,8 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 $products = Simple_POS_Products::get_products( array( 'per_page' => 100, 'page' => 1, 'status' => 'active' ) );
 $settings = Simple_POS_Settings::get_all();
 ?>
-$settings = Simple_POS_Settings::get_all();
-?>
 <div class="wrap simple-pos-wrap">
 	<div class="simple-pos-page-header">
 		<h1><?php esc_html_e('Barcode Labels','simple-pos');?></h1>
@@ -36,7 +34,7 @@ $settings = Simple_POS_Settings::get_all();
 						foreach($rows as $r): if(empty($r['barcode']) && empty($r['sku'])) continue;
 					?>
 						<tr <?php echo $r['is_variant']?'class="is-variant"':'';?>>
-							<td><input type="checkbox" class="pos-label-check" data-name="<?php echo esc_attr($r['name']);?>" data-barcode="<?php echo esc_attr($r['barcode']?:$r['sku']);?>" data-price="<?php echo esc_attr(Simple_POS_DB::format_currency($r['price']));?>" /></td>
+							<td><input type="checkbox" class="pos-label-check" data-name="<?php echo esc_attr($r['name']);?>" data-barcode="<?php echo esc_attr($r['barcode']?:$r['sku']);?>" data-sku="<?php echo esc_attr($r['sku']);?>" data-price="<?php echo esc_attr(Simple_POS_DB::format_currency($r['price']));?>" /></td>
 							<td><?php echo esc_html($r['name']);?></td>
 							<td><code><?php echo esc_html($r['sku']);?></code></td>
 							<td><?php echo esc_html($r['barcode']);?></td>

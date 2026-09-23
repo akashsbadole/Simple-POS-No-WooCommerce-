@@ -177,7 +177,7 @@ class Simple_POS_Admin {
 		// Barcode labels screen needs JsBarcode + its screen script (both enqueued locally, never CDN).
 		if ( $is_barcode ) {
 			wp_enqueue_script( 'simple-pos-jsbarcode' );
-			wp_enqueue_script( 'simple-pos-barcode-labels', SIMPLE_POS_PLUGIN_URL . 'admin/js/barcode-labels.js', array( 'simple-pos-jsbarcode' ), SIMPLE_POS_VERSION, true );
+			wp_enqueue_script( 'simple-pos-barcode-labels', SIMPLE_POS_PLUGIN_URL . 'admin/js/barcode-labels.js', array( 'simple-pos-jsbarcode', 'simple-pos-admin' ), SIMPLE_POS_VERSION, true );
 		}
 
 		// Shared admin script (products, customers, sales, reports, settings, taxes, barcode).
