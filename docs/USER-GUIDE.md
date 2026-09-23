@@ -1,7 +1,7 @@
 # Simple POS — User Guide
 
 **Plugin:** Simple POS — Standalone Point of Sale
-**Version:** 2.1.0
+**Version:** 1.0.0
 **License:** GPL v2 or later
 
 Simple POS is a lightweight, standalone Point of Sale system for WordPress. It does **not** require WooCommerce or any other e-commerce plugin. It ships with its own database tables, REST API, and a dedicated admin area.
@@ -145,7 +145,7 @@ No. JsBarcode and all assets are vendored locally.
 ## 9. Troubleshooting
 
 **No POS admin styles/scripts loading**
-Update to 2.1.0 (2.0.9 fixed the wrong screen-check that prevented `pos-admin.css` from being enqueued).
+Update to 1.0.0 (2.0.9 fixed the wrong screen-check that prevented `pos-admin.css` from being enqueued).
 
 **“Could not record sale.” on upgraded installs**
 Schema auto-upgrade (DB 2.1.1+) recreates the missing sale-number sequence table and sale columns on the next admin load. No data loss. Update to a recent version and reload POS → Terminal.

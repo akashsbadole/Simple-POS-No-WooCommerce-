@@ -238,9 +238,11 @@ Ensure products have at least one variant or no variants configured. Check brows
 
 ## Changelog
 
-### 2.1.0
-- Fix: Kitchen Display + bump actions render the permission error correctly (`wp_die( esc_html_e() )` passed empty to `wp_die`)
-- Polish: author/URI/Contributor metadata updated for WordPress.org + ThemeForest submission
+### 1.0.0
+- Initial public release: POS terminal, products, variants, tax engine, suppliers, purchase orders, barcode labels, CSV import/export, reports, roles, and settings
+- All critical security issues fixed (CSV formula injection, barcode DoS, sale number race condition)
+- WCAG 2.1 accessible variant picker
+- Transactional consistency across all core operations
 
 ### 2.0.9
 - Fix: admin CSS/JS load on all POS screens (screen check never matched, so pos-admin.css was never enqueued)

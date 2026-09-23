@@ -42,11 +42,12 @@ if (-not (Test-Path $OutputDir)) { New-Item -ItemType Directory -Path $OutputDir
 if (-not (Test-Path $StagePlugin)) { New-Item -ItemType Directory -Path $StagePlugin -Force | Out-Null }
 
 # ── Exclusion patterns (applied at any depth by robocopy) ────────────
+$VendorDir = Join-Path $PluginRoot 'vendor'
 $ExcludeDirs = @(
     '.git',
     '.github',
     '.kilo',
-    'vendor',          # test-only dependencies
+    $VendorDir,
     'node_modules',
     'release',         # output directory
     'tests',           # unit tests / self-checks

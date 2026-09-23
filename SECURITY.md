@@ -2,10 +2,9 @@
 
 ## Supported Versions
 
-| Version | Supported |
+| Version | Supported          |
 |---------|-----------|
-| 2.0.x   | Yes       |
-| 1.0.x   | No        |
+| 1.0.x   | Yes       |
 
 ## Reporting a Vulnerability
 
@@ -58,7 +57,7 @@ If you discover a security vulnerability in Simple POS, please report it respons
 - No file uploads accepted except CSV (validated server-side)
 - Vendored JavaScript loaded locally (no external CDN)
 
-## Security Improvements in 2.0.0
+## Security Improvements in 1.0.0
 
 - Fixed CSV sales import to bypass cart validation (prevents empty cart exploit)
 - Added InnoDB transaction support with automatic rollback

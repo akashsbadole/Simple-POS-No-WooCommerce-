@@ -4,7 +4,7 @@ Tags: pos, point of sale, retail, inventory, cash register
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.1.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,10 @@ One store-wide base currency (USD/EUR/INR/GBP and 16 more presets) set in POS â†
 Sales are calculated server-side via `Simple_POS_Tax::calculate_order()` using the active tax classes/rates for the selected country/state, so the receipt breakdown matches the stored sale exactly. A `POST pos/v1/tax/calculate` preview is used for the live total.
 
 == Upgrade Notice ==
+
+= 1.0.0 =
+
+Initial public release. All core features: POS terminal, products, variants, tax engine, suppliers, purchase orders, barcode labels, CSV import/export, reports, roles, and settings.
 
 = 2.1.0 =
 

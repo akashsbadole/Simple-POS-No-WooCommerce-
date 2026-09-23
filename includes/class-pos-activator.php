@@ -469,8 +469,8 @@ class Simple_POS_Activator {
 	}
 
 	/**
-	 * 2.1.1 repair: the sale_sequences table was introduced without a DB
-	 * version bump, so installs already on 2.1.0 never created it — every
+	 * migration: the sale_sequences table was introduced without a DB
+	 * version bump, so installs already on 1.0.0 never created it — every
 	 * checkout then reuses sale_number POS-000000 and the 2nd sale fails
 	 * with "Could not record sale." (duplicate key). CREATE IF NOT EXISTS
 	 * is safe to run on every upgrade.

@@ -3,7 +3,7 @@
  * Plugin Name:       Simple POS — Standalone Point of Sale
  * Plugin URI:        https://appixen.com
  * Description:       A lightweight, standalone Point of Sale system for WordPress. No WooCommerce required. Custom database tables, REST API, barcode-ready terminal, per-country tax, variants, suppliers/POs, barcode labels, USB ESC/POS, inventory, reports and role-based access.
- * Version:           2.1.0
+ * Version:           1.0.0
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            akash
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Core plugin constants.
  */
-define( 'SIMPLE_POS_VERSION', '2.1.0' );
+define( 'SIMPLE_POS_VERSION', '1.0.0' );
 define( 'SIMPLE_POS_DB_VERSION', '2.1.3' );
 define( 'SIMPLE_POS_PLUGIN_FILE', __FILE__ );
 define( 'SIMPLE_POS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );

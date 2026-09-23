@@ -1,5 +1,5 @@
 # Manual Test Cases - WordPress POS Plugin
-**Version:** 2.1.0  
+**Version:** 1.0.0  
 **Date:** September 9, 2026  
 **Tester:** _______________  
 
