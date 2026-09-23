@@ -3,7 +3,8 @@
     Builds a WordPress.org / ThemeForest release zip for Simple POS.
 .DESCRIPTION
     Creates a clean zip containing only runtime plugin files — no .git,
-    vendor (test-only), README.md (GitHub), build artifacts, or test caches.
+    root vendor (PHP composer deps), admin/js/vendor (JS libs kept),
+    README.md (GitHub), build artifacts, or test caches.
     Output: release\simple-pos-{version}.zip
 .EXAMPLE
     .\build-release.ps1
@@ -41,13 +42,11 @@ $StagePlugin = Join-Path $StageRoot 'simple-pos'
 if (-not (Test-Path $OutputDir)) { New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null }
 if (-not (Test-Path $StagePlugin)) { New-Item -ItemType Directory -Path $StagePlugin -Force | Out-Null }
 
-# ── Exclusion patterns (applied at any depth by robocopy) ────────────
-$VendorDir = Join-Path $PluginRoot 'vendor'
+# ── Exclusion patterns ────────────────────────────────────────
 $ExcludeDirs = @(
     '.git',
     '.github',
     '.kilo',
-    $VendorDir,
     'node_modules',
     'release',         # output directory
     'tests',           # unit tests / self-checks
@@ -89,6 +88,10 @@ $rcArgs += @('/NFL', '/NDL', '/NJH', '/NJS', '/NP')
 if ($LASTEXITCODE -ge 8) {
     throw "robocopy failed with exit code $LASTEXITCODE"
 }
+
+# Remove root-level vendor (PHP composer deps) but keep admin/js/vendor
+$rootVendor = Join-Path $StagePlugin 'vendor'
+if (Test-Path $rootVendor) { Remove-Item $rootVendor -Recurse -Force }
 
 # ── Verify required files ───────────────────────────────────────────
 $required = @('wp-pos-plugin.php', 'readme.txt', 'LICENSE.txt')
