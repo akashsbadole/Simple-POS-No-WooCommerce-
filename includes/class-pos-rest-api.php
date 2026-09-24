@@ -891,19 +891,19 @@ class Simple_POS_REST_API {
 			return new WP_Error( 'pos_no_barcode', __( 'Product has no barcode or SKU.', 'simple-pos' ), array( 'status' => 400 ) );
 		}
 
-		// Validate and normalize barcode for basic rendering.
-		// Note: This is a preview feature. For production use, export product codes
-		// to professional label printing software. Full compliance barcode support
-		// coming in v1.2.
-		$code_upper = strtoupper( $code );
-		if ( $code_upper !== $code ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( 'POS: Barcode contains lowercase/unsupported characters, converting to uppercase for basic rendering' );
-			}
+	// Validate and normalize barcode for basic rendering.
+	// Note: This is a preview feature. For production use, export product codes
+	// to professional label printing software. Full compliance barcode support
+	// coming in v1.2.
+	$code_upper = strtoupper( $code );
+	if ( $code_upper !== $code ) {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'POS: Barcode contains lowercase/unsupported characters, converting to uppercase for basic rendering' );
 		}
-		// Strip unsupported characters (keep only uppercase alphanumeric and space).
-		$code = preg_replace( '/[^A-Z0-9 ]/', '', $code_upper );
+	}
+	// Strip unsupported characters (keep only CODE39-safe: uppercase, digits, -.$ /+%).
+	$code = preg_replace( '/[^A-Z0-9 \.\-\$\/\+\%]/', '', $code_upper );
 
 		// Check GD extension.
 		if ( ! function_exists( 'imagecreate' ) ) {
@@ -915,8 +915,8 @@ class Simple_POS_REST_API {
 		$height = 60 * $scale;
 		$bar_width = $scale;
 
-		// Simple CODE128-like barcode renderer (basic implementation).
-		// Encode characters to bars using a simplified pattern.
+	// Simple CODE39-compatible barcode renderer (basic implementation).
+	// Encode characters to bars using a simplified pattern.
 		$bars = self::encode_barcode_bars( $code );
 		$total_width = count( $bars ) * $bar_width + 20 * $scale;
 
@@ -971,7 +971,7 @@ class Simple_POS_REST_API {
 	 */
 	private static function encode_barcode_bars( $code ) {
 		// Simple encoding: each character maps to a fixed-width pattern.
-		// This is a simplified CODE128-like encoding for basic barcodes.
+		// This is a simplified CODE39-compatible encoder for basic barcodes.
 		$patterns = array(
 			'0' => array( 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1 ),
 			'1' => array( 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1 ),

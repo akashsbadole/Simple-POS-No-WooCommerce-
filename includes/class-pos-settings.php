@@ -46,7 +46,7 @@ class Simple_POS_Settings {
 			'auto_kick_drawer'         => 0,
 			'printer_type'             => 'browser',
 			'network_printer_ip'       => '',
-			'barcode_symbology'        => 'CODE128',
+			'barcode_symbology'        => 'CODE39',
 			'barcode_label_format'     => 'a4_30',
 			'delete_data_on_uninstall' => 0,
 		);
@@ -199,7 +199,7 @@ class Simple_POS_Settings {
 			'auto_kick_drawer'         => ! empty( $input['auto_kick_drawer'] ) ? 1 : 0,
 			'printer_type'             => isset( $input['printer_type'] ) && in_array( $input['printer_type'], array( 'browser', 'usb', 'network' ), true ) ? $input['printer_type'] : $current['printer_type'],
 			'network_printer_ip'       => isset( $input['network_printer_ip'] ) ? sanitize_text_field( $input['network_printer_ip'] ) : $current['network_printer_ip'],
-			'barcode_symbology'        => isset( $input['barcode_symbology'] ) && in_array( $input['barcode_symbology'], array( 'CODE128', 'EAN13', 'QR' ), true ) ? $input['barcode_symbology'] : $current['barcode_symbology'],
+			'barcode_symbology'        => isset( $input['barcode_symbology'] ) && in_array( $input['barcode_symbology'], array( 'CODE39', 'CODE128', 'EAN13', 'QR' ), true ) ? $input['barcode_symbology'] : $current['barcode_symbology'],
 			'barcode_label_format'     => isset( $input['barcode_label_format'] ) ? sanitize_text_field( $input['barcode_label_format'] ) : $current['barcode_label_format'],
 			'delete_data_on_uninstall' => ! empty( $input['delete_data_on_uninstall'] ) ? 1 : 0,
 		);

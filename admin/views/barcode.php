@@ -46,7 +46,7 @@ $settings = Simple_POS_Settings::get_all();
 			</div>
 		</div>
 		<div class="simple-pos-col-side">
-			<div class="postbox simple-pos-form-card"><h2 class="hndle"><span><?php esc_html_e('Preview','simple-pos');?></span></h2><div class="inside"><div id="pos-label-preview" class="pos-label-sheet" style="border:1px solid #ccc;padding:8px;min-height:120px"></div><p class="description"><?php esc_html_e('Uses JsBarcode (CODE128) in print view. For EAN13 ensure 13-digit numeric. QR fallback.','simple-pos');?></p></div></div>
+			<div class="postbox simple-pos-form-card"><h2 class="hndle"><span><?php esc_html_e('Preview','simple-pos');?></span></h2><div class="inside"><div id="pos-label-preview" class="pos-label-sheet" style="border:1px solid #ccc;padding:8px;min-height:120px"></div><p class="description"><?php esc_html_e('Uses JsBarcode (CODE39) in print view. For EAN13 ensure 13-digit numeric. QR fallback.','simple-pos');?></p></div></div>
 		</div>
 	</div>
 	<!-- print container: vendor URL provided via wp_add_inline_script (window.SimplePOSVendorUrl); data attribute is a no-JS fallback. Logic lives in admin/js/barcode-labels.js (enqueued). -->

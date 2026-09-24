@@ -602,7 +602,7 @@ class Simple_POS_Activator {
 			'auto_kick_drawer'     => 0,
 			'printer_type'         => 'browser', // browser | usb | network
 			'network_printer_ip'   => '',
-			'barcode_symbology'    => 'CODE128',
+			'barcode_symbology'    => 'CODE39',
 			'barcode_label_format' => 'a4_30',
 		);
 

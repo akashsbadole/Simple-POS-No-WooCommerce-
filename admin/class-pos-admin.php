@@ -132,7 +132,7 @@ class Simple_POS_Admin {
 			'printerType'    => Simple_POS_Settings::get( 'printer_type', 'browser' ),
 			'autoKickDrawer' => (int) Simple_POS_Settings::get( 'auto_kick_drawer', 0 ),
 			'barcode'        => array(
-				'symbology'   => Simple_POS_Settings::get( 'barcode_symbology', 'CODE128' ),
+				'symbology'   => Simple_POS_Settings::get( 'barcode_symbology', 'CODE39' ),
 				'labelFormat' => Simple_POS_Settings::get( 'barcode_label_format', 'a4_30' ),
 			),
 			'storeName'      => Simple_POS_Settings::get( 'store_name', get_bloginfo( 'name' ) ),
@@ -234,7 +234,7 @@ class Simple_POS_Admin {
 			'printerType'    => Simple_POS_Settings::get( 'printer_type', 'browser' ),
 			'autoKickDrawer' => (int) Simple_POS_Settings::get( 'auto_kick_drawer', 0 ),
 			'barcode'        => array(
-				'symbology'   => Simple_POS_Settings::get( 'barcode_symbology', 'CODE128' ),
+				'symbology'   => Simple_POS_Settings::get( 'barcode_symbology', 'CODE39' ),
 				'labelFormat' => Simple_POS_Settings::get( 'barcode_label_format', 'a4_30' ),
 			),
 			'storeName'      => Simple_POS_Settings::get( 'store_name', get_bloginfo( 'name' ) ),
