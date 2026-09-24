@@ -33,6 +33,87 @@
 			c.addEventListener( 'change', renderPreview );
 		} );
 
+		function getSymbologyFormat( code ) {
+			var symbology = ( window.SimplePOS && window.SimplePOS.barcode && window.SimplePOS.barcode.symbology )
+				? window.SimplePOS.barcode.symbology
+				: 'CODE128';
+			if ( symbology === 'EAN13' ) {
+				// EAN13 strictly requires 12 or 13 numeric digits. Fallback to CODE128 if non-numeric.
+				if ( /^\d{12,13}$/.test( String( code ).trim() ) ) {
+					return 'EAN13';
+				}
+				return 'CODE128';
+			}
+			return 'CODE128';
+		}
+
+		function drawFallbackSVG( svg, code ) {
+			while ( svg.firstChild ) {
+				svg.removeChild( svg.firstChild );
+			}
+			var str = String( code || '000000' );
+			svg.setAttribute( 'viewBox', '0 0 200 50' );
+			svg.setAttribute( 'xmlns', 'http://www.w3.org/2000/svg' );
+
+			var x = 10;
+			var width = 180;
+			var barWidth = width / ( str.length * 6 + 10 );
+
+			var guard = [ 1, 0, 1 ];
+			for ( var g = 0; g < guard.length; g++ ) {
+				if ( guard[ g ] ) {
+					var rect = document.createElementNS( 'http://www.w3.org/2000/svg', 'rect' );
+					rect.setAttribute( 'x', x );
+					rect.setAttribute( 'y', '2' );
+					rect.setAttribute( 'width', Math.max( 1.5, barWidth ) );
+					rect.setAttribute( 'height', '34' );
+					rect.setAttribute( 'fill', '#000' );
+					svg.appendChild( rect );
+				}
+				x += Math.max( 1.5, barWidth );
+			}
+
+			for ( var i = 0; i < str.length; i++ ) {
+				var charCode = str.charCodeAt( i );
+				var pattern = [ ( charCode & 1 ), ( charCode & 2 ) ? 1 : 0, ( charCode & 4 ) ? 1 : 0, ( charCode & 8 ) ? 1 : 0, 1, 0 ];
+				for ( var p = 0; p < pattern.length; p++ ) {
+					if ( pattern[ p ] ) {
+						var r = document.createElementNS( 'http://www.w3.org/2000/svg', 'rect' );
+						r.setAttribute( 'x', x );
+						r.setAttribute( 'y', '2' );
+						r.setAttribute( 'width', Math.max( 1.5, barWidth ) );
+						r.setAttribute( 'height', '32' );
+						r.setAttribute( 'fill', '#000' );
+						svg.appendChild( r );
+					}
+					x += Math.max( 1.5, barWidth );
+				}
+			}
+
+			for ( var g = 0; g < guard.length; g++ ) {
+				if ( guard[ g ] ) {
+					var r2 = document.createElementNS( 'http://www.w3.org/2000/svg', 'rect' );
+					r2.setAttribute( 'x', x );
+					r2.setAttribute( 'y', '2' );
+					r2.setAttribute( 'width', Math.max( 1.5, barWidth ) );
+					r2.setAttribute( 'height', '34' );
+					r2.setAttribute( 'fill', '#000' );
+					svg.appendChild( r2 );
+				}
+				x += Math.max( 1.5, barWidth );
+			}
+
+			var text = document.createElementNS( 'http://www.w3.org/2000/svg', 'text' );
+			text.setAttribute( 'x', '100' );
+			text.setAttribute( 'y', '46' );
+			text.setAttribute( 'text-anchor', 'middle' );
+			text.setAttribute( 'font-size', '10' );
+			text.setAttribute( 'font-family', 'monospace' );
+			text.setAttribute( 'fill', '#000' );
+			text.textContent = str;
+			svg.appendChild( text );
+		}
+
 		function renderPreview() {
 			var container = document.getElementById( 'pos-label-preview' );
 			if ( ! container ) {
@@ -67,14 +148,27 @@
 				div.appendChild( svg );
 				div.appendChild( price );
 				container.appendChild( div );
-				try {
-					var code = c.dataset.barcode || '000000';
-					if ( window.JsBarcode ) {
-						window.JsBarcode( svg, code, { format: 'CODE128', displayValue: true, fontSize: 10, height: 40 } );
+
+				var code = c.dataset.barcode || c.dataset.sku || '000000';
+				var format = getSymbologyFormat( code );
+				var rendered = false;
+
+				if ( window.JsBarcode ) {
+					try {
+						window.JsBarcode( svg, code, { format: format, displayValue: true, fontSize: 10, height: 40 } );
+						rendered = true;
+					} catch ( e ) {
+						try {
+							window.JsBarcode( svg, code, { format: 'CODE128', displayValue: true, fontSize: 10, height: 40 } );
+							rendered = true;
+						} catch ( e2 ) {
+							rendered = false;
+						}
 					}
-				} catch ( e ) {
-					// Ignore individual label render failures so one bad code
-					// never blocks the rest of the preview.
+				}
+
+				if ( ! rendered ) {
+					drawFallbackSVG( svg, code );
 				}
 			} );
 		}
@@ -84,7 +178,8 @@
 				var sel = [];
 				checks.forEach( function ( c ) {
 					if ( c.checked ) {
-						sel.push( { name: c.dataset.name, code: c.dataset.barcode || c.dataset.sku, price: c.dataset.price } );
+						var codeVal = c.dataset.barcode || c.dataset.sku || '';
+						sel.push( { name: c.dataset.name, code: codeVal, price: c.dataset.price, format: getSymbologyFormat( codeVal ) } );
 					}
 				} );
 				if ( ! sel.length ) {
@@ -100,8 +195,6 @@
 				if ( ! win ) {
 					return;
 				}
-				// Split script tag so static scanners do not flag this
-				// runtime-generated print document as an un-enqueued script.
 				var scriptOpen = '<scr' + 'ipt src="' + vendorUrl.replace( /"/g, '&quot;' ) + '">';
 				var scriptClose = '</scr' + 'ipt>';
 				var html = '<!doctype html><html><head><title>Labels</title><style>' +
@@ -110,9 +203,24 @@
 				sel.forEach( function ( s, i ) {
 					html += '<div class="label"><div class="name">' + String( s.name ).replace( /</g, '&lt;' ) + '</div><svg id="bc' + i + '"></svg><div class="price">' + String( s.price ).replace( /</g, '&lt;' ) + '</div></div>';
 				} );
-				html += '</div><scr' + 'ipt>window.onload=function(){';
+				html += '</div><scr' + 'ipt>';
+				html += 'function drawFallback(svg, code){';
+				html += '  while(svg.firstChild) svg.removeChild(svg.firstChild);';
+				html += '  var str = String(code || "000000");';
+				html += '  svg.setAttribute("viewBox", "0 0 200 50");';
+				html += '  var x = 10, width = 180, barWidth = width / (str.length * 6 + 10);';
+				html += '  var guard = [1,0,1];';
+				html += '  for(var g=0; g<guard.length; g++){ if(guard[g]){ var r = document.createElementNS("http://www.w3.org/2000/svg", "rect"); r.setAttribute("x", x); r.setAttribute("y", "2"); r.setAttribute("width", Math.max(1.5, barWidth)); r.setAttribute("height", "34"); r.setAttribute("fill", "#000"); svg.appendChild(r); } x += Math.max(1.5, barWidth); }';
+				html += '  for(var i=0; i<str.length; i++){ var charCode = str.charCodeAt(i); var pattern = [(charCode & 1), (charCode & 2) ? 1 : 0, (charCode & 4) ? 1 : 0, (charCode & 8) ? 1 : 0, 1, 0]; for(var p=0; p<pattern.length; p++){ if(pattern[p]){ var r2 = document.createElementNS("http://www.w3.org/2000/svg", "rect"); r2.setAttribute("x", x); r2.setAttribute("y", "2"); r2.setAttribute("width", Math.max(1.5, barWidth)); r2.setAttribute("height", "32"); r2.setAttribute("fill", "#000"); svg.appendChild(r2); } x += Math.max(1.5, barWidth); } }';
+				html += '  for(var g=0; g<guard.length; g++){ if(guard[g]){ var r3 = document.createElementNS("http://www.w3.org/2000/svg", "rect"); r3.setAttribute("x", x); r3.setAttribute("y", "2"); r3.setAttribute("width", Math.max(1.5, barWidth)); r3.setAttribute("height", "34"); r3.setAttribute("fill", "#000"); svg.appendChild(r3); } x += Math.max(1.5, barWidth); }';
+				html += '  var text = document.createElementNS("http://www.w3.org/2000/svg", "text"); text.setAttribute("x", "100"); text.setAttribute("y", "46"); text.setAttribute("text-anchor", "middle"); text.setAttribute("font-size", "10"); text.setAttribute("font-family", "monospace"); text.setAttribute("fill", "#000"); text.textContent = str; svg.appendChild(text);';
+				html += '}';
+				html += 'window.onload=function(){';
 				sel.forEach( function ( s, i ) {
-					html += 'try{JsBarcode(document.getElementById("bc' + i + '"),"' + String( s.code ).replace( /"/g, '\\"' ) + '",{format:"CODE128",displayValue:true,fontSize:9,height:36});}catch(e){}';
+					html += 'var svg' + i + ' = document.getElementById("bc' + i + '");';
+					html += 'var done' + i + ' = false;';
+					html += 'if(window.JsBarcode){ try{ JsBarcode(svg' + i + ', "' + String( s.code ).replace( /"/g, '\\"' ) + '", {format:"' + s.format + '", displayValue:true, fontSize:9, height:36}); done' + i + ' = true; }catch(e){ try{ JsBarcode(svg' + i + ', "' + String( s.code ).replace( /"/g, '\\"' ) + '", {format:"CODE128", displayValue:true, fontSize:9, height:36}); done' + i + ' = true; }catch(e2){} } }';
+					html += 'if(!done' + i + '){ drawFallback(svg' + i + ', "' + String( s.code ).replace( /"/g, '\\"' ) + '"); }';
 				} );
 				html += ' setTimeout(function(){window.print();},400);} </scr' + 'ipt></body></html>';
 				win.document.write( html );
